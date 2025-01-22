@@ -1,5 +1,8 @@
-using AirTransfer.Enums;
+using TabbyCat.Shared.Enums;
 using AirTransfer.Interfaces;
+
+using TabbyCat.Shared.Enums;
+using TabbyCat.Shared.Interfaces;
 
 namespace AirTransfer;
 

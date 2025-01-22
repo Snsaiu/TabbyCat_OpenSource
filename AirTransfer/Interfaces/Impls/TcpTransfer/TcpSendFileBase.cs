@@ -1,6 +1,8 @@
 ﻿using System.Net.Sockets;
 using AirTransfer.Models;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces.Impls.TcpTransfer;
 
 /// <summary>

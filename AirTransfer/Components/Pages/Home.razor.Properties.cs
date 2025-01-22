@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 
+using TabbyCat.Service.LocalNetShareServices;
+using TabbyCat.Shared.Interfaces;
+
 #endregion
 
 namespace AirTransfer.Components.Pages;

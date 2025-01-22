@@ -4,6 +4,8 @@ using System.Text;
 using AirTransfer.Models;
 using Newtonsoft.Json;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces.Impls.TcpTransfer;
 
 public abstract class LoopListenerBase<T, P, R> : IReceiveableWithProgress<T, P>

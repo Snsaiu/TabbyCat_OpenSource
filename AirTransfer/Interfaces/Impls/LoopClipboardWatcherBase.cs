@@ -14,7 +14,7 @@ public abstract class LoopClipboardWatcherBase : IClipboardWatchable
         _timer = new(1000);
         _timer.Elapsed += CheckClipboard;
         _timer.AutoReset = true;
-        _timer.Start();
+        //    _timer.Start();
     }
 
     public void Dispose()
@@ -25,6 +25,7 @@ public abstract class LoopClipboardWatcherBase : IClipboardWatchable
 
     private void CheckClipboard(object? sender, ElapsedEventArgs e)
     {
+        return;
         Application.Current?.Dispatcher.Dispatch(async () =>
         {
             var content = await Clipboard.Default.GetTextAsync();

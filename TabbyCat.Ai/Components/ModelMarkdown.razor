@@ -1,0 +1,13 @@
+﻿@using AirTransfer.Models
+<MarkdownSection  Content="@Message"></MarkdownSection>
+
+@code {
+
+    /// <summary>
+    /// The markdown to render.
+    /// </summary>
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+
+  
+}

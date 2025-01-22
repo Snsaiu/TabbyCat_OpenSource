@@ -1,7 +1,6 @@
 ﻿#region
 
-using AirTransfer.Consts;
-using AirTransfer.Enums;
+using TabbyCat.Shared.Enums;
 using AirTransfer.Extensions;
 using AirTransfer.Models;
 
@@ -10,6 +9,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using System.Net;
+
+using TabbyCat.Shared.ConstParameters;
+using TabbyCat.Shared.Extensions;
 
 #endregion
 

@@ -2,6 +2,9 @@ using System.Net;
 using AirTransfer.Extensions;
 using Newtonsoft.Json;
 
+using TabbyCat.Shared.Extensions;
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces.Impls.UdpTransfer;
 
 public abstract class UdpSendBase<T> : UdpBase, ISendeable<T>

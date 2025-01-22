@@ -1,8 +1,9 @@
 ﻿
 @using AirTransfer.Extensions
 @using AirTransfer.Interfaces
-@using AirTransfer.Language
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
+@using TabbyCat.Shared
+@using TabbyCat.Shared.Interfaces
 @inherits LayoutComponentBase
 
 <div>
@@ -19,15 +20,22 @@
                     Count="NotReadCount"
                     Href="/history" IconRest="@(new Size32.History())"
                     Text="@LocalizationResourceManager.Instance["History"]"></FluentAppBarItem>
-                <FluentAppBarItem Href="/setting" IconRest="@(new Size32.Settings())" Text="@LocalizationResourceManager.Instance["Setting"]"></FluentAppBarItem>
+
+                <FluentAppBarItem Style="width: 100%;" Href="/ai-chat"
+                                  Text="AI聊天"
+                                  IconRest="@(new Size20.ChatSparkle())">
+                  
+                </FluentAppBarItem>
+
+                    <FluentAppBarItem Href="/setting" IconRest="@(new Size32.Settings())" Text="@LocalizationResourceManager.Instance["Setting"]"></FluentAppBarItem>
             </FluentAppBar>
-            <FluentBodyContent>
+            <FluentBodyContent Style="overflow: hidden">
                 @Body
             </FluentBodyContent>
         }
         else
         {
-            <FluentBodyContent>
+            <FluentBodyContent Style="overflow: hidden">
                 @Body
             </FluentBodyContent>
 
@@ -50,7 +58,13 @@
                     </FluentGridItem>
 
                     <FluentGridItem sm="6">
-                        <FluentAppBarItem Style="width: 100%" Href="/setting" IconRest="@(new Size20.Settings())"
+                        <FluentAppBarItem Style="width: 100%;" Href="/ai-chat"
+                                          Text="AI聊天"
+                                          IconRest="@(new Size20.ChatSparkle())"></FluentAppBarItem>
+                    </FluentGridItem>
+
+                    <FluentGridItem sm="6">
+                            <FluentAppBarItem Style="width: 100%" Href="/setting" IconRest="@(new Size20.Settings())"
                                           Text="@LocalizationResourceManager.Instance["Setting"]"></FluentAppBarItem>
                     </FluentGridItem>
                 </FluentGrid>
@@ -66,7 +80,6 @@
 </div>
 <FluentDialogProvider/>
 <FluentToastProvider/>
-<FluentDialogProvider/>
 <FluentTooltipProvider/>
 <FluentMessageBarProvider/>
 <FluentMenuProvider/>

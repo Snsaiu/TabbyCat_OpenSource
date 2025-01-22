@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AirTransfer.Components.Pages.ShortChatPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="using:AirTransfer.Components.Components"
+    xmlns:pages="using:AirTransfer.Components.Pages"
+    xmlns:components1="clr-namespace:TabbyCat.Ai.Components;assembly=TabbyCat.Ai"
+    Title="ShortChatPage">
+
+    <BlazorWebView x:Name="blazorWebView2" HostPage="wwwroot/index.html">
+        <BlazorWebView.RootComponents>
+            <RootComponent ComponentType="{x:Type components1:AiShotChat}" Selector="#app" />
+        </BlazorWebView.RootComponents>
+    </BlazorWebView>
+</ContentPage>

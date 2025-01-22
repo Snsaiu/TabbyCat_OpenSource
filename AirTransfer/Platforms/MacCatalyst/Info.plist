@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
     <dict>
-        <!-- The Mac App Store requires you specify if the app uses encryption. -->
-        <!-- Please consult https://developer.apple.com/documentation/bundleresources/information_property_list/itsappusesnonexemptencryption -->
-        <!-- <key>ITSAppUsesNonExemptEncryption</key> -->
-        <!-- Please indicate <true/> or <false/> here. -->
-        <!-- Specify the category for your app here. -->
-        <!-- Please consult https://developer.apple.com/documentation/bundleresources/information_property_list/lsapplicationcategorytype -->
-        <!-- <key>LSApplicationCategoryType</key> -->
-        <!-- <string>public.app-category.YOUR-CATEGORY-HERE</string> -->
         <key>UIDeviceFamily</key>
         <array>
             <integer>2</integer>
@@ -35,5 +27,10 @@
         <string>Assets.xcassets/appicon.appiconset</string>
         <key>NSLocalNetworkUsageDescription</key>
         <string>我们需要访问局域网以连接到本地设备。</string>
+        <key>NSAppTransportSecurity</key>
+        <dict>
+            <key>NSAllowsArbitraryLoads</key>
+            <true/>
+        </dict>
     </dict>
 </plist>

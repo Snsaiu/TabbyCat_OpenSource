@@ -1,7 +1,10 @@
-﻿using AirTransfer.Enums;
+﻿using TabbyCat.Shared.Enums;
 using AirTransfer.Interfaces;
 
-using Device = AirTransfer.Enums.Device;
+using TabbyCat.Shared.Enums;
+using TabbyCat.Shared.Interfaces;
+
+using Device = TabbyCat.Shared.Enums.Device;
 
 namespace AirTransfer.Models;
 

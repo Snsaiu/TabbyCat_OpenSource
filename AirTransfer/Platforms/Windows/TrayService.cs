@@ -1,16 +1,19 @@
-﻿using System.Runtime.InteropServices;
-using AirTransfer.Interfaces;
-using AirTransfer.Language;
+﻿using AirTransfer.Interfaces;
 using AirTransfer.Native;
+
 using PInvoke;
+
+using System.Runtime.InteropServices;
+
+using TabbyCat.Shared;
 
 namespace AirTransfer;
 
 public sealed class TrayService : ITrayService
 {
-    private WindowsTrayIcon tray;
+    private WindowsTrayIcon? tray;
 
-    public Action ClickHandler { get; set; }
+    public Action? ClickHandler { get; set; }
 
     public void Initialize()
     {
@@ -38,7 +41,7 @@ public sealed class TrayService : ITrayService
         var cmd = TrackPopupMenu(hMenu, TPM_RETURNCMD, pt.x, pt.y, 0, tray.messageSink.MessageWindowHandle,
             IntPtr.Zero);
         if (cmd == 1)
-            Application.Current.Quit();
+            Application.Current?.Quit();
     }
 
     private void HandleOption1()

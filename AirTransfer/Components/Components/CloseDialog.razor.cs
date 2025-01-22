@@ -1,6 +1,8 @@
 ﻿using AirTransfer.Interfaces.IConfigs;
 using Microsoft.AspNetCore.Components;
 
+using TabbyCat.VisualBase.Bases;
+
 namespace AirTransfer.Components.Components;
 
 public partial class CloseDialog : DialogBase

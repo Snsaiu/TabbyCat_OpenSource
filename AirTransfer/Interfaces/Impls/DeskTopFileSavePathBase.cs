@@ -1,5 +1,7 @@
 using AirTransfer.Interfaces.Impls.Configs;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces.Impls;
 
 public abstract class DeskTopFileSavePathBase : FileSavePathBase, IChangePathable

@@ -1,0 +1,106 @@
+@using TabbyCat.Shared.Interfaces
+@using Microsoft.FluentUI.AspNetCore.Components
+@inherits TabbyCat.VisualBase.Bases.VisualPageBase
+
+<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Stretch">
+
+    <FluentSelect Label="模型提供方" TOption="string" Items="aiModelProviders"
+                  SelectedOptionChanged="x=>SelectedOptionChangedCommand(x)"></FluentSelect>
+
+    @if (selectedAiModel is null)
+    {
+        <FluentSkeleton></FluentSkeleton>
+        return;
+    }
+
+    @if (selectedAiModel is IAlias alia)
+    {
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Stretch">
+            <FluentTextField Label="名称" @bind-Value="@alia.Alias"></FluentTextField>
+            @if (selectedAiModel is ISaved { IsSaved: true })
+            {
+                <FluentButton OnClick="DeleteCustomAiModelCommand">删除</FluentButton>
+            }
+
+        </FluentStack>
+    }
+
+    @if (selectedAiModel is IApiKey apikey)
+    {
+        <FluentTextField Label="API 密钥" TextFieldType="TextFieldType.Password"
+                         ValueChanged="ApiKeyChangedCommand"
+                         Value="@apikey.ApiKey"
+        ></FluentTextField>
+    }
+    @if (selectedAiModel is IApiDomain apiDomain)
+    {
+        <FluentTextField Label="API 域名" @bind-Value="@apiDomain.ApiDomain"></FluentTextField>
+    }
+
+    @if (selectedAiModel is IApiPath apiPath)
+    {
+        <FluentTextField Label="API 路径" @bind-Value="@apiPath.ApiPath"></FluentTextField>
+    }
+
+    @if (selectedAiModel is IEndPoint endPoint)
+    {
+        <FluentTextField Label="终结点" @bind-Value="@endPoint.EndPoint"></FluentTextField>
+    }
+
+    @if (selectedAiModel is IDeployName deployName)
+    {
+        <FluentTextField Label="模型部署名称" @bind-Value="@deployName.DeployName"></FluentTextField>
+    }
+
+    @if (selectedAiModel is IHasCustomModel customModel)
+    {
+        <FluentSelect Label="模型" TOption="string" Items="@models"
+                      @bind-Value="@customModel.SelectedModel"></FluentSelect>
+
+        if (customModel.SelectedModel == "Custom")
+        {
+            <FluentTextField Label="自定义模型名" @bind-Value="@customModel.CustomModelName"></FluentTextField>
+        }
+    }
+    else if (selectedAiModel is IHasModels<string> hasModels)
+    {
+        <FluentSelect Label="模型" TOption="string" Items="models"
+                      @bind-Value="@hasModels.SelectedModel"></FluentSelect>
+    }
+
+
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <FluentStack Orientation="Orientation.Vertical">
+            <FluentLabel>严谨与想象</FluentLabel>
+            <FluentSlider TValue="double" Min="0" Max="2" Step="0.1"
+                          @bind-Value="@selectedAiModel.Temperature">
+            </FluentSlider>
+        </FluentStack>
+
+        <FluentLabel>@selectedAiModel.Temperature</FluentLabel>
+    </FluentStack>
+
+
+    <FluentSwitch Label="上下文有上限" @bind-Value="@selectedAiModel.ContextCountLimit"></FluentSwitch>
+
+
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <FluentStack Orientation="Orientation.Vertical">
+            <FluentLabel>上下文消息数量上限</FluentLabel>
+            <FluentSlider Step="1" TValue="int" Min="0" Max="20" Disabled="!selectedAiModel.ContextCountLimit"
+                          @bind-Value="@selectedAiModel.ContextCount"></FluentSlider>
+
+        </FluentStack>
+        <FluentLabel Disabled="!selectedAiModel.ContextCountLimit">@selectedAiModel.ContextCount</FluentLabel>
+    </FluentStack>
+
+
+    @if (selectedAiModel is ITopP topP)
+    {
+        <FluentSlider Label="Top P" TValue="double" Min="0" Max="1" Step="0.1" @bind-Value="@topP.TopP"></FluentSlider>
+    }
+
+    <FluentSwitch Label="默认" @bind-Value="@selectedAiModel.IsDefault"></FluentSwitch>
+
+    <FluentButton OnClick="SaveCommand">保存</FluentButton>
+</FluentStack>

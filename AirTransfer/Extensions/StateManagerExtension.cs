@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using AirTransfer.Consts;
+
 using AirTransfer.Interfaces;
 using AirTransfer.Models;
+
+using TabbyCat.Shared.ConstParameters;
+using TabbyCat.Shared.Interfaces;
 
 namespace AirTransfer.Extensions;
 

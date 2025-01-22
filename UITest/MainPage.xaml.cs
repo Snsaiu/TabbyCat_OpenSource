@@ -19,7 +19,18 @@ namespace UITest
 
         public MainPageViewModel()
         {
-            this.IconClickCommand = new Command(x => { });
+            this.IconClickCommand = new Command( async x =>
+            {
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, "http://www.baidu.com");
+                var content = new StringContent(
+                    "",
+                    null, "application/json");
+               
+                var response = await client.SendAsync(request, CancellationToken.None);
+                response.EnsureSuccessStatusCode();
+                var responseString = await response.Content.ReadAsStringAsync();
+            });
         }
     }
 }

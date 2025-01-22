@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 
+using TabbyCat.VisualBase.Bases;
+
 namespace AirTransfer.Components.Pages;
 
 public partial class TextInput : PageComponentBase

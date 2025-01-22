@@ -1,4 +1,6 @@
-﻿namespace AirTransfer.Interfaces.Impls.HttpsTransfer;
+﻿using TabbyCat.Shared.Interfaces;
+
+namespace AirTransfer.Interfaces.Impls.HttpsTransfer;
 
 public abstract class HttpsSendBase<T, P> : SendBase<T, P, HttpClient>
     where T : IFlag, ISize, ITargetFlag where P : IProgressValue

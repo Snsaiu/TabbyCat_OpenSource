@@ -3,7 +3,7 @@
 @using AirTransfer.Models
 @using Microsoft.FluentUI.AspNetCore.Components.Extensions
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
-@inherits PageComponentBase
+@inherits TabbyCat.VisualBase.Bases.PageComponentBase
 
 
 <div class="main-container">
@@ -84,25 +84,25 @@
                                     <FluentGridItem xs="1">
                                         @switch (item.SystemType)
                                         {
-                                            case Enums.SystemType.Windows:
+                                            case TabbyCat.Shared.Enums.SystemType.Windows:
                                                 <div class="system-type-icon">
                                                     <FluentIcon
                                                         Value="@(Icon.FromImageUrl("images/windows.png"))"></FluentIcon>
                                                 </div>
                                                 break;
-                                            case Enums.SystemType.MacOS:
+                                            case TabbyCat.Shared.Enums.SystemType.MacOS:
                                                 <div class="system-type-icon">
                                                     <FluentIcon Class="system-type-icon"
                                                                 Value="@(Icon.FromImageUrl("images/mac.png"))"></FluentIcon>
                                                 </div>
                                                 break;
-                                            case Enums.SystemType.IOS:
+                                            case TabbyCat.Shared.Enums.SystemType.IOS:
                                                 <div class="system-type-icon">
                                                     <FluentIcon
                                                         Value="@(Icon.FromImageUrl("images/iphone.png"))"></FluentIcon>
                                                 </div>
                                                 break;
-                                            case Enums.SystemType.Android:
+                                            case TabbyCat.Shared.Enums.SystemType.Android:
                                                 <div class="system-type-icon">
                                                     <FluentIcon
                                                         Value="@(Icon.FromImageUrl("images/android.png"))"></FluentIcon>

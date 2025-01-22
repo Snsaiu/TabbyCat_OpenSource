@@ -1,5 +1,18 @@
-export class Setting {
+export function reHeight() {
 
+    setHeight();
+    window.addEventListener('resize', function () {
+        setHeight();
+
+    });
 }
 
-window.Setting = Setting;
+function setHeight() {
+    const container = document.getElementById('container');
+    const windowHeight = window.innerHeight;
+
+    if (container) {
+        container.style.height = `${windowHeight}px`;
+    }
+}
+

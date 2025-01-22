@@ -1,10 +1,10 @@
-using System;
-using System.Threading.Tasks;
 using AirTransfer.Interfaces;
 using AirTransfer.Models;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+
+using TabbyCat.VisualBase.Bases;
 
 namespace AirTransfer.Components.Pages;
 
@@ -26,13 +26,14 @@ public partial class Login : PageComponentBase
     [Inject] private IUserService? UserService { get; set; }
 
 
-    [Inject] private IDialogService? DialogService { get; set; }
+    [Inject] private new IDialogService? DialogService { get; set; }
 
     #endregion
 
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
     {
+
         if (UserService is null)
             throw new NullReferenceException();
         try

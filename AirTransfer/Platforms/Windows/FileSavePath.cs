@@ -1,6 +1,7 @@
-﻿using AirTransfer.Interfaces;
-using AirTransfer.Interfaces.Impls;
-using AirTransfer.Interfaces.Impls.Configs;
+﻿using AirTransfer.Interfaces.Impls;
+
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer;
 
 

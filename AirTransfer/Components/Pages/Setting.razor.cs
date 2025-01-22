@@ -1,15 +1,17 @@
-using System.Globalization;
-using AirTransfer.Enums;
 using AirTransfer.Extensions;
 using AirTransfer.Interfaces;
 using AirTransfer.Interfaces.IConfigs;
 using AirTransfer.Interfaces.Impls.Configs;
-using AirTransfer.Resources.Languages;
 
 using CommunityToolkit.Maui.Storage;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Microsoft.JSInterop;
+
+using TabbyCat.Service.AiServices;
+using TabbyCat.Shared.Enums;
+using TabbyCat.VisualBase.Bases;
 
 namespace AirTransfer.Components.Pages;
 
@@ -19,17 +21,25 @@ public partial class Setting : PageComponentBase
 
     [Inject] private IUserService UserService { get; set; } = null!;
 
+#if WINDOWS || MACCATALYST
     [Inject] private FileSavePathBase FileSavePath { get; set; } = null!;
+
+    [Inject] private ITopMostService TopMostService { get; set; } = null!;
+
+#endif
 
     [Inject] private ILanguageService LanguageService { get; set; } = null!;
 
     [Inject] private IThemeService ThemeService { get; set; } = null!;
 
+   [Inject] private IAiTemplateSettingService AiTemplateSettingService { get; set; } = null!;
+
+#if WINDOWS || MACCATALYST
 
     [Inject] private IShowCloseDialogService ShowCloseDialogService { get; set; } = null!;
 
     [Inject] private ICloseAppBehaviorService CloseAppBehaviorService { get; set; } = null!;
-
+#endif
 
     #endregion
 
@@ -42,9 +52,11 @@ public partial class Setting : PageComponentBase
 
     [Parameter] public OfficeColor? OfficeColor { get; set; }
 
-    private string SavePath { get; set; } = String.Empty;
-
     private bool IsClipboardWatch { get; set; } = false;
+
+    private bool isTopMost;
+
+    private string SavePath { get; set; } = String.Empty;
 
     [Parameter] public string SelectedLanguage { get; set; } = string.Empty;
     #endregion
@@ -63,12 +75,15 @@ public partial class Setting : PageComponentBase
     {
         Theme = ThemeService.GetDesignTheme();
         OfficeColor = ThemeService.GetThemeColor();
+
+#if WINDOWS || MACCATALYST
         SavePath = FileSavePath.SaveLocation;
-        IsClipboardWatch= LoopWatchClipboardService.GetState();
+        IsClipboardWatch = LoopWatchClipboardService.GetState();
 
         closeAppState = (CloseAppBehavior)CloseAppBehaviorService.Get<int>();
         closeShowDialog = !ShowCloseDialogService.Get<bool>();
-
+        isTopMost = TopMostService.Get<bool>();
+#endif
         return base.OnParametersSetAsync();
     }
 
@@ -77,6 +92,15 @@ public partial class Setting : PageComponentBase
         InitLanguages();
 
         return base.OnPageInitializedAsync(url, data);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+          this.Module = await  this.JsRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/Pages/Setting.razor.js");
+          await this.Module.InvokeVoidAsync("reHeight");
+        }
     }
 
     #endregion
@@ -105,6 +129,9 @@ public partial class Setting : PageComponentBase
 
         // 状态字典全部清空
         StateManager.Cleaer();
+
+        // 清空所有的ai模型数据
+        await AiTemplateSettingService.DeleteRangeAsync(x => true);
 
         NavigationManager.NavigateTo("/");
     }
@@ -145,6 +172,7 @@ public partial class Setting : PageComponentBase
 
     private async Task SavePathCommand()
     {
+#if WINDOWS || MACCATALYST
         var result = await FolderPicker.Default.PickAsync();
         if (result is not { IsSuccessful: true, Folder.Path: var path })
         {
@@ -152,24 +180,41 @@ public partial class Setting : PageComponentBase
         }
         ((IChangePathable)FileSavePath).ChangedPath(path);
         SavePath = path;
+#endif
+
     }
 
     private void ClipboardWatchChangedCommand(bool value)
     {
+#if WINDOWS || MACCATALYST
         IsClipboardWatch = value;
         LoopWatchClipboardService.SetState(IsClipboardWatch);
         ToastService.ShowSuccess(Localizer["UpdateClipboardStateMessage"]);
+#endif
     }
 
     private void CloseShowDialogChangedCommand(bool obj)
     {
+#if WINDOWS || MACCATALYST
         closeShowDialog = obj;
         ShowCloseDialogService.Set(!closeShowDialog);
+#endif
     }
 
     private void CloseAppBehaviorChangedCommand(CloseAppBehavior obj)
     {
+#if WINDOWS || MACCATALYST
         closeAppState = obj;
         CloseAppBehaviorService.Set((int)closeAppState);
+#endif
+    }
+
+    private void TopMostChangedCommand(bool obj)
+    {
+#if WINDOWS || MACCATALYST
+        this.isTopMost = obj;
+        TopMostService.Set(obj);
+        this.ToastService.ShowSuccess("重启后生效");
+#endif
     }
 }

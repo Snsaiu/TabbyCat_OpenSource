@@ -1,6 +1,8 @@
 using System.Net.Sockets;
-using AirTransfer.Consts;
+
 using AirTransfer.Models;
+
+using TabbyCat.Shared.ConstParameters;
 
 namespace AirTransfer.Interfaces.Impls.UdpTransfer;
 

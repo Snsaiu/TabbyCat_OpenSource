@@ -1,5 +1,7 @@
 using System.Net.NetworkInformation;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces.Impls;
 
 public class GlobalScanBase : ISendeable<string>

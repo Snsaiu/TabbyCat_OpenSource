@@ -1,9 +1,8 @@
-using AirTransfer.Enums;
 using AirTransfer.Interfaces;
-
-
-
 using Newtonsoft.Json;
+
+using TabbyCat.Shared.Enums;
+using TabbyCat.Shared.Interfaces;
 
 namespace AirTransfer.Models;
 

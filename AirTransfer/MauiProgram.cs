@@ -5,10 +5,17 @@ using AirTransfer.Interfaces.Impls;
 using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Interfaces.Impls.TcpTransfer;
 using AirTransfer.Interfaces.Impls.UdpTransfer;
+
 using CommunityToolkit.Maui;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Microsoft.Maui.LifecycleEvents;
+
+using TabbyCat.Service.AiServices;
+using TabbyCat.Service.LocalNetShareServices;
+using TabbyCat.Shared.Interfaces;
+using TabbyCat.SqliteService.AiServices;
+using TabbyCat.SqliteService.LocalNetShareServices;
 
 
 namespace AirTransfer
@@ -65,7 +72,14 @@ namespace AirTransfer
 
             // builder.Services.AddSingleton<IGetLocalNetDevices, DefaultScanLocalNetIp>();
 
+            #region DBService
+            builder.Services.AddSingleton<IAiChatSessionService, AiChatSessionService>();
+            builder.Services.AddSingleton<IAiChatMessageRecordService, AiChatMessageRecordService>();
             builder.Services.AddSingleton<ISaveDataService, DbSaveDataService>();
+            builder.Services.AddSingleton<IAiTemplateSettingService, AiTemplateSettingService>();
+            builder.Services.AddSingleton<ICustomAssistantOccupationService,CustomAssistantOccupationService>();
+            #endregion
+
             builder.Services.AddSingleton<ILanguageService, ConfigLanguageService>();
             builder.Services.AddSingleton<ISendPortService, SendPortService>();
             builder.Services.AddSingleton<IPortCheckable, PortChecker>();
@@ -75,11 +89,18 @@ namespace AirTransfer
             builder.Services.AddSingleton<ILoopWatchClipboardService, LoopWatchClipboardService>();
             builder.Services.AddSingleton<IDialogService, DialogService>();
 
+
+
 #if MACCATALYST || WINDOWS
             builder.Services.AddSingleton<ITrayService, TrayService>();
             builder.Services.AddSingleton<IShowCloseDialogService, ShowCloseDialogService>();
             builder.Services.AddSingleton<ICloseAppBehaviorService, CloseAppBehaviorService>();
+            builder.Services.AddSingleton<ITopMostService, TopMostService>();
+
+            builder.Services.AddSingleton<IHotKeyHookService, HotKeyHookService>();
 #endif
+            builder.Services.AddHttpClient();
+
 
             builder.ConfigureLifecycle();
 

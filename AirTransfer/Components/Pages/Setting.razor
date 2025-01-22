@@ -1,17 +1,18 @@
 @page "/setting"
-@using AirTransfer.Enums
 @using Microsoft.FluentUI.AspNetCore.Components.Extensions
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Filled
-@inherits PageComponentBase
+@using TabbyCat.Shared.Enums
+@using TabbyCat.Ai.Components
+@inherits TabbyCat.VisualBase.Bases.PageComponentBase
 
 
-<div>
+<div style="overflow-y: visible;overflow-x: hidden;" id="container">
     <FluentDesignTheme @bind-Mode="@Theme" @bind-OfficeColor="@OfficeColor" StorageName="theme"/>
     <FluentAccordion ExpandMode="AccordionExpandMode.Multi">
-        <FluentAccordionItem Heading="@Localizer["Scan"]" Expanded="true">
+        <FluentAccordionItem Heading="@Localizer["Scan"]">
             <FluentButton IconStart="@(new Size24.Globe())">@Localizer["GlobalRefresh"]</FluentButton>
         </FluentAccordionItem>
-        <FluentAccordionItem Heading="@Localizer["Personalization"]" Expanded="true">
+        <FluentAccordionItem Heading="@Localizer["Personalization"]">
             <FluentStack Orientation="Orientation.Vertical">
                 <FluentSelect TOption="KeyValuePair<string, string>"
                               Label="@Localizer["SelectLanguage"]"
@@ -45,9 +46,10 @@
                 </FluentSelect>
             </FluentStack>
         </FluentAccordionItem>
-        <FluentAccordionItem Heading="@Localizer["Global"]" Expanded="true">
+        <FluentAccordionItem Heading="@Localizer["Global"]">
             <FluentStack Orientation=" Orientation.Vertical">
-                @if (SystemType.System is Enums.SystemType.Windows or Enums.SystemType.MacOS)
+
+                @if (SystemType.System is TabbyCat.Shared.Enums.SystemType.Windows or TabbyCat.Shared.Enums.SystemType.MacOS)
                 {
                     <FluentStack Orientation="Orientation.Horizontal">
                         <FluentLabel> @($"{Localizer["SavePath"]}:")</FluentLabel>
@@ -59,9 +61,11 @@
                     <FluentSwitch Label="@(this.Localizer["ClipboardWatch"])" Value="IsClipboardWatch"
                                   ValueChanged="ClipboardWatchChangedCommand"></FluentSwitch>
 
-                    @if (SystemType.System is Enums.SystemType.Windows)
-                    {
+                    <FluentSwitch Label="最顶部显示" Value="isTopMost"
+                                  ValueChanged="TopMostChangedCommand"></FluentSwitch>
 
+                    @if (SystemType.System is TabbyCat.Shared.Enums.SystemType.Windows)
+                    {
                         <FluentSwitch Label="关闭主面板显示关闭对话框"
                                       ValueChanged="CloseShowDialogChangedCommand"
                                       Value="closeShowDialog">
@@ -79,17 +83,15 @@
                 }
             </FluentStack>
         </FluentAccordionItem>
+
+        <FluentAccordionItem Heading="AI">
+            <AiSetting></AiSetting>
+        </FluentAccordionItem>
     </FluentAccordion>
 
-    <FluentGrid AdaptiveRendering="true">
-        <FluentGridItem xs="12">
-            @* <div class="card" style="background-color: red"> *@
-            @*     xs=12222 *@
-            @* </div> *@
-            <FluentButton Style="width: 100%;margin: 5px;" Appearance="Appearance.Accent" OnClick="@LogoutCommand">
-                @Localizer["Logout"]
-            </FluentButton>
-        </FluentGridItem>
-    </FluentGrid>
+
+    <FluentButton Style="width: 100%;margin: 5px;" Appearance="Appearance.Accent" OnClick="@LogoutCommand">
+        @Localizer["Logout"]
+    </FluentButton>
 
 </div>

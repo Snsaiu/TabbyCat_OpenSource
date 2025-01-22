@@ -1,0 +1,19 @@
+﻿.chat-header {
+    position: fixed;
+    left: 50%; /* Move it to the middle horizontally */
+    transform: translateX(-50%);
+    top: 15px;
+    border-radius: 10px 10px;
+    max-width: 768px;
+    display: flex;
+    width: 100%;
+}
+
+.chat-box {
+    height: calc(100vh - 125px);
+    margin-top: 80px;
+}
+
+.w-100 {
+    width: 100%;
+}

@@ -5,6 +5,8 @@ using AirTransfer.Models;
 
 using Newtonsoft.Json;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces.Impls.TcpTransfer;
 
 public abstract class TcpSendBase<T, P> : SendBase<T, P, NetworkStream>

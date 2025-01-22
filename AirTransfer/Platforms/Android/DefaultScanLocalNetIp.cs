@@ -1,8 +1,8 @@
-﻿using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
-
-using AirTransfer.Interfaces.Impls;
+﻿using AirTransfer.Interfaces.Impls;
 using AirTransfer.Models;
+
+using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 
 namespace AirTransfer
 {
@@ -34,13 +34,21 @@ namespace AirTransfer
                             break;
 
                         var ip = $"{baseIP}.{i}";
-                        var ping = new Ping();
-                        var reply = await ping.SendPingAsync(ip, 100);
-                        if (reply.Status == IPStatus.Success) devices.Add(new(ip));
+                        try
+                        {
+                            var ping = new Ping();
+                            var reply = await ping.SendPingAsync(ip, 100);
+                            if (reply.Status == IPStatus.Success) devices.Add(new(ip));
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+
                     }
 
                     return devices;
-                }));
+                }, cancellationToken));
             }
 
             // 等待所有任务完成并返回结果

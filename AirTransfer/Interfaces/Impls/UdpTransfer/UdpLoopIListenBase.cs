@@ -2,6 +2,8 @@ using System.Text;
 
 using Newtonsoft.Json;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces.Impls.UdpTransfer;
 
 public abstract class UdpLoopIListenBase<T> : UdpBase, IListenable<T> where T : IFlag, IName

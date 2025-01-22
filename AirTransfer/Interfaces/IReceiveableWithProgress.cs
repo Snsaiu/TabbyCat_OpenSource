@@ -1,5 +1,7 @@
 using System.Net;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces;
 
 public interface IReceiveableWithProgress : IListenable

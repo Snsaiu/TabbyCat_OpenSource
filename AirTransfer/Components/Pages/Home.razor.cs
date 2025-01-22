@@ -1,5 +1,4 @@
-using AirTransfer.Consts;
-using AirTransfer.Enums;
+using TabbyCat.Shared.Enums;
 using AirTransfer.Extensions;
 using AirTransfer.Models;
 
@@ -9,6 +8,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
 using System.Collections.Specialized;
+
+using TabbyCat.Repository.Entities.LocalNetShareEntities;
+using TabbyCat.Shared.ConstParameters;
+using TabbyCat.Shared.Enums;
+using TabbyCat.Shared.Extensions;
+using TabbyCat.VisualBase.Bases;
 
 namespace AirTransfer.Components.Pages;
 
@@ -22,9 +27,25 @@ public partial class Home : PageComponentBase
         return base.SetParametersAsync(parameters);
     }
 
-    protected override async Task OnInitializedAsync()
+    
+
+
+
+    private void CheckWorkBusyState()
     {
-        await base.OnInitializedAsync();
+        var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
+        StateManager.SetIsWorkingBusyState(!noWork);
+    }
+
+
+    private void UpdateDevices(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
+    {
+
         await Init();
 
         CheckWorkBusyState();
@@ -47,24 +68,10 @@ public partial class Home : PageComponentBase
 
 
         StateManager.ObservableDevices().CollectionChanged += UpdateDevices;
-    }
-
-    private void CheckWorkBusyState()
-    {
-        var noWork = StateManager.Devices().All(x => x.WorkState == WorkState.None);
-        StateManager.SetIsWorkingBusyState(!noWork);
-    }
 
 
-    private void UpdateDevices(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        InvokeAsync(StateHasChanged);
-    }
-
-    protected override Task OnPageInitializedAsync(string? url, Dictionary<string, object>? data)
-    {
         if (url is null)
-            return Task.CompletedTask;
+            return ;
         if (url == "/home/text-input" && data != null && data.ContainsKey("text"))
         {
             StateManager.SetInformationModel(new()
@@ -74,7 +81,7 @@ public partial class Home : PageComponentBase
             });
         }
 
-        return Task.CompletedTask;
+        return;
     }
 
     #endregion
@@ -363,7 +370,7 @@ public partial class Home : PageComponentBase
 
     private Task SaveDataToLocalDbAsync(TransformResultModel<string> data)
     {
-        var saveDataModel = new SaveDataModel
+        var saveDataModel = new SaveDataEntity
         {
             DataType = data.SendType,
             Content = data.Result,

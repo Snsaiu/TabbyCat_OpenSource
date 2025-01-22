@@ -1,9 +1,9 @@
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using AirTransfer.Enums;
+using TabbyCat.Shared.Enums;
 using AirTransfer.Models;
-using Device = AirTransfer.Enums.Device;
+using Device = TabbyCat.Shared.Enums.Device;
 
 namespace AirTransfer.Interfaces.Impls;
 

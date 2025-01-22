@@ -32,7 +32,7 @@ public class WindowMessageSink : IDisposable
     /// this reference makes sure we don't loose our reference
     /// to the message window.
     /// </summary>
-    private WindowProcedureHandler messageHandler;
+    private WindowProcedureHandler? messageHandler;
 
     /// <summary>
     /// Window class ID.
@@ -117,7 +117,7 @@ public class WindowMessageSink : IDisposable
     private void CreateMessageWindow()
     {
         //generate a unique ID for the window
-        WindowId = "WPFTaskbarIcon_" + Guid.NewGuid();
+        WindowId = "TabbyCat_" + Guid.NewGuid();
 
         //register window message handler
         messageHandler = OnWindowMessageReceived;
@@ -142,7 +142,7 @@ public class WindowMessageSink : IDisposable
 
         // Get the message used to indicate the taskbar has been restarted
         // This is used to re-add icons when the taskbar restarts
-        taskbarRestartMessageId = WinApi.RegisterWindowMessage("TaskbarCreated");
+        taskbarRestartMessageId = WinApi.RegisterWindowMessage("TabbyCatCreated");
 
         // Create the message window
         MessageWindowHandle = WinApi.CreateWindowEx(0, WindowId, "", 0, 0, 0, 1, 1, IntPtr.Zero, IntPtr.Zero,

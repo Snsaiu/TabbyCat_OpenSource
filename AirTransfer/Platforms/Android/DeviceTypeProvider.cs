@@ -1,6 +1,6 @@
 using AirTransfer.Interfaces;
 
-using Device = AirTransfer.Enums.Device;
+using Device = TabbyCat.Shared.Enums.Device;
 
 namespace AirTransfer;
 

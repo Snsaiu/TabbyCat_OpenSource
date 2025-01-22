@@ -1,4 +1,6 @@
-﻿using AirTransfer.Enums;
+﻿using TabbyCat.Shared.Enums;
+
+using TabbyCat.Shared.Enums;
 
 namespace AirTransfer.Models;
 

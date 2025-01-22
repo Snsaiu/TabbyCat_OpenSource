@@ -1,10 +1,14 @@
 using AirTransfer.Interfaces;
 using Microsoft.AspNetCore.Components;
 using System.Collections.ObjectModel;
-using AirTransfer.Enums;
+using TabbyCat.Shared.Enums;
 using AirTransfer.Extensions;
 using AirTransfer.Models;
 using Microsoft.FluentUI.AspNetCore.Components;
+
+using TabbyCat.Repository.Entities.LocalNetShareEntities;
+using TabbyCat.Shared.Interfaces;
+using TabbyCat.VisualBase.Bases;
 
 namespace AirTransfer.Components.Pages;
 
@@ -39,7 +43,7 @@ public partial class History : PageComponentBase
         }
     }
 
-    private void Rig(List<SaveDataModel> sources)
+    private void Rig(List<SaveDataEntity> sources)
     {
         Models?.Clear();
         foreach (var item in sources)

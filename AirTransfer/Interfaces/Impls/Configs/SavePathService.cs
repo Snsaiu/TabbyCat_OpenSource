@@ -1,4 +1,6 @@
-﻿namespace AirTransfer.Interfaces.Impls.Configs
+﻿using TabbyCat.Shared.Interfaces;
+
+namespace AirTransfer.Interfaces.Impls.Configs
 {
     public class SavePathService : ISavePathService
     {

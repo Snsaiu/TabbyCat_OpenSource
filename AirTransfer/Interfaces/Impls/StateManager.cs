@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Interfaces.Impls;
 
 public class StateManager : IStateManager

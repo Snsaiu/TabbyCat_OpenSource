@@ -1,5 +1,5 @@
 using System.Net.Sockets;
-using AirTransfer.Enums;
+using TabbyCat.Shared.Enums;
 using AirTransfer.Interfaces.Impls.Configs;
 using AirTransfer.Models;
 using AirTransfer.Tools;

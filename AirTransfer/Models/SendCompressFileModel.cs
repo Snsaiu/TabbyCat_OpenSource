@@ -1,6 +1,8 @@
 ﻿using AirTransfer.Interfaces;
 using AirTransfer.Tools;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Models;
 
 public class SendCompressFileModel : SendFileModel, ICompress

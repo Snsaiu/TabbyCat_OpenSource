@@ -1,6 +1,4 @@
-using AirTransfer.Enums;
-
-
+using TabbyCat.Shared.Enums;
 namespace AirTransfer.Models;
 
 public enum CodeWordType

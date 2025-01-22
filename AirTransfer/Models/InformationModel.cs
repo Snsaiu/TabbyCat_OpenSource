@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
-using AirTransfer.Enums;
-
-using Newtonsoft.Json;
+using TabbyCat.Shared.Enums;
 
 namespace AirTransfer.Models
 {

@@ -2,6 +2,8 @@
 using System.Text;
 using AirTransfer.Interfaces;
 
+using TabbyCat.Shared.Interfaces;
+
 namespace AirTransfer.Models;
 
 public class SendTextModel(string flag, string targetFlag, string text, int port) : IFlag, ISize, ITargetFlag, IPort

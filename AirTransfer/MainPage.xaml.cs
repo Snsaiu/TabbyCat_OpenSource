@@ -7,8 +7,19 @@ namespace AirTransfer
         public MainPage()
         {
             InitializeComponent();
+
+
             SetupTrayIcon();
         }
+
+        //        protected override void OnHandlerChanged()
+        //        {
+        //#if WINDOWS
+        //    Microsoft.UI.Xaml.Window window =
+        // (Microsoft.UI.Xaml.Window)App.Current.Windows.First<Window>().Handler.PlatformView;
+        //            MauiAppExtension.HideTaskBar(window);
+        //#endif
+        //        }
 
         private void SetupTrayIcon()
         {
@@ -21,7 +32,7 @@ namespace AirTransfer
             }
 #endif
         }
-        
-  
+
+
     }
 }

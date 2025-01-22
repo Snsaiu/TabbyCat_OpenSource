@@ -1,0 +1,87 @@
+﻿
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
+
+@using TabbyCat.Shared.Interfaces
+@using Microsoft.FluentUI.AspNetCore.Components
+@using TabbyCat.Ai.Models
+@using TabbyCat.Repository.Entities.AiEntities
+@using TabbyCat.Shared.Enums
+@implements Microsoft.FluentUI.AspNetCore.Components.IDialogContentComponent<Tuple<List<TabbyCat.Repository.Entities.AiEntities.AiChatSessionEntity>, TabbyCat.Ai.Models.AiApiModelBase>>
+@inherits TabbyCat.Ai.Bases.AiComponentBase
+<div>
+
+    <FluentDialogBody>
+
+        <FluentAccordion ExpandMode="AccordionExpandMode.Single">
+            <FluentAccordionItem Heading="会话" Expanded="true">
+                <FluentListbox @key="@selectSessionVersion" TOption="AiChatSessionEntity"   >
+                    @foreach (var item in Content.Item1)
+                    {
+                        <FluentOption Selected="item.IsDefault" SelectedChanged="x=>SelectedSessionChangedCommand(x,item)">
+
+                            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Stretch">
+
+                                @if (!string.IsNullOrEmpty(item.CustomTheme))
+                                {
+                                    <FluentLabel Style="white-space: nowrap;
+                                                    overflow: hidden;
+                                                    width: 100%;
+                                                    text-overflow: ellipsis;" Typo="Typography.Body">@item.CustomTheme</FluentLabel>
+                                }
+                                else
+                                {
+                                    <FluentLabel Style="white-space: nowrap;
+                                                    overflow: hidden;
+                                                    width: 100%;
+                                                    text-overflow: ellipsis;" Typo="Typography.Body">@item.Theme</FluentLabel>
+                                }
+                                <FluentSpacer ></FluentSpacer>
+                                <FluentStack Orientation="Orientation.Horizontal">
+                                    <FluentButton Style="text-align:right;scale: 0.8;"  OnClick="()=>RenameSessionCommand(item)" IconStart="@(new Size20.Rename())"></FluentButton>
+                                    <FluentButton Style="text-align:right;scale: 0.8;"  OnClick="()=>DeleteSessionCommand(item)" IconStart="@(new Size20.Delete())"></FluentButton>
+                                </FluentStack>
+
+                            </FluentStack>
+
+                        </FluentOption>
+                    }
+                </FluentListbox>
+            </FluentAccordionItem>
+            <FluentAccordionItem Heading="角色设置">
+                <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Stretch">
+                    <FluentSelect @key="@selectOccupationVersion" TOption="OccupationType" Label="选择角色" Multiple="false"  SelectedOptionChanged="OccupationChangedCommand" SelectedOption="@selectedOccupationType"  OptionText="x=>x.OccupationName" Items="this.occupations"></FluentSelect>
+                    @if (selectedOccupationType?.Occupation == AssistantOccupation.Custom)
+                    {
+                        <FluentButton OnClick="DeleteCustomOccupationCommand" IconStart="@(new Size12.Delete())"></FluentButton>
+                    }
+           
+            
+                    <FluentTextField Label="名称" @bind-Value="newOccupationName"></FluentTextField>
+                    <FluentTextArea Label="描述" @bind-Value="newOccupationDescription" Placeholder="请输入角色描述"></FluentTextArea>
+                    <FluentSwitch @bind-Value="newOccupationIsDefault">设为当前默认角色</FluentSwitch>
+                    <FluentButton OnClick="AddNewOccupationCommand" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size12.Add())"></FluentButton>
+                </FluentStack>
+            </FluentAccordionItem>
+
+            @if (Content.Item2 is IHasModels<string>)
+            {
+                <FluentAccordionItem Heading="模型设置">
+                    <FluentSelect TOption="string" Label="模型" Items="@models" @bind-SelectedOption="@selectedModel"/>
+                </FluentAccordionItem>
+            }
+        </FluentAccordion>
+
+    </FluentDialogBody>
+</div>
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent"
+                  
+                  OnClick="@SaveAsync">
+        Save
+    </FluentButton>
+    <FluentButton Appearance="Appearance.Neutral"
+                  OnClick="@CancelAsync">
+        Cancel
+    </FluentButton>
+</FluentDialogFooter>
