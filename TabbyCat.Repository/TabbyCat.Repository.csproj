@@ -10,8 +10,11 @@
       <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.22" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+      <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11-pre20241216174303" />
+      <PackageReference Include="SQLitePCLRaw.core" Version="2.1.11-pre20241216174303" />
+      <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.11-pre20241216174303" />
+      <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.11-pre20241216174303" />
     </ItemGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\TabbyCat.Shared\TabbyCat.Shared.csproj" />
     </ItemGroup>

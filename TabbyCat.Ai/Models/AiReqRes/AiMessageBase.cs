@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AirTransfer.Models.AiReqRes;
+namespace TabbyCat.App.Models.AiReqRes;
 
 public abstract class AiMessageBase
 {
