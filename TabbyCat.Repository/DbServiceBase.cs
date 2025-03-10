@@ -25,6 +25,12 @@ public class DbServiceBase<T, TPrimaryKey> : DbBase, IDbService<T, TPrimaryKey> 
         return list;
     }
 
+    public async Task<int> CountAsync(Expression<Func<T, bool>> where)
+    {
+        var count = await connection.Table<T>().CountAsync(where);
+        return count;
+    }
+
     public async Task<bool> AddAsync(T entity) => (await connection.InsertAsync(entity)) > 0;
 
     public async Task<bool> AddRangeAsync(IEnumerable<T> entities)

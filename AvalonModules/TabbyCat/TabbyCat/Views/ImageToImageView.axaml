@@ -1,0 +1,15 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TabbyCat.Views.ImageToImageView">
+    <avaloniaEdit:TextEditor Name="Editor"
+                             FontFamily="Cascadia Code,Consolas,Menlo,Monospace"
+                             HorizontalScrollBarVisibility="Auto"
+                             Text="更合理的附件是链接发给"
+                             VerticalScrollBarVisibility="Visible"
+                             FontWeight="Light"
+                             FontSize="14" />
+</UserControl>

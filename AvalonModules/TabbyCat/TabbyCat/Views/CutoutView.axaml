@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:TabbyCat.Views"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Classes="AiMediaStyle"
+             x:DataType="viewModels:CutoutViewModel"
+             x:Class="TabbyCat.Views.CutoutView">
+    <Grid>
+        <controls:ImageSelector Header="{x:Static languages:AppResources.ChooseImage}" DockPanel.Dock="Top" ImagePath="{Binding SourceImagePath}" Margin="10,0,10,50" />
+    </Grid>
+</UserControl>

@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace TabbyCat.Shared.Interfaces;
 
 /// <summary>
@@ -13,7 +15,14 @@ public interface IAlias
 
 public interface IHasModels<T> : ISelectable<T>
 {
-    Task<IEnumerable<T>> GetModelsAsync();
+    Task<IEnumerable<string>> GetModelsAsync();
+
+    ObservableCollection<T> Models { get; set; }
+}
+
+public interface IInitializeable
+{
+    Task InitializeAsync();
 }
 
 public interface ISelectable<T>
@@ -30,7 +39,7 @@ public interface IHasCustomModel : IHasModels<string>
     /// 如果有自定义模型，则要显示调用
     /// </summary>
     /// <returns></returns>
-    async Task<IEnumerable<string>> GetAllModelsAsync()
+    async Task<ObservableCollection<string>> GetAllModelsAsync()
     {
         var ms = await GetModelsAsync();
         return [.. ms, "Custom"];

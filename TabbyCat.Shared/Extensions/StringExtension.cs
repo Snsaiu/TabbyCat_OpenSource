@@ -19,8 +19,7 @@ public static class StringExtension
     {
         return JsonConvert.SerializeObject(value);
     }
-
-    //����ָ�����Ƚ׶��ַ���������ʡ�Ժ�
+    
     public static string Truncate(this string value, int length)
     {
         return value.Length <= length ? value : value.Substring(0, length) + "...";

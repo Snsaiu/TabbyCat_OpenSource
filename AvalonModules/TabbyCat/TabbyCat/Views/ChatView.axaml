@@ -1,0 +1,150 @@
+<UserControl
+    x:Class="TabbyCat.Views.ChatView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:aiChatRequests="clr-namespace:TabbyCat.Models.AiReqRes.AiChatRequests"
+    xmlns:attachs="clr-namespace:TuDog.Attachs;assembly=TuDog"
+    xmlns:controls="clr-namespace:TabbyCat.Controls"
+    xmlns:converters="clr-namespace:TabbyCat.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+    xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+    xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tabbyCat="clr-namespace:TabbyCat"
+    xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+    xmlns:views="clr-namespace:TabbyCat.Views"
+    xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:ChatViewModel"
+    Loaded="Control_OnLoaded"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <viewModels:ChatViewModel />
+    </Design.DataContext>
+    <Grid Name="mainGrid" RowDefinitions="Auto,*,Auto,Auto">
+        <Border Background="{DynamicResource SolidBackgroundFillColorTransparent}">
+            <Grid Margin="5">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource TextFillColorPrimary}"
+                    Text="{x:Static languages:AppResources.Chat}" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+
+                    <fluent:FontIcon
+                        Classes="icon"
+                        Glyph="{x:Static tabbyCat:IconFontProvider.yonghu}"
+                        ToolTip.Tip="{x:Static languages:AppResources.Character}" />
+                    <TextBlock
+                        Margin="5,0,5,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding AiChatSession, Converter={converters:OccupationNameConverter}}" />
+
+                    <Button
+                        Margin="5"
+                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.NewChatSession}"
+                        Classes="icon"
+                        Command="{Binding NewChatSessionCommand}"
+                        ToolTip.Tip="{x:Static languages:AppResources.NewSession}" />
+                    <!-- <fluent:FontIcon FontFamily="{StaticResource iconFont}" Glyph="&#xe603;" /> -->
+
+                    <Button
+                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.FavouriteFolder}"
+                        Classes="icon"
+                        Command="{Binding OpenFavouriteDialogCommand}"
+                        ToolTip.Tip="{x:Static languages:AppResources.OpenFavorites}" />
+
+                    <Button
+                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.ChatPanelSetting}"
+                        Classes="icon"
+                        Command="{Binding OpenSettingCommand}"
+                        ToolTip.Tip="{x:Static languages:AppResources.ChatSetting}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!--  主要内容  -->
+
+        <ScrollViewer Grid.Row="1" Name="sv" IsScrollChainingEnabled="False">
+            <ItemsControl ItemsSource="{Binding ChatModels}" Name="itemsControl"
+                          ScrollViewer.IsScrollChainingEnabled="False">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="aiChatRequests:MessagesItem">
+                        <controls:ChatItem Message="{Binding .}"
+                                           FavouriteCommand="{Binding $parent[views:ChatView].((viewModels:ChatViewModel)DataContext).SetFavouriteStateCommand}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Button Grid.Row="2" HorizontalAlignment="Center" Classes="icon" IsVisible="{Binding IsBusy}"
+                extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
+                Command="{Binding CancelRequestChatCommand}" />
+        <Grid Grid.Row="3" Grid.RowDefinitions="Auto,*">
+            <!--  第一行是类似上传图片的功能按键，第二行是文本输入框，第三行是发送按钮  -->
+            <StackPanel Orientation="Horizontal">
+                <!--  功能按钮  -->
+            </StackPanel>
+            <DockPanel Grid.Row="1" LastChildFill="True">
+                <Button
+                    Width="80"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding SendCommand}"
+                    Content="{x:Static languages:AppResources.Send}"
+                    CornerRadius="0"
+                    DockPanel.Dock="Right" />
+
+                <TextBox
+                    Height="80"
+                    BorderThickness="0,0,0,0"
+                    CornerRadius="0"
+                    DockPanel.Dock="Left"
+                    AcceptsReturn="True"
+                    Text="{Binding InputTextContent}"
+                    TextWrapping="Wrap">
+                    <TextBox.Styles>
+                        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+                            <Setter Property="BorderThickness" Value="0,0,0,0" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
+                        </Style>
+                    </TextBox.Styles>
+                    <TextBox.KeyBindings>
+                        <KeyBinding Command="{Binding SendCommand}" Gesture="Enter" />
+                    </TextBox.KeyBindings>
+                    <!-- <i:Interaction.Behaviors> -->
+                    <!--     <ia:EventTriggerBehavior EventName="PointerEntered"> -->
+                    <!--         <ia:InvokeCommandAction Command="{Binding SendCommand}" /> -->
+                    <!--     </ia:EventTriggerBehavior> -->
+                    <!-- </i:Interaction.Behaviors> -->
+                </TextBox>
+            </DockPanel>
+
+
+        </Grid>
+
+        <fluent:PickerFlyoutPresenter
+            Grid.Row="0"
+            Grid.RowSpan="4"
+            Width="300"
+            Height="{Binding ElementName=mainGrid, Path=Height}"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Stretch"
+            IsVisible="{Binding ShowPanel}">
+            <ContentControl attachs:RegionBehavior.Region="chatPanelSettingContainer" />
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="Confirmed">
+                    <ia:InvokeCommandAction Command="{Binding SettingConfirmCommand}" />
+                </ia:EventTriggerBehavior>
+                <ia:EventTriggerBehavior EventName="Dismissed">
+                    <ia:InvokeCommandAction Command="{Binding SettingDismissCommand}" />
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </fluent:PickerFlyoutPresenter>
+
+    </Grid>
+</UserControl>

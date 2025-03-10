@@ -7,7 +7,7 @@ namespace TabbyCat.Shared;
 public class LocalizationResourceManager : INotifyPropertyChanged
 {
     private LocalizationResourceManager()
-    { 
+    {
         AppResources.Culture = new("en-US");
     }
 

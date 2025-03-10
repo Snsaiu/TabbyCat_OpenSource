@@ -1,8 +1,0 @@
-@page "/short-chat"
-@inherits TabbyCat.Ai.Bases.AiPageComponentBase
-<div>
-    <div id="chatcontainer" style="margin-bottom:50px;overflow-y:hidden; overflow-x: hidden;">
-        <ChatMessageList MarginBottom="50" Messages="@ChatModels" IsLoading="IsBusy"></ChatMessageList>
-    </div>
-    <ChatInput OnSend="SendCommand"></ChatInput>
-</div>

@@ -9,5 +9,6 @@ public enum AiModelType
     Ollama,
     Groq,
     ChatGLM,
+    DeepSeek,
     Custom
 }

@@ -6,10 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 <ItemGroup>
-    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+   
 </ItemGroup>
 <ItemGroup>
   <ProjectReference Include="..\TabbyCat.Repository\TabbyCat.Repository.csproj" />
   <ProjectReference Include="..\TabbyCat.Service\TabbyCat.Service.csproj" />
+  <ProjectReference Include="..\TuDog.SourceGenerator\TuDog.IocAttribute\TuDog.IocAttribute.csproj" />
 </ItemGroup>
 </Project>

@@ -1,1 +1,0 @@
-﻿通过 HTTPS、SSL/TLS 进行加密

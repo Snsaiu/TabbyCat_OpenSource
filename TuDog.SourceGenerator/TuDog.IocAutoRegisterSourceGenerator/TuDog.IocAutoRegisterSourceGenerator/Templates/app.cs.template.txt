@@ -1,0 +1,10 @@
+﻿namespace $Namespace
+{
+    public partial class App
+    {
+         protected override void AutoRegister(IServiceCollection collection)
+          {
+                $Content
+          }
+    }
+}

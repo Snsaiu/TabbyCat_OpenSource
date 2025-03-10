@@ -4,8 +4,11 @@ using TabbyCat.Repository;
 using TabbyCat.Repository.Entities.LocalNetShareEntities;
 using TabbyCat.Service.LocalNetShareServices;
 
+using TuDog.IocAttribute;
+
 namespace TabbyCat.SqliteService.LocalNetShareServices;
 
+[Register<ISaveDataService>]
 public class DbSaveDataService : DbBase, ISaveDataService
 {
     protected override Task CreateTableAsync()

@@ -1,6 +1,8 @@
-using Microsoft.Maui.Storage;
 using SQLite;
+
 using TabbyCat.Shared.Extensions;
+
+using Xamarin.Essentials;
 
 namespace TabbyCat.Repository;
 
@@ -11,9 +13,17 @@ public abstract class DbBase
 
     public DbBase()
     {
-        dbPath = Path.Combine(FileSystem.AppDataDirectory, "fantasyDb.db");
-        if (!Directory.Exists(FileSystem.AppDataDirectory))
-            Directory.CreateDirectory(FileSystem.AppDataDirectory);
+        if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
+        {
+            dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "tabbycat.db");
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)))
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+
+        }
+        else
+        {
+            dbPath = Path.Combine(FileSystem.AppDataDirectory, "tabbycat.db");
+        }
 
         connection = new SQLiteAsyncConnection(dbPath);
 

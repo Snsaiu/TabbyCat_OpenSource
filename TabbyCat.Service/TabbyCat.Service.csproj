@@ -14,4 +14,8 @@
       <Folder Include="Base\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="sqlite-net-pcl"  />
+    </ItemGroup>
+
 </Project>

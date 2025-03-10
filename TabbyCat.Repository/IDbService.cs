@@ -9,8 +9,10 @@ public interface IDbService<T, TPrimaryKey>
     [Obsolete("内部还未完成实现",true)]
     Task<T?> QueryAsync(TPrimaryKey key);
 
-  
+
     Task<IEnumerable<T>> QueryAsync(Expression<Func<T, bool>> where);
+
+    Task<int> CountAsync(Expression<Func<T, bool>> where);
 
     Task<bool> AddAsync(T entity);
 
@@ -20,7 +22,7 @@ public interface IDbService<T, TPrimaryKey>
 
 
     Task<bool> UpdateAsync(T entity);
-    
+
     Task<bool> UpdateRangeAsync(IEnumerable<T> entities);
 
     Task<T?> DeleteAsync(TPrimaryKey key);

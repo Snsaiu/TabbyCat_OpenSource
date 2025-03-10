@@ -1,0 +1,27 @@
+<UserControl
+    x:Class="TabbyCat.Components.Views.RunningHubSettingView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:TabbyCat.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:languages="using:TabbyCat.Shared.Languages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:TabbyCat.Components.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:RunningHubSettingViewModel"
+    mc:Ignorable="d">
+    <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Left" Text="API Key" />
+        <TextBox PasswordChar="*" Text="{Binding ApiKey}" />
+
+        <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.SavePath}" />
+        <controls:OpenFolderPicker SavePath="{Binding SaveMediaPath}" />
+
+        <Button
+            Margin="{StaticResource Top2}"
+            HorizontalAlignment="Stretch"
+            Command="{Binding SaveCommand}"
+            Content="{x:Static languages:AppResources.Save}" />
+    </StackPanel>
+</UserControl>

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using SQLite;
 using TabbyCat.Shared.Interfaces;
 
@@ -7,7 +8,7 @@ namespace TabbyCat.Repository.Entities;
 /// <summary>
 /// 带有主键的实体基类
 /// </summary>
-public abstract class EntityBase : IPrimaryKey<Guid>, IDeepClone,IConvertible
+public abstract class EntityBase : ObservableObject, IPrimaryKey<Guid>, IDeepClone, IConvertible
 {
     [PrimaryKey]
     public Guid Key { get; set; } = Guid.NewGuid();

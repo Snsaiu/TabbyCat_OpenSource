@@ -1,8 +1,11 @@
-﻿using TabbyCat.Shared.Enums;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using SQLite;
+using TabbyCat.Shared.Enums;
+using TabbyCat.Shared.Extensions;
 
 namespace TabbyCat.Repository.Entities.AiEntities;
 
-public class AiChatSessionEntity : AuditEntityBase
+public partial class AiChatSessionEntity : AuditEntityBase
 {
 
     /// <summary>
@@ -13,7 +16,15 @@ public class AiChatSessionEntity : AuditEntityBase
     /// <summary>
     /// 自定义主题名称，如果为空，那么默认使用Theme，否则优先使用CustomTheme
     /// </summary>
-    public string? CustomTheme { get; set; }
+    [NotifyPropertyChangedFor(nameof(Header))] [ObservableProperty]
+    public string? customTheme;
+
+
+    [Ignore]
+    public string Header => string.IsNullOrEmpty(CustomTheme)
+        ? Theme.Replace("\n", "").Replace("\r", "")
+        : CustomTheme.Replace("\n", "").Replace("\r", "");
+
 
     public AssistantOccupation Occupation { get; set; }
 
