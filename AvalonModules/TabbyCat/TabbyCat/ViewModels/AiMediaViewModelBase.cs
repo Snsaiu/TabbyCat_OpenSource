@@ -250,7 +250,7 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
             var fileName = Path.Combine(savePath, Path.GetFileNameWithoutExtension(item.FileUrl) +
                                                   Path.GetExtension(item.FileUrl));
 
-            await HttpClient.DownloadFileAsync(item.FileUrl, fileName);
+            await HttpClient.DownloadFileAsync(item.FileUrl, fileName, null);
 
             entities.Add(new()
             {
