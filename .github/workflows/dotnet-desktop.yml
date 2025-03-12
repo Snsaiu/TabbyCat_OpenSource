@@ -43,9 +43,14 @@ jobs:
 
     - name: 上传 ZIP 包和描述到后台
       run: |
-        curl -X POST \
-        -F "file=@app-release.zip" \
-        -F "description=${{ env.RELEASE_NOTES }}" \
-        -F "appName=TabbyCat" \
-        -F "osType=0" \
-        ${{ secrets.UPLOAD_APP_URL }}
+        $formData = @{
+        file = Get-Item -Path ".\app-release.zip"
+        description = "${{ env.RELEASE_NOTES }}"
+        appName = "TabbyCat"
+        osType = 0
+        }
+    
+        $response = Invoke-WebRequest `
+        -Uri "${{ secrets.UPLOAD_APP_URL }}" `
+        -Method Post `
+        -Form $formData
