@@ -46,9 +46,14 @@ jobs:
 
     - name: 上传 ZIP 包和描述到后台
       run: |
+        $releaseNotes = "${{ env.RELEASE_NOTES }}"
+        if (-not $releaseNotes) {
+          $releaseNotes = ""
+        }
+
         $formData = @{
           file = Get-Item -Path ".\app-release.zip"
-          description = "${{ env.RELEASE_NOTES }}"
+          description = $releaseNotes
           appName = "TabbyCat"
           osType = 0
           version = "${{ env.VERSION }}"
@@ -59,3 +64,5 @@ jobs:
           -Method Post `
           -Form $formData
         Write-Host "Response: $response"
+
+     
