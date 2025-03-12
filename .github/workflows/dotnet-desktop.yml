@@ -3,8 +3,7 @@ name: .NET Core Desktop
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:   # 允许手动触发
 
 jobs:
 
@@ -21,12 +20,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        fetch-depth: 0  # 确保完整获取历史记录，以支持 tag 创建
 
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 8.0.x
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
@@ -46,9 +45,19 @@ jobs:
         Copy-Item -Path $env:Project_Directory\bin\${{ env.Configuration }}\* -Destination output -Recurse
         Compress-Archive -Path output\* -DestinationPath TabbyCat_${{ env.Configuration }}.zip
 
-    # 上传 ZIP 文件
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+    # 创建 Tag（使用当前日期作为版本号）
+    - name: Create Tag
+      run: |
+        $version = (Get-Date -Format "yyyy.MM.dd.HHmm")
+        echo "TAG_NAME=v$version" >> $env:GITHUB_ENV
+        git tag "v$version"
+        git push origin "v$version"
+
+    # 发布到 Release
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: TabbyCat_Executable
-        path: TabbyCat_${{ env.Configuration }}.zip
+        tag_name: ${{ env.TAG_NAME }}
+        files: TabbyCat_${{ env.Configuration }}.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
