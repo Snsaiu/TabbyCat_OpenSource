@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Solution_Name: AvalonModules/TabbyCat/TabbyCat.sln      # 你的解决方案路径
+      Solution_Name: TabbyCat.sln      # 你的解决方案路径
       Project_Path: AvalonModules/TabbyCat/TabbyCat.Desktop    # 你的主项目路径
 
     steps:
