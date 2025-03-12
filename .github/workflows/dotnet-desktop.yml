@@ -44,45 +44,39 @@ jobs:
         # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
         echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $GITHUB_ENV
 
+    - name: 设置环境变量
+      run: |
+        echo "RELEASE_NOTES=$(git log -1 --pretty=%B)" >> $env:GITHUB_ENV
+        echo "VERSION=$(Get-Date -Format 'yyyyMMddHHmmss')" >> $env:GITHUB_ENV
+    
     - name: 上传 ZIP 包和描述到后台
       run: |
-        $releaseNotes = "${{ env.RELEASE_NOTES }}"
-        if (-not $releaseNotes) {
-          $releaseNotes = ""
+        $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
+        
+        $formData = @{
+            file = Get-Item -Path ".\app-release.zip"
+            description = $releaseNotes
+            appName = "TabbyCat"
+            osType = 0
+            version = $env:VERSION
         }
     
-        $boundary = [System.Guid]::NewGuid().ToString()
+        Write-Host "🔎 RELEASE_NOTES: $releaseNotes"
+        Write-Host "🔎 VERSION: $env:VERSION"
+        $response = Invoke-WebRequest `
+                -Uri "${{ secrets.UPLOAD_APP_URL }}" `
+                -Method Post `
+                -Form $formData `
+                -ErrorAction Stop
     
-        $body = @"
-        --$boundary
-        Content-Disposition: form-data; name="file"; filename="app-release.zip"
-        Content-Type: application/zip
-        
-        $(Get-Content -Raw ".\app-release.zip")
-        --$boundary
-        Content-Disposition: form-data; name="description"
-        
-        $releaseNotes
-        --$boundary
-        Content-Disposition: form-data; name="appName"
-        
-        TabbyCat
-        --$boundary
-        Content-Disposition: form-data; name="osType"
-        
-        0
-        --$boundary
-        Content-Disposition: form-data; name="version"
-        
-        ${{ env.VERSION }}
-        --$boundary--
-        "@
-        
-            Invoke-WebRequest `
-              -Uri "${{ secrets.UPLOAD_APP_URL }}" `
-              -Method Post `
-              -Headers @{ "Content-Type" = "multipart/form-data; boundary=$boundary" } `
-              -Body $body
+        Write-Host "✅ 上传成功"
+        Write-Host "响应内容: $($response.Content)"
+    
+       
+
+   
+
+  
 
     
 
