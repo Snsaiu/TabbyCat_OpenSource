@@ -53,10 +53,9 @@ jobs:
           osType = 0
           version = "${{ env.VERSION }}"
         }
-    
-        $response = Invoke-WebRequest `
-        -Uri "${{ secrets.UPLOAD_APP_URL }}" `
-        -Method Post `
-        -Form $formData
 
-        Write-Host "上传结果: $($response.Content)"
+        $response = Invoke-WebRequest `
+          -Uri "${{ secrets.UPLOAD_APP_URL }}" `
+          -Method Post `
+          -Form $formData
+        Write-Host "Response: $response"
