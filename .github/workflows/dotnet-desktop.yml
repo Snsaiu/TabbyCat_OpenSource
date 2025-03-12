@@ -45,6 +45,11 @@ jobs:
         Copy-Item -Path $env:Project_Directory\bin\${{ env.Configuration }}\* -Destination output -Recurse
         Compress-Archive -Path output\* -DestinationPath TabbyCat_${{ env.Configuration }}.zip
 
+    # 读取提交日志并写入到 CHANGELOG.txt
+    - name: Generate Release Notes
+      run: |
+        git log -1 --pretty=format:"%h %s" > CHANGELOG.txt
+
     # 创建 Tag（使用当前日期作为版本号）
     - name: Create Tag
       run: |
@@ -53,11 +58,12 @@ jobs:
         git tag "v$version"
         git push origin "v$version"
 
-    # 发布到 Release
+    # 发布到 Release 并附上 CHANGELOG.txt 作为描述
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ env.TAG_NAME }}
         files: TabbyCat_${{ env.Configuration }}.zip
+        body_path: CHANGELOG.txt   # 读取提交日志作为发布描述
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
