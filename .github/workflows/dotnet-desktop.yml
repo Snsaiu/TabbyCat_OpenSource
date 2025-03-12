@@ -22,7 +22,7 @@ jobs:
     - name: 安装 .NET SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
 
     - name: 恢复依赖
       run: dotnet restore $env:Solution_Name
@@ -34,23 +34,29 @@ jobs:
       run: |
         Compress-Archive -Path $env:Project_Path\bin\Release\* -DestinationPath app-release.zip
 
-    - name: 获取发布描述 (提交日志)
+    - name: 获取发布描述 (提交日志) 和版本号
       id: get_release_notes
       run: |
         echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
         git log -1 --pretty=%B >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
 
+        # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
+        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $GITHUB_ENV
+
     - name: 上传 ZIP 包和描述到后台
       run: |
         $formData = @{
-        file = Get-Item -Path ".\app-release.zip"
-        description = "${{ env.RELEASE_NOTES }}"
-        appName = "TabbyCat"
-        osType = 0
+          file = Get-Item -Path ".\app-release.zip"
+          description = "${{ env.RELEASE_NOTES }}"
+          appName = "TabbyCat"
+          osType = 0
+          version = "${{ env.VERSION }}"
         }
     
         $response = Invoke-WebRequest `
         -Uri "${{ secrets.UPLOAD_APP_URL }}" `
         -Method Post `
         -Form $formData
+
+        Write-Host "上传结果: $($response.Content)"
