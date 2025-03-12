@@ -51,20 +51,39 @@ jobs:
           $releaseNotes = ""
         }
     
-        $body = @{
-          file = Get-Item -Path ".\app-release.zip"
-          description = $releaseNotes
-          appName = "TabbyCat"
-          osType = 0
-          version = "${{ env.VERSION }}"
-        }
+        $boundary = [System.Guid]::NewGuid().ToString()
     
-        $response = Invoke-WebRequest `
-          -Uri "${{ secrets.UPLOAD_APP_URL }}" `
-          -Method Post `
-          -ContentType "multipart/form-data" `
-          -Form $body
-        Write-Host "Response: $response"
+        $body = @"
+        --$boundary
+        Content-Disposition: form-data; name="file"; filename="app-release.zip"
+        Content-Type: application/zip
+        
+        $(Get-Content -Raw ".\app-release.zip")
+        --$boundary
+        Content-Disposition: form-data; name="description"
+        
+        $releaseNotes
+        --$boundary
+        Content-Disposition: form-data; name="appName"
+        
+        TabbyCat
+        --$boundary
+        Content-Disposition: form-data; name="osType"
+        
+        0
+        --$boundary
+        Content-Disposition: form-data; name="version"
+        
+        ${{ env.VERSION }}
+        --$boundary--
+        "@
+        
+            Invoke-WebRequest `
+              -Uri "${{ secrets.UPLOAD_APP_URL }}" `
+              -Method Post `
+              -Headers @{ "Content-Type" = "multipart/form-data; boundary=$boundary" } `
+              -Body $body
+
     
 
 
