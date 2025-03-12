@@ -1,69 +1,51 @@
-name: .NET Core Desktop
+name: .NET Core Desktop Release
 
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:   # 允许手动触发
 
 jobs:
-
   build:
 
     runs-on: windows-latest
 
     env:
-      Solution_Name: TabbyCat.sln
-      Project_Directory: AvalonModules\TabbyCat\TabbyCat.Desktop
-      Configuration: Release
+      Solution_Name: AvalonModules/TabbyCat/TabbyCat.sln      # 你的解决方案路径
+      Project_Path: AvalonModules/TabbyCat/TabbyCat.Desktop    # 你的主项目路径
 
     steps:
-    - name: Checkout
+    - name: Checkout 代码
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # 确保完整获取历史记录，以支持 tag 创建
+        fetch-depth: 0   # 获取完整提交历史，以便提取提交日志
 
-    - name: Install .NET Core
+    - name: 安装 .NET SDK
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2
+    - name: 恢复依赖
+      run: dotnet restore $env:Solution_Name
 
-    # 还原依赖项
-    - name: Restore dependencies
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+    - name: 编译项目
+      run: dotnet build $env:Project_Path --configuration Release --no-restore
 
-    # 编译项目
-    - name: Build the application
-      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
-
-    # 将编译的 EXE 和相关文件压缩为 ZIP
-    - name: Package EXE as ZIP
+    - name: 打包 ZIP 文件
       run: |
-        mkdir output
-        Copy-Item -Path $env:Project_Directory\bin\${{ env.Configuration }}\* -Destination output -Recurse
-        Compress-Archive -Path output\* -DestinationPath TabbyCat_${{ env.Configuration }}.zip
+        Compress-Archive -Path $env:Project_Path\bin\Release\* -DestinationPath app-release.zip
 
-    # 读取提交日志并写入到 CHANGELOG.txt
-    - name: Generate Release Notes
+    - name: 获取发布描述 (提交日志)
+      id: get_release_notes
       run: |
-        git log -1 --pretty=format:"%h %s" > CHANGELOG.txt
+        echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+        git log -1 --pretty=%B >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
 
-    # 创建 Tag（使用当前日期作为版本号）
-    - name: Create Tag
+    - name: 上传 ZIP 包和描述到后台
       run: |
-        $version = (Get-Date -Format "yyyy.MM.dd.HHmm")
-        echo "TAG_NAME=v$version" >> $env:GITHUB_ENV
-        git tag "v$version"
-        git push origin "v$version"
-
-    # 发布到 Release 并附上 CHANGELOG.txt 作为描述
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ env.TAG_NAME }}
-        files: TabbyCat_${{ env.Configuration }}.zip
-        body_path: CHANGELOG.txt   # 读取提交日志作为发布描述
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        curl -X POST \
+        -F "file=@app-release.zip" \
+        -F "description=${{ env.RELEASE_NOTES }}" \
+        -F "appName=TabbyCat" \
+        -F "osType=0" \
+        ${{ secrets.UPLOAD_APP_URL }}
