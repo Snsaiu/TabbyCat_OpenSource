@@ -50,19 +50,22 @@ jobs:
         if (-not $releaseNotes) {
           $releaseNotes = ""
         }
-
-        $formData = @{
+    
+        $body = @{
           file = Get-Item -Path ".\app-release.zip"
           description = $releaseNotes
           appName = "TabbyCat"
           osType = 0
           version = "${{ env.VERSION }}"
         }
-
+    
         $response = Invoke-WebRequest `
           -Uri "${{ secrets.UPLOAD_APP_URL }}" `
           -Method Post `
-          -Form $formData
+          -ContentType "multipart/form-data" `
+          -Form $body
         Write-Host "Response: $response"
+    
+
 
      
