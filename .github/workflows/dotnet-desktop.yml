@@ -18,7 +18,7 @@ jobs:
 
     env:
       Solution_Name: TabbyCat.sln
-      Project_Directory: TabbyCat.Desktop
+      Project_Directory: AvalonModules\TabbyCat\TabbyCat.Desktop
 
     steps:
     - name: Checkout
