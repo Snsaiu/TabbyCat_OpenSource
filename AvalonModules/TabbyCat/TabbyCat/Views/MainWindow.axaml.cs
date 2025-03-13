@@ -29,8 +29,6 @@ namespace TabbyCat.Views
                 this.Closing+=MainWindow_Closing;
             }
 
-
-
         }
 
         private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)

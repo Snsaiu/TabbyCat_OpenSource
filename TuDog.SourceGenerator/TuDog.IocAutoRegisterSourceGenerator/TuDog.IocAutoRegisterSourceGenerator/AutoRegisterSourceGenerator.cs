@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -57,8 +58,6 @@ public class AutoRegisterSourceGenerator : IIncrementalGenerator
             // 写文件
             if (models.Any())
             {
-
-
                 var appNamespace = proj.Right.AssemblyName;
                 if (string.IsNullOrEmpty(appNamespace))
                     return;

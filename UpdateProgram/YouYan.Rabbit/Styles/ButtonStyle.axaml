@@ -1,0 +1,37 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    xmlns:extensions="clr-namespace:YouYan.Rabbit.Extensions">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!--  Add Controls for Previewer Here  -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Button.icon">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="PART_BorderElement" Margin="5" Background="{TemplateBinding Background}"
+                            BorderThickness="0">
+                        <controls:FontIcon
+                            Name="Icon"
+                            Foreground="{TemplateBinding Foreground}"
+                            FontFamily="{StaticResource iconFont}"
+                            Glyph="{Binding Path=(extensions:IconAttach.Icon), RelativeSource={RelativeSource Self}}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="Transparent" />
+
+    </Style>
+    <Style Selector="Button:pointerover /template/ Border controls|FontIcon#Icon">
+        <Setter Property="Opacity" Value="0.8" />
+    </Style>
+    <Style Selector="Button:pressed /template/ Border controls|FontIcon#Icon">
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+
+</Styles>

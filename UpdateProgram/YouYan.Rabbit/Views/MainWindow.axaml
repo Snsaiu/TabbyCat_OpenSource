@@ -1,0 +1,34 @@
+<windowing:AppWindow
+    x:Class="YouYan.Rabbit.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attachs="clr-namespace:TuDog.Attachs;assembly=TuDog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
+    Title="兔子"
+    Width="600"
+    Height="550"
+    MinWidth="500"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaToDecorationsHint="True"
+    Icon="/Assets/avalonia-logo.ico"
+    Loaded="Control_OnLoaded"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Grid RowDefinitions="Auto,*">
+        <StackPanel HorizontalAlignment="Stretch" Height="30">
+            <TextBlock Text="Rabbit" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontWeight="DemiBold" />
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Image
+                Opacity="0.2"
+                Source="/Assets/rabbit.png"
+                Stretch="UniformToFill" />
+            <ContentControl attachs:RegionBehavior.Region="container" />
+        </Grid>
+
+    </Grid>
+
+</windowing:AppWindow>

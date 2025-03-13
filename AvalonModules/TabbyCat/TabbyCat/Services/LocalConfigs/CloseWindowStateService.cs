@@ -1,12 +1,13 @@
 using TabbyCat.Enums;
 using TabbyCat.IServices.LocalConfigs;
 using TuDog.Interfaces.PreferenceServices;
+using TuDog.Interfaces.PreferenceServices.Impl;
 using TuDog.IocAttribute;
 
 namespace TabbyCat.Services.LocalConfigs;
 
 [Register<ICloseWindowStateService>]
-public sealed class CloseWindowStateService(IPreferenceService preferenceService) :LocalConfigService<WindowCloseState>(preferenceService),ICloseWindowStateService
+public sealed class CloseWindowStateService : LocalConfigService<WindowCloseState>, ICloseWindowStateService
 {
     public override string Key { get; }="closeWindowState";
 

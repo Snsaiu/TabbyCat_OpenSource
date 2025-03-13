@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SharpHook.Native;
 
 using System.Diagnostics;
-
+using HotAvalonia;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Shared;
@@ -26,9 +26,10 @@ namespace TabbyCat
 
         public override void Initialize()
         {
+            this.EnableHotReload();
             AvaloniaXamlLoader.Load(this);
             base.Initialize();
-            
+
             if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
             {
                 var hotkeyStartProgramService = ServiceProvider.GetService<IHotKeyStartProgramService>();
@@ -73,8 +74,8 @@ namespace TabbyCat
         {
             StartRunningHubWatch();
             InitLanguage();
-            
-          
+
+
 
             if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
             {

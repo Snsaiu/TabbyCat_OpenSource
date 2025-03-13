@@ -5,7 +5,10 @@
     One for Windows with net9.0-windows TFM, one for MacOS with net9.0-macos and one with net9.0 TFM for Linux.-->
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <Company>南京佑妍科技有限公司</Company>
+    <Product>TabbyCat</Product>
   </PropertyGroup>
 
   <PropertyGroup>

@@ -1,18 +1,22 @@
-﻿namespace TuDog.Extensions;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+
+namespace TuDog.Extensions;
 
 public static class HttpClientExtensions
 {
-    /// <summary>
-    /// 异步下载文件，并保存到指定路径。
-    /// </summary>
-    /// <param name="client">HttpClient 实例</param>
-    /// <param name="fileUrl">文件 URL</param>
-    /// <param name="savePath">本地保存路径</param>
-    /// <param name="progress">可选，下载进度回调（0-100%）</param>
-    public static async Task DownloadFileAsync(this HttpClient client, string fileUrl, string savePath,
+    public static async Task DownloadFilePostAsync(this HttpClient client, string fileUrl, string savePath,
         Action<double>? progress = null)
     {
-        using var response = await client.GetAsync(fileUrl, HttpCompletionOption.ResponseHeadersRead);
+        using var content = new StringContent(string.Empty);
+        using var response = await client.PostAsync(fileUrl, content);
+        await DownImplAsync(response, savePath, progress);
+    }
+
+    private static async Task DownImplAsync(HttpResponseMessage response, string savePath,
+        Action<double>? progress = null)
+    {
         response.EnsureSuccessStatusCode(); // 确保请求成功
 
         // 获取文件总大小（如果服务器支持）
@@ -38,7 +42,34 @@ public static class HttpClientExtensions
             }
         }
     }
-    
+
+    public static async Task<TResult?> PostRequestAsync<TParams, TResult>(this HttpClient client, string url,
+        TParams request) where TParams : class
+    {
+        var json = JsonConvert.SerializeObject(request);
+        var content = new StringContent(json);
+        content.Headers.ContentType = new("application/json");
+        var response = await client.PostAsync(url, content);
+        response.EnsureSuccessStatusCode();
+        return !response.IsSuccessStatusCode
+            ? default
+            : JsonConvert.DeserializeObject<TResult>(await response.Content.ReadAsStringAsync());
+    }
+
+    /// <summary>
+    /// 异步下载文件，并保存到指定路径。
+    /// </summary>
+    /// <param name="client">HttpClient 实例</param>
+    /// <param name="fileUrl">文件 URL</param>
+    /// <param name="savePath">本地保存路径</param>
+    /// <param name="progress">可选，下载进度回调（0-100%）</param>
+    public static async Task DownloadFileAsync(this HttpClient client, string fileUrl, string savePath,
+        Action<double>? progress = null)
+    {
+        using var response = await client.GetAsync(fileUrl, HttpCompletionOption.ResponseHeadersRead);
+        await DownImplAsync(response, savePath, progress);
+    }
+
     public static async Task DownloadFileAsync(this HttpClient client, string url, string savePath)
     {
         if (string.IsNullOrWhiteSpace(url))

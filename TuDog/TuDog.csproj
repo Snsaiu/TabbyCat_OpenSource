@@ -11,9 +11,13 @@
         <PackageReference Include="Avalonia.Xaml.Behaviors" />
       <PackageReference Include="CommunityToolkit.Mvvm" />
         <PackageReference Include="FluentAvaloniaUI" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection"  />
-        <PackageReference Include="Newtonsoft.Json"  />
-        <PackageReference Include="Xamarin.Essentials"/>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Xamarin.Essentials" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Interfaces\LocalPreferences\Impl\" />
     </ItemGroup>
 
 </Project>

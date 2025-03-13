@@ -1,9 +1,6 @@
-using Avalonia.Controls;
-using TuDog.Bootstrap;
-
 namespace TuDog.ViewLocators.Impl;
 
-public class ViewLocator:ViewLocatorBase
+public class ViewLocator : ViewLocatorBase
 {
     public override Type? GetViewType(object? param)
     {
@@ -11,8 +8,7 @@ public class ViewLocator:ViewLocatorBase
             return null;
 
         var name = param.ToString()!.Replace("ViewModel", "View", StringComparison.Ordinal);
-        var ass= name.Split(".Views").First();
-        if (ass.Contains(".")) ass = ass.Split(".").First();
+        var ass = param.GetType().Assembly.GetName().Name;
         return Type.GetType($"{name},{ass}");
     }
 

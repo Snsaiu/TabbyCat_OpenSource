@@ -1,0 +1,17 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="YouYan.Rabbit.App"
+             xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+             <Application.Resources>
+                 <FontFamily x:Key="iconFont">avares://YouYan.Rabbit/Assets/Fonts/iconfont.ttf#iconfont</FontFamily>
+             </Application.Resources>
+    <Application.Styles>
+        <styling:FluentAvaloniaTheme PreferSystemTheme="True" />
+        <StyleInclude Source="Styles/ConfirmViewStyle.axaml" />
+        <StyleInclude Source="Styles/ButtonStyle.axaml" />
+    </Application.Styles>
+
+</Application>
