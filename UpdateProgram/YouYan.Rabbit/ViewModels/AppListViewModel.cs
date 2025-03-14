@@ -154,12 +154,16 @@ public sealed partial class AppListViewModel(
             SetPermissions(installPath);
 
             selected.Status = AppStatus.Waiting;
-            await httpClient.DownloadFileAsync(url, downloadAppName, x =>
+            var downloadResult = await httpClient.DownloadFileAsync(url, downloadAppName, x =>
             {
                 selected.Status = AppStatus.Downloading;
                 selected.DownloadProgress = x;
+            }, error =>
+            {
+                //todo 写入日志
+
             });
-            if (!File.Exists(downloadAppName))
+            if (!downloadResult || !File.Exists(downloadAppName))
             {
                 selected.Status = AppStatus.Available;
                 await DialogServer.ShowMessageDialogAsync("下载失败");

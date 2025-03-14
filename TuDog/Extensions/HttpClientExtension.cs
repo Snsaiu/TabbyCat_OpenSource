@@ -9,9 +9,17 @@ public static class HttpClientExtensions
     public static async Task DownloadFilePostAsync(this HttpClient client, string fileUrl, string savePath,
         Action<double>? progress = null)
     {
-        using var content = new StringContent(string.Empty);
-        using var response = await client.PostAsync(fileUrl, content);
-        await DownImplAsync(response, savePath, progress);
+        try
+        {
+            using var content = new StringContent(string.Empty);
+            using var response = await client.PostAsync(fileUrl, content);
+            await DownImplAsync(response, savePath, progress);
+        }
+        catch (Exception e)
+        {
+            //todo :写入日志
+        }
+
     }
 
     private static async Task DownImplAsync(HttpResponseMessage response, string savePath,
@@ -46,14 +54,22 @@ public static class HttpClientExtensions
     public static async Task<TResult?> PostRequestAsync<TParams, TResult>(this HttpClient client, string url,
         TParams request) where TParams : class
     {
-        var json = JsonConvert.SerializeObject(request);
-        var content = new StringContent(json);
-        content.Headers.ContentType = new("application/json");
-        var response = await client.PostAsync(url, content);
-        response.EnsureSuccessStatusCode();
-        return !response.IsSuccessStatusCode
-            ? default
-            : JsonConvert.DeserializeObject<TResult>(await response.Content.ReadAsStringAsync());
+        try
+        {
+            var json = JsonConvert.SerializeObject(request);
+            var content = new StringContent(json);
+            content.Headers.ContentType = new("application/json");
+            var response = await client.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+            return !response.IsSuccessStatusCode
+                ? default
+                : JsonConvert.DeserializeObject<TResult>(await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
     }
 
     /// <summary>
@@ -63,11 +79,22 @@ public static class HttpClientExtensions
     /// <param name="fileUrl">文件 URL</param>
     /// <param name="savePath">本地保存路径</param>
     /// <param name="progress">可选，下载进度回调（0-100%）</param>
-    public static async Task DownloadFileAsync(this HttpClient client, string fileUrl, string savePath,
-        Action<double>? progress = null)
+    public static async Task<bool> DownloadFileAsync(this HttpClient client, string fileUrl, string savePath,
+        Action<double>? progress = null, Action<string>? onError = null)
     {
-        using var response = await client.GetAsync(fileUrl, HttpCompletionOption.ResponseHeadersRead);
-        await DownImplAsync(response, savePath, progress);
+        try
+        {
+            using var response = await client.GetAsync(fileUrl, HttpCompletionOption.ResponseHeadersRead);
+            await DownImplAsync(response, savePath, progress);
+            return true;
+        }
+        catch (Exception e)
+        {
+            onError?.Invoke(e.Message);
+            // 写入日志
+            return false;
+        }
+
     }
 
     public static async Task DownloadFileAsync(this HttpClient client, string url, string savePath)

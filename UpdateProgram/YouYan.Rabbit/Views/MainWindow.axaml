@@ -22,8 +22,9 @@
     mc:Ignorable="d">
 
     <Grid RowDefinitions="Auto,*">
-        <StackPanel HorizontalAlignment="Stretch" Height="40">
-            <TextBlock Text="Rabbit" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontWeight="DemiBold" />
+        <StackPanel HorizontalAlignment="Stretch">
+            <TextBlock Text="Rabbit" HorizontalAlignment="Center" Padding="0,5" VerticalAlignment="Bottom"
+                       FontWeight="DemiBold" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Image
