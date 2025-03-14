@@ -74,9 +74,6 @@ namespace TabbyCat
         {
             StartRunningHubWatch();
             InitLanguage();
-
-
-
             if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
             {
                 window = new MainWindow();

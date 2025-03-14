@@ -5,6 +5,21 @@
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
+             <TrayIcon.Icons>
+                 <TrayIcons>
+                     <TrayIcon Icon="/Assets/avalonia-logo.ico">
+                         <TrayIcon.Menu>
+                             <NativeMenu>
+                                 <NativeMenuItem Header="显示" Click="Show" />
+                                 <NativeMenuItemSeparator />
+                                 <NativeMenuItem Header="退出"
+                                                 Click="Exit" />
+                             </NativeMenu>
+                         </TrayIcon.Menu>
+                     </TrayIcon>
+                 </TrayIcons>
+             </TrayIcon.Icons>
+
              <Application.Resources>
                  <FontFamily x:Key="iconFont">avares://YouYan.Rabbit/Assets/Fonts/iconfont.ttf#iconfont</FontFamily>
              </Application.Resources>
@@ -12,6 +27,7 @@
         <styling:FluentAvaloniaTheme PreferSystemTheme="True" />
         <StyleInclude Source="Styles/ConfirmViewStyle.axaml" />
         <StyleInclude Source="Styles/ButtonStyle.axaml" />
+        <StyleInclude Source="avares://TuDog/UIs/Styles/DialogWindowStyle.axaml" />
     </Application.Styles>
 
 </Application>

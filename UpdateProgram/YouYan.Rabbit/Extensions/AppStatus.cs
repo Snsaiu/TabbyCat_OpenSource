@@ -1,6 +1,6 @@
 ﻿namespace YouYan.Rabbit.Extensions;
 
-public enum AppInstallStatus
+public enum AppStatus
 {
     Available,
     Downloading,
@@ -8,5 +8,7 @@ public enum AppInstallStatus
     Installing,
     Installed,
     Uninstalling,
-    Failed
+    Failed,
+    Running,
+    NeedUpdate
 }

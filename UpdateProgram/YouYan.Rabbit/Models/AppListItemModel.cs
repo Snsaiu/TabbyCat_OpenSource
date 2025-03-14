@@ -13,7 +13,7 @@ public partial class AppListItemModel : ModelBase
 
     [ObservableProperty] private string icon = string.Empty;
 
-    [ObservableProperty] private AppInstallStatus status = AppInstallStatus.Available;
+    [ObservableProperty] private AppStatus status = AppStatus.Available;
 
     [ObservableProperty] private string description = string.Empty;
 
@@ -21,7 +21,21 @@ public partial class AppListItemModel : ModelBase
 
     [ObservableProperty] private string installLocation = string.Empty;
 
-    [ObservableProperty] private string latestVersion = string.Empty;
+    [ObservableProperty]
+    private string latestVersion = string.Empty;
 
     [ObservableProperty] private string releaseNotes = string.Empty;
+
+
+    public  string ExeName()
+    {
+        return appName switch
+        {
+            AppName.TabbyCat => AppName.ToString()+ ".Desktop",
+            AppName.CowCat => AppName.ToString()+".Desktop",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+
 }

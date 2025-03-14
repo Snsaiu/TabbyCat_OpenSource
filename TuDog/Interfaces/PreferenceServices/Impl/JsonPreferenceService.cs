@@ -15,7 +15,18 @@ public sealed class JsonPreferenceService : IPreferenceService
             // 返回应用的配置目录
             fullFilePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
         else
-            fullFilePath = Path.Join(Path.GetDirectoryName(Environment.ProcessPath), fileName);
+        {
+            var exeName = Path.GetFileName(Environment.ProcessPath).Split(".").FirstOrDefault();
+            if (exeName is null)
+                throw new NullReferenceException("无法获得程序文件名称");
+
+            var folder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), exeName);
+
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+            fullFilePath = Path.Combine(folder, fileName);
+        }
+        
         if (!File.Exists(fullFilePath))
             File.WriteAllText(fullFilePath, "{}");
 

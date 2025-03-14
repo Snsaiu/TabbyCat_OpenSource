@@ -29,11 +29,13 @@
                                     Stretch="UniformToFill" />
                                 <TextBlock
                                     Grid.Row="0"
+                                    VerticalAlignment="Top"
                                     Grid.Column="1"
                                     FontWeight="Bold"
                                     Text="{Binding AppName, Converter={extensions:EnumToLocalizationConverter}}" />
                                 <TextBlock
                                     Grid.Row="1"
+                                    VerticalAlignment="Bottom"
                                     Grid.Column="1"
                                     FontSize="10"
                                     Foreground="Gray"
@@ -43,7 +45,18 @@
                                     Grid.RowSpan="2"
                                     Grid.Column="2"
                                     LastChildFill="True">
-                                    <Button Content="{x:Static languages:Language.Update}" DockPanel.Dock="Left" />
+                                    <StackPanel Orientation="Horizontal"
+                                                IsVisible="{Binding Status ,Converter={extensions:ProgressBar2BoolConverter}}">
+                                        <ProgressBar Value="{Binding DownloadProgress}" ShowProgressText="True" />
+                                        <TextBlock Margin="5,0,5,0" VerticalAlignment="Center" Foreground="Gray"
+                                                   FontSize="8"
+                                                   Text="{Binding Status}" />
+                                    </StackPanel>
+                                    <Button Content="{x:Static languages:Language.Update}"
+                                            Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).UpdateCommand}"
+                                            CommandParameter="{Binding Path=.}"
+                                            IsVisible="{Binding Status ,Converter={extensions:AppState2BoolConverter}, ConverterParameter={x:Static extensions:AppStatus.NeedUpdate}}"
+                                            DockPanel.Dock="Left" />
                                     <Button
                                         extensions:IconAttach.Icon="{x:Static rabbit:IconFontProvider.ThreePoint}"
                                         BorderThickness="0"
@@ -51,9 +64,21 @@
                                         DockPanel.Dock="Right">
                                         <Button.Flyout>
                                             <MenuFlyout>
-                                                <MenuItem Header="{x:Static languages:Language.WhatsNew}" />
-                                                <MenuItem Header="{x:Static languages:Language.Launch}" />
-                                                <MenuItem Foreground="Red" Header="{x:Static languages:Language.Uninstall}" />
+                                                <MenuItem Header="{x:Static languages:Language.Launch}"
+                                                          IsVisible="{Binding Status,Converter={extensions:AppState2BoolConverter}, ConverterParameter={x:Static extensions:AppStatus.Installed}}"
+                                                          Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).LaunchCommand}"
+                                                          CommandParameter="{Binding Path=.}" />
+
+                                                <MenuItem Header="{x:Static languages:Language.WhatsNew}"
+                                                          IsVisible="{Binding Status,Converter={extensions:WhatNew2BoolConverter}}"
+                                                          Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).ShowWhatsNewCommand}"
+                                                          CommandParameter="{Binding Path=.}" />
+
+                                                <MenuItem Foreground="Red"
+                                                          IsVisible="{Binding Status,Converter={extensions:Uninstall2BoolConverter}}"
+                                                          Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).UninstallAppCommand}"
+                                                          CommandParameter="{Binding Path=.}"
+                                                          Header="{x:Static languages:Language.Uninstall}" />
                                             </MenuFlyout>
                                         </Button.Flyout>
                                     </Button>
@@ -64,7 +89,6 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Expander>
-
             <Expander Header="{x:Static languages:Language.Available}">
                 <ListBox ItemsSource="{Binding AvailableApps}">
                     <ListBox.ItemTemplate>
@@ -85,7 +109,7 @@
                                     Grid.Column="1"
                                     FontSize="10"
                                     Foreground="Gray"
-                                    Text="{Binding Version}" />
+                                    Text="{Binding LatestVersion}" />
                                 <DockPanel
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
@@ -97,7 +121,8 @@
                                         CommandParameter="{Binding .}"
                                         Content="{x:Static languages:Language.Install}"
                                         DockPanel.Dock="Left" />
-                                    <StackPanel Orientation="Horizontal" IsVisible="{Binding Status}">
+                                    <StackPanel Orientation="Horizontal"
+                                                IsVisible="{Binding Status ,Converter={extensions:ProgressBar2BoolConverter}}">
                                         <ProgressBar Value="{Binding DownloadProgress}" ShowProgressText="True" />
                                         <TextBlock Margin="5,0,5,0" VerticalAlignment="Center" Foreground="Gray"
                                                    FontSize="8"
@@ -111,7 +136,9 @@
                                         DockPanel.Dock="Right">
                                         <Button.Flyout>
                                             <MenuFlyout>
-                                                <MenuItem Header="{x:Static languages:Language.WhatsNew}" />
+                                                <MenuItem Header="{x:Static languages:Language.WhatsNew}"
+                                                          Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).ShowWhatsNewCommand}"
+                                                          CommandParameter="{Binding Path=.}" />
                                             </MenuFlyout>
                                         </Button.Flyout>
                                     </Button>

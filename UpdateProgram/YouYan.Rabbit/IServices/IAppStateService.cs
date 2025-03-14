@@ -20,6 +20,11 @@ public interface IAppStateService
 
     Task WriteAppVersionAsync(AppName app, string version);
 
-    Task LaunchAppAsync(AppName app, string? customAppName = null, string[]? args = null);
+    Task LaunchAppAsync(AppName app, string? customAppName = null, bool single = true, string[]? args = null);
+
+    Task<bool> AppIsRunningAsync(AppName app, string? customAppName = null);
+
+    public Task<bool> UninstallAppAsync(AppName app);
+
 
 }

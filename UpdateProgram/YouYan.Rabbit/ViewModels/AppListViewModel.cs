@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -11,10 +10,8 @@ using System.Net.Http;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
-
 using TuDog.Extensions;
 using TuDog.IocAttribute;
-
 using YouYan.Rabbit.Extensions;
 using YouYan.Rabbit.IServices;
 using YouYan.Rabbit.IServices.LocalConfigs;
@@ -22,11 +19,13 @@ using YouYan.Rabbit.Models;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
+using YouYan.Rabbit.Components.ViewModels;
 
 namespace YouYan.Rabbit.ViewModels;
 
 [Register]
-public sealed partial class AppListViewModel(IAppStateService appStateService,
+public sealed partial class AppListViewModel(
+    IAppStateService appStateService,
     HttpClient httpClient,
     IAppInstallPathService appInstallPathService,
     ICacheFolderService cacheFolderService) : ViewModelBase
@@ -37,81 +36,101 @@ public sealed partial class AppListViewModel(IAppStateService appStateService,
 
     private Thread loadReleasesThread;
 
+    private Thread appsRunningStatusThread;
+
     protected override async Task OnLoaded()
     {
         await LoadInstalledAppsAsync();
         loadReleasesThread = new(LoopCheckVersion);
         loadReleasesThread.IsBackground = true;
         loadReleasesThread.Start();
+
+        appsRunningStatusThread = new(LoopCheckAppRunningStatus);
+        appsRunningStatusThread.IsBackground = true;
+        appsRunningStatusThread.Start();
     }
 
     protected override Task OnUnLoaded()
     {
         loadReleasesThread.Interrupt();
+        appsRunningStatusThread.Interrupt();
         return base.OnUnLoaded();
     }
 
-    private async Task LoadInstalledAppsAsync()
+    /// <summary>
+    /// 程序是否可以安全退出
+    /// </summary>
+    /// <returns></returns>
+    public bool CanExit()
     {
-        var apps = Enum.GetValues<AppName>();
-        foreach (var app in apps)
-        {
-            if (await appStateService.QueryAppExistsAsync(app))
-            {
-                var startFolder = await appStateService.QueryAppLocationAsync(app);
-                var version = await appStateService.QueryAppInstalledVersionAsync(app);
-                if (version is not null)
-                    InstalledApps.Add(new() { AppName = app, InstallLocation = startFolder, Version = version });
-            }
-            else
-                AvailableApps.Add(new() { AppName = app });
-        }
-    }
+        foreach (var item in InstalledApps)
+            if (item.Status is AppStatus.Downloading or AppStatus.Installing or AppStatus.Uninstalling)
+                return false;
 
+        foreach (var item in AvailableApps)
+            if (item.Status is AppStatus.Downloading or AppStatus.Installing or AppStatus.Uninstalling
+                or AppStatus.Waiting)
+                return false;
 
-    private void LoopCheckVersion()
-    {
-        while (true)
-        {
-            var apps = Enum.GetValues<AppName>();
-            foreach (var item in apps)
-            {
-                Thread.Sleep(TimeSpan.FromSeconds(20));
-                var result = appStateService.QueryLatestReleaseAsync(item).GetAwaiter().GetResult();
-                if (result is null)
-                    continue;
-                var installed = InstalledApps.FirstOrDefault(x => x.AppName == item);
-                if (installed is not null)
-                {
-                    if (installed.Status is AppInstallStatus.Downloading or AppInstallStatus.Installing)
-                        continue;
-
-                    if (installed.LatestVersion != result.Version)
-                    {
-                        installed.LatestVersion = result.Version;
-                        installed.Description = result.Description;
-                    }
-                }
-                else
-                {
-                    var ava = AvailableApps.FirstOrDefault(x => x.AppName == item);
-                    if (ava is not null)
-                    {
-                        if (ava.Status is AppInstallStatus.Downloading or AppInstallStatus.Installing)
-                            continue;
-                        if (ava.LatestVersion != result.Version)
-                        {
-                            ava.LatestVersion = result.Version;
-                            ava.Description = result.Description;
-                        }
-                    }
-                }
-            }
-        }
+        return true;
     }
 
     [RelayCommand]
-    private async Task InstallApp(AppListItemModel selected)
+    private async Task UninstallApp(AppListItemModel selected)
+    {
+        var deleteConfirm = await DialogServer.ShowConfirmDialogAsync("确定要卸载吗?");
+        if (!deleteConfirm)
+            return;
+
+        if (await appStateService.AppIsRunningAsync(selected.AppName, selected.ExeName()))
+        {
+            await DialogServer.ShowMessageDialogAsync($"{selected.AppName.ToString()} 正在运行，无法卸载！");
+            return;
+        }
+
+        if (await appStateService.UninstallAppAsync(selected.AppName))
+        {
+            InstalledApps.Remove(selected);
+            selected.Status = AppStatus.Available;
+            AvailableApps.Add(selected);
+            // todo :接下去要提示是否删除配置文件
+
+            var folder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                selected.AppName.ToString());
+
+            if (Directory.Exists(folder))
+                if (await DialogServer.ShowConfirmDialogAsync("是否要删除缓存文件？"))
+                    Directory.Delete(folder, true);
+
+            await DialogServer.ShowMessageDialogAsync("卸载成功");
+
+        }
+        else
+        {
+            await DialogServer.ShowMessageDialogAsync("卸载失败");
+        }
+    }
+
+
+    [RelayCommand]
+    private async Task ShowWhatsNew(AppListItemModel selected)
+    {
+        var model = new AppReleaseModel();
+        model.Description = selected.Description;
+        model.Version = selected.LatestVersion;
+
+        await DialogServer.ShowDialogAsync<WhatNewViewModel, bool>("Whats New", cancelButtonText: string.Empty,
+            parameter: model);
+    }
+
+    [RelayCommand]
+    private async Task Launch(AppListItemModel selected)
+    {
+        await appStateService.LaunchAppAsync(selected.AppName, $"{selected.AppName}.Desktop");
+    }
+
+
+    private async Task<bool> InstallAsync(AppListItemModel selected)
     {
         var url = Properties.Resources.DownloadUrlBase +
                   $"/api/app/software-base/down-load?appName={selected.AppName.ToString()}";
@@ -134,20 +153,20 @@ public sealed partial class AppListViewModel(IAppStateService appStateService,
 
             SetPermissions(installPath);
 
-            selected.Status = AppInstallStatus.Waiting;
+            selected.Status = AppStatus.Waiting;
             await httpClient.DownloadFileAsync(url, downloadAppName, x =>
             {
-                selected.Status = AppInstallStatus.Downloading;
+                selected.Status = AppStatus.Downloading;
                 selected.DownloadProgress = x;
             });
             if (!File.Exists(downloadAppName))
             {
-                selected.Status = AppInstallStatus.Available;
+                selected.Status = AppStatus.Available;
                 await DialogServer.ShowMessageDialogAsync("下载失败");
-                return;
+                return false;
             }
 
-            selected.Status = AppInstallStatus.Installing;
+            selected.Status = AppStatus.Installing;
             using (var zipfile = ZipFile.OpenRead(downloadAppName))
             {
                 if (Directory.Exists(unzipFolder))
@@ -159,25 +178,25 @@ public sealed partial class AppListViewModel(IAppStateService appStateService,
                 var son = directoryInfo.GetDirectories();
                 if (son.Length <= 0)
                 {
-                    selected.Status = AppInstallStatus.Failed;
-                    return;
+                    selected.Status = AppStatus.Failed;
+                    return false;
                 }
 
                 CopyFilesRecursively(son.First().FullName, installPath);
             }
 
-            selected.Status = AppInstallStatus.Installed;
+            selected.Version = selected.LatestVersion;
+            selected.Status = AppStatus.Installed;
             await appStateService.WriteAppVersionAsync(selected.AppName, selected.Version);
-            // 清空缓存
 
+            selected.InstallLocation = await appStateService.QueryAppLocationAsync(selected.AppName);
+
+            // 清空缓存
             if (File.Exists(downloadAppName))
                 File.Delete(downloadAppName);
             if (Directory.Exists(unzipFolder))
                 Directory.Delete(unzipFolder, true);
-
-            await Task.Delay(TimeSpan.FromSeconds(1));
-            InstalledApps.Add(selected);
-            AvailableApps.Remove(selected);
+            return true;
         }
         else if (OperatingSystem.IsLinux())
         {
@@ -190,11 +209,124 @@ public sealed partial class AppListViewModel(IAppStateService appStateService,
             throw new NotImplementedException();
         }
 
-        //
+        throw new NotImplementedException();
+    }
+
+    [RelayCommand]
+    private async Task InstallApp(AppListItemModel selected)
+    {
+        if (await InstallAsync(selected))
+        {
+            InstalledApps.Add(selected);
+            AvailableApps.Remove(selected);
+        }
 
     }
 
+    [RelayCommand]
+    private async Task Update(AppListItemModel selected)
+    {
+        if (await appStateService.AppIsRunningAsync(selected.AppName, selected.ExeName()))
+        {
+            await DialogServer.ShowMessageDialogAsync($"{selected.AppName}正在运行，无法更新");
+            return;
+        }
+
+        if (await InstallAsync(selected))
+        {
+            // InstalledApps.Add(selected);
+            // AvailableApps.Remove(selected);
+        }
+    }
+
     #region 工具
+
+    private async Task LoadInstalledAppsAsync()
+    {
+        var apps = Enum.GetValues<AppName>();
+        foreach (var app in apps)
+            if (await appStateService.QueryAppExistsAsync(app))
+            {
+                var startFolder = await appStateService.QueryAppLocationAsync(app);
+                var version = await appStateService.QueryAppInstalledVersionAsync(app);
+                if (version is not null)
+                    InstalledApps.Add(new()
+                    {
+                        AppName = app, InstallLocation = startFolder, Version = version, Status = AppStatus.Installed
+                    });
+            }
+            else
+            {
+                var release = await appStateService.QueryLatestReleaseAsync(app);
+                if (release is null)
+                    continue;
+                AvailableApps.Add(new()
+                {
+                    AppName = app, LatestVersion = release.Version, Description = release.Description,
+                    Status = AppStatus.Available
+                });
+            }
+    }
+
+    private void LoopCheckAppRunningStatus()
+    {
+        while (true)
+        {
+            foreach (var item in InstalledApps)
+                if (item.Status is AppStatus.Installed or AppStatus.Running)
+                {
+                    var result = appStateService.AppIsRunningAsync(item.AppName, item.AppName + ".Desktop").GetAwaiter()
+                        .GetResult();
+                    item.Status = result ? AppStatus.Running : AppStatus.Installed;
+                }
+
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+        }
+    }
+
+    private void LoopCheckVersion()
+    {
+        while (true)
+        {
+            var apps = Enum.GetValues<AppName>();
+            foreach (var item in apps)
+            {
+                var result = appStateService.QueryLatestReleaseAsync(item).GetAwaiter().GetResult();
+                if (result is null)
+                    continue;
+                var installed = InstalledApps.FirstOrDefault(x => x.AppName == item);
+                if (installed is not null)
+                {
+                    if (installed.Status is AppStatus.Downloading or AppStatus.Installing or AppStatus.Waiting)
+                        continue;
+
+                    installed.LatestVersion = result.Version;
+
+                    if (installed.LatestVersion != installed.Version)
+                    {
+                        installed.Description = result.Description;
+                        installed.Status = AppStatus.NeedUpdate;
+                    }
+                }
+                else
+                {
+                    var ava = AvailableApps.FirstOrDefault(x => x.AppName == item);
+                    if (ava is not null)
+                    {
+                        if (ava.Status is AppStatus.Downloading or AppStatus.Installing or AppStatus.Waiting)
+                            continue;
+                        if (ava.LatestVersion != result.Version)
+                        {
+                            ava.LatestVersion = result.Version;
+                            ava.Description = result.Description;
+                        }
+                    }
+                }
+            }
+
+            Thread.Sleep(TimeSpan.FromSeconds(20));
+        }
+    }
 
     private static void CopyFilesRecursively(string sourcePath, string destinationPath)
     {
@@ -239,5 +371,4 @@ public sealed partial class AppListViewModel(IAppStateService appStateService,
     }
 
     #endregion
-
 }
