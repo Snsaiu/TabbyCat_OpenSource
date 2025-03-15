@@ -133,7 +133,7 @@ jobs:
         $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
         
         $formData = @{
-            file = "${{ Project_Path }}\app-release.zip"
+            file = $env:Project_Path + "\app-release.zip"
             description = $releaseNotes
             appName = "TabbyCat"
             osType = 1
