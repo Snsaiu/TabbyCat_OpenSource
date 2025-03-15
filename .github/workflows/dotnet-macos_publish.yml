@@ -1,4 +1,4 @@
-name: macos_publish
+name: publish-macos
 
 on:
   push:
@@ -12,6 +12,7 @@ jobs:
     env:
       Solution_Name: TabbyCat.sln      # 你的解决方案路径
       Project_Path: AvalonModules/TabbyCat/TabbyCat.Desktop    # 你的主项目路径
+  
 
     steps:
     - name: Checkout 代码
@@ -27,19 +28,18 @@ jobs:
     - name: Build and Create .app Bundle
       run: |
         PROJECT_NAME="TabbyCat.Desktop"
-        OUTPUT_DIR="./bin/Release/net9.0/osx-arm64/publish"
+        OUTPUT_DIR="$env:Project_Path/bin/Release/net9.0/osx-arm64/publish"
         
         echo "Building for osx-arm64..."
-        dotnet publish $Project_Path/$PROJECT_NAME.csproj -r osx-arm64 -c Release
-
-        echo "Listing contents of output directory:"
-        ls -R "$OUTPUT_DIR"
+        dotnet publish -r osx-arm64 -c Release
 
         echo "Creating the .app bundle..."
         APP_NAME="TabbyCat.app"
-        CONTENT_PATH="$APP_NAME/Contents"
+        CONTENT_PATH="$env:Project_Path/$APP_NAME/Contents"
         MACOS_PATH="$CONTENT_PATH/MacOS"
         RESOURCES_PATH="$CONTENT_PATH/Resources"
+        
+        echo "content path :$CONTENT_PATH"
 
         mkdir -p "$MACOS_PATH"
         mkdir -p "$RESOURCES_PATH"
