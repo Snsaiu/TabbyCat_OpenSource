@@ -95,8 +95,13 @@ jobs:
 
     - name: Package .app into ZIP
       run: |
-        cd $Project_Path
-        zip -r app-release.zip *.app
+        if ls "$Project_Path"/*.app 1> /dev/null 2>&1; then
+          cd "$Project_Path"
+          zip -r app-release.zip *.app
+        else
+          echo "❌ Error: No .app files found in $Project_Path"
+          exit 1
+        fi
 
     - name: Get release notes and version
       id: get_release_notes
@@ -122,10 +127,10 @@ jobs:
         echo "🔎 VERSION: $version"
         
         curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
-             -F "file=$Project_Path/app-release.zip" \
+             -F "file=@$Project_Path/app-release.zip" \
              -F "description=$releaseNotes" \
              -F "appName=TabbyCat" \
-             -F "osType=1" \
+             -F "osType=0" \
              -F "version=$version"
         
         echo "✅ 上传成功"
