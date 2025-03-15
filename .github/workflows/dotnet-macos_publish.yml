@@ -28,6 +28,9 @@ jobs:
       run: | 
         chmod +x ./macos_publish.sh
 
+    - name: Run macOS publish script
+      run: ./macos_publish.sh
+
     - name: Package .app into ZIP
       run: |
         cd proj
