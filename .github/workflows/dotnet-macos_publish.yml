@@ -129,18 +129,25 @@ jobs:
         path: ${{ env.Project_Path }}/app-release.zip
 
     - name: Upload ZIP package and metadata
-      run: |
+       run: |
         $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
-        version=$(cat "$GITHUB_ENV" | grep VERSION | cut -d'=' -f2-)
         
-        echo "🔎 RELEASE_NOTES: $releaseNotes"
-        echo "🔎 VERSION: $version"
-        
-        curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
-             -F "file=@${{ env.Project_Path }}/app-release.zip" \
-             -F "description=$releaseNotes" \
-             -F "appName=TabbyCat" \
-             -F "osType=1" \
-             -F "version=$env:VERSION"
-        
+        $formData = @{
+            file =  "$${{ Project_Path }}/app-release.zip"
+            description = $releaseNotes
+            appName = "TabbyCat"
+            osType = 1
+            version = $env:VERSION
+        }
+    
+        Write-Host "🔎 RELEASE_NOTES: $releaseNotes"
+        Write-Host "🔎 VERSION: $env:VERSION"
+        $response = Invoke-WebRequest `
+                -Uri "${{ secrets.UPLOAD_APP_URL }}" `
+                -Method Post `
+                -Form $formData `
+                -ErrorAction Stop
+    
+        Write-Host "✅ 上传成功"
+        Write-Host "响应内容: $($response.Content)"        
         echo "✅ 上传成功"
