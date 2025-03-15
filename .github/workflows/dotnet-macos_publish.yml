@@ -126,7 +126,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: tabbycat-macOS-ZIP
-        path: $Project_Path/app-release.zip
+        path: AvalonModules/TabbyCat/TabbyCat.Desktop/app-release.zip
 
     - name: Upload ZIP package and metadata
       run: |
@@ -138,9 +138,9 @@ jobs:
         
         curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
              -F "file=@AvalonModules/TabbyCat/TabbyCat.Desktop/app-release.zip" \
-             -F "description=$(cat "$GITHUB_ENV" | grep RELEASE_NOTES | cut -d'=' -f2-)" \
+             -F "description=test" \
              -F "appName=TabbyCat" \
              -F "osType=1" \
-             -F "version=$(cat "$GITHUB_ENV" | grep VERSION | cut -d'=' -f2-)"
+             -F "version=$env:VERSION"
         
         echo "✅ 上传成功"
