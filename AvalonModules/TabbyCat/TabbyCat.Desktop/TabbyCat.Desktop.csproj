@@ -27,4 +27,8 @@
   <ItemGroup>
     <ProjectReference Include="..\TabbyCat\TabbyCat.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="app.icns" />
+  </ItemGroup>
 </Project>
