@@ -130,7 +130,7 @@ jobs:
 
     - name: Upload ZIP package and metadata
       run: |
-        releaseNotes=$(cat "$GITHUB_ENV" | grep RELEASE_NOTES | cut -d'=' -f2-)
+        $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
         version=$(cat "$GITHUB_ENV" | grep VERSION | cut -d'=' -f2-)
         
         echo "🔎 RELEASE_NOTES: $releaseNotes"
@@ -140,7 +140,7 @@ jobs:
              -F "file=@${{ env.Project_Path }}/app-release.zip" \
              -F "description=$releaseNotes" \
              -F "appName=TabbyCat" \
-             -F "osType=0" \
-             -F "version=$version"
+             -F "osType=1" \
+             -F "version=$env:VERSION"
         
         echo "✅ 上传成功"
