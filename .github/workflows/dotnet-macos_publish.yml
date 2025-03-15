@@ -97,7 +97,7 @@ jobs:
       run: |
         if ls "$Project_Path"/*.app 1> /dev/null 2>&1; then
           cd "$Project_Path"
-          zip ./app-release.zip ./*.app
+          zip -r app-release.zip *.app
         else
           echo "❌ Error: No .app files found in $Project_Path"
           exit 1
@@ -125,8 +125,8 @@ jobs:
     - name: Upload ZIP package as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: AvaloniaApp-macOS-ZIP
-        path: $Project_Path/app-release.zip
+        name: tabbycat-macOS-ZIP
+        path: ${{ env.Project_Path }}/app-release.zip
 
     - name: Upload ZIP package and metadata
       run: |
@@ -137,7 +137,7 @@ jobs:
         echo "🔎 VERSION: $version"
         
         curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
-             -F "file=@$Project_Path/app-release.zip" \
+             -F "file=@${{ env.Project_Path }}/app-release.zip" \
              -F "description=$releaseNotes" \
              -F "appName=TabbyCat" \
              -F "osType=0" \
