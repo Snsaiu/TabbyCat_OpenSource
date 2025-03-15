@@ -1,0 +1,71 @@
+name: .NET Core Desktop Release
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    env:
+      Solution_Name: TabbyCat.sln      # 你的解决方案路径
+      Project_Path: AvalonModules/TabbyCat/TabbyCat.Desktop    # 你的主项目路径
+
+    steps:
+    - name: Checkout 代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0   # 获取完整提交历史，以便提取提交日志
+
+    - name: 安装 .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Grant execute permission to the script
+      run: | 
+        chmod +x ./macos_publish.sh
+
+       
+    - name: Package .app into ZIP
+      run: |
+        cd proj
+        zip -r app-release.zip *.app
+    - name: Get release notes and version
+      id: get_release_notes
+      run: |
+        echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+        git log -1 --pretty=%B >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+        echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
+    - name: Upload ZIP package as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: AvaloniaApp-macOS-ZIP
+        path: proj/app-release.zip
+    - name: Upload ZIP package and metadata
+      run: |
+        releaseNotes=$(cat "$GITHUB_ENV" | grep RELEASE_NOTES | cut -d'=' -f2-)
+        version=$(cat "$GITHUB_ENV" | grep VERSION | cut -d'=' -f2-)
+        
+        echo "🔎 RELEASE_NOTES: $releaseNotes"
+        echo "🔎 VERSION: $version"
+        
+        curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
+             -F "file=@proj/app-release.zip" \
+             -F "description=$releaseNotes" \
+             -F "appName=TabbyCat" \
+             -F "osType=1" \
+             -F "version=$version"
+        
+        echo "✅ 上传成功"
+   
+
+  
+
+    
+
+
+     
