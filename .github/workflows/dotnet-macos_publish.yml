@@ -137,7 +137,7 @@ jobs:
         echo "🔎 VERSION: $version"
         
         curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
-             -F "file=@$Project_Path/app-release.zip" \
+             -F "file=@AvalonModules/TabbyCat/TabbyCat.Desktop/app-release.zip" \
              -F "description=$(cat "$GITHUB_ENV" | grep RELEASE_NOTES | cut -d'=' -f2-)" \
              -F "appName=TabbyCat" \
              -F "osType=1" \
