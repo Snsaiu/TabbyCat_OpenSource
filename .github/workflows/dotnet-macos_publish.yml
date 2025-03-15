@@ -97,11 +97,21 @@ jobs:
       run: |
         if ls "$Project_Path"/*.app 1> /dev/null 2>&1; then
           cd "$Project_Path"
-          zip -r app-release.zip *.app
+          zip ./app-release.zip ./*.app
         else
           echo "❌ Error: No .app files found in $Project_Path"
           exit 1
         fi
+        
+    - name: Verify ZIP Creation
+      run: |
+        if [ -f "$Project_Path/app-release.zip" ]; then
+          echo "✅ ZIP file exists."
+        else
+          echo "❌ ZIP file does not exist."
+          exit 1
+        fi
+
 
     - name: Get release notes and version
       id: get_release_notes
