@@ -130,24 +130,24 @@ jobs:
 
     - name: Upload ZIP package and metadata
       run: |
-        $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
-        
-        $formData = @{
-            file =  "$${{ Project_Path }}/app-release.zip"
-            description = $releaseNotes
-            appName = "TabbyCat"
-            osType = 1
-            version = $env:VERSION
-        }
+       $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
+       
+       $formData = @{
+           file =  "$${{ Project_Path }}/app-release.zip"
+           description = $releaseNotes
+           appName = "TabbyCat"
+           osType = 1
+           version = $env:VERSION
+       }
     
-        Write-Host "🔎 RELEASE_NOTES: $releaseNotes"
-        Write-Host "🔎 VERSION: $env:VERSION"
-        $response = Invoke-WebRequest `
-                -Uri "${{ secrets.UPLOAD_APP_URL }}" `
-                -Method Post `
-                -Form $formData `
-                -ErrorAction Stop
+       Write-Host "🔎 RELEASE_NOTES: $releaseNotes"
+       Write-Host "🔎 VERSION: $env:VERSION"
+       $response = Invoke-WebRequest `
+               -Uri "${{ secrets.UPLOAD_APP_URL }}" `
+               -Method Post `
+               -Form $formData `
+               -ErrorAction Stop
     
-        Write-Host "✅ 上传成功"
-        Write-Host "响应内容: $($response.Content)"        
-        echo "✅ 上传成功"
+       Write-Host "✅ 上传成功"
+       Write-Host "响应内容: $($response.Content)"        
+       echo "✅ 上传成功"
