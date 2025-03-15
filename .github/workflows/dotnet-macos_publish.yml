@@ -113,14 +113,20 @@ jobs:
         fi
 
 
-    - name: Get release notes and version
+    - name: 获取发布描述 (提交日志) 和版本号
       id: get_release_notes
       run: |
         echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
         git log -1 --pretty=%B >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
 
-        echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
+        # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
+        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $GITHUB_ENV
+
+    - name: 设置环境变量
+      run: |
+        echo "RELEASE_NOTES=$(git log -1 --pretty=%B)" >> $env:GITHUB_ENV
+        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $env:GITHUB_ENV
 
     - name: Upload ZIP package as artifact
       uses: actions/upload-artifact@v4
@@ -138,7 +144,7 @@ jobs:
         
         curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
              -F "file=@AvalonModules/TabbyCat/TabbyCat.Desktop/app-release.zip" \
-             -F "description=test" \
+             -F "description=$releaseNotes" \
              -F "appName=TabbyCat" \
              -F "osType=1" \
              -F "version=$env:VERSION"
