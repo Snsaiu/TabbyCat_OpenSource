@@ -1,4 +1,4 @@
-name: .NET Core Desktop Release
+name: .NET Core Desktop macos Release
 
 on:
   push:
@@ -28,7 +28,6 @@ jobs:
       run: | 
         chmod +x ./macos_publish.sh
 
-       
     - name: Package .app into ZIP
       run: |
         cd proj
