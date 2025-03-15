@@ -136,8 +136,9 @@ jobs:
 
     - name: Upload ZIP package and metadata
       run: |
-        releaseNotes=$(cat "$GITHUB_ENV" | grep RELEASE_NOTES | cut -d'=' -f2-)
-        version=$(cat "$GITHUB_ENV" | grep VERSION | cut -d'=' -f2-)
+        cat $GITHUB_ENV  # 输出调试信息，确认变量是否正确写入
+        releaseNotes=$(awk -F= '/^RELEASE_NOTES=/{print $2}' "$GITHUB_ENV")
+        version=$(awk -F= '/^VERSION=/{print $2}' "$GITHUB_ENV")
         
         echo "🔎 RELEASE_NOTES: $releaseNotes"
         echo "🔎 VERSION: $version"
@@ -147,6 +148,6 @@ jobs:
              -F "description=$releaseNotes" \
              -F "appName=TabbyCat" \
              -F "osType=1" \
-             -F "version=$env:VERSION"
+             -F "version=$version"
         
         echo "✅ 上传成功"
