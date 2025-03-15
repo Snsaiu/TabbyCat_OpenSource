@@ -30,7 +30,7 @@ jobs:
         OUTPUT_DIR="./bin/Release/net9.0/osx-arm64/publish"
         
         echo "Building for osx-arm64..."
-        dotnet publish -r osx-arm64 -c Release
+        dotnet publish $Project_Path/$PROJECT_NAME.csproj -r osx-arm64 -c Release
 
         echo "Creating the .app bundle..."
         APP_NAME="TabbyCat.app"
