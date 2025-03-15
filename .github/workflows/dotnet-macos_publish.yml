@@ -126,7 +126,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: tabbycat-macOS-ZIP
-        path: ${{ env.Project_Path }}/app-release.zip
+        path: $Project_Path/app-release.zip
 
     - name: Upload ZIP package and metadata
       run: |
@@ -137,10 +137,10 @@ jobs:
         echo "🔎 VERSION: $version"
         
         curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
-             -F "file=@\"$Project_Path/app-release.zip"" \
-             -F "description=$releaseNotes" \
+             -F "file=@$Project_Path/app-release.zip" \
+             -F "description=$(cat "$GITHUB_ENV" | grep RELEASE_NOTES | cut -d'=' -f2-)" \
              -F "appName=TabbyCat" \
              -F "osType=1" \
-             -F "version=$version"
+             -F "version=$(cat "$GITHUB_ENV" | grep VERSION | cut -d'=' -f2-)"
         
         echo "✅ 上传成功"
