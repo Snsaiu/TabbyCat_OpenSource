@@ -1,4 +1,4 @@
-name: .NET Core Desktop macos Release
+name: macos_publish
 
 on:
   push:
@@ -45,7 +45,7 @@ jobs:
         mkdir -p "$RESOURCES_PATH"
 
         cp "$OUTPUT_DIR/$PROJECT_NAME" "$MACOS_PATH/"
-        cp -R "$OUTPUT_DIR/"* "$MACOS_PATH/"
+        cp -R "$OUTPUT_DIR/" "$MACOS_PATH/"
         cp -R "$OUTPUT_DIR/"*.dylib "$MACOS_PATH/" 2>/dev/null || true
 
         if [ -d "$OUTPUT_DIR/Resources" ]; then
