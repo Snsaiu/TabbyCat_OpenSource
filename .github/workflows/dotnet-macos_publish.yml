@@ -25,11 +25,10 @@ jobs:
         dotnet-version: 9.0.x
 
     - name: Grant execute permission to the script
-      run: | 
-        chmod +x ./macos_publish.sh
+      run: chmod +x ${{ env.Project_Path }}/macos_publish.sh
 
     - name: Run macOS publish script
-      run: ./macos_publish.sh
+      run: ${{ env.Project_Path }}/macos_publish.sh
 
     - name: Package .app into ZIP
       run: |
