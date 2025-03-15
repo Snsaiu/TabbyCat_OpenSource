@@ -58,7 +58,7 @@ jobs:
              -F "appName=TabbyCat" \
              -F "osType=1" \
              -F "version=$version"
-        
+      
         echo "✅ 上传成功"
    
 
