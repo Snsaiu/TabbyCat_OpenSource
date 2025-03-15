@@ -129,7 +129,7 @@ jobs:
         path: ${{ env.Project_Path }}/app-release.zip
 
     - name: Upload ZIP package and metadata
-       run: |
+      run: |
         $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
         
         $formData = @{
