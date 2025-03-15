@@ -28,14 +28,14 @@ jobs:
     - name: Build and Create .app Bundle
       run: |
         PROJECT_NAME="TabbyCat.Desktop"
-        OUTPUT_DIR="$env:Project_Path/bin/Release/net9.0/osx-arm64/publish"
+        OUTPUT_DIR="$Project_Path/bin/Release/net9.0/osx-arm64/publish"
         
         echo "Building for osx-arm64..."
         dotnet publish $Project_Path/$PROJECT_NAME.csproj -r osx-arm64 -c Release
         
         echo "Creating the .app bundle..."
         APP_NAME="TabbyCat.app"
-        CONTENT_PATH="$env:Project_Path/$APP_NAME/Contents"
+        CONTENT_PATH="$Project_Path/$APP_NAME/Contents"
         MACOS_PATH="$CONTENT_PATH/MacOS"
         RESOURCES_PATH="$CONTENT_PATH/Resources"
         
