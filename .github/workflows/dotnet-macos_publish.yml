@@ -111,7 +111,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: AvaloniaApp-macOS-ZIP
-        path: proj/app-release.zip
+        path: $Project_Path/app-release.zip
 
     - name: Upload ZIP package and metadata
       run: |
@@ -122,10 +122,10 @@ jobs:
         echo "🔎 VERSION: $version"
         
         curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
-             -F "file=@proj/app-release.zip" \
+             -F "file=$Project_Path/app-release.zip" \
              -F "description=$releaseNotes" \
              -F "appName=TabbyCat" \
-             -F "osType=0" \
+             -F "osType=1" \
              -F "version=$version"
         
         echo "✅ 上传成功"
