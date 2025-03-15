@@ -24,28 +24,92 @@ jobs:
       with:
         dotnet-version: 9.0.x
 
-    - name: Grant execute permission to the script
-      run: chmod +x ${{ env.Project_Path }}/macos_publish.sh
+    - name: Build and Create .app Bundle
+      run: |
+        PROJECT_NAME="TabbyCat.Desktop"
+        OUTPUT_DIR="./bin/Release/net9.0/osx-arm64/publish"
+        
+        echo "Building for osx-arm64..."
+        dotnet publish -r osx-arm64 -c Release
 
-    - name: Run macOS publish script
-      run: ${{ env.Project_Path }}/macos_publish.sh
+        echo "Creating the .app bundle..."
+        APP_NAME="TabbyCat.app"
+        CONTENT_PATH="$APP_NAME/Contents"
+        MACOS_PATH="$CONTENT_PATH/MacOS"
+        RESOURCES_PATH="$CONTENT_PATH/Resources"
+
+        mkdir -p "$MACOS_PATH"
+        mkdir -p "$RESOURCES_PATH"
+
+        cp "$OUTPUT_DIR/$PROJECT_NAME" "$MACOS_PATH/"
+        cp -R "$OUTPUT_DIR/"* "$MACOS_PATH/"
+        cp -R "$OUTPUT_DIR/"*.dylib "$MACOS_PATH/" 2>/dev/null || true
+
+        if [ -d "$OUTPUT_DIR/Resources" ]; then
+            cp -R "$OUTPUT_DIR/Resources" "$RESOURCES_PATH/"
+        fi
+
+        if [ -d "$OUTPUT_DIR/Assets" ]; then
+            cp -R "$OUTPUT_DIR/Assets" "$RESOURCES_PATH/"
+        fi
+
+        if [ -f "app.icns" ]; then
+            echo "Copying app.icns to Resources..."
+            cp "app.icns" "$RESOURCES_PATH/"
+        fi
+
+        cat <<EOF > "$CONTENT_PATH/Info.plist"
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+            <dict>
+                <key>CFBundleIconFile</key>
+                <string>app.icns</string>
+                <key>CFBundleIdentifier</key>
+                <string>com.youyan.tabbycat</string>
+                <key>CFBundleName</key>
+                <string>TabbyCat</string>
+                <key>CFBundleVersion</key>
+                <string>1.0.0</string>
+                <key>LSMinimumSystemVersion</key>
+                <string>10.12</string>
+                <key>CFBundleExecutable</key>
+                <string>TabbyCat.Desktop</string>
+                <key>CFBundleInfoDictionaryVersion</key>
+                <string>6.0</string>
+                <key>CFBundlePackageType</key>
+                <string>APPL</string>
+                <key>CFBundleShortVersionString</key>
+                <string>1.0</string>
+                <key>NSHighResolutionCapable</key>
+                <true/>
+            </dict>
+        </plist>
+        EOF
+
+        echo "Making application executable..."
+        chmod +x "$MACOS_PATH/TabbyCat.Desktop"
 
     - name: Package .app into ZIP
       run: |
         cd proj
         zip -r app-release.zip *.app
+
     - name: Get release notes and version
       id: get_release_notes
       run: |
         echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
         git log -1 --pretty=%B >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
+
         echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
+
     - name: Upload ZIP package as artifact
       uses: actions/upload-artifact@v4
       with:
         name: AvaloniaApp-macOS-ZIP
         path: proj/app-release.zip
+
     - name: Upload ZIP package and metadata
       run: |
         releaseNotes=$(cat "$GITHUB_ENV" | grep RELEASE_NOTES | cut -d'=' -f2-)
@@ -58,15 +122,7 @@ jobs:
              -F "file=@proj/app-release.zip" \
              -F "description=$releaseNotes" \
              -F "appName=TabbyCat" \
-             -F "osType=1" \
+             -F "osType=0" \
              -F "version=$version"
-      
+        
         echo "✅ 上传成功"
-   
-
-  
-
-    
-
-
-     
