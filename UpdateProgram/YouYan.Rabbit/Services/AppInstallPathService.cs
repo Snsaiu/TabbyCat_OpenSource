@@ -20,6 +20,10 @@ public sealed class AppInstallPathService : IAppInstallPathService
         }
         else if (OperatingSystem.IsMacOS())
         {
+            string userApplicationsPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "Applications");
+            return Path.Combine(userApplicationsPath, "YouYan");
         }
         else
         {

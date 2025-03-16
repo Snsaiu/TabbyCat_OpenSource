@@ -132,6 +132,8 @@ public sealed partial class AppListViewModel(
 
     private async Task<bool> InstallAsync(AppListItemModel selected)
     {
+        selected.Status = AppStatus.Waiting;
+        
         var url = Properties.Resources.DownloadUrlBase +
                   $"/api/app/software-base/down-load?appName={selected.AppName.ToString()}";
 
@@ -143,34 +145,39 @@ public sealed partial class AppListViewModel(
         var unzipFolder = Path.Combine(cacheFolder, selected.AppName.ToString());
 
         var installPath = string.Empty;
+        
+        var youyanPath = appInstallPathService.GetAppInstallPath();
+
+        if (!Directory.Exists(youyanPath)) Directory.CreateDirectory(youyanPath);
+        installPath = Path.Combine(youyanPath, selected.AppName.ToString());
+        
         if (OperatingSystem.IsWindows())
         {
-            var youyanPath = appInstallPathService.GetAppInstallPath();
-
-            if (!Directory.Exists(youyanPath)) Directory.CreateDirectory(youyanPath);
-            installPath = Path.Combine(youyanPath, selected.AppName.ToString());
-            if (!Directory.Exists(installPath)) Directory.CreateDirectory(installPath);
-
             SetPermissions(installPath);
+        }
+        
+        if (!Directory.Exists(installPath)) Directory.CreateDirectory(installPath);
 
-            selected.Status = AppStatus.Waiting;
-            var downloadResult = await httpClient.DownloadFileAsync(url, downloadAppName, x =>
-            {
-                selected.Status = AppStatus.Downloading;
-                selected.DownloadProgress = x;
-            }, error =>
-            {
-                //todo 写入日志
+        var downloadResult = await httpClient.DownloadFileAsync(url+$"&osType={GetCurrentSystemEnumIndex()}", downloadAppName, x =>
+        {
+            selected.Status = AppStatus.Downloading;
+            selected.DownloadProgress = x;
+        }, error =>
+        {
+            //todo 写入日志
 
-            });
-            if (!downloadResult || !File.Exists(downloadAppName))
-            {
-                selected.Status = AppStatus.Available;
-                await DialogServer.ShowMessageDialogAsync("下载失败");
-                return false;
-            }
+        });
+        if (!downloadResult || !File.Exists(downloadAppName))
+        {
+            selected.Status = AppStatus.Available;
+            await DialogServer.ShowMessageDialogAsync("下载失败");
+            return false;
+        }
 
-            selected.Status = AppStatus.Installing;
+        selected.Status = AppStatus.Installing;
+        
+        if (OperatingSystem.IsWindows())
+        {
             using (var zipfile = ZipFile.OpenRead(downloadAppName))
             {
                 if (Directory.Exists(unzipFolder))
@@ -189,23 +196,27 @@ public sealed partial class AppListViewModel(
                 CopyFilesRecursively(son.First().FullName, installPath);
             }
 
-            selected.Version = selected.LatestVersion;
-            selected.Status = AppStatus.Installed;
-            await appStateService.WriteAppVersionAsync(selected.AppName, selected.Version);
-
-            selected.InstallLocation = await appStateService.QueryAppLocationAsync(selected.AppName);
-
-            // 清空缓存
-            if (File.Exists(downloadAppName))
-                File.Delete(downloadAppName);
-            if (Directory.Exists(unzipFolder))
-                Directory.Delete(unzipFolder, true);
-            return true;
-        }
-        else if (OperatingSystem.IsLinux())
-        {
+           
         }
         else if (OperatingSystem.IsMacOS())
+        {
+            using (var zipfile = ZipFile.OpenRead(downloadAppName))
+            {
+                if(Directory.Exists(installPath))
+                    Directory.Delete(installPath, true);
+              
+                zipfile.ExtractToDirectory(installPath, true);
+
+                var appInstallFullPath = Path.Combine(installPath,$"{selected.AppName}.app");
+                if (!MacOsHelper.RemoveQuarantine(appInstallFullPath))
+                {
+                    await DialogServer.ShowMessageDialogAsync("app 执行权限设置失败！");
+                    return false;
+                }
+                
+            }
+        }
+        else if (OperatingSystem.IsLinux())
         {
         }
         else
@@ -213,6 +224,26 @@ public sealed partial class AppListViewModel(
             throw new NotImplementedException();
         }
 
+        selected.Version = selected.LatestVersion;
+        selected.Status = AppStatus.Installed;
+        await appStateService.WriteAppVersionAsync(selected.AppName, selected.Version);
+
+        selected.InstallLocation = await appStateService.QueryAppLocationAsync(selected.AppName);
+
+        // 清空缓存
+        if (File.Exists(downloadAppName))
+            File.Delete(downloadAppName);
+        if (Directory.Exists(unzipFolder))
+            Directory.Delete(unzipFolder, true);
+        return true;
+       
+    }
+
+    private int GetCurrentSystemEnumIndex()
+    {
+        if (OperatingSystem.IsWindows()) return 0;
+        if (OperatingSystem.IsMacOS()) return 1;
+        if (OperatingSystem.IsLinux()) return 2;
         throw new NotImplementedException();
     }
 
@@ -258,6 +289,7 @@ public sealed partial class AppListViewModel(
                     {
                         AppName = app, InstallLocation = startFolder, Version = version, Status = AppStatus.Installed
                     });
+                //Icon =  $"avares://TabbyCat/Assets/{a}.png"
             }
             else
             {

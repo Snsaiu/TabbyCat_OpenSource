@@ -15,7 +15,7 @@
     MaxWidth="600"
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaToDecorationsHint="True"
-    Icon="/Assets/avalonia-logo.ico"
+    Icon="/Assets/app.ico"
     ShowInTaskbar="False"
     ShowActivated="False"
     Loaded="Control_OnLoaded"

@@ -75,7 +75,11 @@ public partial class App : TuDogApplication
         }
         else
         {
-            throw new NotImplementedException();
+            var x = screen.WorkingArea.Width - _window.Width - 10;
+            var y = 10;
+            _window.Position = new((int)x, (int)y);
+            _window.Show();
+            _window.Activate();
         }
     }
 
@@ -83,7 +87,7 @@ public partial class App : TuDogApplication
     {
         var v = _window as MainWindow;
         if (v.CanExit())
-            _window.Close();
+           Environment.Exit(0);
         var dialog = ServiceProvider.GetService<IDialogServer>();
         await dialog.ShowMessageDialogAsync("有任务正在进行，无法退出");
     }

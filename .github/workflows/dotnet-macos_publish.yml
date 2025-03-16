@@ -31,7 +31,7 @@ jobs:
         OUTPUT_DIR="$Project_Path/bin/Release/net9.0/osx-arm64/publish"
         
         echo "Building for osx-arm64..."
-        dotnet publish $Project_Path/$PROJECT_NAME.csproj -r osx-arm64 -c Release
+        dotnet publish $Project_Path/$PROJECT_NAME.csproj -r osx-arm64 -c Release --self-contained -p:UseAppHost=true
         
         echo "Creating the .app bundle..."
         APP_NAME="TabbyCat.app"
@@ -56,9 +56,9 @@ jobs:
             cp -R "$OUTPUT_DIR/Assets" "$RESOURCES_PATH/"
         fi
 
-        if [ -f "app.icns" ]; then
+        if [ -f "$Project_Path/app.icns" ]; then
             echo "Copying app.icns to Resources..."
-            cp "app.icns" "$RESOURCES_PATH/"
+            cp "$Project_Path/app.icns" "$RESOURCES_PATH/"
         fi
 
         cat <<EOF > "$CONTENT_PATH/Info.plist"
@@ -90,8 +90,37 @@ jobs:
         </plist>
         EOF
 
+                # Update your entitlements.plist creation:
+        cat <<EOF > "$CONTENT_PATH/entitlements.plist"
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>com.apple.security.cs.allow-jit</key>
+            <true/>
+            <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+            <true/>
+            <key>com.apple.security.cs.disable-library-validation</key>
+            <true/>
+            <key>com.apple.security.cs.allow-dyld-environment-variables</key>
+            <true/>
+            <key>com.apple.security.network.client</key>
+            <true/>
+            <key>com.apple.security.network.server</key>
+            <true/>
+            <key>com.apple.security.files.user-selected.read-write</key>
+            <true/>
+        </dict>
+        </plist>
+        EOF
+
         echo "Making application executable..."
         chmod +x "$MACOS_PATH/TabbyCat.Desktop"
+
+    # - name: Code Sign Application
+    #   run: |
+    #     codesign --force --deep --sign "Developer ID Application: snsaiu@outlook.com (TEAM_ID)" --options=runtime TabbyCat.app
+      
 
     - name: Package .app into ZIP
       run: |
@@ -120,13 +149,17 @@ jobs:
         git log -1 --pretty=%B >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
 
-        # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
-        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $GITHUB_ENV
+         # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
+        echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
 
     - name: 设置环境变量
       run: |
-        echo "RELEASE_NOTES=$(git log -1 --pretty=%B)" >> $env:GITHUB_ENV
-        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $env:GITHUB_ENV
+        echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+        git log -1 --pretty=%B >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
+          # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
+        echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
 
     - name: Upload ZIP package as artifact
       uses: actions/upload-artifact@v4
@@ -136,18 +169,15 @@ jobs:
 
     - name: Upload ZIP package and metadata
       run: |
-        cat $GITHUB_ENV  # 输出调试信息，确认变量是否正确写入
-        releaseNotes=$(awk -F= '/^RELEASE_NOTES=/{print $2}' "$GITHUB_ENV")
-        version=$(awk -F= '/^VERSION=/{print $2}' "$GITHUB_ENV")
         
-        echo "🔎 RELEASE_NOTES: $releaseNotes"
-        echo "🔎 VERSION: $version"
+        echo "🔎 RELEASE_NOTES: $RELEASE_NOTES"
+        echo "🔎 VERSION: $VERSION"
         
         curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
              -F "file=@AvalonModules/TabbyCat/TabbyCat.Desktop/app-release.zip" \
-             -F "description=$releaseNotes" \
+             -F "description=$RELEASE_NOTES" \
              -F "appName=TabbyCat" \
              -F "osType=1" \
-             -F "version=$version"
+             -F "version=$VERSION"
         
         echo "✅ 上传成功"

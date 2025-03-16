@@ -7,7 +7,7 @@
 
              <TrayIcon.Icons>
                  <TrayIcons>
-                     <TrayIcon Icon="/Assets/avalonia-logo.ico">
+                     <TrayIcon Icon="/Assets/app.ico">
                          <TrayIcon.Menu>
                              <NativeMenu>
                                  <NativeMenuItem Header="显示" Click="Show" />

@@ -21,16 +21,13 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 {
     public Task<bool> QueryAppExistsAsync(AppName app)
     {
-        if (OperatingSystem.IsWindows())
+        if (OperatingSystem.IsWindows()|| OperatingSystem.IsMacOS())
         {
             var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), app.ToString());
             if (!Directory.Exists(folder))
                 return Task.FromResult(false);
             var v = Directory.GetFiles(folder, "v");
             return Task.FromResult(v.Length > 0);
-        }
-        else if (OperatingSystem.IsMacOS())
-        {
         }
         else if (OperatingSystem.IsLinux())
         {
@@ -45,7 +42,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 
     public async Task<string?> QueryAppInstalledVersionAsync(AppName app)
     {
-        if (OperatingSystem.IsWindows())
+        if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
         {
             var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), app.ToString());
             if (!Directory.Exists(folder))
@@ -55,9 +52,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 
             return null;
         }
-        else if (OperatingSystem.IsMacOS())
-        {
-        }
+      
         else if (OperatingSystem.IsLinux())
         {
         }
@@ -91,12 +86,9 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 
     public Task<string> QueryAppLocationAsync(AppName app)
     {
-        if (OperatingSystem.IsWindows())
+        if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
         {
             return Task.FromResult(Path.Combine(appInstallPathService.GetAppInstallPath(), app.ToString()));
-        }
-        else if (OperatingSystem.IsMacOS())
-        {
         }
         else if (OperatingSystem.IsLinux())
         {
@@ -111,15 +103,12 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 
     public async Task WriteAppVersionAsync(AppName app, string version)
     {
-        if (OperatingSystem.IsWindows())
+        if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
         {
             var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), app.ToString());
             if (!Directory.Exists(folder))
                 throw new InvalidOperationException($"文件夹{folder}不存在");
             await File.WriteAllTextAsync(Path.Combine(folder, "v"), version);
-        }
-        else if (OperatingSystem.IsMacOS())
-        {
         }
         else if (OperatingSystem.IsLinux())
         {
@@ -145,14 +134,14 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 
     public Task LaunchAppAsync(AppName app, string? customAppName = null, bool single = true, string[]? args = null)
     {
-        if (OperatingSystem.IsWindows())
+        if (OperatingSystem.IsWindows() )
         {
             var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), app.ToString());
             if (!Directory.Exists(folder))
                 throw new InvalidOperationException($"文件夹{folder}不存在，无法启动程序");
             var appName = customAppName ?? app.ToString();
             var fullPath = Path.Combine(folder, appName + ".exe");
-
+           
             if (Process.GetProcessesByName(appName).Length > 0 && single) return Task.CompletedTask;
 
             Process.Start(new ProcessStartInfo
@@ -165,6 +154,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
         }
         else if (OperatingSystem.IsMacOS())
         {
+            Process.Start("open", $"-a {app.ToString()}");
         }
         else if (OperatingSystem.IsLinux())
         {
@@ -185,10 +175,31 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
             if (!Directory.Exists(folder))
                 throw new InvalidOperationException($"文件夹{folder}不存在");
             var appName = customAppName ?? app.ToString();
+            
             return Task.FromResult(Process.GetProcessesByName(appName).Length > 0);
         }
         else if (OperatingSystem.IsMacOS())
         {
+            string appName = app.ToString(); // 应用名
+            string command = $"ps aux | grep '{appName}.app' | grep -v 'grep'";
+
+            Process process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{command}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+
+            process.Start();
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+
+            return Task.FromResult(!string.IsNullOrWhiteSpace(output));
         }
         else if (OperatingSystem.IsLinux())
         {

@@ -7,7 +7,7 @@ PROJECT_NAME="TabbyCat.Desktop"
 OUTPUT_DIR="./bin/Release/net9.0/osx-arm64/publish"
 
 # Build for arm64
-echo "Building for osx-arm64..."
+echo "Building for osx-arm64...  $OUTPUT_DIR"
 dotnet publish -r osx-arm64 -c Release
 
 # Create the .app bundle
@@ -26,7 +26,7 @@ mkdir -p "$RESOURCES_PATH"
 # Copy files to the bundle
 echo "Copying files to app bundle..."
 cp "$OUTPUT_DIR/$PROJECT_NAME" "$MACOS_PATH/"
-cp -R "$OUTPUT_DIR/"* "$MACOS_PATH/"
+cp -R "$OUTPUT_DIR/" "$MACOS_PATH/"
 cp -R "$OUTPUT_DIR/"*.dylib "$MACOS_PATH/" 2>/dev/null || true
 
 # Copy Resources and Assets
