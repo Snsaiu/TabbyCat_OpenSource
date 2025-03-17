@@ -12,7 +12,7 @@ namespace TabbyCat.Models;
 /// <summary>
 /// open ai 专属模板
 /// </summary>
-public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IInitializeable
+public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IInitializeable,IApiPath
 {
     public string SelectedModel { get; set; } = string.Empty;
 
@@ -22,7 +22,7 @@ public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IIni
     public override AiModelType Provider => AiModelType.OpenAiApi;
 
     public override string ApiDomain { get; set; } =
-        "https://api.openai.com/v1/chat/completions"; // "https://api.openai.com";
+        "https://api.openai.com"; // "https://api.openai.com";
 
     public virtual async Task<IEnumerable<string>> GetModelsAsync()
     {
@@ -33,7 +33,7 @@ public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IIni
         try
         {
             var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://api.openai.com/v1/models");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiDomain}/v1/models");
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Authorization", $"Bearer {ApiKey}");
             var response = await client.SendAsync(request);
@@ -56,4 +56,5 @@ public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IIni
         Models.Reset(await GetModelsAsync());
     }
 
+    public virtual string ApiPath { get; set; }="/v1/chat/completions";
 }

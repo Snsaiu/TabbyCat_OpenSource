@@ -7,7 +7,9 @@ namespace TabbyCat.Models;
 public class DeepSeekModel : OpenAiApiModel
 {
     public override AiModelType Provider => AiModelType.DeepSeek;
-    public override string ApiDomain { get; set; } = "https://api.deepseek.com/chat/completions";
+    public override string ApiDomain { get; set; } = "https://api.deepseek.com";
+
+    public override string ApiPath { get; set; } = "/chat/completions";
 
     public override async Task<IEnumerable<string>> GetModelsAsync()
     {
@@ -16,7 +18,7 @@ public class DeepSeekModel : OpenAiApiModel
         try
         {
             var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://api.deepseek.com/models");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiDomain}/models");
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Authorization", $"Bearer {ApiKey}");
             var response = await client.SendAsync(request);
