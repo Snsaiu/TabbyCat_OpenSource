@@ -2,7 +2,7 @@ name: publish-macos
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "Publish" ]
 
 jobs:
   build:
