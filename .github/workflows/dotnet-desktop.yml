@@ -2,7 +2,7 @@ name: .NET Core Desktop Release
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "Publish" ]
 
 jobs:
   build:
