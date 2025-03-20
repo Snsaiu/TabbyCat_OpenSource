@@ -1,0 +1,84 @@
+name: .NET Core Desktop Release
+
+on:
+  push:
+    branches: [ "RabbitPublish" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    env:
+      Solution_Name: TabbyCat.sln      # 你的解决方案路径
+      Project_Path: UpdateProgram/YouYan.Rabbit    # 你的主项目路径
+
+    steps:
+    - name: Checkout 代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0   # 获取完整提交历史，以便提取提交日志
+
+    - name: 安装 .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: 恢复依赖
+      run: dotnet restore $env:Solution_Name
+
+    - name: 编译项目
+      run: dotnet build $env:Project_Path --configuration Release --no-restore
+
+    - name: 打包 ZIP 文件
+      run: |
+        Compress-Archive -Path $env:Project_Path\bin\Release\* -DestinationPath app-release.zip
+
+    - name: 获取发布描述 (提交日志) 和版本号
+      id: get_release_notes
+      run: |
+        echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+        git log -1 --pretty=%B >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
+        # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
+        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $GITHUB_ENV
+
+    - name: 设置环境变量
+      run: |
+        echo "RELEASE_NOTES=$(git log -1 --pretty=%B)" >> $env:GITHUB_ENV
+        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $env:GITHUB_ENV
+    
+    - name: 上传 ZIP 包和描述到后台
+      run: |
+        $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
+        
+        $formData = @{
+            file = Get-Item -Path ".\app-release.zip"
+            description = $releaseNotes
+            appName = "Rabbit"
+            osType = 0
+            version = $env:VERSION
+        }
+    
+        Write-Host "🔎 RELEASE_NOTES: $releaseNotes"
+        Write-Host "🔎 VERSION: $env:VERSION"
+        $response = Invoke-WebRequest `
+                -Uri "${{ secrets.UPLOAD_APP_URL }}" `
+                -Method Post `
+                -Form $formData `
+                -ErrorAction Stop
+    
+        Write-Host "✅ 上传成功"
+        Write-Host "响应内容: $($response.Content)"
+    
+       
+
+   
+
+  
+
+    
+
+
+     
