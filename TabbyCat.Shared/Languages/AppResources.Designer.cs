@@ -222,6 +222,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agent.
+        /// </summary>
+        public static string Agent {
+            get {
+                return ResourceManager.GetString("Agent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AI Assisted Doctor.
         /// </summary>
         public static string AIAssistedDoctor {

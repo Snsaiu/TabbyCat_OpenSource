@@ -16,10 +16,15 @@
 
   <PropertyGroup>
     <ScanAssemblyRule>^YouYan.Rabbit</ScanAssemblyRule>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildProjectFile)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\app.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +42,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Http" />
-      <PackageReference Include="SharpHook"/>
+      <PackageReference Include="SharpHook" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,9 +57,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="Avalonia.Markup.Xaml.Loader"/>
-    <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="HotAvalonia"/>
-    <PackageReference Include="HotAvalonia.Extensions" PrivateAssets="All"/>
+    <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="Avalonia.Markup.Xaml.Loader" />
+    <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="HotAvalonia" />
+    <PackageReference Include="HotAvalonia.Extensions" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,11 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TabbyCat.AiFunctionCalls;
 using TabbyCat.Components.ViewModels;
 using TabbyCat.Factories;
 using TabbyCat.IServices.LocalConfigs;
@@ -149,6 +151,10 @@ public partial class ChatViewModel(
                 messageSession?.Messages.Add(new MessagesItem
                     { Content = occupation.FirstOrDefault()?.Description ?? string.Empty, Role = Role.System });
             }
+            else if (aiChatSession.Occupation == AssistantOccupation.Agent)
+            {
+                messageSession?.Messages.Add(new() { Content = AiFunctionFactory.Description(), Role = Role.System });
+            }
             else
             {
                 var discritpion = LocalizationResourceManager.Instance[$"{AiChatSession.Occupation.ToString()}Prompt"];
@@ -180,10 +186,14 @@ public partial class ChatViewModel(
         await SseSendAsync(InputTextContent);
     }
 
-    private async Task SseSendAsync(string arg)
+    private string agentCommandParameter = string.Empty;
+
+    private async Task SseSendAsync(string arg, bool addUserContentToMessage = true)
     {
         try
         {
+            agentCommandParameter = string.Empty;
+
             IsBusy = true;
             cancelTokenSource = new();
             if (aiApiModelBase == null)
@@ -199,48 +209,101 @@ public partial class ChatViewModel(
             if (messageSession is null)
                 throw new NullReferenceException();
 
-            var userInputKey = await SaveChatSessionAsync(arg, Role.User);
-            var newMessage = new MessagesItem()
-                { Content = arg, Role = Role.User, Key = userInputKey, ShowMarkdownMode = showMarkDownState };
-            messageSession.Messages.Add(newMessage);
+            MessagesItem assistantMessage;
 
-            ChatModels.Add(new()
-                { Content = arg, Role = Role.User, Key = userInputKey, ShowMarkdownMode = showMarkDownState });
-            ChatItemChanged.Invoke();
+            if (addUserContentToMessage)
+            {
+                var userInputKey = await SaveChatSessionAsync(arg, Role.User);
+                var newMessage = new MessagesItem()
+                    { Content = arg, Role = Role.User, Key = userInputKey, ShowMarkdownMode = showMarkDownState };
+                messageSession.Messages.Add(newMessage);
+
+                ChatModels.Add(new()
+                    { Content = arg, Role = Role.User, Key = userInputKey, ShowMarkdownMode = showMarkDownState });
+                ChatItemChanged.Invoke();
+
+                assistantMessage = new() { Role = Role.Assistant, StreamEnd = false };
+                ChatModels.Add(assistantMessage);
+            }
+            else
+            {
+                var newMessage = new MessagesItem()
+                    { Content = arg, Role = Role.User, Key = Guid.Empty, ShowMarkdownMode = showMarkDownState };
+                messageSession.Messages.Add(newMessage);
+                assistantMessage = ChatModels.Last();
+            }
+
 
             var requestService = AiRequestFactory.CreateService(messageSession, aiApiModelBase);
-            var receiveMessage = new MessagesItem() { Role = Role.Assistant, StreamEnd = false };
-            ChatModels.Add(receiveMessage);
 
-            await requestService.StreamProcessResponseAsync(data =>
+
+            await requestService.StreamProcessResponseAsync(async data =>
             {
                 if (data is not UnityResponseModel result) return true;
 
                 if (!result.Ok)
                 {
-                    receiveMessage.StreamEnd = true;
+                    assistantMessage.StreamEnd = true;
                     return true;
                 }
 
-                receiveMessage.Content += result.Content;
-                if (result.StreamFinished)
+                Debug.WriteLine(result.Content);
+                if (AiChatSession.Occupation == AssistantOccupation.Agent)
                 {
-                    receiveMessage.StreamEnd = true;
-                    return true;
-                }
+                    agentCommandParameter += result.Content;
+                    if (!agentCommandParameter.StartsWith("{"))
+                    {
+                        assistantMessage.Content += result.Content;
 
+                        if (result.StreamFinished)
+                        {
+                            assistantMessage.StreamEnd = true;
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if (result.StreamFinished)
+                        {
+                            // 调用功能
+                            var functionResult = await AiFunctionFactory.QueryAsync(agentCommandParameter);
+                            if (functionResult is null)
+                                throw new NullReferenceException();
+                            await SseSendAsync(JsonConvert.SerializeObject(functionResult), false);
+                            assistantMessage.StreamEnd = true;
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    assistantMessage.Content += result.Content;
+                    if (result.StreamFinished)
+                    {
+                        assistantMessage.StreamEnd = true;
+                        return true;
+                    }
+                }
                 ChatItemChanged?.Invoke();
                 return false;
             }, cancelTokenSource.Token);
+
+            messageSession.Messages.RemoveAll(x =>
+                (x.Key == Guid.Empty && x.Role != Role.System) || string.IsNullOrEmpty(x.Content));
+
             if (aiApiModelBase.ContextCountLimit && messageSession.Messages.Count - 1 > aiApiModelBase.ContextCount)
                 messageSession.Messages.RemoveAt(1);
 
-            var systemOutputKey = await SaveChatSessionAsync(receiveMessage.Content ?? string.Empty, Role.Assistant);
-            messageSession.Messages.Add(new()
+            if (!string.IsNullOrEmpty(assistantMessage.Content))
             {
-                Content = receiveMessage.Content ?? string.Empty, Role = Role.Assistant, Key = systemOutputKey,
-                ShowMarkdownMode = showMarkDownState
-            });
+                var systemOutputKey =
+                    await SaveChatSessionAsync(assistantMessage.Content ?? string.Empty, Role.Assistant);
+                messageSession.Messages.Add(new()
+                {
+                    Content = assistantMessage.Content ?? string.Empty, Role = Role.Assistant, Key = systemOutputKey,
+                    ShowMarkdownMode = showMarkDownState
+                });
+            }
         }
         catch (Exception e)
         {

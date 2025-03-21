@@ -1116,4 +1116,7 @@
   <data name="TextToImage" xml:space="preserve">
     <value>文生图</value>
   </data>
+    <data name="Agent" xml:space="preserve">
+    <value>智能体</value>
+  </data>
 </root>

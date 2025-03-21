@@ -7,6 +7,7 @@ public enum AssistantOccupation
 {
     // 通用
     Common,
+    Agent,
     EthereumDeveloper,
     LinuxTerminal,
     EnglishTranslatorandImprover,
@@ -214,6 +215,7 @@ public enum AssistantOccupation
     TechTroubleshooter,
     AyurvedaFoodTester,
     MusicVideoDesigner,
+
 
 
     //自定义

@@ -100,7 +100,7 @@ public abstract class
         return responseString;
     }
 
-    public async Task StreamProcessResponseAsync(Func<UnityResponseModel, bool> action,
+    public async Task StreamProcessResponseAsync(Func<UnityResponseModel, Task<bool>> action,
         CancellationToken cancellationToken)
     {
         try
@@ -145,7 +145,10 @@ public abstract class
                                 else
                                 {
                                     var resultModel = await ConvertResponseToUnityResponseModel(responseModel);
-                                    var cancel = action?.Invoke(resultModel);
+                                    if (string.IsNullOrEmpty(resultModel?.Content))
+                                        continue;
+
+                                    var cancel = await action?.Invoke(resultModel);
                                     if (cancel == true)
                                         return;
                                 }

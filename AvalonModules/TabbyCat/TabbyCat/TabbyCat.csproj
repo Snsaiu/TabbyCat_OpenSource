@@ -24,6 +24,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="FluentAvaloniaUI" />
       <PackageReference Include="Markdig"/>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting"/>
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="SharpHook" />
       <PackageReference Include="Avalonia.Themes.Fluent"/>

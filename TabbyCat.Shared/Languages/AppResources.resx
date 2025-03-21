@@ -1728,4 +1728,7 @@
   <data name="TextToImage" xml:space="preserve">
     <value>Text to image</value>
   </data>
+    <data name="Agent" xml:space="preserve">
+    <value>Agent</value>
+  </data>
 </root>
