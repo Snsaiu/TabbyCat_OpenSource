@@ -11,6 +11,7 @@
 
 
   <ItemGroup>
+    <AvaloniaResource Include="app.icns" />
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
