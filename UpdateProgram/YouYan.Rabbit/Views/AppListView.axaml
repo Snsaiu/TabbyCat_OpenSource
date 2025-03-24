@@ -17,6 +17,8 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Orientation="Vertical">
+            <Button Content="Rabbit新版本已发布！点击安装！" IsVisible="{Binding NewVersionAvailable}"
+                    Command="{Binding OpenRabbitHoleCommand}" />
             <Expander Header="{x:Static languages:Language.Installed}" IsExpanded="True">
                 <ListBox ItemsSource="{Binding InstalledApps}">
                     <ListBox.ItemTemplate>

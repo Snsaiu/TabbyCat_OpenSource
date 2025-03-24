@@ -16,6 +16,9 @@ public interface IAppStateService
     Task<string?> QueryAppInstalledVersionAsync(AppName app);
 
     Task<AppReleaseModel?> QueryLatestReleaseAsync(AppName app);
+
+    Task<AppReleaseModel?> QueryLatestReleaseAsync(string app);
+
     Task<string> QueryAppLocationAsync(AppName app);
 
     Task WriteAppVersionAsync(AppName app, string version);
@@ -23,8 +26,9 @@ public interface IAppStateService
     Task LaunchAppAsync(AppName app, string? customAppName = null, bool single = true, string[]? args = null);
 
     Task<bool> AppIsRunningAsync(AppName app, string? customAppName = null);
+    Task<bool> UninstallAppAsync(AppName app);
 
-    public Task<bool> UninstallAppAsync(AppName app);
+    Task<string?> QueryAppInstalledVersionAsync(string name);
 
 
 }

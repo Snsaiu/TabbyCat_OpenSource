@@ -1,7 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 using TuDog.IocAttribute;
-
+using YouYan.Rabbit.Extensions;
 using YouYan.Rabbit.IServices;
 
 namespace YouYan.Rabbit.Services
@@ -33,5 +34,19 @@ namespace YouYan.Rabbit.Services
         public string? OSArchitecture => RuntimeInformation.OSArchitecture.ToString();
 
         public string? OSPlatform => RuntimeInformation.OSDescription;
+
+        public AppOsType OsType
+        {
+            get
+            {
+                if (OperatingSystem.IsWindows())
+                    return AppOsType.Windows;
+                else if (OperatingSystem.IsMacOS())
+                    return AppOsType.MacOs;
+                else if (OperatingSystem.IsLinux())
+                    return AppOsType.Ubuntu;
+                throw new PlatformNotSupportedException();
+            }
+        }
     }
 }

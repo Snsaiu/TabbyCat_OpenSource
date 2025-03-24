@@ -1,4 +1,6 @@
-﻿namespace YouYan.Rabbit.IServices
+﻿using YouYan.Rabbit.Extensions;
+
+namespace YouYan.Rabbit.IServices
 {
     public interface ISystemService
     {
@@ -17,5 +19,7 @@
         /// 获得系统
         /// </summary>
         string OSPlatform { get; }
+
+        AppOsType OsType { get; }
     }
 }

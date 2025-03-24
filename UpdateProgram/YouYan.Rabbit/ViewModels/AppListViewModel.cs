@@ -20,6 +20,7 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
 using YouYan.Rabbit.Components.ViewModels;
+using YouYan.Rabbit.Services;
 
 namespace YouYan.Rabbit.ViewModels;
 
@@ -27,6 +28,7 @@ namespace YouYan.Rabbit.ViewModels;
 public sealed partial class AppListViewModel(
     IAppStateService appStateService,
     HttpClient httpClient,
+    ISystemService systemService,
     IAppInstallPathService appInstallPathService,
     ICacheFolderService cacheFolderService) : ViewModelBase
 {
@@ -38,6 +40,10 @@ public sealed partial class AppListViewModel(
 
     private Thread appsRunningStatusThread;
 
+    private Thread rabbitCheckVersionThread;
+
+    [ObservableProperty] private bool newVersionAvailable;
+
     protected override async Task OnLoaded()
     {
         await LoadInstalledAppsAsync();
@@ -48,7 +54,82 @@ public sealed partial class AppListViewModel(
         appsRunningStatusThread = new(LoopCheckAppRunningStatus);
         appsRunningStatusThread.IsBackground = true;
         appsRunningStatusThread.Start();
+
+        rabbitCheckVersionThread = new(LoopCheckRabbitVersion);
+        rabbitCheckVersionThread.IsBackground = true;
+        rabbitCheckVersionThread.Start();
     }
+
+
+    [RelayCommand]
+    private void OpenRabbitHole()
+    {
+        var cacheFolder = cacheFolderService.Get();
+        var unzipFolder = Path.Combine(cacheFolder, "RabbitHole");
+
+        if (OperatingSystem.IsWindows())
+        {
+            var exe = Path.Combine(unzipFolder, "RabbitHole.exe");
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = exe, // 指定可执行文件路径
+                UseShellExecute = true // 确保以默认应用打开
+            });
+        }
+    }
+
+    private void LoopCheckRabbitVersion()
+    {
+        var currentVersion = appStateService.QueryAppInstalledVersionAsync("Rabbit").GetAwaiter().GetResult();
+        while (true)
+        {
+            var result = appStateService.QueryLatestReleaseAsync("Rabbit").GetAwaiter().GetResult();
+            if (result is null)
+            {
+                Thread.Sleep(TimeSpan.FromMinutes(10));
+                continue;
+            }
+
+            if (currentVersion != result.Version)
+            {
+                var url = Properties.Resources.DownloadUrlBase +
+                          $"/api/app/software-base/down-load?appName=RabbitHole&osType={(int)systemService.OsType}";
+
+                var cacheFolder = cacheFolderService.Get();
+                var downloadAppName = Path.Combine(cacheFolder, "RabbitHole.zip");
+                if (File.Exists(downloadAppName))
+                    File.Delete(downloadAppName);
+
+                var unzipFolder = Path.Combine(cacheFolder, "RabbitHole");
+
+                var downloadResult = httpClient.DownloadFileAsync(url, downloadAppName,
+                    x => { Debug.WriteLine("下载rabbit hole 进度:" + x); }, error =>
+                    {
+                        //todo 写入日志
+                    }).GetAwaiter().GetResult();
+                if (downloadResult is true)
+                {
+                    using (var zipfile = ZipFile.OpenRead(downloadAppName))
+                    {
+                        if (Directory.Exists(unzipFolder))
+                            Directory.Delete(unzipFolder, true);
+                        Directory.CreateDirectory(unzipFolder);
+
+                        zipfile.ExtractToDirectory(unzipFolder);
+                    }
+
+                    NewVersionAvailable = true;
+                    break;
+                }
+            }
+
+            Thread.Sleep(TimeSpan.FromMinutes(10));
+        }
+
+        rabbitCheckVersionThread.Interrupt();
+    }
+
+
 
     protected override Task OnUnLoaded()
     {
@@ -133,9 +214,9 @@ public sealed partial class AppListViewModel(
     private async Task<bool> InstallAsync(AppListItemModel selected)
     {
         selected.Status = AppStatus.Waiting;
-        
+
         var url = Properties.Resources.DownloadUrlBase +
-                  $"/api/app/software-base/down-load?appName={selected.AppName.ToString()}";
+                  $"/api/app/software-base/down-load?appName={selected.AppName.ToString()}&osType={(int)systemService.OsType}";
 
         var cacheFolder = cacheFolderService.Get();
         var downloadAppName = Path.Combine(cacheFolder, selected.AppName.ToString() + ".zip");
@@ -145,20 +226,20 @@ public sealed partial class AppListViewModel(
         var unzipFolder = Path.Combine(cacheFolder, selected.AppName.ToString());
 
         var installPath = string.Empty;
-        
+
         var youyanPath = appInstallPathService.GetAppInstallPath();
 
         if (!Directory.Exists(youyanPath)) Directory.CreateDirectory(youyanPath);
         installPath = Path.Combine(youyanPath, selected.AppName.ToString());
-        
+
         if (OperatingSystem.IsWindows())
         {
             SetPermissions(installPath);
         }
-        
+
         if (!Directory.Exists(installPath)) Directory.CreateDirectory(installPath);
 
-        var downloadResult = await httpClient.DownloadFileAsync(url+$"&osType={GetCurrentSystemEnumIndex()}", downloadAppName, x =>
+        var downloadResult = await httpClient.DownloadFileAsync(url, downloadAppName, x =>
         {
             selected.Status = AppStatus.Downloading;
             selected.DownloadProgress = x;
@@ -175,7 +256,7 @@ public sealed partial class AppListViewModel(
         }
 
         selected.Status = AppStatus.Installing;
-        
+
         if (OperatingSystem.IsWindows())
         {
             using (var zipfile = ZipFile.OpenRead(downloadAppName))
@@ -196,7 +277,7 @@ public sealed partial class AppListViewModel(
                 CopyFilesRecursively(son.First().FullName, installPath);
             }
 
-           
+
         }
         else if (OperatingSystem.IsMacOS())
         {
@@ -204,7 +285,7 @@ public sealed partial class AppListViewModel(
             {
                 if(Directory.Exists(installPath))
                     Directory.Delete(installPath, true);
-              
+
                 zipfile.ExtractToDirectory(installPath, true);
 
                 var appInstallFullPath = Path.Combine(installPath,$"{selected.AppName}.app");
@@ -213,7 +294,7 @@ public sealed partial class AppListViewModel(
                     await DialogServer.ShowMessageDialogAsync("app 执行权限设置失败！");
                     return false;
                 }
-                
+
             }
         }
         else if (OperatingSystem.IsLinux())
@@ -236,7 +317,7 @@ public sealed partial class AppListViewModel(
         if (Directory.Exists(unzipFolder))
             Directory.Delete(unzipFolder, true);
         return true;
-       
+
     }
 
     private int GetCurrentSystemEnumIndex()

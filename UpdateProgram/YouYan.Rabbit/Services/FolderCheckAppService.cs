@@ -40,11 +40,12 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
         return Task.FromResult(false);
     }
 
-    public async Task<string?> QueryAppInstalledVersionAsync(AppName app)
+
+    public async Task<string?> QueryAppInstalledVersionAsync(string name)
     {
         if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
         {
-            var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), app.ToString());
+            var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), name);
             if (!Directory.Exists(folder))
                 return null;
             var versionFile = Directory.GetFiles(folder, "v");
@@ -52,7 +53,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 
             return null;
         }
-      
+
         else if (OperatingSystem.IsLinux())
         {
         }
@@ -64,7 +65,19 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
         return null;
     }
 
+
+    public Task<string?> QueryAppInstalledVersionAsync(AppName app)
+    {
+        return QueryAppInstalledVersionAsync(app.ToString());
+    }
+
+
     public Task<AppReleaseModel?> QueryLatestReleaseAsync(AppName app)
+    {
+        return QueryLatestReleaseAsync(app.ToString());
+    }
+
+    public Task<AppReleaseModel?> QueryLatestReleaseAsync(string app)
     {
         var url = Properties.Resources.DownloadUrlBase + "/api/app/software-base/query-release";
 
@@ -79,7 +92,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
         else
             throw new NotImplementedException();
 
-        queryReleaseModel.AppName = app.ToString();
+        queryReleaseModel.AppName = app;
 
         return httpClient.PostRequestAsync<QueryReleaseModel, AppReleaseModel>(url, queryReleaseModel);
     }
@@ -141,7 +154,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
                 throw new InvalidOperationException($"文件夹{folder}不存在，无法启动程序");
             var appName = customAppName ?? app.ToString();
             var fullPath = Path.Combine(folder, appName + ".exe");
-           
+
             if (Process.GetProcessesByName(appName).Length > 0 && single) return Task.CompletedTask;
 
             Process.Start(new ProcessStartInfo
@@ -175,7 +188,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
             if (!Directory.Exists(folder))
                 throw new InvalidOperationException($"文件夹{folder}不存在");
             var appName = customAppName ?? app.ToString();
-            
+
             return Task.FromResult(Process.GetProcessesByName(appName).Length > 0);
         }
         else if (OperatingSystem.IsMacOS())
@@ -231,6 +244,6 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 
             return false;
         }
-        
+
     }
 }
