@@ -91,7 +91,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Expander>
-            <Expander Header="{x:Static languages:Language.Available}">
+            <Expander Header="{x:Static languages:Language.Available}" IsExpanded="True">
                 <ListBox ItemsSource="{Binding AvailableApps}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="models:AppListItemModel">
