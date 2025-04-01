@@ -17,9 +17,11 @@
     <PackageVersion Include="Avalonia.Android" Version="11.2.5" />
     <PackageVersion Include="Avalonia.Xaml.Behaviors" Version="11.2.0.14" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="Duende.IdentityModel.OidcClient" Version="6.0.1" />
+    <PackageVersion Include="Duende.IdentityModel.OidcClient.Extensions" Version="6.0.1" />
     <PackageVersion Include="FluentAvaloniaUI" Version="2.2.0" />
     <PackageVersion Include="Markdig" Version="0.40.0" />
-      <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.13.0"/>
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.13.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.0-preview.1.25080.5" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="RestSharp" Version="112.1.0" />
@@ -40,8 +42,8 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.12.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0-preview.1.25080.5" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-preview.1.25080.5" />
-      <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="11.2.5"/>
-      <PackageVersion Include="HotAvalonia" Version="2.1.0"/>
-      <PackageVersion Include="HotAvalonia.Extensions" Version="2.1.0" PrivateAssets="All"/>
+    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="11.2.5" />
+    <PackageVersion Include="HotAvalonia" Version="2.1.0" />
+    <PackageVersion Include="HotAvalonia.Extensions" Version="2.1.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

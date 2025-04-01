@@ -2,6 +2,8 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using FantasyResultModel;
+using FantasyResultModel.Impls;
 using TabbyCat.Models.RequestModelList;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
@@ -51,9 +53,14 @@ public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IIni
     }
     public ObservableCollection<string> Models { get; set; } = [];
 
-    public async Task InitializeAsync()
+    public virtual async Task<ResultBase<bool>> InitializeAsync()
     {
-        Models.Reset(await GetModelsAsync());
+        var models = await GetModelsAsync();
+        if (!models.Any())
+            return new ErrorResultModel<bool>("No models found");
+        Models.Reset(models);
+        return new SuccessResultModel<bool>();
+
     }
 
     public virtual string ApiPath { get; set; }="/v1/chat/completions";

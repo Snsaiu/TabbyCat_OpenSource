@@ -1,11 +1,20 @@
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Duende.IdentityModel.OidcClient;
 using FluentAvalonia.UI.Windowing;
 using Microsoft.Extensions.DependencyInjection;
+using TabbyCat.Components.ViewModels;
 using TabbyCat.Controls;
 using TabbyCat.Enums;
+using TabbyCat.Extensions;
+using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
+using TabbyCat.Models.Users;
+using TabbyCat.Service.AiServices;
+using TabbyCat.Service.RunningHubServices;
+using TabbyCat.ViewModels;
 using TuDog.Bootstrap;
 using TuDog.Interfaces.IDialogServers;
 
@@ -13,6 +22,15 @@ namespace TabbyCat.Views
 {
     public partial class MainWindow : AppWindow
     {
+
+        private IDialogServer dialogService = TuDogApplication.ServiceProvider.GetService<IDialogServer>();
+
+        private ILoginUserService userService = TuDogApplication.ServiceProvider.GetService<ILoginUserService>();
+
+        private IUser user = TuDogApplication.ServiceProvider.GetService<IUser>();
+
+        private OidcClient oidcClient = TuDogApplication.ServiceProvider.GetService<OidcClient>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -22,10 +40,8 @@ namespace TabbyCat.Views
 
             if(OperatingSystem.IsWindows())
             {
-
                 this.TitleBar.ExtendsContentIntoTitleBar = true;
                 this.TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
-
                 this.Closing+=MainWindow_Closing;
             }
 
@@ -89,6 +105,104 @@ namespace TabbyCat.Views
         private void OnMin(object? sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+
+        private async void Login(object? sender, RoutedEventArgs e)
+        {
+            await LoginAsync();
+        }
+
+        private async Task LoginAsync()
+        {
+            var result = await OidcLogin();
+            // 写入User中
+            var email =  WriteUserInfo(result);
+            this.loginButton.IsVisible = false;
+            this.userButton.IsVisible = true;
+            this.userButton.Content = email;
+        }
+
+        private async Task<LoginResult> OidcLogin()
+        {
+            var result = await oidcClient.LoginAsync(new() { BrowserTimeout = 60 });
+            if (result.IsError)
+            {
+                await dialogService.ShowMessageDialogAsync($"登陆失败: {result.Error}");
+                return result;
+            }
+
+
+            return result;
+        }
+
+        private string WriteUserInfo(LoginResult result)
+        {
+            var claims = result.User.Claims;
+            var email = claims.FirstOrDefault(x => x.Type == "email")?.Value;
+            var phone = claims.FirstOrDefault(x => x.Type == "phone_number")?.Value;
+            var acccessToken = result.AccessToken;
+            var accessTokenExpiration = result.AccessTokenExpiration;
+            var refreshToken = result.RefreshToken;
+
+            if(string.IsNullOrEmpty(email))
+                throw new ArgumentNullException(nameof(email));
+
+            var newUser = new LoginUserModel(email, phone, string.Empty, acccessToken, accessTokenExpiration, Sex.Man,
+                refreshToken);
+            user.ResetData(newUser);
+            userService.Set(newUser);
+            return email;
+        }
+
+
+        private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
+        {
+            var userService = TuDogApplication.ServiceProvider.GetService<ILoginUserService>();
+
+            var u = userService.GetOrDefault();
+            if (u is null)
+            {
+                loginButton.IsVisible = true;
+                userButton.IsVisible = false;
+            }
+            else
+            {
+                if (u.AccessTokenExpiration < DateTimeOffset.Now)
+                {
+                    await LoginAsync();
+                }
+                else
+                {
+                    user.ResetData(u);
+                    loginButton.IsVisible = false;
+                    userButton.Content = user.Email;
+                    userButton.IsVisible = true;
+
+                }
+
+
+            }
+        }
+
+        private async void Logout(object? sender, RoutedEventArgs e)
+        {
+
+            var result = await dialogService.ShowDialogAsync<LogoutViewModel, LogoutOptionModel>("登出", "登出");
+            if (result is { Ok: true })
+            {
+
+               var logoutResult  =  await oidcClient.LogoutAsync();
+
+               if (logoutResult.IsError)
+               {
+                  await dialogService.ShowMessageDialogAsync($"登出失败:{logoutResult.Error}");
+                   return;
+               }
+                userService.SetNull();
+                await dialogService.ShowMessageDialogAsync("软件即将关闭！", "警告");
+                Environment.Exit(0);
+            }
         }
     }
 }

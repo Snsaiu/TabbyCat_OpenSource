@@ -2,7 +2,7 @@
 
 namespace TabbyCat.Repository.Entities.AiEntities;
 
-public class AiChatMessageRecordEntity : AuditEntityBase
+public class AiChatMessageRecordEntity : UserBaseEntity
 {
     public Guid SessionId { get; set; }
     public string Content { get; set; } = string.Empty;

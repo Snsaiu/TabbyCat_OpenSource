@@ -44,7 +44,10 @@ public class HotKeyHookService:IHotKeyHookService
             if (!timer.Enabled)
                 timer.Start();
         };
+#if !DEBUG
         hook.RunAsync();
+#endif
+
     }
 
     public required Action<IEnumerable<KeyCode>> Action { get; set; }

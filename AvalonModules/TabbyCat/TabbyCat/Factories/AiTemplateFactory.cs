@@ -11,6 +11,7 @@ public static class AiTemplateFactory
     {
         AiApiModelBase model = type switch
         {
+            AiModelType.TabbyCatAi => new TabbyCatAiModel(),
             AiModelType.OpenAiApi => new OpenAiApiModel(),
             AiModelType.AzureOpenAiApi => new AzureOpenAiApiModel(),
             AiModelType.Claude => new ClaudeModel(),
@@ -36,6 +37,7 @@ public static class AiTemplateFactory
             return await GetTemplateAsync(type);
         var convertType = type switch
         {
+            AiModelType.TabbyCatAi => typeof(TabbyCatAiModel),
             AiModelType.OpenAiApi => typeof(OpenAiApiModel),
             AiModelType.AzureOpenAiApi => typeof(AzureOpenAiApiModel),
             AiModelType.Claude => typeof(ClaudeModel),

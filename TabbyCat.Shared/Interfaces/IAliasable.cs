@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using FantasyResultModel;
 
 namespace TabbyCat.Shared.Interfaces;
 
@@ -22,7 +23,7 @@ public interface IHasModels<T> : ISelectable<T>
 
 public interface IInitializeable
 {
-    Task InitializeAsync();
+    Task<ResultBase<bool>> InitializeAsync();
 }
 
 public interface ISelectable<T>

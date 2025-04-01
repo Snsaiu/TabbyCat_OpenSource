@@ -7,7 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using SharpHook.Native;
 
 using System.Diagnostics;
+using Duende.IdentityModel.OidcClient;
 using HotAvalonia;
+using TabbyCat.Extensions;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Shared;
@@ -118,6 +120,13 @@ namespace TabbyCat
             this.window.WindowState = WindowState.Normal;
             window.Show();
             window.Activate();
+        }
+
+        protected override void Register(IServiceCollection collection)
+        {
+            collection.AddSingleton(typeof(OidcClient), x => new OidcClient(OidcOptions.GetOptions()));
+            collection.AddTransient<TokenHandler>();
+            collection.AddHttpClient(ConstParameter.Auth).AddHttpMessageHandler<TokenHandler>();
         }
     }
 }

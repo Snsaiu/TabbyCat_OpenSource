@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -27,6 +28,7 @@ public partial class ChatPanelSettingViewModel(
     IDialogServer dialogServer,
     IAiChatMessageRecordService aiChatMessageRecordService,
     IAiChatSessionService aiChatSessionService,
+    ILoginUserService loginUserService,
     ICustomAssistantOccupationService customAssistantOccupationService,
     IStoreChatRecordService storeChatRecordService) : ParameterViewModelBase, IViewModelResult
 {
@@ -129,8 +131,15 @@ public partial class ChatPanelSettingViewModel(
         var customOccupations = await customAssistantOccupationService.QueryAsync();
         var temps = customOccupations.Select(item => new OccupationType(AssistantOccupation.Custom, item.Name)).ToList();
 
-        temps.AddRange(Enum.GetValues<AssistantOccupation>().Where(x=>x!=AssistantOccupation.Custom).Select(item => new OccupationType(item, LocalizationResourceManager.Instance[item.ToString()])));
-
+        if (loginUserService.GetOrDefault() is not null)
+        {
+            temps.AddRange(Enum.GetValues<AssistantOccupation>().Where(x => x != AssistantOccupation.Custom)
+                .Select(item => new OccupationType(item, LocalizationResourceManager.Instance[item.ToString()])));
+        }
+        else
+        {
+            temps.Add(new OccupationType(AssistantOccupation.Common,LocalizationResourceManager.Instance[AssistantOccupation.Common.ToString()]));
+        }
         return temps;
     }
 

@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using FantasyResultModel;
+using FantasyResultModel.Impls;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
 using TuDog.Extensions;
@@ -21,8 +23,13 @@ public class AzureOpenAiApiModel : AiApiKeyModelBase, IHasModels<string>, IEndPo
 
     public ObservableCollection<string> Models { get; set; } = [];
 
-    public async Task InitializeAsync()
+    public async Task<ResultBase<bool>> InitializeAsync()
     {
-        Models.Reset(await GetModelsAsync());
+        var models = await GetModelsAsync();
+        if (!models.Any())
+            return new ErrorResultModel<bool>("No models found");
+        Models.Reset(models);
+        return new SuccessResultModel<bool>();
+
     }
 }

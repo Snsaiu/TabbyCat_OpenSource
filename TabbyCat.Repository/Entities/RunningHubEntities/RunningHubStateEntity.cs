@@ -2,7 +2,7 @@ using TabbyCat.Shared.Enums;
 
 namespace TabbyCat.Repository.Entities.RunningHubEntities;
 
-public class RunningHubStateEntity:AuditEntityBase
+public class RunningHubStateEntity:UserBaseEntity
 {
     public string TaskId  { get; set; }
 

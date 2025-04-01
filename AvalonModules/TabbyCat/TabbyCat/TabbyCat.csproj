@@ -22,9 +22,13 @@
     </PackageReference>
     <PackageReference Include="Avalonia.Xaml.Behaviors" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Duende.IdentityModel.OidcClient" />
+    <PackageReference Include="Duende.IdentityModel.OidcClient.Extensions" />
+      <PackageReference Include="FantasyResultModel"/>
     <PackageReference Include="FluentAvaloniaUI" />
       <PackageReference Include="Markdig"/>
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting"/>
+      <PackageReference Include="Microsoft.Extensions.Http"/>
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="SharpHook" />
       <PackageReference Include="Avalonia.Themes.Fluent"/>

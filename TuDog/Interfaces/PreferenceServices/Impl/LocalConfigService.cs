@@ -10,11 +10,21 @@ public abstract class LocalConfigService<T>() : ILocalConfigService<T>
 
     public abstract string Key { get; }
 
+    public void SetNull()
+    {
+        PreferenceService.SetNull(Key);
+    }
+
     public virtual T Default { get; } = default;
 
     public T Get()
     {
         return PreferenceService.Get(Key, Default);
+    }
+
+    public T? GetOrDefault()
+    {
+        return PreferenceService.GetOrDefault<T?>(Key);
     }
 
     public void Set(T value)

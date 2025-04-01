@@ -26,7 +26,7 @@ public sealed class JsonPreferenceService : IPreferenceService
                 Directory.CreateDirectory(folder);
             fullFilePath = Path.Combine(folder, fileName);
         }
-        
+
         if (!File.Exists(fullFilePath))
             File.WriteAllText(fullFilePath, "{}");
 
@@ -39,6 +39,25 @@ public sealed class JsonPreferenceService : IPreferenceService
         var config = JObject.Parse(json);
         config[key] = JToken.FromObject(value);
         File.WriteAllText(fullFilePath, config.ToString(Formatting.Indented));
+    }
+
+    public void SetNull(string key)
+    {
+        var json = File.ReadAllText(fullFilePath);
+        var config = JObject.Parse(json);
+        if (config.ContainsKey(key))
+            config.Remove(key);
+        File.WriteAllText(fullFilePath, config.ToString(Formatting.Indented));
+    }
+
+    public T? GetOrDefault<T>(string key)
+    {
+        var json = File.ReadAllText(fullFilePath);
+        var config = JObject.Parse(json);
+        if (!config.ContainsKey(key)) return default;
+
+        var obj = config[key].ToObject<T>();
+        return obj;
     }
 
     public T Get<T>(string key, T defaultValue)

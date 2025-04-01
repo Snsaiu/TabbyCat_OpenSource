@@ -2,6 +2,7 @@
 
 public enum AiModelType
 {
+    TabbyCatAi,
     OpenAiApi,
     AzureOpenAiApi,
     Claude,

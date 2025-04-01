@@ -4,6 +4,7 @@ using TabbyCat.Models.AiReqRes.AiChatRequests;
 using TabbyCat.Models.AiReqRes.AiChatRequests.DeepSeek;
 using TabbyCat.Models.AiReqRes.AiChatRequests.GoogleGemini;
 using TabbyCat.Models.AiReqRes.AiChatRequests.OpenAi;
+using TabbyCat.Models.AiReqRes.AiChatRequests.TabbyCatAi;
 using TabbyCat.Services;
 using TabbyCat.Shared.Enums;
 
@@ -15,6 +16,8 @@ public static class AiRequestFactory
     {
         return aiModel.Provider switch
         {
+            AiModelType.TabbyCatAi => new TabbyCatAiModelRequestService(requestMessage as TabbyCatAiRequestModel,
+                aiModel as TabbyCatAiModel),
             AiModelType.OpenAiApi => new OpenAiModelRequestService(requestMessage as OpenAiRequestModel,
                 aiModel as OpenAiApiModel),
             AiModelType.AzureOpenAiApi => throw new NotImplementedException(),
@@ -38,6 +41,7 @@ public static class AiRequestFactory
     {
         return aiModel.Provider switch
         {
+            AiModelType.TabbyCatAi => new TabbyCatAiRequestMessageBuilder().Build(aiModel),
             AiModelType.OpenAiApi => new OpenAiRequestMessageBuilder().Build(aiModel),
             AiModelType.AzureOpenAiApi => throw new NotImplementedException(),
             AiModelType.Claude => new ClaudeRequestMessageBuilder().Build(aiModel),

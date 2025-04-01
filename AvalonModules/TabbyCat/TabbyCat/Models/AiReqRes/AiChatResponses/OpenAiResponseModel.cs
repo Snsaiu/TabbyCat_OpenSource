@@ -2,7 +2,7 @@
 
 namespace TabbyCat.Models.AiReqRes.AiChatResponses;
 
-public sealed class OpenAiResponseModel : ChatResponse<OpenAiMessageData>
+public class OpenAiResponseModel : ChatResponse<OpenAiMessageData>
 {
 }
 

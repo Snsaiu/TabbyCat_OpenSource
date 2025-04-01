@@ -5,7 +5,7 @@ using TabbyCat.Shared.Extensions;
 
 namespace TabbyCat.Repository.Entities.AiEntities;
 
-public partial class AiChatSessionEntity : AuditEntityBase
+public partial class AiChatSessionEntity : UserBaseEntity
 {
 
     /// <summary>
