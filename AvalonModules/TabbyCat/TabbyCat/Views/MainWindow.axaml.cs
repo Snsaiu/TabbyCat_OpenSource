@@ -22,7 +22,6 @@ namespace TabbyCat.Views
 {
     public partial class MainWindow : AppWindow
     {
-
         private IDialogServer dialogService = TuDogApplication.ServiceProvider.GetService<IDialogServer>();
 
         private ILoginUserService userService = TuDogApplication.ServiceProvider.GetService<ILoginUserService>();
@@ -38,46 +37,45 @@ namespace TabbyCat.Views
             this.AttachDevTools();
 #endif
 
-            if(OperatingSystem.IsWindows())
+            if (OperatingSystem.IsWindows())
             {
                 this.TitleBar.ExtendsContentIntoTitleBar = true;
                 this.TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
-                this.Closing+=MainWindow_Closing;
+                Closing += MainWindow_Closing;
             }
-
         }
 
         private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
         {
-           OnClose(e);
+            OnClose(e);
         }
 
-        private async  void OnClose(object? sender, RoutedEventArgs e)
+        private async void OnClose(object? sender, RoutedEventArgs e)
         {
             OnClose(null);
-
         }
 
         private async void OnClose(object? e)
         {
-            if(OperatingSystem.IsWindows())
+            if (OperatingSystem.IsWindows())
             {
-                (e as WindowClosingEventArgs).Cancel=true;
+                (e as WindowClosingEventArgs).Cancel = true;
             }
+
             var closeService = TuDogApplication.ServiceProvider.GetService<ICloseWindowStateService>();
             var state = closeService.Get();
             if (state == WindowCloseState.Closed)
             {
                 if (OperatingSystem.IsWindows())
                 {
-                    (e as WindowClosingEventArgs).Cancel=false;
+                    (e as WindowClosingEventArgs).Cancel = false;
                     Environment.Exit(0);
                     return;
-
                 }
+
                 this.Close();
             }
-            else if (state== WindowCloseState.Minimized)
+            else if (state == WindowCloseState.Minimized)
             {
                 this.WindowState = WindowState.Minimized;
             }
@@ -86,18 +84,19 @@ namespace TabbyCat.Views
                 var dialogService = TuDogApplication.ServiceProvider.GetService<IDialogServer>();
                 var dialogResult = await dialogService.ShowConfirmDialogAsync("是否要关闭程序?", "消息", "关闭", "最小化");
                 if (dialogResult)
-                {    if(OperatingSystem.IsWindows())
+                {
+                    if (OperatingSystem.IsWindows())
                     {
-                        (e as WindowClosingEventArgs).Cancel=false;
+                        (e as WindowClosingEventArgs).Cancel = false;
                         Environment.Exit(0);
                         return;
-
                     }
+
                     this.Close();
                 }
                 else
                 {
-                    this.WindowState= WindowState.Minimized;
+                    WindowState = WindowState.Minimized;
                 }
             }
         }
@@ -115,10 +114,13 @@ namespace TabbyCat.Views
 
         private async Task LoginAsync()
         {
+            loginButton.IsEnabled = false;
             var result = await OidcLogin();
             // 写入User中
-            var email =  WriteUserInfo(result);
+            var email = WriteUserInfo(result);
             this.loginButton.IsVisible = false;
+            loginButton.IsEnabled = true;
+
             this.userButton.IsVisible = true;
             this.userButton.Content = email;
         }
@@ -145,7 +147,7 @@ namespace TabbyCat.Views
             var accessTokenExpiration = result.AccessTokenExpiration;
             var refreshToken = result.RefreshToken;
 
-            if(string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException(nameof(email));
 
             var newUser = new LoginUserModel(email, phone, string.Empty, acccessToken, accessTokenExpiration, Sex.Man,
@@ -158,47 +160,44 @@ namespace TabbyCat.Views
 
         private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
         {
-            var userService = TuDogApplication.ServiceProvider.GetService<ILoginUserService>();
-
-            var u = userService.GetOrDefault();
-            if (u is null)
+            if (!user.LoginSuccess())
             {
                 loginButton.IsVisible = true;
                 userButton.IsVisible = false;
+                if (user.AccessTokenExpiration < DateTimeOffset.Now)
+                {
+                    if (await dialogService.ShowConfirmDialogAsync("账号需要重新登录，确定要重新登录吗？"))
+                    {
+                        await LoginAsync();
+                    }
+                    else
+                    {
+                        user.Clear();
+                        userService.SetNull();
+                    }
+                }
             }
             else
             {
-                if (u.AccessTokenExpiration < DateTimeOffset.Now)
-                {
-                    await LoginAsync();
-                }
-                else
-                {
-                    user.ResetData(u);
-                    loginButton.IsVisible = false;
-                    userButton.Content = user.Email;
-                    userButton.IsVisible = true;
-
-                }
-
-
+                loginButton.IsVisible = false;
+                userButton.Content = user.Email;
+                userButton.IsVisible = true;
             }
         }
 
         private async void Logout(object? sender, RoutedEventArgs e)
         {
-
             var result = await dialogService.ShowDialogAsync<LogoutViewModel, LogoutOptionModel>("登出", "登出");
             if (result is { Ok: true })
             {
+                var logoutResult = await oidcClient.LogoutAsync();
 
-               var logoutResult  =  await oidcClient.LogoutAsync();
+                if (logoutResult.IsError)
+                {
+                    await dialogService.ShowMessageDialogAsync($"登出失败:{logoutResult.Error}");
+                    return;
+                }
 
-               if (logoutResult.IsError)
-               {
-                  await dialogService.ShowMessageDialogAsync($"登出失败:{logoutResult.Error}");
-                   return;
-               }
                 userService.SetNull();
                 await dialogService.ShowMessageDialogAsync("软件即将关闭！", "警告");
                 Environment.Exit(0);

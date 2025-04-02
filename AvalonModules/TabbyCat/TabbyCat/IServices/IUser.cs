@@ -13,6 +13,8 @@ public interface IUser
     string RefreshToken { get; set; }
     Sex Sex { get; set; }
 
+    bool LoginSuccess();
+
     public void ResetData(IUser user)
     {
         PhoneNumber = user.PhoneNumber;
@@ -22,5 +24,16 @@ public interface IUser
         AccessTokenExpiration = user.AccessTokenExpiration;
         RefreshToken = user.RefreshToken;
         Sex = user.Sex;
+    }
+
+    public void Clear()
+    {
+        PhoneNumber = string.Empty;
+        Email = string.Empty;
+        Nickname = string.Empty;
+        AccessToken = string.Empty;
+        AccessTokenExpiration = null;
+        RefreshToken = string.Empty;
+        AccessTokenExpiration = null;
     }
 }

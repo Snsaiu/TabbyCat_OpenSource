@@ -32,6 +32,7 @@ namespace TabbyCat
             AvaloniaXamlLoader.Load(this);
             base.Initialize();
 
+            ValidateUserLoginState();
             if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
             {
                 var hotkeyStartProgramService = ServiceProvider.GetService<IHotKeyStartProgramService>();
@@ -43,6 +44,14 @@ namespace TabbyCat
                     hotkeyService.Action += HotKeyImplement;
                 }
             }
+        }
+
+        private void ValidateUserLoginState()
+        {
+            var user = ServiceProvider.GetService<IUser>();
+            var userService = ServiceProvider.GetService<ILoginUserService>();
+            var u = userService.GetOrDefault();
+            if (u is not null) user.ResetData(u);
         }
 
         private void HotKeyImplement(IEnumerable<KeyCode> code)

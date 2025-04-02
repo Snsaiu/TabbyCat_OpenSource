@@ -5,6 +5,7 @@ using TuDog.IocAttribute;
 
 namespace TabbyCat.Models.Users;
 
+
 [Register<IUser>(ServiceLifetime.Singleton)]
 public sealed class LoginUserModel : IUser
 {
@@ -35,4 +36,13 @@ public sealed class LoginUserModel : IUser
     public string RefreshToken { get; set; }
 
     public Sex Sex { get; set; }
+
+    public bool LoginSuccess()
+    {
+        if (string.IsNullOrEmpty(AccessToken) || string.IsNullOrEmpty(RefreshToken) || AccessTokenExpiration is null ||
+            string.IsNullOrEmpty(Email))
+            return false;
+
+        return !(AccessTokenExpiration < DateTime.UtcNow);
+    }
 }
