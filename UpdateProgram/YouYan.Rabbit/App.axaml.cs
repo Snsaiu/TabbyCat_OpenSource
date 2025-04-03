@@ -26,6 +26,8 @@ public partial class App : TuDogApplication
             var x = e.Data.X;
             var y = e.Data.Y;
 
+            if (_window is null)
+                return;
             var mousePosition = _window.Screens.ScreenFromPoint(new(x, y));
 
             if (mousePosition != null)
