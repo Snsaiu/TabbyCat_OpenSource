@@ -22,7 +22,7 @@ namespace TuDog.Bootstrap;
 
 public abstract class TuDogApplication : Application
 {
-    public static IServiceProvider? ServiceProvider { get; private set; }
+    public static IServiceProvider ServiceProvider { get; private set; } = null!;
 
     public static TopLevel? TopLevel { get; set; }
 

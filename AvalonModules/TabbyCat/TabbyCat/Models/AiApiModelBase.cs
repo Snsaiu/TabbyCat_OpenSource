@@ -18,7 +18,7 @@ public abstract class AiApiModelBase : ModelBase
 
     public bool ContextCountLimit { get; set; }
 
-    public double Temperature { get; set; }
+    public double Temperature { get; set; } = 0.1;
 
     public bool IsDefault { get; set; }
 
@@ -26,7 +26,7 @@ public abstract class AiApiModelBase : ModelBase
 
 public abstract class AiApiKeyModelBase : AiApiModelBase, IApiKey
 {
-    public string ApiKey { get; set; }
+    public string ApiKey { get; set; } = string.Empty;
 }
 
 public abstract class AiApiDomainModelBase : AiApiKeyModelBase, IApiDomain

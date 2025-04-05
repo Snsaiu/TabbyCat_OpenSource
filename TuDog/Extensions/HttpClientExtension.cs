@@ -9,17 +9,9 @@ public static class HttpClientExtensions
     public static async Task DownloadFilePostAsync(this HttpClient client, string fileUrl, string savePath,
         Action<double>? progress = null)
     {
-        try
-        {
             using var content = new StringContent(string.Empty);
             using var response = await client.PostAsync(fileUrl, content);
             await DownImplAsync(response, savePath, progress);
-        }
-        catch (Exception e)
-        {
-            //todo :写入日志
-        }
-
     }
 
     private static async Task DownImplAsync(HttpResponseMessage response, string savePath,

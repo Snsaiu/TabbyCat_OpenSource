@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models.Users;
 using TabbyCat.Service.AiServices;
@@ -17,6 +18,7 @@ public sealed partial class LogoutViewModel(
     IRunningHubService runningHubService,
     IRunningHubResourceService runningHubResourceService,
     IRunningHubResultService runningHubResultService,
+    ILogger<LogoutViewModel> logger,
     IAiTemplateSettingService aiTemplateSettingService) : DialogViewModelBase<LogoutOptionModel>
 {
     [ObservableProperty] private LogoutOptionModel model = new();
@@ -24,23 +26,28 @@ public sealed partial class LogoutViewModel(
     protected override async Task<LogoutOptionModel?> OnConfirmAsync()
     {
         var user = loginUserService.Get();
-        if (model.ClearChats == true)
+        if (Model.ClearChats)
         {
-            await aiChatMessageRecordService.DeleteRangeAsync(x => x.PhoneNumber == user.PhoneNumber);
-            await aiChatSessionService.DeleteRangeAsync(x => x.PhoneNumber == user.PhoneNumber);
-            await customAssistantOccupationService.DeleteRangeAsync(x => x.PhoneNumber == user.PhoneNumber);
-            await runningHubService.DeleteRangeAsync(x => x.PhoneNumber == user.PhoneNumber);
+            await aiChatMessageRecordService.DeleteRangeAsync(x => x.Email == user.Email);
+            await aiChatSessionService.DeleteRangeAsync(x => x.Email == user.Email);
+            await customAssistantOccupationService.DeleteRangeAsync(x => x.Email == user.Email);
+            await runningHubService.DeleteRangeAsync(x => x.Email == user.Email);
+            logger.LogInformation("清空聊天历史记录成功。");
         }
 
-        if (model.ClearImageResource == true)
+        if (Model.ClearImageResource )
         {
             runningHubResourceService.Set(runningHubResourceService.Default);
-            await runningHubResultService.DeleteRangeAsync(x => x.PhoneNumber == user.PhoneNumber);
+            await runningHubResultService.DeleteRangeAsync(x => x.Email == user.Email);
+            logger.LogInformation("清空图片资源成功。");
         }
 
-        if (model.ClearAiApiKeys == true)
-            await aiTemplateSettingService.DeleteRangeAsync(x => x.PhoneNumber == user.PhoneNumber);
+        if (Model.ClearAiApiKeys)
+        {
+            await aiTemplateSettingService.DeleteRangeAsync(x => x.Email == user.Email);
+            logger.LogInformation("清空Ai API Key成功。");
+        }
 
-        return model;
+        return Model;
     }
 }

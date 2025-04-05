@@ -1,8 +1,8 @@
-﻿using System.Net.Http;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Converters;
 using TabbyCat.Shared.Enums;
-using TabbyCat.Shared.Interfaces;
 using TuDog.Bootstrap;
 
 namespace TabbyCat.Models.AiReqRes.AiChatRequests;
@@ -19,7 +19,7 @@ public abstract class MessageSessionBase:ModelBase
 public partial class MessagesItem : ModelBase
 {
     [JsonProperty("content")] [ObservableProperty] [property: JsonIgnore]
-    private string content;
+    private string content=string.Empty;
 
     [JsonIgnore] public Guid Key { get; set; }
 
@@ -67,10 +67,10 @@ public abstract class MessageSession : MaxTokensMessageSession
 
     [JsonProperty("response_format")] public ResponseFormat ResponseFormat { get; set; } = new() { Type = "text" };
 
-    [JsonProperty("stop")] public List<string>? Stop { get; set; }
+    [JsonProperty("stop")] public List<string> Stop { get; set; } = [];
 
     [JsonProperty("stream_options")] public StreamOption StreamOptions { get; set; } = new();
-    [JsonProperty("temperature")] public double Temperature { get; set; }
+    [JsonProperty("temperature")] public override double Temperature { get; set; } = 0.5;
 
     [JsonProperty("tools")] public object? Tools { get; set; }
 
@@ -80,34 +80,25 @@ public abstract class MessageSession : MaxTokensMessageSession
 
     [JsonProperty("top_logprobs")] public object? TopLogprobs { get; set; } = null;
 
-
-    public HttpRequestMessage BuildHttpRequestMessage(AiApiModelBase aiModel)
-    {
-        if (aiModel is AiApiDomainModelBase apiDomain)
-        {
-            var urlPath = apiDomain.ApiDomain;
-            if (aiModel is IApiPath apiPath) urlPath = $"{apiDomain.ApiDomain}{apiPath.ApiPath}";
-            var request = new HttpRequestMessage(HttpMethod.Post, urlPath);
-            request.Headers.Add("Accept", "application/json");
-            request.Headers.Add("Authorization", $"Bearer {apiDomain.ApiKey}");
-
-            return request;
-        }
-
-        throw new NotImplementedException();
-    }
+    private ILogger<MessageSession> _logger =
+        TuDogApplication.ServiceProvider.GetRequiredService<ILogger<MessageSession>>();
 }
 
 public class RoleConverter : StringEnumConverter
 {
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        writer.WriteValue(value.ToString().ToLower());
+            writer.WriteValue(value?.ToString()?.ToLower());
     }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
-        return reader.Value.ToString() switch
+        if (reader.Value is not string role)
+        {
+            throw new JsonSerializationException("Expected role");
+        }
+        
+        return role switch
         {
             "user" => Role.User,
             "system" => Role.System,

@@ -28,13 +28,16 @@ public class RegionManager(RegionContainerBase regionContainer, IContainer conta
 
     private void BuildControl(string regionName, object vm)
     {
+        if (vm is not (TuDogViewModelBase and var tuDogViewModelBase))
+            throw new ArgumentException("VM is not of type TuDogViewModelBase");
+        
         var control = viewLocatorBase.Build(vm);
         if (control is null)
             return;
         control.DataContext = vm;
         regionContainer.GetRegion(regionName).Content = control;
-        control.AttachLoadedBehavior(vm as TuDogViewModelBase);
-        control.AttachUnLoadedBehavior(vm as TuDogViewModelBase);
+        control.AttachLoadedBehavior(tuDogViewModelBase);
+        control.AttachUnLoadedBehavior(tuDogViewModelBase);
         control.Unloaded += UnRemoveRegion;
     }
 

@@ -14,6 +14,6 @@ public sealed class OllamaRequestService(
     protected override Task<UnityResponseModel> ConvertResponseToUnityResponseModel(OllamaResponseModel response)
     {
         return Task.FromResult<UnityResponseModel>(
-            UnityResponseModel.StreamData(response.Message.Content ?? string.Empty));
+            UnityResponseModel.StreamData(response.Message?.Content ?? string.Empty));
     }
 }

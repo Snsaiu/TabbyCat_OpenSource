@@ -20,10 +20,15 @@ public class RegionBehavior:AvaloniaObject
     {
         if(arg1 is not ContentControl contentControl)
             return;
-        var regionContainer = TuDogApplication.ServiceProvider.GetRequiredService<RegionContainerBase>();
+        var regionContainer = TuDogApplication.ServiceProvider?.GetRequiredService<RegionContainerBase>();
         if (regionContainer is null)
             throw new NullReferenceException("RegionContainer is null");
-        regionContainer.TryAdd(arg2.NewValue.ToString(),contentControl);
+        if(arg2.NewValue is not null and var v)
+        {
+            if(v.ToString() is not  null and var vs)
+                regionContainer.TryAdd(vs,contentControl);
+        }
+       
     }
 
 

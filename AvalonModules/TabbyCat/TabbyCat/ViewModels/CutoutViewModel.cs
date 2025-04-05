@@ -9,11 +9,10 @@ namespace TabbyCat.ViewModels;
 [Register]
 public partial class CutoutViewModel:AiMediaViewModelBase
 {
-   [ObservableProperty]
-    private string sourceImagePath;
+    [ObservableProperty] private string sourceImagePath = string.Empty;
 
-    protected override RunningHubWorkType RunningHubWorkType { get; } = RunningHubWorkType.Cutout;
-    protected override long WorkFlowId { get; } = 1895766037193424897;
+    protected override RunningHubWorkType RunningHubWorkType => RunningHubWorkType.Cutout;
+    protected override long WorkFlowId => 1895766037193424897;
 
     protected override Task<bool> ValidateConfirmAsync()
     {

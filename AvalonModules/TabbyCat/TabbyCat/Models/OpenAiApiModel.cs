@@ -1,12 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TabbyCat.Models.RequestModelList;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
+using TuDog.Bootstrap;
 using TuDog.Extensions;
 
 namespace TabbyCat.Models;
@@ -18,9 +19,12 @@ public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IIni
 {
     public string SelectedModel { get; set; } = string.Empty;
 
-    public string? CustomModelName { get; set; }
+    private ILogger<OpenAiApiModel> _logger =
+        TuDogApplication.ServiceProvider.GetRequiredService<ILogger<OpenAiApiModel>>();
 
-    public double TopP { get; set; }
+    public string CustomModelName { get; set; } = string.Empty;
+
+    public double TopP { get; set; } = 0.1;
     public override AiModelType Provider => AiModelType.OpenAiApi;
 
     public override string ApiDomain { get; set; } =
@@ -42,12 +46,11 @@ public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IIni
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             var models = JsonConvert.DeserializeObject<OpenApiModelList>(content);
-            if (models is null)
-                return [];
-            return models.Data.Select(x => x.Id);
+            return models is null ? [] : models.Data.Select(x => x.Id);
         }
         catch (Exception e)
         {
+            _logger.LogError(e,"获得OpenAi的模型发生错误。");
             return [];
         }
     }

@@ -17,6 +17,6 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
     protected override Task<UnityResponseModel> ConvertResponseToUnityResponseModel(TabbyCatAiResponseModel response)
     {
         return Task.FromResult(
-            UnityResponseModel.StreamData(response.Choices.FirstOrDefault()?.Message.Content ?? string.Empty));
+            UnityResponseModel.StreamData(response.Choices.FirstOrDefault()?.Message?.Content ?? string.Empty));
     }
 }

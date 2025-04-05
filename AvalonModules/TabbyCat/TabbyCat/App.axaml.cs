@@ -5,8 +5,6 @@ using Avalonia.Threading;
 using Microsoft.Extensions.DependencyInjection;
 
 using SharpHook.Native;
-
-using System.Diagnostics;
 using Duende.IdentityModel.OidcClient;
 using HotAvalonia;
 using TabbyCat.Extensions;
@@ -35,11 +33,11 @@ namespace TabbyCat
             ValidateUserLoginState();
             if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
             {
-                var hotkeyStartProgramService = ServiceProvider.GetService<IHotKeyStartProgramService>();
+                var hotkeyStartProgramService = ServiceProvider.GetRequiredService<IHotKeyStartProgramService>();
                 var useHotkey = hotkeyStartProgramService.Get();
                 if (useHotkey)
                 {
-                    var hotkeyService = ServiceProvider.GetService<IHotKeyHookService>();
+                    var hotkeyService = ServiceProvider.GetRequiredService<IHotKeyHookService>();
                     hotkeyService.InitService();
                     hotkeyService.Action += HotKeyImplement;
                 }
@@ -48,8 +46,8 @@ namespace TabbyCat
 
         private void ValidateUserLoginState()
         {
-            var user = ServiceProvider.GetService<IUser>();
-            var userService = ServiceProvider.GetService<ILoginUserService>();
+            var user = ServiceProvider.GetRequiredService<IUser>();
+            var userService = ServiceProvider.GetRequiredService<ILoginUserService>();
             var u = userService.GetOrDefault();
             if (u is not null) user.ResetData(u);
         }
@@ -63,9 +61,12 @@ namespace TabbyCat
         {
             if (code.Count() == 2 && code.First() == KeyCode.VcLeftControl && code.Last() == KeyCode.VcSpace)
             {
-                Debug.WriteLine("open or hide window");
+                
                 Dispatcher.UIThread.Invoke(() =>
                 {
+                    if(window is null)
+                        return;
+                    
                     if (window.IsActive)
                     {
                         window.Hide();
@@ -89,14 +90,14 @@ namespace TabbyCat
             {
                 window = new MainWindow();
                 window.ShowInTaskbar = false;
-                window.Topmost = TuDogApplication.ServiceProvider.GetService<ITopMostService>().Get();
+                window.Topmost = TuDogApplication.ServiceProvider.GetRequiredService<ITopMostService>().Get();
 
                 return window;
             }
             else
             {
-                var regionManager = TuDogApplication.ServiceProvider.GetService<IRegionManager>();
-                var view = regionManager!.GetViewByViewModel<MainViewModel>();
+                var regionManager = TuDogApplication.ServiceProvider.GetRequiredService<IRegionManager>();
+                var view = regionManager.GetViewByViewModel<MainViewModel>();
                 return view;
             }
         }
@@ -104,13 +105,13 @@ namespace TabbyCat
 
         private void StartRunningHubWatch()
         {
-            var mannager = ServiceProvider.GetService<IRunningHubStateManager>();
+            var mannager = ServiceProvider.GetRequiredService<IRunningHubStateManager>();
             mannager.StartWatchAsync();
         }
 
         private void InitLanguage()
         {
-            var languageService = ServiceProvider.GetService<ILanguageService>();
+            var languageService = ServiceProvider.GetRequiredService<ILanguageService>();
             var language = languageService.Get();
             LocalizationResourceManager.Instance.SetCulture(new(language));
         }
@@ -121,21 +122,28 @@ namespace TabbyCat
             if (OperatingSystem.IsWindows())
                 Environment.Exit(0);
             else
-                window.Close();
+                window?.Close();
         }
 
         private void Show(object? sender, EventArgs e)
         {
-            this.window.WindowState = WindowState.Normal;
-            window.Show();
-            window.Activate();
+            if (window is not {} w)
+            {
+                return;
+            }
+            
+            w.WindowState = WindowState.Normal;
+            w.Show();
+            w.Activate();
         }
 
         protected override void Register(IServiceCollection collection)
         {
-            collection.AddSingleton(typeof(OidcClient), x => new OidcClient(OidcOptions.GetOptions()));
+            collection.AddSingleton(typeof(OidcClient), _ => new OidcClient(OidcOptions.GetOptions()));
             collection.AddTransient<TokenHandler>();
             collection.AddHttpClient(ConstParameter.Auth).AddHttpMessageHandler<TokenHandler>();
+            
+            collection.AddLoggerBuilder("http://24.233.2.12:3100",new  LogLabelProvider());
         }
     }
 }

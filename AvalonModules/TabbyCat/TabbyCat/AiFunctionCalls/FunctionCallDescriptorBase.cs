@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using TabbyCat.AiFunctionCalls.Models;
 
 namespace TabbyCat.AiFunctionCalls;
 
@@ -15,7 +14,7 @@ public abstract class FunctionCallDescriptorBase<TInput> : IFunctionCallDescript
         var input = new TInput();
 
         var description =
-            $"{FunctionName.ToString()}的功能:{FunctionDescription()},输入参数描述:{input.Description()}。";
+            $"{FunctionName}的功能:{FunctionDescription()},输入参数描述:{input.Description()}。";
         return description;
     }
 

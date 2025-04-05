@@ -11,6 +11,9 @@ public sealed class HeadingBlockParseChain : MarkDownParseChainBase<HeadingBlock
     {
         var fontSize = GetFontSizeByHeadingLevel(block.Level);
 
+        if (block.Inline is null)
+            return new SelectableTextBlock();
+        
         var text = string.Empty;
         foreach (var line in block.Inline)
             if (line is LiteralInline literal)

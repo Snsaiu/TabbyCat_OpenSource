@@ -8,7 +8,7 @@ public interface IDeepClone
 
 public interface IDeepClone<out T> : IDeepClone where T : class
 {
-    T DeepClone();
+    new T DeepClone();
     object IDeepClone.DeepClone()
     {
         return DeepClone();

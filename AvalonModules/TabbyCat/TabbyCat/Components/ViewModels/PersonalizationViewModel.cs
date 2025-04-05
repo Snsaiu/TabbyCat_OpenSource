@@ -30,7 +30,7 @@ public sealed partial class PersonalizationViewModel(ILanguageService languageSe
             return;
 
         languageService.Set(value);
-        DialogServer.ShowMessageDialogAsync(AppResources.TakeEffectAfterRestart);
+        DialogServer.ShowMessageDialogAsync(AppResources.TakeEffectAfterRestart,AppResources.Message,AppResources.Ok);
     }
 
     private void InitLanguages()

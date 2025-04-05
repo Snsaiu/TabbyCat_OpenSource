@@ -45,13 +45,14 @@
                         <!-- <Button Classes="MacosTitleBarButton" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.MacosMaximize}" Background="#00CA4E" Foreground="#00CA4E" Margin="6,0,0,0" /> -->
                     </StackPanel>
                     <Grid HorizontalAlignment="Left" Margin="10,0,0,0">
-                        <Button Name="loginButton" IsVisible="False" Content="登录" Click="Login"
-                                ToolTip.Tip="登录后免费使用Ai聊天" />
+                        <Button Name="loginButton" IsVisible="False" Content="{x:Static languages:AppResources.Login}"
+                                Click="Login"
+                                ToolTip.Tip="{x:Static languages:AppResources.LoginUseAi}" />
                         <SplitButton Name="userButton" IsVisible="False">
                             <SplitButton.Flyout>
                                 <MenuFlyout Placement="Bottom">
-                                    <MenuItem Header="我的" />
-                                    <MenuItem Header="登出" Click="Logout" />
+                                    <MenuItem Header="{x:Static languages:AppResources.Mine}" />
+                                    <MenuItem Header="{x:Static languages:AppResources.Logout}" Click="Logout" />
                                 </MenuFlyout>
                             </SplitButton.Flyout>
                         </SplitButton>

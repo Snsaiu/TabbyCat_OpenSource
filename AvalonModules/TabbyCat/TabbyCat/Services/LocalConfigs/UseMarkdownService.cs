@@ -6,7 +6,7 @@ using TuDog.IocAttribute;
 namespace TabbyCat.Services.LocalConfigs;
 
 [Register<IUseMarkdownService>]
-public sealed class UseMarkdownService(IPreferenceService preferenceService)
+public sealed class UseMarkdownService
     : LocalConfigService<bool>, IUseMarkdownService
 {
     public override string Key { get; } = "useMarkdown";

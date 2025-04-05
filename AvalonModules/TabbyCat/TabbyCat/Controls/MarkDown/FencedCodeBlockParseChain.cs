@@ -16,14 +16,14 @@ public sealed class FencedCodeBlockParseChain : MarkDownParseChainBase<FencedCod
 {
     protected override Control ParseImpl(FencedCodeBlock block)
     {
-        var language = block.Info?.ToString() ?? string.Empty;
+        var language = block.Info ?? string.Empty;
         var code = block.Lines.ToString().Trim();
         var panel = new StackPanel()
             { Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch };
         // 添加button
         var button = new Button() { HorizontalAlignment = HorizontalAlignment.Right };
         button.Classes.Add("icon");
-        button.Click += async (s, e) =>
+        button.Click += async (_, _) =>
         {
             var clipboard = App.TopLevel.Clipboard;
             var dataObject = new DataObject();

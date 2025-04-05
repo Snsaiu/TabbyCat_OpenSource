@@ -15,7 +15,7 @@ public abstract class LocalConfigService<T>() : ILocalConfigService<T>
         PreferenceService.SetNull(Key);
     }
 
-    public virtual T Default { get; } = default;
+    public abstract T Default { get; }
 
     public T Get()
     {

@@ -4,13 +4,13 @@ public class NodeInfoListItem
 {
 
     [JsonProperty("nodeId")]
-    public string NodeId { get; set; }
+    public string NodeId { get; set; }=string.Empty;
 
     [JsonProperty("fieldName")]
-    public string FieldName { get; set; }
+    public string FieldName { get; set; }=string.Empty;
 
     [JsonProperty("fieldValue")]
-    public string FieldValue { get; set; }
+    public string FieldValue { get; set; }=string.Empty;
 }
 
 public class RunningHubTaskPublishResponseModel
@@ -20,7 +20,7 @@ public class RunningHubTaskPublishResponseModel
     public long WorkflowId { get; set; }
 
     [JsonProperty("apiKey")]
-    public string ApiKey { get; set; }
+    public string ApiKey { get; set; }=string.Empty;
 
-    [JsonProperty("nodeInfoList")] public IEnumerable<NodeInfoListItem> NodeInfoList { get; set; } 
+    [JsonProperty("nodeInfoList")] public IEnumerable<NodeInfoListItem> NodeInfoList { get; set; } = [];
 }

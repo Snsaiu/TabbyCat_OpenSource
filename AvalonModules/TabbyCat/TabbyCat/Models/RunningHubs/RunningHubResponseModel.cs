@@ -6,8 +6,7 @@ public class RunningHubResponseModel<T>
     public int Code { get; set; }
 
     [JsonProperty("msg")]
-    public string Msg { get; set; }
+    public string Msg { get; set; }=string.Empty;
 
-    [JsonProperty("data")]
-    public T Data { get; set; }
+    [JsonProperty("data")] public T? Data { get; set; } 
 }

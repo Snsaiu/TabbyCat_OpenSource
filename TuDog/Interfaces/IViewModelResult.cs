@@ -20,12 +20,16 @@ public interface IViewModelResult<out TResult> : IViewModelResult
 
     object IViewModelResult.Confirm()
     {
-        return Confirm();
+        if( Confirm() is not null and var v)
+            return v;
+        throw new NullReferenceException("Confirm() is null");
     }
 
     object IViewModelResult.Cancel()
     {
-        return Cancel();
+        if( Cancel() is not null and var v)
+            return v;
+        throw new NullReferenceException("Cancel() is null");
     }
 }
 
@@ -36,7 +40,9 @@ public interface IViewModelResultAsync<TResult> : IViewModelResult<TResult>
 
     TResult IViewModelResult<TResult>.Confirm()
     {
-        return ConfirmAsync().GetAwaiter().GetResult();
+        if( ConfirmAsync().GetAwaiter().GetResult() is not null and var v)
+            return v;
+        throw new NullReferenceException("ConfirmAsync() is null");
     }
 
     TResult IViewModelResult<TResult>.Cancel()
@@ -46,12 +52,16 @@ public interface IViewModelResultAsync<TResult> : IViewModelResult<TResult>
 
     object IViewModelResult.Confirm()
     {
-        return ConfirmAsync().GetAwaiter().GetResult();
+        if( ConfirmAsync().GetAwaiter().GetResult() is not null and var v)
+            return v;
+        throw new NullReferenceException("ConfirmAsync() is null");
     }
 
     object IViewModelResult.Cancel()
     {
-        return CancelAsync().GetAwaiter().GetResult();
+        if( CancelAsync().GetAwaiter().GetResult() is not null and var v)
+            return v;
+        throw new NullReferenceException("CancelAsync() is null");
     }
 }
 

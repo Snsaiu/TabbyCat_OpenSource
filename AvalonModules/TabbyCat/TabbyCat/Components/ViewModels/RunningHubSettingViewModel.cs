@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Repository.Entities.RunningHubEntities;
 using TabbyCat.Service.RunningHubServices;
@@ -14,6 +15,7 @@ namespace TabbyCat.Components.ViewModels;
 [Register]
 public partial class RunningHubSettingViewModel(
     IRunningHubService runningHubService,
+    IUser user,
     IRunningHubResourceService runningHubResourceService) : ViewModelBase
 {
     private RunningHubEntity? _runningHub;
@@ -21,7 +23,7 @@ public partial class RunningHubSettingViewModel(
     [ObservableProperty] private string saveMediaPath = string.Empty;
     protected override async Task OnLoaded()
     {
-        var query = await runningHubService.QueryAsync();
+        var query = await runningHubService.QueryAsync(x=> x.Email==user.Email);
         if (query.Any())
         {
             _runningHub = query.First();
@@ -40,7 +42,7 @@ public partial class RunningHubSettingViewModel(
     {
         if (SaveMediaPath == string.Empty)
         {
-            await DialogServer.ShowMessageDialogAsync(AppResources.SavePathCannotBeEmpty);
+            await DialogServer.ShowMessageDialogAsync(AppResources.SavePathCannotBeEmpty,AppResources.Warning,AppResources.Ok);
             return;
         }
 
@@ -50,19 +52,19 @@ public partial class RunningHubSettingViewModel(
         if (_runningHub == null)
         {
             _runningHub = new RunningHubEntity()
-                { ApiKey = ApiKey, CreateTime = DateTime.Now, UpdateTime = DateTime.Now };
+                { ApiKey = ApiKey, CreateTime = DateTime.Now, UpdateTime = DateTime.Now,Email = user.Email};
             if (await runningHubService.AddAsync(_runningHub))
             {
-                await DialogServer.ShowMessageDialogAsync(AppResources.SavedSuccessfully);
+                await DialogServer.ShowMessageDialogAsync(AppResources.SavedSuccessfully, AppResources.Message,AppResources.Ok);
             }
             else
             {
-                await DialogServer.ShowMessageDialogAsync(AppResources.SaveFailed);
+                await DialogServer.ShowMessageDialogAsync(AppResources.SaveFailed,AppResources.Warning,AppResources.Ok);
             }
         }
         else
         {
-            var query = await runningHubService.QueryAsync();
+            var query = await runningHubService.QueryAsync(x=> x.Email==user.Email);
             if (query.Any())
             {
                 _runningHub.Key = query.First().Key;
@@ -70,17 +72,17 @@ public partial class RunningHubSettingViewModel(
                 _runningHub.UpdateTime = DateTime.Now;
                 if (await runningHubService.UpdateAsync(_runningHub))
                 {
-                    await DialogServer.ShowMessageDialogAsync(AppResources.UpdatedSuccessfully);
+                    await DialogServer.ShowMessageDialogAsync(AppResources.UpdatedSuccessfully, AppResources.Message,AppResources.Ok);
                 }
                 else
                 {
-                    await DialogServer.ShowMessageDialogAsync(AppResources.UpdateFailed);
+                    await DialogServer.ShowMessageDialogAsync(AppResources.UpdateFailed,AppResources.Warning,AppResources.Ok);
                 }
 
             }
             else
             {
-                await DialogServer.ShowMessageDialogAsync(AppResources.SaveFailed);
+                await DialogServer.ShowMessageDialogAsync(AppResources.SaveFailed,AppResources.Warning,AppResources.Ok);
             }
         }
     }

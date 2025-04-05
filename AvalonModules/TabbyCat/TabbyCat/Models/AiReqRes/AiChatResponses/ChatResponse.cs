@@ -8,15 +8,15 @@ public class ChoicesItem
 {
     [JsonProperty("index")] public int Index { get; set; }
 
-    [JsonProperty("message")] public virtual MessagesItem Message { get; set; }
+    [JsonProperty("message")] public virtual MessagesItem? Message { get; set; }
 
-    [JsonProperty("logprobs")] public string logprobs { get; set; }
+    [JsonProperty("logprobs")] public string LogProbs { get; set; } = string.Empty;
 
     /// <summary>
     ///
     /// </summary>
     [JsonProperty("finish_reason")]
-    public string finish_reason { get; set; }
+    public string finish_reason { get; set; } = string.Empty;
 }
 
 public class Usage
@@ -54,7 +54,7 @@ public class Usage
 
 public abstract class ChatResponseBase
 {
-    [JsonProperty("model")] public virtual string Model { get; set; }
+    [JsonProperty("model")] public virtual string Model { get; set; } = string.Empty;
 
 
     //[JsonProperty("created")]
@@ -63,14 +63,14 @@ public abstract class ChatResponseBase
 
 public class ChatResponse<T> : ChatResponseBase
 {
-    [JsonProperty("choices")] public virtual List<T> Choices { get; set; }
+    [JsonProperty("choices")] public virtual List<T> Choices { get; set; } = [];
 
-    [JsonProperty("id")] public virtual string Id { get; set; }
+    [JsonProperty("id")] public virtual string Id { get; set; } = string.Empty;
 
-    [JsonProperty("object")] public virtual string @Object { get; set; }
+    [JsonProperty("object")] public virtual string @Object { get; set; } = string.Empty;
 
 
-    [JsonProperty("usage")] public virtual Usage Usage { get; set; }
+    [JsonProperty("usage")] public virtual Usage? Usage { get; set; }
 
-    [JsonProperty("system_fingerprint")] public virtual string SystemFingerprint { get; set; }
+    [JsonProperty("system_fingerprint")] public virtual string SystemFingerprint { get; set; } = string.Empty;
 }

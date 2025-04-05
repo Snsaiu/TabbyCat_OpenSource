@@ -16,6 +16,6 @@ public sealed class OpenAiModelRequestService(OpenAiRequestModel requestModel, O
     protected override Task<UnityResponseModel> ConvertResponseToUnityResponseModel(OpenAiResponseModel response)
     {
         return Task.FromResult(
-            UnityResponseModel.StreamData(response.Choices.FirstOrDefault()?.Message.Content ?? string.Empty));
+            UnityResponseModel.StreamData(response.Choices.FirstOrDefault()?.Message?.Content ?? string.Empty));
     }
 }

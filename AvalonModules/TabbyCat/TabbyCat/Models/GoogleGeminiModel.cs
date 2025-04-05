@@ -1,8 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TabbyCat.Models.RequestModelList;
 using TabbyCat.Shared.Enums;
+using TuDog.Bootstrap;
 
 namespace TabbyCat.Models;
 
@@ -13,6 +16,8 @@ public class GoogleGeminiModel : AiApiHasModelsModelBase
 
     //https://generativelanguage.googleapis.com/v1beta/models
     public override string ApiDomain { get; set; } = "https://generativelanguage.googleapis.com";
+    
+    private ILogger<GoogleGeminiModel> _logger=TuDogApplication.ServiceProvider.GetRequiredService<ILogger<GoogleGeminiModel>>();
 
     public override async Task<IEnumerable<string>> GetModelsAsync()
     {
@@ -35,9 +40,9 @@ public class GoogleGeminiModel : AiApiHasModelsModelBase
                 return [];
             return converts.Models.Select(x => x.Name.Split("/").Last());
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            // todo 记录到日志中
+            _logger.LogError(exception,"获得谷歌模型发生错误");
             return [];
         }
     }

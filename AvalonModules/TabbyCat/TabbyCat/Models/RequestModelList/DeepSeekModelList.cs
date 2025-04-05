@@ -2,11 +2,11 @@
 
 public class DeepSeekDataItem
 {
-    [JsonProperty("id")] public string Id { get; set; }
+    [JsonProperty("id")] public string Id { get; set; } = string.Empty;
 
-    [JsonProperty("object")] public string Type { get; set; }
+    [JsonProperty("object")] public string Type { get; set; } = string.Empty;
 
-    [JsonProperty("owned_by")] public string OwnedBy { get; set; }
+    [JsonProperty("owned_by")] public string OwnedBy { get; set; } = string.Empty;
 }
 
 public class DeepSeekModelList

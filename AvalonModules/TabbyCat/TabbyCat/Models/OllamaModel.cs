@@ -51,11 +51,11 @@ public class OllamaModel : AiApiModelBase, IApiDomain, IHasModels<string>, IApiP
 
 file class ModelsItem
 {
-    public string name { get; set; }
-    public string model { get; set; }
+    public string name { get; set; }= string.Empty;
+    public string model { get; set; }= string.Empty;
     public DateTime modified_at { get; set; }
     public long size { get; set; }
-    public string digest { get; set; }
+    public string digest { get; set; }= string.Empty;
 }
 
 file class OllamaModels
@@ -63,5 +63,5 @@ file class OllamaModels
     /// <summary>
     ///
     /// </summary>
-    public List<ModelsItem> models { get; set; }
+    public List<ModelsItem> models { get; set; } = [];
 }

@@ -58,11 +58,7 @@ namespace TabbyCat.ViewModels
             // });
             SelectMenuItem = MenuItems.First();
         }
-
-        partial void OnSelectMenuItemChanged(NavigationMenuItem value)
-        {
-            // this._regionManager.AddToRegion("navigationViewContainer", value.Content);
-        }
+        
 
 
     }

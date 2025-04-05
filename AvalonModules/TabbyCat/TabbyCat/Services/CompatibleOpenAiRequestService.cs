@@ -14,6 +14,6 @@ public sealed class CompatibleOpenAiRequestService(
     protected override Task<UnityResponseModel> ConvertResponseToUnityResponseModel(CustomResponseModel response)
     {
         return Task.FromResult(
-            UnityResponseModel.Success(response.Choices.FirstOrDefault()?.Message.Content ?? string.Empty));
+            UnityResponseModel.Success(response.Choices.FirstOrDefault()?.Message?.Content ?? string.Empty));
     }
 }

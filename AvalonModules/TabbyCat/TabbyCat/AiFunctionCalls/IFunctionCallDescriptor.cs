@@ -7,7 +7,7 @@ public interface IFunctionCallDescriptor
 {
     string FunctionName { get; }
     string Description();
-    Task<object> QueryAsync(object? input, CancellationToken cancellationToken = default);
+    Task<object?> QueryAsync(object? input, CancellationToken cancellationToken = default);
 }
 
 public interface IFunctionCallDescriptor<TInput> : IFunctionCallDescriptor
@@ -15,10 +15,10 @@ public interface IFunctionCallDescriptor<TInput> : IFunctionCallDescriptor
 {
     Task<OutputParameter> QueryDataAsync(TInput? input, CancellationToken cancellationToken = default);
 
-    async Task<object> IFunctionCallDescriptor.QueryAsync(object? input, CancellationToken cancellationToken = default)
+    async Task<object?> IFunctionCallDescriptor.QueryAsync(object? input, CancellationToken cancellationToken)
     {
         var result = await QueryDataAsync(
-            input is null ? default : JsonConvert.DeserializeObject<TInput>(input.ToString()),
+            input is null ? default : JsonConvert.DeserializeObject<TInput>(input.ToString()!),
             cancellationToken);
         return result;
 

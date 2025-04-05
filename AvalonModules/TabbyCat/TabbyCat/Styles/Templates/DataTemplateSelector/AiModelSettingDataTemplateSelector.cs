@@ -8,15 +8,19 @@ namespace TabbyCat.Styles.Templates.DataTemplateSelector;
 
 public sealed class AiModelSettingDataTemplateSelector : IDataTemplate
 {
-    [Content] public Dictionary<string, IDataTemplate> AvailableTemplates { get; } = new();
+    [Content] public Dictionary<string, IDataTemplate> AvailableTemplates { get; } = [];
 
 
     public Control? Build(object? param)
     {
-        var key = param.GetType().Name;
+        if (param is not { } p)
+        {
+            return null;
+        }
+        var key = p.GetType().Name;
         if (string.IsNullOrEmpty(key))
-            throw new ArgumentNullException($"{nameof(param)}");
-        return AvailableTemplates[key].Build(param);
+            throw new ArgumentNullException($"{nameof(p)}");
+        return AvailableTemplates[key].Build(p);
     }
 
     public bool Match(object? data)

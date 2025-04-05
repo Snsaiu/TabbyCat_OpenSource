@@ -8,7 +8,7 @@ public class RegexUtil
     {
     }
 
-    private static RegexUtil instance = null;
+    private static RegexUtil? instance = null;
 
     /// <summary>
     /// 静态实例化单体模式
@@ -17,8 +17,7 @@ public class RegexUtil
     /// <returns></returns>
     public static RegexUtil GetInstance()
     {
-        if (instance == null) instance = new();
-        return instance;
+        return instance ??= new();
     }
 
     /// <summary>
@@ -156,7 +155,7 @@ public class RegexUtil
     /// <returns></returns>
     public static bool IsIPV6(string input)
     {
-        var pattern = "";
+        string pattern;
         var temp = input;
         var strs = temp.Split(':');
         if (strs.Length > 8) return false;
@@ -243,7 +242,7 @@ public class RegexUtil
     /// <returns>字符串compare 在 input字符串中出现的次数</returns>
     private static int GetStringCount(string input, string compare)
     {
-        var index = input.IndexOf(compare);
+        var index = input.IndexOf(compare, StringComparison.Ordinal);
         if (index != -1)
             return 1 + GetStringCount(input.Substring(index + compare.Length), compare);
         else

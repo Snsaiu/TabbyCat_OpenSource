@@ -1,20 +1,17 @@
-using System.Collections.ObjectModel;
 using System.Net.Http;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
 using Microsoft.Extensions.DependencyInjection;
 using TabbyCat.Extensions;
-using TabbyCat.IServices;
 using TabbyCat.Shared.Enums;
-using TabbyCat.Shared.Interfaces;
 using TuDog.Bootstrap;
 using TuDog.Extensions;
 
 namespace TabbyCat.Models;
 
-public class TabbyCatAiModel : OpenAiApiModel, IInitializeable
+public class TabbyCatAiModel : OpenAiApiModel
 {
-    private IHttpClientFactory httpclientfactory = TuDogApplication.ServiceProvider.GetService<IHttpClientFactory>();
+    private IHttpClientFactory httpclientfactory = TuDogApplication.ServiceProvider.GetRequiredService<IHttpClientFactory>();
 
     private HttpClient httpclient;
 
@@ -35,7 +32,7 @@ public class TabbyCatAiModel : OpenAiApiModel, IInitializeable
 
        ApiKey = await queryKeyResult.Content.ReadAsStringAsync();
        Models.Reset(await GetModelsAsync());
-       SelectedModel = Models.FirstOrDefault();
+       SelectedModel = Models.FirstOrDefault()??string.Empty;
        return new SuccessResultModel<bool>();
    }
 

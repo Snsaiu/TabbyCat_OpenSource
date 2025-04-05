@@ -15,12 +15,13 @@ public class RunningHubStateEntity:UserBaseEntity
     public RunningHubWorkType RunningHubWorkType { get; set; }
 
     public static RunningHubStateEntity Create(string taskId, string clientId, string apiKey,
-        RunningHubWorkType runningHubWorkType)
+        RunningHubWorkType runningHubWorkType,string email)
     {
         var runningHubStateEntity = new RunningHubStateEntity()
         {
             TaskId = taskId, ClientId = clientId, TaskStatus = TaskState.Running, ApiKey = apiKey,
-            RunningHubWorkType = runningHubWorkType
+            RunningHubWorkType = runningHubWorkType,
+            Email = email
         };
         return runningHubStateEntity;
     }

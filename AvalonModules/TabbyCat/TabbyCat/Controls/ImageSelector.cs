@@ -41,7 +41,7 @@ public class ImageSelector : Button
     public ImageSelector()
     {
 
-        this.Click += async (s, e) =>
+        this.Click += async (_, _) =>
         {
             var topLevel = TopLevel.GetTopLevel(this);
             if (topLevel is null)
@@ -67,8 +67,8 @@ public class ImageSelector : Button
         };
     }
 
-    private Button removeButton;
-    private Image image;
+    private Button? removeButton;
+    private Image? image;
 
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -77,7 +77,7 @@ public class ImageSelector : Button
         image = e.NameScope.Find<Image>("PART_image") ?? throw new NullReferenceException();
         removeButton = e.NameScope.Find<Button>("PART_removeBtn") ?? throw new NullReferenceException();
 
-        removeButton.Click += (s, e) =>
+        removeButton.Click += (_, _) =>
         {
             ImagePath = string.Empty;
             image.Source = null;

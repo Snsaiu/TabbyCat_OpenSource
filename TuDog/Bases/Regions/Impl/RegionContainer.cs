@@ -10,7 +10,14 @@ public class RegionContainer:RegionContainerBase
 
     public override void Remove(string regionName) => _regions.Remove(regionName);
 
-    public override ContentControl GetRegion(string regionName) => _regions.TryGetValue(regionName, out ContentControl region) ? region : throw new NullReferenceException($"Region {regionName} not found");
+    public override ContentControl GetRegion(string regionName)
+    {
+        if (_regions.TryGetValue(regionName, out var region))
+        {
+            return region;
+        }
+        throw new NullReferenceException($"Region {regionName} not found");
+    }
 
     public override bool Exists(string regionName) => _regions.ContainsKey(regionName);
 }

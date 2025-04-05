@@ -8,5 +8,5 @@ public class OpenAiResponseModel : ChatResponse<OpenAiMessageData>
 
 public sealed class OpenAiMessageData : ChoicesItem
 {
-    [JsonProperty("delta")] public override MessagesItem Message { get; set; }
+    [JsonProperty("delta")] public override MessagesItem? Message { get; set; }
 }

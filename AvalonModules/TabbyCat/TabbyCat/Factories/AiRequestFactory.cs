@@ -16,23 +16,23 @@ public static class AiRequestFactory
     {
         return aiModel.Provider switch
         {
-            AiModelType.TabbyCatAi => new TabbyCatAiModelRequestService(requestMessage as TabbyCatAiRequestModel,
-                aiModel as TabbyCatAiModel),
-            AiModelType.OpenAiApi => new OpenAiModelRequestService(requestMessage as OpenAiRequestModel,
-                aiModel as OpenAiApiModel),
+            AiModelType.TabbyCatAi => new TabbyCatAiModelRequestService((TabbyCatAiRequestModel)requestMessage  ,
+                (TabbyCatAiModel)aiModel),
+            AiModelType.OpenAiApi => new OpenAiModelRequestService((OpenAiRequestModel)requestMessage ,
+               (OpenAiApiModel) aiModel ),
             AiModelType.AzureOpenAiApi => throw new NotImplementedException(),
             AiModelType.Claude =>
-                new ClaudeRequestService(requestMessage as ClaudeRequestModel, aiModel as ClaudeModel),
-            AiModelType.GoogleGemini => new GoogleGeminiRequestService(requestMessage as GoogleGeminiRequestModel,
-                aiModel as GoogleGeminiModel),
+                new ClaudeRequestService((ClaudeRequestModel)requestMessage , (ClaudeModel)aiModel ),
+            AiModelType.GoogleGemini => new GoogleGeminiRequestService((GoogleGeminiRequestModel)requestMessage ,
+               (GoogleGeminiModel)aiModel),
             AiModelType.Ollama =>
-                new OllamaRequestService(requestMessage as OllamaRequestModel, aiModel as OllamaModel),
+                new OllamaRequestService((OllamaRequestModel)requestMessage , (OllamaModel)aiModel ),
             AiModelType.Groq => throw new NotImplementedException(),
             AiModelType.ChatGLM => throw new NotImplementedException(),
-            AiModelType.Custom => new CompatibleOpenAiRequestService(requestMessage as CompatibleRequestModel,
-                aiModel as CompatibleOpenAiApiModel),
-            AiModelType.DeepSeek => new DeepSeekModelRequestService(requestMessage as DeepSeekRequestModel,
-                aiModel as DeepSeekModel),
+            AiModelType.Custom => new CompatibleOpenAiRequestService((CompatibleRequestModel)requestMessage ,
+                (CompatibleOpenAiApiModel)aiModel ),
+            AiModelType.DeepSeek => new DeepSeekModelRequestService((DeepSeekRequestModel)requestMessage ,
+                (DeepSeekModel)aiModel ),
             _ => throw new ArgumentOutOfRangeException()
         };
     }

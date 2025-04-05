@@ -5,7 +5,7 @@ public sealed class InputParameter
     /// <summary>
     /// 调用的工具名称
     /// </summary>
-    public string FunctionName { get; set; }
+    public string FunctionName { get; set; } = string.Empty;
 
     /// <summary>
     /// 输入数据

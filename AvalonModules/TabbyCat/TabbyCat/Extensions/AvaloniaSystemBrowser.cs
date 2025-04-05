@@ -35,12 +35,12 @@ public class AvaloniaSystemBrowser : IBrowser
             string responseString = "Authentication successful. You can close this window.";
             var buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
             response.ContentLength64 = buffer.Length;
-            await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+            await response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
             response.Close();
 
             return new BrowserResult
             {
-                Response = context.Request.Url.ToString(),
+                Response = context.Request.Url?.ToString(),
                 ResultType = BrowserResultType.Success
             };
         }

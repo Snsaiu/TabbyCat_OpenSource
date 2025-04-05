@@ -15,5 +15,5 @@ public partial class NavigationMenuItem:ModelBase
     private string icon = string.Empty;
 
     [ObservableProperty]
-    private Type content ;
+    private Type content = null!;
 }

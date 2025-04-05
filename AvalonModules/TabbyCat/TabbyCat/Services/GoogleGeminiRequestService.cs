@@ -1,17 +1,28 @@
 ﻿using System.Net.Http;
+using FantasyResultModel;
+using FantasyResultModel.Impls;
+using Microsoft.Extensions.Logging;
 using TabbyCat.IServices;
 using TabbyCat.Models;
 using TabbyCat.Models.AiReqRes.AiChatRequests.GoogleGemini;
 using TabbyCat.Models.AiReqRes.AiChatResponses;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
+using TabbyCat.Shared.Languages;
 
 namespace TabbyCat.Services;
 
-public sealed class GoogleGeminiRequestService(GoogleGeminiRequestModel requestModel, GoogleGeminiModel aiModel)
-    : AiChatRequestServiceBase<GoogleGeminiRequestModel, GoogleGeminiModel, GoogleGeminiResponseModel>(requestModel,
-        aiModel)
+public sealed class GoogleGeminiRequestService : AiChatRequestServiceBase<GoogleGeminiRequestModel, GoogleGeminiModel, GoogleGeminiResponseModel>
 {
+    
+    private ILogger logger;
+
+    public GoogleGeminiRequestService(GoogleGeminiRequestModel requestModel, GoogleGeminiModel aiModel) : base(requestModel,
+        aiModel)
+    {
+        logger = LoggerFactory.CreateLogger(nameof(ClaudeRequestService));
+    }
+
     protected override Task<string> RequestModelToJsonString(GoogleGeminiRequestModel requestModel)
     {
         foreach (var item in requestModel.Messages)
@@ -35,7 +46,7 @@ public sealed class GoogleGeminiRequestService(GoogleGeminiRequestModel requestM
         return Task.FromResult(json);
     }
 
-    protected override HttpRequestMessage BuildHttpRequestMessage(GoogleGeminiModel aiModel)
+    protected override ResultBase< HttpRequestMessage> BuildHttpRequestMessage(GoogleGeminiModel aiModel)
     {
         if (aiModel is IApiDomain apiDomain)
         {
@@ -48,10 +59,12 @@ public sealed class GoogleGeminiRequestService(GoogleGeminiRequestModel requestM
             var request = new HttpRequestMessage(HttpMethod.Post, urlPath);
             // request.Headers.Add("Accept", "text/event-stream");
             request.Headers.Add("Accept", "application/json");
-            return request;
+            return new SuccessResultModel<HttpRequestMessage>(request);
         }
 
-        throw new NotImplementedException();
+        logger.LogError("暂不支持提供者{0}不是{1}类型的AiModel。",aiModel.Provider.ToString(),typeof(IApiDomain));
+
+        return new ErrorResultModel<HttpRequestMessage>(string.Format(AppResources.NotSupport,aiModel.Provider));
     }
 
     protected override string PreProcessResponse(string responseString)

@@ -9,4 +9,5 @@ namespace TabbyCat.Services.LocalConfigs;
 public sealed class TopMostService : LocalConfigService<bool>, ITopMostService
 {
     public override string Key { get; } = "isTopMost";
+    public override bool Default { get; } = false;
 }

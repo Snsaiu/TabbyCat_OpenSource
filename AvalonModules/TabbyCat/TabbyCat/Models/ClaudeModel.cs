@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TabbyCat.Models.RequestModelList;
 using TabbyCat.Shared.Enums;
+using TuDog.Bootstrap;
 
 namespace TabbyCat.Models;
 
@@ -12,6 +12,9 @@ public class ClaudeModel : AiApiHasModelsModelBase
     public override AiModelType Provider { get; } = AiModelType.Claude;
 
     public override string ApiDomain { get; set; } = "https://api.anthropic.com";
+
+    private ILogger<ClaudeModel> _logger =
+        TuDogApplication.ServiceProvider.GetRequiredService<ILogger<ClaudeModel>>();
 
 
     public override async Task<IEnumerable<string>> GetModelsAsync()
@@ -37,9 +40,9 @@ public class ClaudeModel : AiApiHasModelsModelBase
                 return [];
             return converts.Data.Select(x => x.Id);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            // todo 记录到日志中
+            _logger.LogError(exception,"获得模型发生错误。");
             return [];
         }
     }

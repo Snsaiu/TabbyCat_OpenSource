@@ -30,7 +30,8 @@ public static class AiFunctionFactory
 
         var descriptor = _descriptors.FirstOrDefault(x => x.FunctionName == inputModel!.FunctionName);
         if (descriptor is null)
-            throw new NotImplementedException();
+            return new OutputParameter() { Ok = false, ErrorMessage = "无法获得功能" };
+        
         var output = await descriptor.QueryAsync(inputModel?.InputData);
         return output is null
             ? new() { Ok = false, ErrorMessage = "未知错误。" }

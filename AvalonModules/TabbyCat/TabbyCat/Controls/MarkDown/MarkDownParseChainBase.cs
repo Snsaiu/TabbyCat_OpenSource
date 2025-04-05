@@ -17,7 +17,7 @@ public abstract class MarkDownParseChainBase<TBlock> : MarkDownParseChainBase wh
     public override Control? Parse(Block block)
     {
         if (typeof(TBlock) == block.GetType())
-            return ParseImpl(block as TBlock);
+            return ParseImpl((TBlock)block);
         if (Next is not null)
             return Next.Parse(block);
         return null;

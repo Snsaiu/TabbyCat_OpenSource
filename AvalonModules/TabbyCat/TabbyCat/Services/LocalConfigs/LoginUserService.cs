@@ -10,5 +10,5 @@ public sealed class LoginUserService : LocalConfigService<LoginUserModel>, ILogi
 {
     public override string Key { get; } = "loginUser";
 
-    public override LoginUserModel Default { get; } = default;
+    public override LoginUserModel Default { get; } = null;
 }

@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using TabbyCat.IServices;
 using TabbyCat.Models;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
 using TabbyCat.Repository.Entities.AiEntities;
@@ -8,7 +11,7 @@ using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
 using TabbyCat.Shared.Languages;
 using TabbyCat.SqliteService.AiServices;
-using TuDog.Extensions;
+using TuDog.Bootstrap;
 
 namespace TabbyCat.ViewModels;
 
@@ -18,38 +21,38 @@ public abstract partial class AiViewModelBase(
 {
     [ObservableProperty] private ObservableCollection<string> aiModelProviders = [];
 
-    private async Task InitAiModelProvidersAsync()
-    {
-        var result = new List<string>();
-        foreach (var item in Enum.GetValues(typeof(AiModelType))) result.Add(item.ToString()!);
-        var customEntities = await aiTemplateSettingService.QueryAsync(x => x.Provider == AiModelType.Custom);
-        if (customEntities.Any())
-            result.AddRange(customEntities.Select(x => x.ModelName));
-        AiModelProviders.Reset(result);
-    }
+    protected IUser user = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
+
+    private ILogger<AiViewModelBase> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<AiViewModelBase>>();
 
     protected async Task UpdateFavouriteStateAsync(MessagesItem item)
     {
-        var finds = await aiChatMessageRecordService.QueryAsync(x => x.Key == item.Key);
+        var finds = await aiChatMessageRecordService.QueryAsync(x => x.Key == item.Key&& x.Email==user.Email);
         if (!finds.Any())
+        {
+            logger.LogError("根据{0}未发现聊天历史内容",item.Key);
             return;
+        }
         var first = finds.First();
         first.IsFavourite = item.IsFavourite;
         first.UpdateTime = DateTime.Now;
-        await aiChatMessageRecordService.UpdateAsync(first);
+        if (!await aiChatMessageRecordService.UpdateAsync(first))
+        {
+            logger.LogError("{0}保存Favourite状态失败。",item.Key);
+            return;
+        }
+        logger.LogInformation("{0}保存Favourite状态成功。",item.Key);
     }
 
     protected async Task SaveAiModelAsync(AiApiModelBase model)
     {
-        if (model is null)
-            throw new NullReferenceException();
-
         var json = JsonConvert.SerializeObject(model);
         var saveModel = new AiTemplateSettingEntity
         {
             Provider = model.Provider,
             IsDefault = model.IsDefault,
-            Template = json
+            Template = json,
+            Email = user.Email
         };
         if (model.Provider == AiModelType.Custom)
         {
@@ -58,28 +61,28 @@ public abstract partial class AiViewModelBase(
             if (string.IsNullOrEmpty(customModelName))
             {
                 await DialogServer.ShowMessageDialogAsync(AppResources.CustomModelMustHaveName);
-                return;
+                return ;
             }
 
             var finds = await aiTemplateSettingService.QueryAsync(x =>
-                x.Provider == AiModelType.Custom && x.ModelName == customModelName);
+                x.Provider == AiModelType.Custom && x.ModelName == customModelName&& x.Email==user.Email);
             if (finds.Any()) await aiTemplateSettingService.DeleteRangeAsync(finds);
             saveModel.ModelName = customModelName;
         }
         else
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.Provider == model.Provider);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.Provider == model.Provider&& x.Email==user.Email);
             if (finds.Any()) await aiTemplateSettingService.DeleteRangeAsync(finds);
         }
 
         if (!saveModel.IsDefault)
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==user.Email);
             if (!finds.Any()) saveModel.IsDefault = true;
         }
         else
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==user.Email);
             if (finds.Any())
                 foreach (var item in finds)
                 {

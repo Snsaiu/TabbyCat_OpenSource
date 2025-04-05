@@ -5,7 +5,7 @@ namespace TuDog.Extensions;
 
 public sealed class EnumValuesExtension : MarkupExtension
 {
-    [ConstructorArgument("enumType")] public Type EnumType { get; set; }
+    [ConstructorArgument("enumType")] public Type EnumType { get; set; } = null!;
 
     /// <summary>
     /// 排除，使用|分隔

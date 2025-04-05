@@ -1,11 +1,7 @@
 ﻿using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Markdig;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
@@ -45,13 +41,13 @@ public partial class ChatItem : UserControl
     [RelayCommand]
     private Task CopyTextToClipboard()
     {
-        return App.TopLevel.Clipboard.SetTextAsync(Markdown.ToPlainText(Message.Content));
+        return App.TopLevel?.Clipboard?.SetTextAsync(Markdown.ToPlainText(Message.Content));
     }
 
     private void ToggleButton_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
     {
-        if (FavouriteCommand?.CanExecute(Message) == true)
-            FavouriteCommand?.Execute(Message);
+        if (FavouriteCommand.CanExecute(Message))
+            FavouriteCommand.Execute(Message);
     }
 
 }

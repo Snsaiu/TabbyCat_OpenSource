@@ -16,6 +16,6 @@ public sealed class DeepSeekModelRequestService(DeepSeekRequestModel requestMode
     protected override Task<UnityResponseModel> ConvertResponseToUnityResponseModel(DeepSeekResponseModel response)
     {
         return Task.FromResult(
-            UnityResponseModel.StreamData(response.Choices.FirstOrDefault()?.delta.Content ?? string.Empty));
+            UnityResponseModel.StreamData(response.Choices.FirstOrDefault()?.delta?.Content ?? string.Empty));
     }
 }

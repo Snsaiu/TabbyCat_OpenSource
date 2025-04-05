@@ -13,10 +13,9 @@ public class HotKeyHookService:IHotKeyHookService
 {
     private TaskPoolGlobalHook? hook;
     private readonly HashSet<KeyCode> keyCodes = [];
-    private Timer timer;
+    private readonly Timer timer =new (200);
     public void InitService()
     {
-        timer = new(200);
         timer.Elapsed += (s, e) =>
         {
             if (keyCodes.Any())

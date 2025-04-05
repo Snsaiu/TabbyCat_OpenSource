@@ -1,9 +1,5 @@
-﻿using System.Text;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.Media;
+﻿using Avalonia.Controls;
 using Markdig.Syntax;
-using Markdig.Syntax.Inlines;
 
 namespace TabbyCat.Controls.MarkDown;
 
@@ -20,9 +16,8 @@ public sealed class ListBlockParseChain : MarkDownParseChainBase<ListBlock>
         foreach (var item in block)
         {
             index++;
-            var header = "• ";
             if (block.IsOrdered)
-                header = $"{index}. ";
+                _ = $"{index}. ";
 
             if (item is ListItemBlock listItem)
             {
@@ -32,38 +27,5 @@ public sealed class ListBlockParseChain : MarkDownParseChainBase<ListBlock>
         }
 
         return container;
-    }
-
-    private string GetListItemText(ListItemBlock listItemBlock)
-    {
-        var result = "";
-
-        foreach (var subBlock in listItemBlock)
-            if (subBlock is ParagraphBlock paragraph)
-                result += GetParagraphText(paragraph) + " ";
-
-        return result.Trim();
-    }
-
-    private string GetParagraphText(ParagraphBlock paragraph)
-    {
-        var text = "";
-        foreach (var inline in paragraph.Inline)
-            if (inline is LiteralInline literal)
-            {
-                text += literal.Content.Text;
-            }
-            else if (inline is EmphasisInline emphasis)
-            {
-                foreach (var subInline in emphasis)
-                    if (subInline is LiteralInline subLiteral)
-                        text += subLiteral.Content.Text;
-            }
-            else if (inline is LinkInline link)
-            {
-                text += $"[{link.FirstChild.ToString()}]({link.Url})";
-            }
-
-        return text;
     }
 }

@@ -1119,4 +1119,61 @@
     <data name="Agent" xml:space="preserve">
     <value>智能体</value>
   </data>
+  <data name="Message" xml:space="preserve">
+    <value>消息</value>
+  </data>
+  <data name="Minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="DoYouWantToRelogin" xml:space="preserve">
+    <value>账号需要重新登录，确定要重新登录吗？</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>登出</value>
+  </data>
+  <data name="LogoutFailed" xml:space="preserve">
+    <value>登出失败</value>
+  </data>
+  <data name="AppWillClose" xml:space="preserve">
+    <value>软件即将关闭！</value>
+  </data>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>登录失败</value>
+  </data>
+  <data name="LoginUseAi" xml:space="preserve">
+    <value>登录后免费使用Ai聊天</value>
+  </data>
+  <data name="Mine" xml:space="preserve">
+    <value>我的</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="LoginErrorTryAgain" xml:space="preserve">
+    <value>登录失败,请重试！</value>
+  </data>
+  <data name="LoginErrorEmailNullTryAagin" xml:space="preserve">
+    <value>登录失败,获得邮箱失败，请重试！</value>
+  </data>
+  <data name="SaveDefaultSessionError" xml:space="preserve">
+    <value>保存默认会话失败！</value>
+  </data>
+  <data name="UnknownErrorSendErrorTryAgain" xml:space="preserve">
+    <value>未知错误,发送失败,请重试！</value>
+  </data>
+  <data name="NotSupport" xml:space="preserve">
+    <value>{0}不受支持。</value>
+  </data>
+  <data name="UnableConstructObject" xml:space="preserve">
+    <value>无法构建{0}对象</value>
+  </data>
+  <data name="SaveChatSessionError" xml:space="preserve">
+    <value>保存聊天会话失败。</value>
+  </data>
+  <data name="MustLoginToUseTabbyCatAi" xml:space="preserve">
+    <value>使用TabbyCatAi模型必须先登录</value>
+  </data>
 </root>

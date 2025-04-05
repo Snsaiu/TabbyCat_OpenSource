@@ -1731,4 +1731,61 @@
     <data name="Agent" xml:space="preserve">
     <value>Agent</value>
   </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Minimize" xml:space="preserve">
+    <value>Minimize</value>
+  </data>
+  <data name="DoYouWantToRelogin" xml:space="preserve">
+    <value>The account needs to be logged in again. Are you sure you want to log in again?</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="LogoutFailed" xml:space="preserve">
+    <value>Logout failed</value>
+  </data>
+  <data name="AppWillClose" xml:space="preserve">
+    <value>The software will be shut down soon!</value>
+  </data>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>Login failed</value>
+  </data>
+  <data name="LoginUseAi" xml:space="preserve">
+    <value>Log in to use Ai Chat for free</value>
+  </data>
+  <data name="Mine" xml:space="preserve">
+    <value>Mine</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="LoginErrorTryAgain" xml:space="preserve">
+    <value>Login failed, please try again!</value>
+  </data>
+  <data name="LoginErrorEmailNullTryAagin" xml:space="preserve">
+    <value>Login failed, failed to obtain email address, please try again!</value>
+  </data>
+  <data name="SaveDefaultSessionError" xml:space="preserve">
+    <value>Failed to save default session!</value>
+  </data>
+  <data name="UnknownErrorSendErrorTryAgain" xml:space="preserve">
+    <value>Unknown error, sending failed, please try again!</value>
+  </data>
+  <data name="NotSupport" xml:space="preserve">
+    <value>{0} is not supported</value>
+  </data>
+  <data name="UnableConstructObject" xml:space="preserve">
+    <value>Unable to construct {0} object</value>
+  </data>
+  <data name="SaveChatSessionError" xml:space="preserve">
+    <value>Save Chat Session Error.</value>
+  </data>
+  <data name="MustLoginToUseTabbyCatAi" xml:space="preserve">
+    <value>You must log in to use the TabbyCatAi model</value>
+  </data>
 </root>

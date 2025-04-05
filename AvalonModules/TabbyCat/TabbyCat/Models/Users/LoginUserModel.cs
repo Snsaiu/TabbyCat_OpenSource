@@ -29,11 +29,11 @@ public sealed class LoginUserModel : IUser
     public string? PhoneNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 
-    public string? Nickname { get; set; }
-    public string AccessToken { get; set; }
+    public string? Nickname { get; set; } = string.Empty;
+    public string AccessToken { get; set; } = string.Empty;
 
     public DateTimeOffset? AccessTokenExpiration { get; set; }
-    public string RefreshToken { get; set; }
+    public string RefreshToken { get; set; } = string.Empty;
 
     public Sex Sex { get; set; }
 

@@ -12,9 +12,9 @@ public static class HttpClientExtension
         {
             return client.PostRequestAsync<TParams, TResult>(url, request);
         }
-        catch (Exception ex)
+        catch
         {
-            return default;
+            return Task.FromResult(default(TResult));
         }
     }
 }

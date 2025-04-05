@@ -30,6 +30,9 @@
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting"/>
       <PackageReference Include="Microsoft.Extensions.Http"/>
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="OpenTelemetry" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Sinks.Loki" />
     <PackageReference Include="SharpHook" />
       <PackageReference Include="Avalonia.Themes.Fluent"/>
 
@@ -59,6 +62,7 @@
     <ProjectReference Include="..\..\..\TabbyCat.Service\TabbyCat.Service.csproj" />
     <ProjectReference Include="..\..\..\TabbyCat.Shared\TabbyCat.Shared.csproj" />
     <ProjectReference Include="..\..\..\TabbyCat.SqliteService\TabbyCat.SqliteService.csproj" />
+    <ProjectReference Include="..\..\..\TuDog.LoggerMetrics\TuDog.LoggerMetrics.csproj" />
         <ProjectReference Include="..\..\..\TuDog.SourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     <ProjectReference Include="..\..\..\TuDog\TuDog.csproj" />
   </ItemGroup>

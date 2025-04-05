@@ -1,12 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TabbyCat.Factories;
+using Microsoft.Extensions.Logging;
+using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models;
-using TabbyCat.Models.AiReqRes.AiChatResponses;
 using TabbyCat.Repository.Entities.AiEntities;
 using TabbyCat.Service.AiServices;
 using TabbyCat.Shared;
@@ -14,7 +12,6 @@ using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Extensions;
 using TabbyCat.Shared.Interfaces;
 using TabbyCat.Shared.Languages;
-using TabbyCat.ViewModels;
 using TuDog.Bootstrap;
 using TuDog.Extensions;
 using TuDog.Interfaces;
@@ -29,10 +26,12 @@ public partial class ChatPanelSettingViewModel(
     IAiChatMessageRecordService aiChatMessageRecordService,
     IAiChatSessionService aiChatSessionService,
     ILoginUserService loginUserService,
+    ILogger<ChatPanelSettingViewModel> logger,
+    IUser user,
     ICustomAssistantOccupationService customAssistantOccupationService,
     IStoreChatRecordService storeChatRecordService) : ParameterViewModelBase, IViewModelResult
 {
-    [ObservableProperty] private AiApiModelBase aiModel;
+    [ObservableProperty] private AiApiModelBase? aiModel;
 
     [ObservableProperty]
     private ObservableCollection<OccupationType> occupations = [];
@@ -49,7 +48,7 @@ public partial class ChatPanelSettingViewModel(
     [ObservableProperty]
     private string selectedModel = string.Empty;
 
-    private PanelSettingModel settingParameter;
+    private PanelSettingModel? settingParameter;
 
     [ObservableProperty]
     private AiChatSessionEntity? selectedAiChatSessionEntity;
@@ -64,7 +63,7 @@ public partial class ChatPanelSettingViewModel(
     private string newOccupationDescription = string.Empty;
 
     [ObservableProperty]
-    private bool newOccupationIsDefault = false;
+    private bool newOccupationIsDefault;
 
 
     #endregion
@@ -78,6 +77,12 @@ public partial class ChatPanelSettingViewModel(
         storeChatRecord = storeChatRecordService.Get();
 
         settingParameter = Parameter as PanelSettingModel;
+        if (settingParameter is null)
+        {
+            logger.LogError("{0}不能为空", nameof(settingParameter));
+            return;
+        }
+        
         AiModel = settingParameter.AiApiModel;
         Sessions.Reset(settingParameter.AllSessions.OrderByDescending(x => x.IsDefault));
         SelectedAiChatSessionEntity = Sessions.FirstOrDefault(x => x.IsDefault);
@@ -93,15 +98,22 @@ public partial class ChatPanelSettingViewModel(
     private async Task InitOccupationsAsync()
     {
         Occupations.Reset( await GetAllOccupationsAsync());
-        if (SelectedAiChatSessionEntity.Occupation != AssistantOccupation.Custom)
+        
+        if(SelectedAiChatSessionEntity is not {}  selected)
+        {
+            logger.LogError("{0}不能为空", nameof(SelectedAiChatSessionEntity));
+            return;
+        }
+            
+        
+        if (selected.Occupation != AssistantOccupation.Custom)
             SelectedOccupationType =
-                Occupations.FirstOrDefault(x => SelectedAiChatSessionEntity.Occupation == x.Occupation);
+                Occupations.FirstOrDefault(x => selected.Occupation == x.Occupation);
         else
             SelectedOccupationType = Occupations.FirstOrDefault(x =>
-                x.OccupationName == SelectedAiChatSessionEntity.CustomOccupationName);
+                x.OccupationName == selected.CustomOccupationName);
 
-        if (SelectedOccupationType is null)
-            SelectedOccupationType = Occupations.FirstOrDefault();
+        SelectedOccupationType ??= Occupations.FirstOrDefault();
     }
 
 
@@ -113,22 +125,23 @@ public partial class ChatPanelSettingViewModel(
                 occupationType.OccupationName));
         if(!deleteConfirm)
             return;
-        var deleteResult = await customAssistantOccupationService.DeleteAsync(x => occupationType.OccupationName == x.Name);
+        
+        await customAssistantOccupationService.DeleteAsync(x => occupationType.OccupationName == x.Name);
         if (deleteConfirm)
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.DeleteSuccess);
+            await dialogServer.ShowMessageDialogAsync(AppResources.DeleteSuccess,AppResources.Message,AppResources.Ok);
            await InitOccupationsAsync();
         }
         else
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.DeleteFailed);
+            await dialogServer.ShowMessageDialogAsync(AppResources.DeleteFailed,AppResources.Warning,AppResources.Ok);
         }
 
     }
 
     private async Task<IEnumerable<OccupationType>>GetAllOccupationsAsync()
     {
-        var customOccupations = await customAssistantOccupationService.QueryAsync();
+        var customOccupations = await customAssistantOccupationService.QueryAsync(x=> x.Email==user.Email);
         var temps = customOccupations.Select(item => new OccupationType(AssistantOccupation.Custom, item.Name)).ToList();
 
         if (loginUserService.GetOrDefault() is not null)
@@ -149,31 +162,32 @@ public partial class ChatPanelSettingViewModel(
     {
         if (string.IsNullOrEmpty(NewOccupationName))
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.CharacterNameCannotBeEmpty);
+            await dialogServer.ShowMessageDialogAsync(AppResources.CharacterNameCannotBeEmpty,AppResources.Warning,AppResources.Ok);
             return;
         }
 
         if (string.IsNullOrWhiteSpace(NewOccupationDescription))
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.CharacterDescriptionCannotBeEmpty);
+            await dialogServer.ShowMessageDialogAsync(AppResources.CharacterDescriptionCannotBeEmpty,AppResources.Warning,AppResources.Ok);
             return;
         }
 
-        if ((await customAssistantOccupationService.QueryAsync(x => x.Name == NewOccupationName)).Any())
+        if ((await customAssistantOccupationService.QueryAsync(x => x.Name == NewOccupationName&& x.Email==user.Email)).Any())
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.CharacterNameAlreadyExists);
+            await dialogServer.ShowMessageDialogAsync(AppResources.CharacterNameAlreadyExists,AppResources.Warning,AppResources.Ok);
             return;
         }
 
         var entity = new CustomAssistantOccupationEntity()
         {
             Name = NewOccupationName,
-            Description =  NewOccupationDescription
+            Description =  NewOccupationDescription,
+            Email = user.Email
         };
 
         if (await customAssistantOccupationService.AddAsync(entity))
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.AddedSuccessfully);
+            await dialogServer.ShowMessageDialogAsync(AppResources.AddedSuccessfully, AppResources.Message,AppResources.Ok);
             Occupations.Reset( await GetAllOccupationsAsync());
             if (NewOccupationIsDefault)
                 SelectedOccupationType =
@@ -184,7 +198,7 @@ public partial class ChatPanelSettingViewModel(
         }
         else
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.AddFailed);
+            await dialogServer.ShowMessageDialogAsync(AppResources.AddFailed,AppResources.Warning,AppResources.Ok);
         }
     }
 
@@ -202,24 +216,24 @@ public partial class ChatPanelSettingViewModel(
         {
             if (string.IsNullOrEmpty(result.Data))
             {
-                await dialogServer.ShowMessageDialogAsync(AppResources.CannotEnterEmptyContent);
+                await dialogServer.ShowMessageDialogAsync(AppResources.CannotEnterEmptyContent,AppResources.Warning,AppResources.Ok);
                 return;
             }
 
             SelectedAiChatSessionEntity.CustomTheme = result.Data;
             if (await aiChatSessionService.UpdateAsync(SelectedAiChatSessionEntity))
             {
-                await dialogServer.ShowMessageDialogAsync(AppResources.RenamedSuccessfully);
+                await dialogServer.ShowMessageDialogAsync(AppResources.RenamedSuccessfully, AppResources.Message,AppResources.Ok);
             }
             else
             {
-                await dialogServer.ShowMessageDialogAsync(AppResources.RenameFailed);
+                await dialogServer.ShowMessageDialogAsync(AppResources.RenameFailed,AppResources.Warning,AppResources.Ok);
                 SelectedAiChatSessionEntity.CustomTheme = name;
             }
         }
         else
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.RenameFailed);
+            await dialogServer.ShowMessageDialogAsync(AppResources.RenameFailed,AppResources.Warning,AppResources.Ok);
             SelectedAiChatSessionEntity.CustomTheme = name;
         }
     }
@@ -230,7 +244,7 @@ public partial class ChatPanelSettingViewModel(
         if (SelectedAiChatSessionEntity is null)
             return;
 
-        var confirmDelete = await dialogServer.ShowConfirmDialogAsync(AppResources.ConfirmDeleteSelectedSession);
+        var confirmDelete = await dialogServer.ShowConfirmDialogAsync(AppResources.ConfirmDeleteSelectedSession,AppResources.Message,AppResources.Ok,AppResources.Cancel);
         if (confirmDelete == false)
             return;
         if (await aiChatSessionService.DeleteAsync(x => x.Key == SelectedAiChatSessionEntity.Key) is not null)
@@ -249,7 +263,7 @@ public partial class ChatPanelSettingViewModel(
         }
         else
         {
-            await dialogServer.ShowMessageDialogAsync(AppResources.DeleteFailed);
+            await dialogServer.ShowMessageDialogAsync(AppResources.DeleteFailed,AppResources.Warning,AppResources.Ok);
         }
     }
 
@@ -308,9 +322,9 @@ public partial class ChatPanelSettingViewModel(
             }
         }
 
-        if (AiModel is IHasModels<string> model) model.SelectedModel = selectedModel;
+        if (AiModel is IHasModels<string> model) model.SelectedModel = SelectedModel;
 
-        var result = new Tuple<IEnumerable<AiChatSessionEntity>, AiApiModelBase>(Sessions, AiModel);
+        var result = new Tuple<IEnumerable<AiChatSessionEntity>, AiApiModelBase>(Sessions, AiModel!);
         return result;
 
     }

@@ -1,15 +1,12 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using System.Text;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models.RunningHubs;
@@ -32,6 +29,9 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
 
     [ObservableProperty] private ObservableCollection<string> lastBuildResultImages = [];
 
+    private ILogger<AiMediaViewModelBase> _logger =
+        TuDogApplication.ServiceProvider.GetRequiredService<ILogger<AiMediaViewModelBase>>();
+
     protected IRunningHubService RunningHubService { get; }=TuDogApplication.ServiceProvider.GetRequiredService<IRunningHubService>();
 
     protected IRunningHubStateService RunningHubStateService { get; } =
@@ -42,6 +42,8 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
 
     protected IRunningHubStateManager RunningHubStateManager { get; } =
         TuDogApplication.ServiceProvider.GetRequiredService<IRunningHubStateManager>();
+    
+    protected IUser user = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
 
     protected RunningHubEntity? RunningHubEntity { get; private set; }
 
@@ -70,12 +72,6 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
     [RelayCommand]
     private async Task SaveFileToLocal(RunningHubResultEntity selected)
     {
-        if (selected is null)
-        {
-            await DialogServer.ShowMessageDialogAsync(AppResources.NoItemsSelectedForExport);
-            return;
-        }
-
         var fileName = Path.GetFileName(selected.SavePath);
 
         var saveLocation = await App.TopLevel.StorageProvider.SaveFilePickerAsync(new()
@@ -113,7 +109,7 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
     /// </summary>
     private async Task ResetResultsAsync()
     {
-        Results.Reset((await RunningHubResultService.QueryAsync()).OrderByDescending(x => x.UpdateTime));
+        Results.Reset((await RunningHubResultService.QueryAsync(x=>x.Email==user.Email)).OrderByDescending(x => x.UpdateTime));
     }
 
     protected abstract long WorkFlowId { get; }
@@ -133,41 +129,50 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
 
     protected async Task<string?> UploadImageAsync(string imagePath)
     {
-        var url = $"{BaseAddress}/task/openapi/upload";
-        using (MultipartFormDataContent form = new MultipartFormDataContent())
+
+        if (RunningHubEntity is not { } runningHubEntity)
         {
-            // 添加 apiKey
-            form.Add(new StringContent(RunningHubEntity.ApiKey), "apiKey");
+            _logger.LogError("上传图片时,{0}不能为空。",nameof(RunningHubEntity));
+            await DialogServer.ShowMessageDialogAsync(AppResources.AnErrorOccurred, AppResources.Warning, AppResources.Ok);
+            
+            return null;
+        }
+        
+        var url = $"{BaseAddress}/task/openapi/upload";
+        using MultipartFormDataContent form = new MultipartFormDataContent();
+        // 添加 apiKey
+        form.Add(new StringContent(runningHubEntity.ApiKey), "apiKey");
 
-            // 添加 fileType
-            form.Add(new StringContent("image"), "fileType");
+        // 添加 fileType
+        form.Add(new StringContent("image"), "fileType");
 
-            // 添加文件
-            await using (FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
-            {
-                HttpContent fileContent = new StreamContent(fileStream);
-                fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg"); // 确保 MIME 类型正确
-                form.Add(fileContent, "file", Path.GetFileName(imagePath));
+        // 添加文件
+        await using (FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
+        {
+            HttpContent fileContent = new StreamContent(fileStream);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg"); // 确保 MIME 类型正确
+            form.Add(fileContent, "file", Path.GetFileName(imagePath));
 
-                // 发送请求
-                HttpResponseMessage response = await HttpClient.PostAsync(url, form);
-                string result = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<RunningHubResponseModel<UploadImageResponseModel>>(result);
-                if(data is null)
-                    throw new NullReferenceException();
-                if (data.Msg == "success")
-                    return data.Data.FileName;
-                await DialogServer.ShowMessageDialogAsync(data.Msg);
-                return null;
-            }
+            // 发送请求
+            HttpResponseMessage response = await HttpClient.PostAsync(url, form);
+            string result = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<RunningHubResponseModel<UploadImageResponseModel>>(result);
+            if(data is null)
+                throw new NullReferenceException();
+            if (data.Msg == "success")
+                return data.Data?.FileName;
+            await DialogServer.ShowMessageDialogAsync(data.Msg);
+            return null;
         }
     }
 
     protected override Task OnUnLoaded()
     {
+#pragma warning disable CS8601 // Possible null reference assignment.
         RunningHubStateManager.OnSuccess -= TaskOkAsync;
         RunningHubStateManager.OnFailure -= TaskFailAsync;
         RunningHubStateManager.OnBackgroundTaskCount -= RunningTaskCountChangedAsync;
+#pragma warning restore CS8601 // Possible null reference assignment.
         return Task.CompletedTask;
     }
 
@@ -180,7 +185,7 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
 
     private Task RunningTaskCountChangedAsync(int count)
     {
-        IsBackgroundTaskRunning=count>0?true:false;
+        IsBackgroundTaskRunning=count>0;
         return Task.CompletedTask;
     }
 
@@ -191,7 +196,7 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
 
     private async Task DownloadResultAsync(Guid key)
     {
-        var find = await RunningHubStateService.QueryAsync(x => x.Key == key && x.TaskStatus == TaskState.Success);
+        var find = await RunningHubStateService.QueryAsync(x => x.Key == key && x.TaskStatus == TaskState.Success&& x.Email==user.Email);
         if (!find.Any())
         {
             ErrorMessage = AppResources.EntityNotFound;
@@ -230,12 +235,12 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
         if (outputs is null)
             throw new NullReferenceException();
 
-        if (outputs.Msg != "success")
+        if (outputs.Msg != "success" || outputs.Data is null)
         {
             ErrorMessage = string.Format(AppResources.FailedToObtainDownloadFileLink, outputs.Msg);
             return;
         }
-
+        
         await DownloadAsync(outputs.Data, entity.TaskId);
     }
 
@@ -278,7 +283,7 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
 
         await QueryIsRunningTaskCountAsync();
 
-       var find = await this.RunningHubService.QueryAsync();
+       var find = await this.RunningHubService.QueryAsync(x=> x.Email==user.Email);
        if (!find.Any())
        {
            await DialogServer.ShowMessageDialogAsync(AppResources.AddRunningHubApiKeyInSettings);
@@ -289,9 +294,9 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
 
     }
 
-    protected string ErrorMessage { get; set; }
+    protected string ErrorMessage { get; set; } = string.Empty;
 
-    protected string SuccessMessage { get; set; } = AppResources.ExecutedSuccessfully;
+    private string SuccessMessage { get; set; } = AppResources.ExecutedSuccessfully;
 
     protected virtual Task<bool> ValidateConfirmAsync()
     {
@@ -334,12 +339,12 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
         if (model is null)
             throw new NullReferenceException();
 
-        if (model.Msg == "success")
+        if (model.Msg == "success" && model.Data is not null)
         {
             // 将任务写入数据库并且开始轮询
             return await RunningHubStateManager.AddTaskAsync(RunningHubStateEntity.Create(model.Data.TaskId,
                 model.Data.ClientId,
-                RunningHubEntity.ApiKey, RunningHubWorkType));
+                RunningHubEntity.ApiKey, RunningHubWorkType,user.Email));
         }
 
         ErrorMessage = string.Format(AppResources.AnErrorOccurred, model.Msg);

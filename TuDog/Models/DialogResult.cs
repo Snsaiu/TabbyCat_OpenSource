@@ -16,6 +16,10 @@ public class DialogResultData<T>(bool ok, T? data) : DialogResult(ok)
 
     public static implicit operator DialogResultData<T>(DialogResultData data)
     {
-        return new(data.Ok, (T)data.Data);
+        if (data.Data is (T and var result))
+        {
+            return new DialogResultData<T>(true, result);
+        }
+        throw new ArgumentException("Data is not a valid type");
     }
 }

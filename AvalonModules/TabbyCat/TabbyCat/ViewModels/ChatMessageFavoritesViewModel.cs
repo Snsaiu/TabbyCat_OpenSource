@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentAvalonia.UI.Data;
+using Microsoft.Extensions.Logging;
+using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
@@ -15,19 +17,25 @@ namespace TabbyCat.ViewModels;
 [Register]
 public sealed partial class ChatMessageFavoritesViewModel(
     IAiChatMessageRecordService aiChatMessageRecordService,
+    ILogger<ChatMessageFavoritesViewModel> logger,
+    IUser user,
     IUseMarkdownService markdownService)
     : DialogViewModelBase<bool>
 {
     [ObservableProperty] private ObservableCollection<ChatMessageDateGroupModel> chats = [];
 
-    [ObservableProperty] private string searchText;
+    [ObservableProperty] private string searchText=string.Empty;
 
 
     [RelayCommand]
     private async Task SetIsFavouriteState(MessagesItem item)
     {
         var query = await aiChatMessageRecordService.QueryAsync(x => x.Key == item.Key);
-        if (!query.Any()) return;
+        if (!query.Any())
+        {
+            logger.LogError("根据{0}查不到聊天记录", item.Key);
+            return;
+        }
 
         var find = query.First();
         find.UpdateTime = DateTime.Now;
@@ -64,7 +72,7 @@ public sealed partial class ChatMessageFavoritesViewModel(
     {
         var showMarkdown = markdownService.Get();
 
-        var finds = await aiChatMessageRecordService.QueryAsync(x => x.IsFavourite);
+        var finds = await aiChatMessageRecordService.QueryAsync(x => x.IsFavourite&& x.Email==user.Email);
         if (!finds.Any())
             return;
 
@@ -84,14 +92,9 @@ public sealed partial class ChatMessageFavoritesViewModel(
 
         Chats.Reset(list);
     }
-
-
+    
     protected override Task<bool> OnConfirmAsync()
     {
         return Task.FromResult(true);
     }
-
-
-
-
 }

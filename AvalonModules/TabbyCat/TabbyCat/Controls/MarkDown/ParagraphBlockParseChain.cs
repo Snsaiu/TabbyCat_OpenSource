@@ -14,6 +14,9 @@ public sealed class ParagraphBlockParseChain : MarkDownParseChainBase<ParagraphB
         var stackPanel = new WrapPanel() { Orientation = Orientation.Horizontal };
         var sb = new StringBuilder();
 
+        if (block.Inline is null)
+            return stackPanel;
+        
         foreach (var child in block.Inline)
             if (child is EmphasisInline emphasis)
             {
@@ -30,7 +33,7 @@ public sealed class ParagraphBlockParseChain : MarkDownParseChainBase<ParagraphB
 
                 if (link.FirstOrDefault() is LiteralInline literal)
                     stackPanel.Children.Add(new HyperlinkButton()
-                        { Content = literal.Content, NavigateUri = new(link.Url) });
+                        { Content = literal.Content, NavigateUri = new(link.Url??string.Empty) });
                 else
                     throw new NotImplementedException();
             }

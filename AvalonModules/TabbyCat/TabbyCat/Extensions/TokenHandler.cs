@@ -7,38 +7,27 @@ using TabbyCat.Models.Users;
 
 namespace TabbyCat.Extensions;
 
-public class TokenHandler : DelegatingHandler
+public class TokenHandler(IUser user, OidcClient oidcClient, ILoginUserService userService)
+    : DelegatingHandler
 {
-    private readonly IUser _user;
-    private readonly OidcClient _oidcClient;
-    private readonly ILoginUserService _userService;
-
-
-    public TokenHandler(IUser user, OidcClient oidcClient, ILoginUserService userService)
-    {
-        _user = user;
-        _oidcClient = oidcClient;
-        _userService = userService;
-    }
-
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
-        if (_user.AccessTokenExpiration is null)
+        if (user.AccessTokenExpiration is null)
             return await base.SendAsync(request, cancellationToken);
 
-        if (_user.AccessTokenExpiration < DateTime.UtcNow && !string.IsNullOrEmpty(_user.RefreshToken))
+        if (user.AccessTokenExpiration < DateTime.UtcNow && !string.IsNullOrEmpty(user.RefreshToken))
         {
-            var refreshTokenResult = await _oidcClient.RefreshTokenAsync(_user.RefreshToken);
+            var refreshTokenResult = await oidcClient.RefreshTokenAsync(user.RefreshToken, cancellationToken: cancellationToken);
             if (refreshTokenResult.IsError) throw new(refreshTokenResult.ErrorDescription);
-            _user.AccessTokenExpiration = refreshTokenResult.AccessTokenExpiration;
-            _user.RefreshToken = refreshTokenResult.RefreshToken;
-            _user.AccessToken = refreshTokenResult.AccessToken;
-            _userService.Set(_user as LoginUserModel);
+            user.AccessTokenExpiration = refreshTokenResult.AccessTokenExpiration;
+            user.RefreshToken = refreshTokenResult.RefreshToken;
+            user.AccessToken = refreshTokenResult.AccessToken;
+            userService.Set((LoginUserModel)user);
         }
 
-        if (!string.IsNullOrEmpty(_user.AccessToken))
-            request.Headers.Authorization = new("Bearer", _user.AccessToken);
+        if (!string.IsNullOrEmpty(user.AccessToken))
+            request.Headers.Authorization = new("Bearer", user.AccessToken);
 
         return await base.SendAsync(request, cancellationToken);
     }
