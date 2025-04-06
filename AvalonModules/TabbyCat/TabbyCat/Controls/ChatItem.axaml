@@ -59,7 +59,17 @@
             <Border Padding="2" DockPanel.Dock="Right">
 
                 <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
-                    <markDown:MarkDownViewer IsVisible="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode}" MarkDown="{Binding $parent[controls:ChatItem].Message.Content, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    
+                    <mdxaml:MarkdownScrollViewer SelectionEnabled="True" IsVisible="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode}" Markdown="{Binding $parent[controls:ChatItem].Message.Content, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                       <mdxaml:MarkdownScrollViewer.Styles>
+                           <Styles>
+                               <Style Selector=".CodeBlock Button.CopyButton TextBlock">
+                                   <Setter Property="Text" Value="📋"/>
+                               </Style>
+                           </Styles>
+                       </mdxaml:MarkdownScrollViewer.Styles>
+                    </mdxaml:MarkdownScrollViewer>
+                    <!-- <markDown:MarkDownViewer IsVisible="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode}" MarkDown="{Binding $parent[controls:ChatItem].Message.Content, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" /> -->
 
                     <SelectableTextBlock
                         HorizontalAlignment="Stretch"

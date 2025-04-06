@@ -41,7 +41,7 @@ public partial class ChatItem : UserControl
     [RelayCommand]
     private Task CopyTextToClipboard()
     {
-        return App.TopLevel?.Clipboard?.SetTextAsync(Markdown.ToPlainText(Message.Content));
+        return App.TopLevel?.Clipboard?.SetTextAsync(Markdig.Markdown.ToPlainText(Message.Content));
     }
 
     private void ToggleButton_OnIsCheckedChanged(object? sender, RoutedEventArgs e)

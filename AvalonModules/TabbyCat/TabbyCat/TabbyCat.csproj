@@ -27,6 +27,7 @@
       <PackageReference Include="FantasyResultModel"/>
     <PackageReference Include="FluentAvaloniaUI" />
       <PackageReference Include="Markdig"/>
+      <PackageReference Include="Markdown.Avalonia" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting"/>
       <PackageReference Include="Microsoft.Extensions.Http"/>
     <PackageReference Include="Newtonsoft.Json" />

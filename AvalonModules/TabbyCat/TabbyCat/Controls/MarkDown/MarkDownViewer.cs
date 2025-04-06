@@ -1,12 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Layout;
 using Avalonia.Media;
-using AvaloniaEdit;
 using Markdig;
-using Markdig.Syntax;
 
 namespace TabbyCat.Controls.MarkDown;
 
@@ -39,7 +36,7 @@ public class MarkDownViewer : ContentControl
         if (string.IsNullOrEmpty(markdown))
             return;
         var pipline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-        var document = Markdown.Parse(markdown, pipline);
+        var document = Markdig.Markdown.Parse(markdown, pipline);
 
         var paragraphBlockParseChain = MarkDownParseBuilder.Build();
 
