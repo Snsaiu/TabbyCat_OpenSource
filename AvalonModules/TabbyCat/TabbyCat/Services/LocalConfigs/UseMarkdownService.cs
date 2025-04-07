@@ -10,5 +10,5 @@ public sealed class UseMarkdownService
     : LocalConfigService<bool>, IUseMarkdownService
 {
     public override string Key { get; } = "useMarkdown";
-    public override bool Default { get; } = false;
+    public override bool Default { get; } = true;
 }

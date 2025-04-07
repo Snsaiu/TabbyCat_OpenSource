@@ -59,15 +59,24 @@
             <Border Padding="2" DockPanel.Dock="Right">
 
                 <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
-                    
+
                     <mdxaml:MarkdownScrollViewer SelectionEnabled="True" IsVisible="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode}" Markdown="{Binding $parent[controls:ChatItem].Message.Content, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                        <mdxaml:MarkdownScrollViewer.Styles>
                            <Styles>
                                <Style Selector=".CodeBlock Button.CopyButton TextBlock">
-                                   <Setter Property="Text" Value="📋"/>
+                                   <Setter Property="Text" Value="{x:Static tabbyCat:IconFontProvider.copy}" />
+                                   <Setter Property="Margin" Value="5" />
+                                   <Setter Property="FontFamily" Value="{StaticResource iconFont}" />
                                </Style>
                            </Styles>
                        </mdxaml:MarkdownScrollViewer.Styles>
+
+                        <mdxaml:MarkdownScrollViewer.Plugins>
+                            <mdxaml:MdAvPlugins>
+                                <mdxaml:ChatAISetup />
+                            </mdxaml:MdAvPlugins>
+                        </mdxaml:MarkdownScrollViewer.Plugins>
+
                     </mdxaml:MarkdownScrollViewer>
                     <!-- <markDown:MarkDownViewer IsVisible="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode}" MarkDown="{Binding $parent[controls:ChatItem].Message.Content, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" /> -->
 

@@ -68,7 +68,7 @@ public partial class ChatViewModel(
     private async Task InitializedAsync()
     {
         var defaultModels = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==user.Email);
-        
+
         if (!defaultModels.Any())
         {
             logger.LogWarning("查询默认的Ai聊天模板，数量是0");
@@ -109,7 +109,7 @@ public partial class ChatViewModel(
         {
             logger.LogError("创建消息会话失败！");
         }
-        
+
     }
 
     [RelayCommand]
@@ -125,7 +125,7 @@ public partial class ChatViewModel(
             logger.LogError("初始化聊天历史记录时,{0}不能为空。",nameof(AiChatSession));
             return;
         }
-        
+
         var histories = await aiChatMessageRecordService.QueryAsync(x => x.SessionId == chatSession.Key&& x.Email==user.Email);
         if (!histories.Any())
         {
@@ -146,7 +146,7 @@ public partial class ChatViewModel(
             logger.LogError("初始化消息历史时,{0}变量不能为空，但是当前是空值",nameof(aiApiModelBase));
             return;
         }
-           
+
         if (!aiApiModelBase.ContextCountLimit)
         {
             foreach (var chatmodel in ChatModels)
@@ -178,7 +178,7 @@ public partial class ChatViewModel(
             logger.LogError("初始化聊天模型时,{0}不能为空。",nameof(AiChatSession));
             return;
         }
-        
+
         if (addDefaultMessage)
         {
             if (chatSession.Occupation == AssistantOccupation.Custom)
@@ -187,7 +187,10 @@ public partial class ChatViewModel(
                     await customAssistantOccupationService.QueryAsync(x =>
                         x.Name == chatSession.CustomOccupationName&& x.Email==user.Email);
                 messageSession?.Messages.Add(new MessagesItem
-                    { Content = occupation.FirstOrDefault()?.Description ?? string.Empty, Role = Role.System });
+                {
+                    Content = occupation.FirstOrDefault()?.Description ?? string.Empty, Role = Role.System,
+                    ShowMarkdownMode = useMarkdownService.Get()
+                });
             }
             else if (chatSession.Occupation == AssistantOccupation.Agent)
             {
@@ -196,7 +199,8 @@ public partial class ChatViewModel(
             else
             {
                 var discritpion = LocalizationResourceManager.Instance[$"{chatSession.Occupation.ToString()}Prompt"];
-                messageSession?.Messages.Add(new MessagesItem { Content = discritpion, Role = Role.System });
+                messageSession?.Messages.Add(new()
+                    { Content = discritpion, Role = Role.System, ShowMarkdownMode = useMarkdownService.Get() });
             }
         }
     }
@@ -213,7 +217,7 @@ public partial class ChatViewModel(
         {
             AiChatSession = AiChatSessionEntity.CreateDefault();
             AiChatSession.Email = user.Email;
-            
+
             logger.LogInformation("没有默认的聊天会话，创建默认的会话");
             if (await chatSessionService.AddAsync(AiChatSession))
             {
@@ -265,7 +269,7 @@ public partial class ChatViewModel(
                 await dialogServer.ShowMessageDialogAsync(AppResources.UnknownErrorSendErrorTryAgain, AppResources.Warning, AppResources.Ok);
                 return;
             }
-               
+
 
             MessagesItem assistantMessage;
 
@@ -278,22 +282,23 @@ public partial class ChatViewModel(
                     await  dialogServer.ShowMessageDialogAsync(AppResources.AnErrorOccurred, AppResources.Warning, AppResources.Ok);
                     return;
                 }
-                
+
                 var newMessage = new MessagesItem()
-                    { Content = arg, Role = Role.User, Key = key, ShowMarkdownMode = showMarkDownState };
+                    { Content = arg, Role = Role.User, Key = key, ShowMarkdownMode = useMarkdownService.Get() };
                 messageSession.Messages.Add(newMessage);
 
                 ChatModels.Add(new()
-                    { Content = arg, Role = Role.User, Key = key, ShowMarkdownMode = showMarkDownState });
+                    { Content = arg, Role = Role.User, Key = key, ShowMarkdownMode = useMarkdownService.Get() });
                 ChatItemChanged?.Invoke();
 
-                assistantMessage = new() { Role = Role.Assistant, StreamEnd = false };
+                assistantMessage = new()
+                    { Role = Role.Assistant, StreamEnd = false, ShowMarkdownMode = useMarkdownService.Get() };
                 ChatModels.Add(assistantMessage);
             }
             else
             {
                 var newMessage = new MessagesItem()
-                    { Content = arg, Role = Role.User, Key = Guid.Empty, ShowMarkdownMode = showMarkDownState };
+                    { Content = arg, Role = Role.User, Key = Guid.Empty, ShowMarkdownMode = useMarkdownService.Get() };
                 messageSession.Messages.Add(newMessage);
                 assistantMessage = ChatModels.Last();
             }
@@ -396,7 +401,7 @@ public partial class ChatViewModel(
             logger.LogError("保存会话时，{0}不能为空。",nameof(AiChatSession));
             return null;
         }
-        
+
         var session = await chatSessionService.QueryAsync(x => x.Key == chatSession.Key &&x.Email==user.Email);
         if (!session.Any())
         {
@@ -430,7 +435,7 @@ public partial class ChatViewModel(
             logger.LogError("创建新的会话时,{0}不能为空。",nameof(AiChatSession));
             return;
         }
-        
+
         AiChatSession.IsDefault = false;
         await chatSessionService.UpdateAsync(AiChatSession);
 
@@ -507,13 +512,13 @@ public partial class ChatViewModel(
 
             AiChatSession = AiChatSessionEntity.CreateDefault();
             AiChatSession.Email = user.Email;
-            
+
             await chatSessionService.AddAsync(AiChatSession);
             goto Reset;
         }
-        
+
         AiChatSession = defaultChat;
-       
+
         foreach (var item in result.Item1)
         {
             if (await chatSessionService.UpdateAsync(item)) continue;

@@ -97,7 +97,7 @@ public class RoleConverter : StringEnumConverter
         {
             throw new JsonSerializationException("Expected role");
         }
-        
+
         return role switch
         {
             "user" => Role.User,

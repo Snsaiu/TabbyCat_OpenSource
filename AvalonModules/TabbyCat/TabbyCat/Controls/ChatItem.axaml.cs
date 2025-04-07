@@ -4,7 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.Input;
 using Markdig;
+using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
+using TuDog.Bootstrap;
 
 namespace TabbyCat.Controls;
 

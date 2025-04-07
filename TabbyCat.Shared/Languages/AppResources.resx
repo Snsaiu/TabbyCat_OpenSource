@@ -1531,7 +1531,7 @@
     <value>Try markdown by default</value>
   </data>
   <data name="HotkeyToStartProgram" xml:space="preserve">
-    <value>Try hotkey wakeup program</value>
+    <value>Try hotkey (Ctrl+Space) wakeup program</value>
   </data>
   <data name="CloseButtonBehavior" xml:space="preserve">
     <value>Close button behavior</value>

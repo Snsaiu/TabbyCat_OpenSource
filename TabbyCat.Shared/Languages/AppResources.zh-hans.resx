@@ -901,7 +901,7 @@
     <value>聊天默认使用Markdown</value>
   </data>
   <data name="HotkeyToStartProgram" xml:space="preserve">
-    <value>使用热键唤醒程序</value>
+    <value>使用（Ctrl+Space）热键唤醒程序</value>
   </data>
   <data name="CloseButtonBehavior" xml:space="preserve">
     <value>关闭按钮行为</value>
