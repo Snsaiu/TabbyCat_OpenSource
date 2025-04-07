@@ -28,7 +28,9 @@ jobs:
       run: dotnet restore $env:Solution_Name
 
     - name: 编译项目
-      run: dotnet build $env:Project_Path --configuration Release --no-restore
+      run: |
+        PROJECT_NAME="TabbyCat.Desktop"
+        dotnet build $env:Project_Path/$PROJECT_NAME.csproj --configuration Release --no-restore
 
     - name: 打包 ZIP 文件
       run: |

@@ -31,9 +31,9 @@
     <PackageVersion Include="prometheus-net" Version="8.2.1" />
     <PackageVersion Include="prometheus-net.AspNetCore" Version="8.2.1" />
     <PackageVersion Include="RestSharp" Version="112.1.0" />
-    <PackageVersion Include="Serilog" Version="4.2.1-dev-02352" />
+    <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.1" />
-    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.1-dev-00953" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.Loki" Version="4.0.0-beta3" />
     <PackageVersion Include="Serilog.Sinks.Prometheus" Version="1.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.3" />
