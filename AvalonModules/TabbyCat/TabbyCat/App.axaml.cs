@@ -2,11 +2,14 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 
+using Duende.IdentityModel.OidcClient;
+
+using HotAvalonia;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using SharpHook.Native;
-using Duende.IdentityModel.OidcClient;
-using HotAvalonia;
+
 using TabbyCat.Extensions;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
@@ -61,12 +64,12 @@ namespace TabbyCat
         {
             if (code.Count() == 2 && code.First() == KeyCode.VcLeftControl && code.Last() == KeyCode.VcSpace)
             {
-                
+
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if(window is null)
+                    if (window is null)
                         return;
-                    
+
                     if (window.IsActive)
                     {
                         window.Hide();
@@ -127,11 +130,11 @@ namespace TabbyCat
 
         private void Show(object? sender, EventArgs e)
         {
-            if (window is not {} w)
+            if (window is not { } w)
             {
                 return;
             }
-            
+
             w.WindowState = WindowState.Normal;
             w.Show();
             w.Activate();
@@ -142,8 +145,8 @@ namespace TabbyCat
             collection.AddSingleton(typeof(OidcClient), _ => new OidcClient(OidcOptions.GetOptions()));
             collection.AddTransient<TokenHandler>();
             collection.AddHttpClient(ConstParameter.Auth).AddHttpMessageHandler<TokenHandler>();
-            
-            collection.AddLoggerBuilder("http://24.233.2.12:3100",new  LogLabelProvider());
+
+            collection.AddLoggerBuilder("http://24.233.2.12:3100", LogLabelProvider.GetLabels());
         }
     }
 }

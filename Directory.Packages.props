@@ -6,20 +6,20 @@
   <ItemGroup>
     <!-- Avalonia packages -->
     <!-- Important: keep version in sync! -->
-    <PackageVersion Include="Avalonia" Version="11.2.5" />
-    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.2.5" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.5" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.2.5" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.2.5" />
-    <PackageVersion Include="Avalonia.iOS" Version="11.2.5" />
-    <PackageVersion Include="Avalonia.Browser" Version="11.2.5" />
-    <PackageVersion Include="Avalonia.Android" Version="11.2.5" />
+    <PackageVersion Include="Avalonia" Version="11.2.6" />
+    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.2.0" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.2.6" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.6" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.2.6" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.2.6" />
+    <PackageVersion Include="Avalonia.iOS" Version="11.2.6" />
+    <PackageVersion Include="Avalonia.Browser" Version="11.2.6" />
+    <PackageVersion Include="Avalonia.Android" Version="11.2.6" />
     <PackageVersion Include="Avalonia.Xaml.Behaviors" Version="11.2.0.14" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="Duende.IdentityModel.OidcClient" Version="6.0.1" />
     <PackageVersion Include="Duende.IdentityModel.OidcClient.Extensions" Version="6.0.1" />
-    <PackageVersion Include="FluentAvaloniaUI" Version="2.2.0" />
+    <PackageVersion Include="FluentAvaloniaUI" Version="2.3.0" />
     <PackageVersion Include="Markdig" Version="0.40.0" />
     <PackageVersion Include="Markdown.Avalonia" Version="11.0.3-a1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.13.0" />
@@ -34,11 +34,11 @@
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.1" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
-    <PackageVersion Include="Serilog.Sinks.Loki" Version="4.0.0-beta3" />
+    <PackageVersion Include="Serilog.Sinks.Grafana.Loki" Version="8.3.0" />
     <PackageVersion Include="Serilog.Sinks.Prometheus" Version="1.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.3" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.14" />
-    <PackageVersion Include="SharpHook" Version="5.3.8" />
+    <PackageVersion Include="SharpHook" Version="5.3.9" />
     <PackageVersion Include="SharpHook.Reactive" Version="5.3.8" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.0" />
     <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
@@ -50,12 +50,12 @@
     <PackageVersion Include="Xamarin.Essentials" Version="1.8.1" />
     <PackageVersion Include="FantasyResultModel" Version="1.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.13.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0-preview.1.25080.5" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-preview.1.25080.5" />
-    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="11.2.5" />
-    <PackageVersion Include="HotAvalonia" Version="2.1.0" />
-    <PackageVersion Include="HotAvalonia.Extensions" Version="2.1.0" PrivateAssets="All" />
+    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="11.2.6" />
+    <PackageVersion Include="HotAvalonia" Version="3.0.0" />
+    <PackageVersion Include="HotAvalonia.Extensions" Version="3.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

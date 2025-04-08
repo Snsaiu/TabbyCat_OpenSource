@@ -14,7 +14,6 @@
       <PackageReference Include="prometheus-net.AspNetCore" />
       <PackageReference Include="Serilog" />
       <PackageReference Include="Serilog.Sinks.Console" />
-      <PackageReference Include="Serilog.Sinks.Loki" />
       <PackageReference Include="Serilog.Sinks.Prometheus" />
     </ItemGroup>
 

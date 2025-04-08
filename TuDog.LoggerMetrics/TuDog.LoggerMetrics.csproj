@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="OpenTelemetry" />
-      <PackageReference Include="Serilog" />
-      <PackageReference Include="Serilog.Extensions.Logging" />
-      <PackageReference Include="Serilog.Sinks.Loki" />
-      <PackageReference Include="System.Diagnostics.DiagnosticSource" />
-        <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Serilog" />
+		<PackageReference Include="Serilog.Extensions.Logging" />
+		<PackageReference Include="Serilog.Sinks.Grafana.Loki" />
+		<PackageReference Include="System.Diagnostics.DiagnosticSource" />
+	</ItemGroup>
 
 </Project>

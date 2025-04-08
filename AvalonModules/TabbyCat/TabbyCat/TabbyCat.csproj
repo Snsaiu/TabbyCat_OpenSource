@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" />
-      <PackageReference Include="Avalonia.AvaloniaEdit"/>
+      <PackageReference Include="Avalonia.AvaloniaEdit" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="Avalonia.Diagnostics">
@@ -24,20 +24,21 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Duende.IdentityModel.OidcClient" />
     <PackageReference Include="Duende.IdentityModel.OidcClient.Extensions" />
-      <PackageReference Include="FantasyResultModel"/>
+      <PackageReference Include="FantasyResultModel" />
     <PackageReference Include="FluentAvaloniaUI" />
-      <PackageReference Include="Markdig"/>
+      <PackageReference Include="Markdig" />
       <PackageReference Include="Markdown.Avalonia" />
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting"/>
-      <PackageReference Include="Microsoft.Extensions.Http"/>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
+      <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="OpenTelemetry" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
-    <PackageReference Include="Serilog.Sinks.Loki" />
+    <PackageReference Include="Serilog.Sinks.Grafana.Loki" />
+    <!--<PackageReference Include="Serilog.Sinks.Loki" />-->
     <PackageReference Include="SharpHook" />
-      <PackageReference Include="Avalonia.Themes.Fluent"/>
+      <PackageReference Include="Avalonia.Themes.Fluent" />
 
-	  <PackageReference Include="sqlite-net-pcl"  />
+	  <PackageReference Include="sqlite-net-pcl" />
 	  <!--<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" />-->
 	  <PackageReference Include="SQLitePCLRaw.bundle_green" />
 	  <!--<PackageReference Include="SQLitePCLRaw.core" />
@@ -47,9 +48,9 @@
 
 
     <ItemGroup>
-        <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="Avalonia.Markup.Xaml.Loader"/>
-        <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="HotAvalonia"/>
-        <PackageReference Include="HotAvalonia.Extensions" PrivateAssets="All"/>
+        <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="Avalonia.Markup.Xaml.Loader" />
+        <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="HotAvalonia" />
+        <PackageReference Include="HotAvalonia.Extensions" PrivateAssets="All" />
     </ItemGroup>
 
   <ItemGroup>
@@ -64,7 +65,7 @@
     <ProjectReference Include="..\..\..\TabbyCat.Shared\TabbyCat.Shared.csproj" />
     <ProjectReference Include="..\..\..\TabbyCat.SqliteService\TabbyCat.SqliteService.csproj" />
     <ProjectReference Include="..\..\..\TuDog.LoggerMetrics\TuDog.LoggerMetrics.csproj" />
-        <ProjectReference Include="..\..\..\TuDog.SourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\..\..\TuDog.SourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\..\TuDog\TuDog.csproj" />
   </ItemGroup>
 
@@ -84,7 +85,7 @@
 
 
     <ItemGroup>
-        <Folder Include="Bases\"/>
+        <Folder Include="Bases\" />
     </ItemGroup>
 
 </Project>

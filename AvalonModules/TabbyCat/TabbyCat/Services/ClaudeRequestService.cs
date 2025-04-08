@@ -1,9 +1,10 @@
-﻿using System.Net.Http;
-using FantasyResultModel;
+﻿using FantasyResultModel;
 using FantasyResultModel.Impls;
-using Microsoft.Extensions.DependencyInjection;
+
 using Microsoft.Extensions.Logging;
-using Serilog;
+
+using System.Net.Http;
+
 using TabbyCat.IServices;
 using TabbyCat.Models;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
@@ -11,21 +12,21 @@ using TabbyCat.Models.AiReqRes.AiChatResponses;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
 using TabbyCat.Shared.Languages;
-using TuDog.Bootstrap;
+
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace TabbyCat.Services;
 
 public sealed class ClaudeRequestService : AiChatRequestServiceBase<ClaudeRequestModel, ClaudeModel, ClaudeResponseModel>
 {
-    private ILogger logger;
-    
+    private readonly ILogger logger;
+
     public ClaudeRequestService(ClaudeRequestModel requestModel, ClaudeModel aiModel) : base(requestModel, aiModel)
     {
-       logger = LoggerFactory.CreateLogger(nameof(ClaudeRequestService));
+        logger = LoggerFactory.CreateLogger(nameof(ClaudeRequestService));
     }
 
-    protected override ResultBase< HttpRequestMessage> BuildHttpRequestMessage(ClaudeModel aiModel)
+    protected override ResultBase<HttpRequestMessage> BuildHttpRequestMessage(ClaudeModel aiModel)
     {
         if (aiModel is IApiDomain apiDomain)
         {
@@ -43,9 +44,9 @@ public sealed class ClaudeRequestService : AiChatRequestServiceBase<ClaudeReques
         }
 
 
-        logger.LogError("暂不支持提供者{0}不是{1}类型的AiModel。",aiModel.Provider.ToString(),typeof(IApiDomain));
+        logger.LogError("暂不支持提供者{0}不是{1}类型的AiModel。", aiModel.Provider.ToString(), typeof(IApiDomain));
 
-        return new ErrorResultModel<HttpRequestMessage>(string.Format(AppResources.NotSupport,aiModel.Provider));
+        return new ErrorResultModel<HttpRequestMessage>(string.Format(AppResources.NotSupport, aiModel.Provider));
     }
 
     protected override Task<string> RequestModelToJsonString(ClaudeRequestModel requestModel)
