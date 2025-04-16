@@ -12,7 +12,6 @@
                      xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
                      xmlns:extensions="clr-namespace:TabbyCat.Extensions"
                      xmlns:tabbyCat="clr-namespace:TabbyCat"
-                     Loaded="Control_OnLoaded"
                      xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                      xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
                      ExtendClientAreaChromeHints="NoChrome"
@@ -25,8 +24,6 @@
         <Border Grid.Row="0" Padding="0,5">
             <Grid>
                 <StackPanel Orientation="Horizontal">
-
-
                     <!-- 左上角的按钮组 -->
                     <StackPanel Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center"
                                 IsVisible="{OnPlatform Default=false, macOS=true}">
@@ -45,14 +42,14 @@
                         <!-- <Button Classes="MacosTitleBarButton" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.MacosMaximize}" Background="#00CA4E" Foreground="#00CA4E" Margin="6,0,0,0" /> -->
                     </StackPanel>
                     <Grid HorizontalAlignment="Left" Margin="10,0,0,0">
-                        <Button Name="loginButton" IsVisible="False" Content="{x:Static languages:AppResources.Login}"
-                                Click="Login"
+                        <Button  IsVisible="{Binding !IsLogined}" Content="{x:Static languages:AppResources.Login}"
+                                Command="{Binding LoginCommand}"
                                 ToolTip.Tip="{x:Static languages:AppResources.LoginUseAi}" />
-                        <SplitButton Name="userButton" IsVisible="False">
+                        <SplitButton IsVisible="{Binding IsLogined}" Content="{Binding CurrentUser.Email,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <SplitButton.Flyout>
                                 <MenuFlyout Placement="Bottom">
                                     <MenuItem Header="{x:Static languages:AppResources.Mine}" />
-                                    <MenuItem Header="{x:Static languages:AppResources.Logout}" Click="Logout" />
+                                    <MenuItem Header="{x:Static languages:AppResources.Logout}" Command="{Binding LogoutCommand}" />
                                 </MenuFlyout>
                             </SplitButton.Flyout>
                         </SplitButton>
