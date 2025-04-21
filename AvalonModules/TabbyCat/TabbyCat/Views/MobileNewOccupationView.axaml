@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:MobileNewOccupationViewModel"
+             x:Class="TabbyCat.Views.MobileNewOccupationView">
+  
+    <Grid RowDefinitions="Auto,*">
+        <controls:MobileTitleBar Grid.Row="0" Title="创建AI角色" ShowLeftArrow="True" LeftArrowCommand="{Binding PopCommand}"></controls:MobileTitleBar>
+        <Grid Grid.RowDefinitions="Auto,*,Auto" Grid.Row="1">
+            <Border Classes="EditBorder" >
+                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+                    <TextBlock Classes="TextInputTitleStyle" Text="名称"  DockPanel.Dock="Left"></TextBlock>
+                    <TextBox Classes="NoBorderStyle" DockPanel.Dock="Right" MaxLength="20" HorizontalAlignment="Stretch" Text="{Binding OccupationName}" Watermark="角色名称"></TextBox>
+                </DockPanel>
+            </Border>
+            
+            <Border Grid.Row="1" Classes="EditBorder">
+                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <TextBlock Classes="TextInputTitleStyle" HorizontalAlignment="Left" Text="设定描述"></TextBlock>
+                    <TextBox TextWrapping="Wrap" Classes="NoBorderStyle" AcceptsReturn="False"  MinLines="10" 
+                             Watermark="示例：你是一个经验丰富的数学老师，拥有激发学生热情的教学方法...." Text="{Binding Description}"></TextBox>
+                </StackPanel>
+            </Border>
+            
+            <Button Classes="MobileDefaultStyle" Command="{Binding AddNewOccupationCommand}" Grid.Row="2" Content="确定" Margin="5,5,5,20" HorizontalAlignment="Stretch" DockPanel.Dock="Bottom"></Button>
+
+        </Grid>
+    </Grid>
+</UserControl>

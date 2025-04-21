@@ -16,6 +16,8 @@
 		<AndroidResource Include="Icon.png">
 			<Link>Resources\drawable\Icon.png</Link>
 		</AndroidResource>
+		<None Remove="Resources\drawable\Icon.png"/>
+		<AndroidResource Include="Resources\drawable\Icon.png"/>
 	</ItemGroup>
 	
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
 using TabbyCat.Shared.Enums;
@@ -8,17 +9,18 @@ using TuDog.Extensions;
 
 namespace TabbyCat.Models;
 
-public class GroqModel : AiApiKeyModelBase, IHasModels<string>, IInitializeable
+public partial class GroqModel : AiApiKeyModelBase, IHasModels<string>, IInitializeable
 {
-    public override AiModelType Provider { get; } = AiModelType.Groq;
-    public string SelectedModel { get; set; } = string.Empty;
+    public override AiModelType Provider => AiModelType.Groq;
+
+    [ObservableProperty] private string _selectedModel = string.Empty;
 
     public Task<IEnumerable<string>> GetModelsAsync()
     {
         return Task.FromResult<IEnumerable<string>>([]);
     }
 
-    public ObservableCollection<string> Models { get; set; } = [];
+    [ObservableProperty] private ObservableCollection<string> _models = [];
 
     public async Task<ResultBase<bool>> InitializeAsync()
     {

@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
+using TabbyCat.Enums;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
+using TabbyCat.Models.Users.Configs;
 using TabbyCat.Shared.Languages;
 using TabbyCat.ViewModels;
 using TuDog.IocAttribute;
@@ -9,11 +12,20 @@ using TuDog.IocAttribute;
 namespace TabbyCat.Components.ViewModels;
 
 [Register]
-public sealed partial class PersonalizationViewModel(ILanguageService languageService) : ViewModelBase
+public sealed partial class PersonalizationViewModel(
+    ILanguageService languageService,
+    IBackgroundImageConfig backgroundImageConfig,
+    IBackgroundImageConfigService backgroundImageConfigService) : ViewModelBase
 {
-    [ObservableProperty] private ObservableCollection<KeyValuePair<string, string>> languages = [];
+    [ObservableProperty] private ObservableCollection<KeyValuePair<string, string>> _languages = [];
 
-    [ObservableProperty] private string selectedLanguage = string.Empty;
+    [ObservableProperty] private string _selectedLanguage = string.Empty;
+
+    [ObservableProperty] private BackgroundImageStatus _backgroundImageStatus = backgroundImageConfig.Status;
+
+    [ObservableProperty] private string? _selectedCustomImage = backgroundImageConfig.CustomImage;
+
+    [ObservableProperty] private double opacity = backgroundImageConfig.Opacity;
 
     protected override Task OnLoaded()
     {
@@ -31,6 +43,29 @@ public sealed partial class PersonalizationViewModel(ILanguageService languageSe
 
         languageService.Set(value);
         DialogServer.ShowMessageDialogAsync(AppResources.TakeEffectAfterRestart,AppResources.Message,AppResources.Ok);
+    }
+
+    partial void OnBackgroundImageStatusChanged(BackgroundImageStatus value)
+    {
+        backgroundImageConfig.Status = value;
+
+        if (value is BackgroundImageStatus.Custom && !string.IsNullOrEmpty(backgroundImageConfig.CustomImage) &&
+            File.Exists(backgroundImageConfig.CustomImage))
+            SelectedCustomImage = backgroundImageConfig.CustomImage;
+
+        backgroundImageConfigService.Set((BackgroundImageConfig)backgroundImageConfig);
+    }
+
+    partial void OnSelectedCustomImageChanged(string? value)
+    {
+        backgroundImageConfig.CustomImage = value;
+        backgroundImageConfigService.Set((BackgroundImageConfig)backgroundImageConfig);
+    }
+
+    partial void OnOpacityChanged(double value)
+    {
+        backgroundImageConfig.Opacity = value;
+        backgroundImageConfigService.Set((BackgroundImageConfig)backgroundImageConfig);
     }
 
     private void InitLanguages()

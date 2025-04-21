@@ -9,12 +9,15 @@
     </Design.PreviewWith>
 
     <Style Selector="ToggleButton.icon">
+        <Setter Property="FontSize" Value="20"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Name="PART_BorderElement" Margin="5">
                         <controls:FontIcon
                             Name="Icon"
+                            FontSize="{TemplateBinding FontSize}"
+                            Foreground="{TemplateBinding Foreground}"
                             FontFamily="{StaticResource iconFont}"
                             Glyph="{Binding Path=(extensions:IconAttach.Icon), RelativeSource={RelativeSource Self}}" />
                     </Border>

@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
 using TabbyCat.Shared.Enums;
@@ -9,36 +10,37 @@ using TuDog.Extensions;
 
 namespace TabbyCat.Models;
 
-public abstract class AiApiModelBase : ModelBase
+public abstract partial class AiApiModelBase : ModelBase
 {
     // 模型提供方
     public abstract AiModelType Provider { get; }
 
-    public int ContextCount { get; set; }
+    [ObservableProperty] private int _contextCount;
 
-    public bool ContextCountLimit { get; set; }
+    [ObservableProperty] private bool _contextCountLimit;
 
-    public double Temperature { get; set; } = 0.1;
+    [ObservableProperty] private double _temperature = 0.1;
 
-    public bool IsDefault { get; set; }
+    [ObservableProperty] private bool _isDefault;
 
 }
 
-public abstract class AiApiKeyModelBase : AiApiModelBase, IApiKey
+public abstract partial class AiApiKeyModelBase : AiApiModelBase, IApiKey
 {
-    public string ApiKey { get; set; } = string.Empty;
+    [ObservableProperty] private string _apiKey = string.Empty;
 }
 
-public abstract class AiApiDomainModelBase : AiApiKeyModelBase, IApiDomain
+public abstract partial class AiApiDomainModelBase : AiApiKeyModelBase, IApiDomain
 {
-    public virtual string ApiDomain { get; set; } = string.Empty;
+    [ObservableProperty] private string _apiDomain = string.Empty;
 }
 
-public abstract class AiApiHasModelsModelBase : AiApiDomainModelBase, IHasModels<string>, IInitializeable
+public abstract partial class AiApiHasModelsModelBase : AiApiDomainModelBase, IHasModels<string>, IInitializeable
 {
-    public string SelectedModel { get; set; } = string.Empty;
+    [ObservableProperty] private string _selectedModel = string.Empty;
     public abstract Task<IEnumerable<string>> GetModelsAsync();
-    public ObservableCollection<string> Models { get; set; } = [];
+
+    [ObservableProperty] private ObservableCollection<string> _models = [];
 
     public async Task<ResultBase<bool>> InitializeAsync()
     {

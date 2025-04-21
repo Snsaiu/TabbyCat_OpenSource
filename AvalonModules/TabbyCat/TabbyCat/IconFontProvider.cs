@@ -3,10 +3,55 @@
 namespace TabbyCat;
 
 [IconBuild(
-    @"https://at.alicdn.com/t/c/font_4833862_l1nqqxso5f.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81dJd39h&file=font_4833862_l1nqqxso5f.json")]
+    @"https://at.alicdn.com/t/c/font_4833862_8btfhx1wg83.json?spm=a313x.manage_type_myprojects.i1.13.2db03a81seQtqP&file=font_4833862_8btfhx1wg83.json")]
 public static partial class IconFontProvider
 {
-   ///<summary>
+///<summary>
+///添加联系人
+///</summary>
+public const string AddContact = "\ue69b";
+
+///<summary>
+///联系人
+///</summary>
+public const string Contact = "\ued21";
+
+///<summary>
+///我的浅色
+///</summary>
+public const string MeLight = "\ued22";
+
+///<summary>
+///联系人浅色
+///</summary>
+public const string ContactLight = "\ue610";
+
+///<summary>
+///我的
+///</summary>
+public const string Me = "\ue605";
+
+///<summary>
+///设置
+///</summary>
+public const string Setting = "\ue78e";
+
+///<summary>
+///放大镜
+///</summary>
+public const string Magnifier = "\ue62d";
+
+///<summary>
+///添加
+///</summary>
+public const string Add = "\ue653";
+
+///<summary>
+///返回
+///</summary>
+public const string Return = "\ue604";
+
+///<summary>
 ///macos-minimize
 ///</summary>
 public const string MacosMinimize = "\ue6ae";
@@ -77,6 +122,11 @@ public const string Delete = "\ue642";
 public const string AddImage = "\ue737";
 
 ///<summary>
+///文生图-浅色
+///</summary>
+public const string WenShengTuLight = "\ued20";
+
+///<summary>
 ///抠图
 ///</summary>
 public const string Kotu = "\ue67f";
@@ -112,6 +162,11 @@ public const string Stop = "\ue800";
 public const string FavouriteFill = "\uea6b";
 
 ///<summary>
+///文本聊天-浅色
+///</summary>
+public const string TxtChatLight = "\ued1e";
+
+///<summary>
 ///文本聊天
 ///</summary>
 public const string TxtChat = "\ue697";
@@ -120,6 +175,11 @@ public const string TxtChat = "\ue697";
 ///图片生成
 ///</summary>
 public const string ImageBuilder = "\ue629";
+
+///<summary>
+///用户-浅色
+///</summary>
+public const string yonghuLight = "\ued1f";
 
 ///<summary>
 ///copy
@@ -145,6 +205,11 @@ public const string zhongmingming = "\ue623";
 ///删除
 ///</summary>
 public const string shanchu1 = "\ue600";
+
+///<summary>
+///收藏浅色
+///</summary>
+public const string shoucangLight = "\ued23";
 
 ///<summary>
 ///新增聊天次数

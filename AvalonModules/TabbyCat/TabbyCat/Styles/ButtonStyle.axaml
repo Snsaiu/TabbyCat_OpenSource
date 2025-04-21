@@ -7,12 +7,11 @@
     xmlns:tabbyCat="clr-namespace:TabbyCat"
     xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared">
     <Design.PreviewWith>
-        <Border Padding="20">
-            <!--  Add Controls for Previewer Here  -->
-        </Border>
+
     </Design.PreviewWith>
 
     <Style Selector="Button.icon">
+        <Setter Property="FontSize" Value="20"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -22,6 +21,8 @@
                             Name="Icon"
                             Foreground="{TemplateBinding Foreground}"
                             FontFamily="{StaticResource iconFont}"
+                            FontSize="{TemplateBinding FontSize}"
+                            FontWeight="{TemplateBinding FontWeight}"
                             Glyph="{Binding Path=(extensions:IconAttach.Icon), RelativeSource={RelativeSource Self}}" />
                     </Border>
                 </ControlTemplate>
@@ -30,6 +31,12 @@
         <Setter Property="Background" Value="Transparent"></Setter>
 
     </Style>
+    
+    <Style Selector="Button.return">
+        <Setter Property="Margin" Value="5,0,0,0"></Setter>
+        <Setter Property="extensions:IconAttach.Icon" Value="{x:Static tabbyCat:IconFontProvider.Return}"></Setter>
+    </Style>
+    
     <Style Selector="Button:pointerover /template/ Border controls|FontIcon#Icon">
         <Setter Property="Opacity" Value="0.8" />
     </Style>
@@ -103,6 +110,12 @@
         </Setter>
 
         <!-- <Setter Property="CornerRadius" Value="8"></Setter> -->
+    </Style>
+    
+    <Style Selector="Button.MobileDefaultStyle">
+        <Setter Property="Margin" Value="5"></Setter>
+        <Setter Property="CornerRadius" Value="10"></Setter>
+        <Setter Property="Padding" Value="0,10"></Setter>
     </Style>
 
 </Styles>

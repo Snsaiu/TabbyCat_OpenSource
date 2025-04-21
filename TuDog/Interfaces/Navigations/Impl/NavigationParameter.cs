@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace TuDog.Interfaces.Navigations.Impl;
 
 public class NavigationParameter : INavigationParameter
@@ -31,5 +33,29 @@ public class NavigationParameter : INavigationParameter
     public bool HasKey(string key)
     {
         return _params.Keys.Contains(key);
+    }
+
+    public bool TryAndGet<T>(string key, [MaybeNullWhen(false)]out T value)
+    {
+        var result = _params.TryGetValue(key, out object? v);
+        if(result)
+        {
+            if (v is T t)
+            {
+                value = t;
+                return true;
+            }
+            else
+            {
+                value = default;
+                return false;
+            }
+        }
+        else
+        {
+            value = default;
+            return result;
+        }
+       
     }
 }

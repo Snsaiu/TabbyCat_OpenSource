@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
+using CommunityToolkit.Mvvm.ComponentModel;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,26 +16,25 @@ namespace TabbyCat.Models;
 /// <summary>
 /// open ai 专属模板
 /// </summary>
-public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IInitializeable,IApiPath
+public partial class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IInitializeable, IApiPath
 {
-    public string SelectedModel { get; set; } = string.Empty;
-
     private ILogger<OpenAiApiModel> _logger =
         TuDogApplication.ServiceProvider.GetRequiredService<ILogger<OpenAiApiModel>>();
 
-    public string CustomModelName { get; set; } = string.Empty;
-
-    public double TopP { get; set; } = 0.1;
     public override AiModelType Provider => AiModelType.OpenAiApi;
 
-    public override string ApiDomain { get; set; } =
-        "https://api.openai.com"; // "https://api.openai.com";
+    [ObservableProperty] private string _selectedModel = string.Empty;
+    [ObservableProperty] private string _customModelName = string.Empty;
+    [ObservableProperty] private double _topP = 0.1;
+
+    public OpenAiApiModel()
+    {
+        ApiDomain = "https://api.openai.com";
+    }
 
     public virtual async Task<IEnumerable<string>> GetModelsAsync()
     {
-        if (string.IsNullOrEmpty(ApiKey))
-            return [];
-        if (string.IsNullOrEmpty(ApiDomain))
+        if (string.IsNullOrEmpty(ApiKey) || string.IsNullOrEmpty(ApiDomain))
             return [];
         try
         {
@@ -50,10 +50,11 @@ public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IIni
         }
         catch (Exception e)
         {
-            _logger.LogError(e,"获得OpenAi的模型发生错误。");
+            _logger.LogError(e, "获得OpenAi的模型发生错误。");
             return [];
         }
     }
+
     public ObservableCollection<string> Models { get; set; } = [];
 
     public virtual async Task<ResultBase<bool>> InitializeAsync()
@@ -63,8 +64,7 @@ public class OpenAiApiModel : AiApiDomainModelBase, IHasCustomModel, ITopP, IIni
             return new ErrorResultModel<bool>("No models found");
         Models.Reset(models);
         return new SuccessResultModel<bool>();
-
     }
 
-    public virtual string ApiPath { get; set; }="/v1/chat/completions";
+    public virtual string ApiPath { get; set; } = "/v1/chat/completions";
 }

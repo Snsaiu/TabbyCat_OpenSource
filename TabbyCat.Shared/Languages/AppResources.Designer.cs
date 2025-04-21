@@ -555,6 +555,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Background image settings.
+        /// </summary>
+        public static string BackgroundImageSettings {
+            get {
+                return ResourceManager.GetString("BackgroundImageSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Biblical Translator.
         /// </summary>
         public static string BiblicalTranslator {
@@ -1077,6 +1086,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom background.
+        /// </summary>
+        public static string CustomBackground {
+            get {
+                return ResourceManager.GetString("CustomBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A custom model must have a name.
         /// </summary>
         public static string CustomModelMustHaveName {
@@ -1190,6 +1208,15 @@ namespace TabbyCat.Shared.Languages {
         public static string Default {
             get {
                 return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default background.
+        /// </summary>
+        public static string DefaultBackground {
+            get {
+                return ResourceManager.GetString("DefaultBackground", resourceCulture);
             }
         }
         
@@ -1361,6 +1388,15 @@ namespace TabbyCat.Shared.Languages {
         public static string DigitalArtGalleryGuidePrompt {
             get {
                 return ResourceManager.GetString("DigitalArtGalleryGuidePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable.
+        /// </summary>
+        public static string Disable {
+            get {
+                return ResourceManager.GetString("Disable", resourceCulture);
             }
         }
         
@@ -3165,6 +3201,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opacity.
+        /// </summary>
+        public static string Opacity {
+            get {
+                return ResourceManager.GetString("Opacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open Favorites.
         /// </summary>
         public static string OpenFavorites {
@@ -3935,6 +3980,15 @@ namespace TabbyCat.Shared.Languages {
         public static string ScreenwriterPrompt {
             get {
                 return ResourceManager.GetString("ScreenwriterPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a background image.
+        /// </summary>
+        public static string SelectBackgroundImage {
+            get {
+                return ResourceManager.GetString("SelectBackgroundImage", resourceCulture);
             }
         }
         

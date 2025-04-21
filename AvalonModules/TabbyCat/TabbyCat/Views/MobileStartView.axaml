@@ -1,0 +1,55 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:attachs="clr-namespace:TuDog.Attachs;assembly=TuDog"
+             xmlns:converters="clr-namespace:TabbyCat.Converters"
+             xmlns:enums="clr-namespace:TabbyCat.Enums"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:MobileStartViewModel"
+             x:Class="TabbyCat.Views.MobileStartView">
+
+    <Grid RowDefinitions="*,Auto" Background="{StaticResource SliderContainerBackground}">
+        <ContentControl attachs:RegionBehavior.Region="mobileContainer" />
+        <StackPanel Grid.Row="1">
+        <UniformGrid  Margin="2,15,2,30" Columns="4" >
+            <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.TxtChat}"
+                                       IsThreeState="False"
+                                       IsChecked="True"
+                                       Command="{Binding NavigationToCommand}"
+                                       GroupName="navigation"
+                                       Content="聊天"
+                                       CommandParameter="{x:Static enums:MobileNavigationItem.Chat}"
+                                       Icon="{x:Static tabbyCat:IconFontProvider.TxtChatLight}" />
+            
+            <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.Contact}"
+                                       IsThreeState="False"
+                                       IsChecked="False"
+                                       Content="联系人"
+                                       Command="{Binding NavigationToCommand}"
+                                       GroupName="navigation"
+                                       CommandParameter="{x:Static enums:MobileNavigationItem.Contact}"
+                                       Icon="{x:Static tabbyCat:IconFontProvider.Contact}" />
+            
+            <controls:NavigationButton Icon="{x:Static tabbyCat:IconFontProvider.shoucangLight}"
+                                       IsThreeState="False"
+                                       Command="{Binding NavigationToCommand}"
+                                       GroupName="navigation"
+                                       Content="收藏"
+                                       CommandParameter="{x:Static enums:MobileNavigationItem.Favorites}"
+                                       SelectedIcon="{x:Static tabbyCat:IconFontProvider.shoucangLight}" />
+            <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.yonghu}"
+                                       IsThreeState="False"
+                                       Content="我的"
+                                       GroupName="navigation"
+                                       CommandParameter="{x:Static enums:MobileNavigationItem.Mine}"
+                                       Command="{Binding NavigationToCommand}"
+                                       Icon="{x:Static tabbyCat:IconFontProvider.yonghuLight}" />
+        </UniformGrid>
+        </StackPanel>
+    </Grid>
+</UserControl>

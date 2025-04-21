@@ -1,3 +1,4 @@
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -38,11 +39,20 @@ public class ImageSelector : Button
         set => SetValue(ImagePathProperty, value);
     }
 
+
+    private bool deleteStatus;
+
     public ImageSelector()
     {
 
         this.Click += async (_, _) =>
         {
+            if (deleteStatus)
+            {
+                deleteStatus = false;
+                return;
+            }
+
             var topLevel = TopLevel.GetTopLevel(this);
             if (topLevel is null)
                 throw new NullReferenceException();
@@ -61,10 +71,29 @@ public class ImageSelector : Button
                 throw new NullReferenceException();
 
             var path = files.First().Path.LocalPath;
-            image.Source = new Bitmap(path);
+            // image.Source = new Bitmap(path);
             ImagePath = path;
             removeButton!.IsVisible = true;
         };
+
+        Loaded += (_, _) =>
+        {
+            this.GetObservable(ImagePathProperty).Subscribe(BindingImage);
+        };
+
+    }
+
+    private void BindingImage(string file)
+    {
+        if (string.IsNullOrEmpty(file))
+            return;
+        if (!File.Exists(file))
+            return;
+
+        if (image is null)
+            return;
+
+        image.Source = new Bitmap(file);
     }
 
     private Button? removeButton;
@@ -77,12 +106,15 @@ public class ImageSelector : Button
         image = e.NameScope.Find<Image>("PART_image") ?? throw new NullReferenceException();
         removeButton = e.NameScope.Find<Button>("PART_removeBtn") ?? throw new NullReferenceException();
 
+        BindingImage(ImagePath);
+
         removeButton.Click += (_, _) =>
         {
             ImagePath = string.Empty;
             image.Source = null;
             removeButton.IsVisible = false;
             e.Handled = true;
+            deleteStatus = true;
         };
     }
 }

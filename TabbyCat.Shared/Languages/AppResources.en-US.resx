@@ -1785,4 +1785,22 @@
   <data name="MustLoginToUseTabbyCatAi" xml:space="preserve">
     <value>You must log in to use the TabbyCatAi model</value>
   </data>
+    <data name="BackgroundImageSettings" xml:space="preserve">
+    <value>Background image settings</value>
+  </data>
+    <data name="Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+    <data name="DefaultBackground" xml:space="preserve">
+    <value>Default background</value>
+  </data>
+    <data name="CustomBackground" xml:space="preserve">
+    <value>Custom background</value>
+  </data>
+  <data name="Opacity" xml:space="preserve">
+    <value>Opacity</value>
+  </data>
+  <data name="SelectBackgroundImage" xml:space="preserve">
+    <value>Select a background image</value>
+  </data>
 </root>

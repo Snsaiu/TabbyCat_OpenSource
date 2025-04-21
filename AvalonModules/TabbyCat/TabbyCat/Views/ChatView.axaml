@@ -25,29 +25,38 @@
         <viewModels:ChatViewModel />
     </Design.DataContext>
     <Grid Name="mainGrid" RowDefinitions="Auto,*,Auto,Auto">
-        <Border Background="{DynamicResource SolidBackgroundFillColorTransparent}">
+        <Border IsVisible="{OnPlatform Default=true, Android=false,iOS=false}" Background="{DynamicResource SolidBackgroundFillColorTransparent}">
             <Grid Margin="5">
+                
                 <TextBlock
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontWeight="Bold"
                     Foreground="{DynamicResource TextFillColorPrimary}"
-                    Text="{x:Static languages:AppResources.Chat}" />
+
+                    Text="{OnPlatform Default={x:Static languages:AppResources.Chat} ,
+                    iOS={Binding AiChatSession,Converter={converters:OccupationNameConverter}},
+                    Android={Binding AiChatSession,Converter={converters:OccupationNameConverter}}
+                    }" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
 
                     <fluent:FontIcon
                         Classes="icon"
+                        FontSize="20"
+                        IsVisible="{OnPlatform Default=true,Android=false,iOS=false}"
                         Glyph="{x:Static tabbyCat:IconFontProvider.yonghu}"
                         ToolTip.Tip="{x:Static languages:AppResources.Character}" />
                     <TextBlock
                         Margin="5,0,5,0"
                         VerticalAlignment="Center"
+                        IsVisible="{OnPlatform Default=true,Android=false,iOS=false}"
                         Text="{Binding AiChatSession, Converter={converters:OccupationNameConverter}}" />
 
                     <Button
                         Margin="5"
                         extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.NewChatSession}"
                         Classes="icon"
+                        IsVisible="{OnPlatform Default=true,Android=false,iOS=false}"
                         Command="{Binding NewChatSessionCommand}"
                         ToolTip.Tip="{x:Static languages:AppResources.NewSession}" />
                     <!-- <fluent:FontIcon FontFamily="{StaticResource iconFont}" Glyph="&#xe603;" /> -->
@@ -55,6 +64,7 @@
                     <Button
                         extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.FavouriteFolder}"
                         Classes="icon"
+                        IsVisible="{OnPlatform Default=true,Android=false,iOS=false}"
                         Command="{Binding OpenFavouriteDialogCommand}"
                         ToolTip.Tip="{x:Static languages:AppResources.OpenFavorites}" />
 
@@ -66,6 +76,11 @@
                 </StackPanel>
             </Grid>
         </Border>
+        
+        <controls:MobileTitleBar IsVisible="{OnPlatform Default=true,Windows=false,macOS=false,Linux=false}" 
+                                 Title="{Binding AiChatSession, Converter={converters:OccupationNameConverter}}"
+                                 ShowLeftArrow="True" 
+                                 LeftArrowCommand="{Binding ReturnPageCommand}"></controls:MobileTitleBar>
 
         <!--  主要内容  -->
 

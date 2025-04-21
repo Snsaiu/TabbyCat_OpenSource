@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 
 using TuDog.Bootstrap;
+using TuDog.Interfaces.Navigations;
 
 namespace TuDog.Interfaces.RegionManagers;
 
@@ -13,7 +14,7 @@ public interface IRegionManager
     void AddToRegion<T>(string regionName, object? parameter) where T : ParameterViewModelBase;
 
     Control GetViewByViewModel<T>() where T : TuDogViewModelBase;
-
+    
     IViewModelResult AddToRegionForResult<T>(string regionName) where T : TuDogViewModelBase, IViewModelResult;
 
     IViewModelResult AddToRegionForResult<T>(string regionName, object? parameter) where T : ParameterViewModelBase, IViewModelResult;

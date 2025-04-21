@@ -103,7 +103,7 @@
                                 IsChecked="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip.Tip="{x:Static languages:AppResources.UseMarkdown}" />
                             <Button
-                                Margin="{StaticResource Left2}"
+                                Margin="{StaticResource Left6}"
                                 extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.copy}"
                                 Classes="icon"
                                 Command="{Binding $parent[controls:ChatItem].CopyTextToClipboardCommand}"
@@ -111,6 +111,7 @@
                             <ToggleButton
                                 extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.FavouriteFill}"
                                 Classes="icon"
+                                Margin="{StaticResource Left6}"
                                 Click="ToggleButton_OnIsCheckedChanged"
                                 Content="favourite"
                                 IsChecked="{Binding $parent[controls:ChatItem].Message.IsFavourite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

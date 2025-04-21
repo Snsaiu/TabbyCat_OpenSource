@@ -24,6 +24,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Duende.IdentityModel.OidcClient" />
     <PackageReference Include="Duende.IdentityModel.OidcClient.Extensions" />
+    <PackageReference Include="DynamicData" />
       <PackageReference Include="FantasyResultModel" />
     <PackageReference Include="FluentAvaloniaUI" />
       <PackageReference Include="Markdig" />
@@ -41,6 +42,7 @@
 	  <PackageReference Include="sqlite-net-pcl" />
 	  <!--<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" />-->
 	  <PackageReference Include="SQLitePCLRaw.bundle_green" />
+      <PackageReference Include="Xamarin.Essentials"/>
 	  <!--<PackageReference Include="SQLitePCLRaw.core" />
 		<PackageReference Include="SQLitePCLRaw.lib.e_sqlite3"  />
 		<PackageReference Include="SQLitePCLRaw.provider.e_sqlite3"  />-->

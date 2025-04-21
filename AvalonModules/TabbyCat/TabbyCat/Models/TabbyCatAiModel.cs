@@ -1,4 +1,5 @@
 using System.Net.Http;
+using CommunityToolkit.Mvvm.ComponentModel;
 using FantasyResultModel;
 using FantasyResultModel.Impls;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,19 +10,18 @@ using TuDog.Extensions;
 
 namespace TabbyCat.Models;
 
-public class TabbyCatAiModel : OpenAiApiModel
+public partial class TabbyCatAiModel : OpenAiApiModel
 {
     private IHttpClientFactory httpclientfactory = TuDogApplication.ServiceProvider.GetRequiredService<IHttpClientFactory>();
 
     private HttpClient httpclient;
 
-   public override AiModelType Provider { get; } = AiModelType.TabbyCatAi;
-
-   public override string ApiDomain { get; set; } = "https://api.openai-hk.com";
+   public override AiModelType Provider => AiModelType.TabbyCatAi;
 
    public TabbyCatAiModel()
    {
        httpclient = httpclientfactory.CreateClient(ConstParameter.Auth);
+       ApiDomain = "https://api.openai-hk.com";
    }
 
    public override async Task<ResultBase<bool>> InitializeAsync()

@@ -15,22 +15,25 @@ using TuDog.Interfaces.RegionManagers;
 
 namespace TabbyCat.ViewModels;
 
-public partial class MainWindowViewModel:ViewModelBase
+public sealed partial class MainWindowViewModel : ViewModelBase
 {
 
     private IDialogServer dialogService = TuDogApplication.ServiceProvider.GetRequiredService<IDialogServer>();
 
     private ILoginUserService userService = TuDogApplication.ServiceProvider.GetRequiredService<ILoginUserService>();
-    
+
     private OidcClient oidcClient = TuDogApplication.ServiceProvider.GetRequiredService<OidcClient>();
 
     private ILogger<MainWindowViewModel> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<MainWindowViewModel>>();
-    
+
     private IRegionManager _regionManager { get; }=TuDogApplication.ServiceProvider.GetRequiredService<IRegionManager>();
+
+    [ObservableProperty] private IBackgroundImageConfig _backgroundImageConfig =
+        TuDogApplication.ServiceProvider.GetRequiredService<IBackgroundImageConfig>();
 
     [ObservableProperty]
     private bool isLogined;
-    
+
     [ObservableProperty]
     private IUser currentUser = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
 
@@ -64,10 +67,10 @@ public partial class MainWindowViewModel:ViewModelBase
         }
         else
         {
-            IsLogined = true;  
+            IsLogined = true;
         }
 
-    
+
         _regionManager.AddToRegion<MainViewModel>("mainContainer");
     }
 
@@ -116,9 +119,15 @@ public partial class MainWindowViewModel:ViewModelBase
             Environment.Exit(0);
         }
     }
-    
-    private string? WriteUserInfo(LoginResult result)
+
+    private string? WriteUserInfo(LoginResult? result)
     {
+        if (result is null)
+        {
+            
+            return null;
+        }
+        
         var claims = result.User.Claims;
         var email = claims.FirstOrDefault(x => x.Type == "email")?.Value;
         var phone = claims.FirstOrDefault(x => x.Type == "phone_number")?.Value;
@@ -131,7 +140,7 @@ public partial class MainWindowViewModel:ViewModelBase
             this.logger.LogError("邮箱不能为空，但实际为空！");
             return null;
         }
-                
+
 
         var newUser = new LoginUserModel(email, phone, string.Empty, acccessToken, accessTokenExpiration, Sex.Man,
             refreshToken);
@@ -139,8 +148,8 @@ public partial class MainWindowViewModel:ViewModelBase
         userService.Set(newUser);
         return email;
     }
-    
-    
+
+
     private async Task<LoginResult?> OidcLogin()
     {
         try
@@ -161,5 +170,5 @@ public partial class MainWindowViewModel:ViewModelBase
         }
     }
 
-    
+
 }

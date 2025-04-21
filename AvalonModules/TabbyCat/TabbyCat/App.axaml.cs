@@ -13,6 +13,7 @@ using SharpHook.Native;
 using TabbyCat.Extensions;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
+using TabbyCat.Models.Users.Configs;
 using TabbyCat.Shared;
 using TabbyCat.ViewModels;
 using TabbyCat.Views;
@@ -34,6 +35,7 @@ namespace TabbyCat
             base.Initialize();
 
             ValidateUserLoginState();
+            InitBackgroundImage();
             if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
             {
                 var hotkeyStartProgramService = ServiceProvider.GetRequiredService<IHotKeyStartProgramService>();
@@ -45,6 +47,16 @@ namespace TabbyCat
                     hotkeyService.Action += HotKeyImplement;
                 }
             }
+        }
+
+        private void InitBackgroundImage()
+        {
+            var backgroundImageConfigService = ServiceProvider.GetRequiredService<IBackgroundImageConfigService>();
+            var backgroundImageConfig = ServiceProvider.GetRequiredService<IBackgroundImageConfig>();
+            var temp = backgroundImageConfigService.Get();
+            backgroundImageConfig.CustomImage = temp.CustomImage;
+            backgroundImageConfig.Status = temp.Status;
+            backgroundImageConfig.Opacity = temp.Opacity;
         }
 
         private void ValidateUserLoginState()
@@ -93,14 +105,15 @@ namespace TabbyCat
             {
                 window = new MainWindow();
                 window.ShowInTaskbar = false;
+#if DEBUG
                 window.Topmost = TuDogApplication.ServiceProvider.GetRequiredService<ITopMostService>().Get();
-
+#endif
                 return window;
             }
             else
             {
                 var regionManager = TuDogApplication.ServiceProvider.GetRequiredService<IRegionManager>();
-                var view = regionManager.GetViewByViewModel<MainViewModel>();
+                var view = regionManager.GetViewByViewModel<MobileStartViewModel>();
                 return view;
             }
         }

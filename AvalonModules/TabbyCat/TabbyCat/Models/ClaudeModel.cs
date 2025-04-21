@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TabbyCat.Models.RequestModelList;
@@ -7,11 +8,14 @@ using TuDog.Bootstrap;
 
 namespace TabbyCat.Models;
 
-public class ClaudeModel : AiApiHasModelsModelBase
+public partial class ClaudeModel : AiApiHasModelsModelBase
 {
-    public override AiModelType Provider { get; } = AiModelType.Claude;
+    public override AiModelType Provider => AiModelType.Claude;
 
-    public override string ApiDomain { get; set; } = "https://api.anthropic.com";
+    public ClaudeModel()
+    {
+        ApiDomain = "https://api.anthropic.com";
+    }
 
     private ILogger<ClaudeModel> _logger =
         TuDogApplication.ServiceProvider.GetRequiredService<ILogger<ClaudeModel>>();

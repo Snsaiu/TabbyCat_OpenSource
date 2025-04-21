@@ -1,13 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 using TabbyCat.Enums;
 using TabbyCat.IServices;
+using TuDog.Bootstrap;
 using TuDog.IocAttribute;
 
 namespace TabbyCat.Models.Users;
 
 
 [Register<IUser>(ServiceLifetime.Singleton)]
-public sealed class LoginUserModel : IUser
+public sealed partial class LoginUserModel : ModelBase, IUser
 {
     public LoginUserModel()
     {
@@ -26,16 +28,17 @@ public sealed class LoginUserModel : IUser
     }
 
 
-    public string? PhoneNumber { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
+    [ObservableProperty] private string? phoneNumber = string.Empty;
+    [ObservableProperty] private string email = string.Empty;
 
-    public string? Nickname { get; set; } = string.Empty;
-    public string AccessToken { get; set; } = string.Empty;
+    [ObservableProperty] private string? nickname = string.Empty;
+    [ObservableProperty] private string accessToken = string.Empty;
 
-    public DateTimeOffset? AccessTokenExpiration { get; set; }
-    public string RefreshToken { get; set; } = string.Empty;
+    [ObservableProperty] private DateTimeOffset? accessTokenExpiration;
 
-    public Sex Sex { get; set; }
+    [ObservableProperty] private string refreshToken = string.Empty;
+
+    [ObservableProperty] private Sex sex;
 
     public bool LoginSuccess()
     {

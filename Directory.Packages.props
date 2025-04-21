@@ -19,9 +19,10 @@
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="Duende.IdentityModel.OidcClient" Version="6.0.1" />
     <PackageVersion Include="Duende.IdentityModel.OidcClient.Extensions" Version="6.0.1" />
+    <PackageVersion Include="DynamicData" Version="9.2.1" />
     <PackageVersion Include="FluentAvaloniaUI" Version="2.3.0" />
     <PackageVersion Include="Markdig" Version="0.40.0" />
-    <PackageVersion Include="Markdown.Avalonia.YouYan" Version="11.2.0-a2"/>
+    <PackageVersion Include="Markdown.Avalonia.YouYan" Version="11.2.0-a2" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.13.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.0-preview.1.25080.5" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />

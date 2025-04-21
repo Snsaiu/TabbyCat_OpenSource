@@ -14,6 +14,9 @@
                      xmlns:tabbyCat="clr-namespace:TabbyCat"
                      xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                      xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+                     xmlns:extensions1="clr-namespace:TuDog.Extensions;assembly=TuDog"
+                     xmlns:converters="clr-namespace:TabbyCat.Converters"
+                     xmlns:enums="clr-namespace:TabbyCat.Enums"
                      ExtendClientAreaChromeHints="NoChrome"
                      ExtendClientAreaToDecorationsHint="True"
                      x:DataType="viewModels:MainWindowViewModel">
@@ -64,7 +67,10 @@
             </Grid>
         </Border>
         <Grid Grid.Row="2">
-            <Image Source="/Assets/screen.png" Stretch="UniformToFill" Opacity="0.5">
+            <Image Source="{Binding BackgroundImageConfig.CustomImage,Converter={extensions1:ImageConverter}}"
+                   Stretch="UniformToFill"
+                   IsVisible="{Binding BackgroundImageConfig.Status,Converter={converters:Enum2BoolConverter} ,ConverterParameter={x:Static enums:BackgroundImageStatus.Custom}}"
+                   Opacity="{Binding BackgroundImageConfig.Opacity,UpdateSourceTrigger=PropertyChanged}">
                 <Image.Styles>
                     <Style Selector="Image">
                         <Style.Animations>

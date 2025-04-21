@@ -6,7 +6,8 @@ namespace TuDog.Interfaces.PreferenceServices.Impl;
 
 public abstract class LocalConfigService<T>() : ILocalConfigService<T>
 {
-    private IPreferenceService PreferenceService => TuDogApplication.ServiceProvider.GetService<IPreferenceService>();
+    private IPreferenceService PreferenceService =>
+        TuDogApplication.ServiceProvider.GetRequiredService<IPreferenceService>();
 
     public abstract string Key { get; }
 

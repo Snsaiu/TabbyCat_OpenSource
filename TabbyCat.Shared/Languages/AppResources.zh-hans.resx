@@ -1176,4 +1176,22 @@
   <data name="MustLoginToUseTabbyCatAi" xml:space="preserve">
     <value>使用TabbyCatAi模型必须先登录</value>
   </data>
+    <data name="BackgroundImageSettings" xml:space="preserve">
+    <value>背景图设置</value>
+  </data>
+    <data name="Disable" xml:space="preserve">
+    <value>禁用</value>
+  </data>
+    <data name="DefaultBackground" xml:space="preserve">
+    <value>默认背景</value>
+  </data>
+    <data name="CustomBackground" xml:space="preserve">
+    <value>自定义背景</value>
+  </data>
+  <data name="Opacity" xml:space="preserve">
+    <value>不透明度</value>
+  </data>
+  <data name="SelectBackgroundImage" xml:space="preserve">
+    <value>选择背景图片</value>
+  </data>
 </root>

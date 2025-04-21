@@ -16,7 +16,7 @@ public sealed class JsonPreferenceService : IPreferenceService
             fullFilePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
         else
         {
-            var exeName = Path.GetFileName(Environment.ProcessPath).Split(".").FirstOrDefault();
+            var exeName = Path.GetFileName(Environment.ProcessPath)?.Split(".").FirstOrDefault();
             if (exeName is null)
                 throw new NullReferenceException("无法获得程序文件名称");
 

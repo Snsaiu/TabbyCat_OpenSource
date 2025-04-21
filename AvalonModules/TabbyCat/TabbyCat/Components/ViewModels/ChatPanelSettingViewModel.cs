@@ -7,7 +7,6 @@ using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models;
 using TabbyCat.Repository.Entities.AiEntities;
 using TabbyCat.Service.AiServices;
-using TabbyCat.Shared;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Extensions;
 using TabbyCat.Shared.Interfaces;
@@ -25,9 +24,9 @@ public partial class ChatPanelSettingViewModel(
     IDialogServer dialogServer,
     IAiChatMessageRecordService aiChatMessageRecordService,
     IAiChatSessionService aiChatSessionService,
-    ILoginUserService loginUserService,
     ILogger<ChatPanelSettingViewModel> logger,
     IUser user,
+    IOccupationService occupationService,
     ICustomAssistantOccupationService customAssistantOccupationService,
     IStoreChatRecordService storeChatRecordService) : ParameterViewModelBase, IViewModelResult
 {
@@ -97,7 +96,7 @@ public partial class ChatPanelSettingViewModel(
 
     private async Task InitOccupationsAsync()
     {
-        Occupations.Reset( await GetAllOccupationsAsync());
+        Occupations.Reset( await occupationService.GetAllOccupationsAsync());
         
         if(SelectedAiChatSessionEntity is not {}  selected)
         {
@@ -139,23 +138,27 @@ public partial class ChatPanelSettingViewModel(
 
     }
 
-    private async Task<IEnumerable<OccupationType>>GetAllOccupationsAsync()
-    {
-        var customOccupations = await customAssistantOccupationService.QueryAsync(x=> x.Email==user.Email);
-        var temps = customOccupations.Select(item => new OccupationType(AssistantOccupation.Custom, item.Name)).ToList();
 
-        if (loginUserService.GetOrDefault() is not null)
+    private async Task<bool> AddOccupationAsync(string occupationName,string occupationDescription)
+    {
+        var entity = new CustomAssistantOccupationEntity()
         {
-            temps.AddRange(Enum.GetValues<AssistantOccupation>().Where(x => x != AssistantOccupation.Custom)
-                .Select(item => new OccupationType(item, LocalizationResourceManager.Instance[item.ToString()])));
+            Name = occupationName,
+            Description =  occupationDescription,
+            Email = user.Email
+        };
+
+        if (await customAssistantOccupationService.AddAsync(entity))
+        {
+            await dialogServer.ShowMessageDialogAsync(AppResources.AddedSuccessfully, AppResources.Message,AppResources.Ok);
+            return true;
         }
         else
         {
-            temps.Add(new OccupationType(AssistantOccupation.Common,LocalizationResourceManager.Instance[AssistantOccupation.Common.ToString()]));
+            await dialogServer.ShowMessageDialogAsync(AppResources.AddFailed,AppResources.Warning,AppResources.Ok);
+            return false;
         }
-        return temps;
     }
-
 
     [RelayCommand]
     private async Task AddNewOccupation()
@@ -178,17 +181,9 @@ public partial class ChatPanelSettingViewModel(
             return;
         }
 
-        var entity = new CustomAssistantOccupationEntity()
+        if (await AddOccupationAsync(NewOccupationName, NewOccupationDescription))
         {
-            Name = NewOccupationName,
-            Description =  NewOccupationDescription,
-            Email = user.Email
-        };
-
-        if (await customAssistantOccupationService.AddAsync(entity))
-        {
-            await dialogServer.ShowMessageDialogAsync(AppResources.AddedSuccessfully, AppResources.Message,AppResources.Ok);
-            Occupations.Reset( await GetAllOccupationsAsync());
+            Occupations.Reset( await occupationService.GetAllOccupationsAsync());
             if (NewOccupationIsDefault)
                 SelectedOccupationType =
                     Occupations.FirstOrDefault(x => x.OccupationName == NewOccupationName);
@@ -196,10 +191,7 @@ public partial class ChatPanelSettingViewModel(
             NewOccupationDescription = string.Empty;
             NewOccupationIsDefault = false;
         }
-        else
-        {
-            await dialogServer.ShowMessageDialogAsync(AppResources.AddFailed,AppResources.Warning,AppResources.Ok);
-        }
+       
     }
 
     [RelayCommand]

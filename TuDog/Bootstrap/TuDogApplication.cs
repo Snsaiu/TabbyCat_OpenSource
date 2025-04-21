@@ -2,13 +2,15 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
-
+using Avalonia.Media;
 using Microsoft.Extensions.DependencyInjection;
 
 using TuDog.Bases.Regions;
 using TuDog.Bases.Regions.Impl;
 using TuDog.Interfaces.IDialogServers;
 using TuDog.Interfaces.IDialogServers.Impl;
+using TuDog.Interfaces.Navigations;
+using TuDog.Interfaces.Navigations.Impl;
 using TuDog.Interfaces.PreferenceServices;
 using TuDog.Interfaces.PreferenceServices.Impl;
 using TuDog.Interfaces.RegionManagers;
@@ -49,6 +51,7 @@ public abstract class TuDogApplication : Application
         collection.AddSingleton<IRegionManager, RegionManager>();
         collection.AddSingleton<IDialogServer, DialogServer>();
         collection.AddSingleton<IPreferenceService, JsonPreferenceService>();
+        collection.AddSingleton<INavigationService>(_ => new NavigationService(ApplicationLifetime));
     }
 
     private void DisableAvaloniaDataAnnotationValidation()
@@ -69,13 +72,10 @@ public abstract class TuDogApplication : Application
     public override void OnFrameworkInitializationCompleted()
     {
 
-
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var window = (Window)CreateShell();
             MainWindow = window;
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit.
-            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = window;
             TopLevel = TopLevel.GetTopLevel(desktop.MainWindow);
@@ -86,6 +86,13 @@ public abstract class TuDogApplication : Application
             //MainWindow =window;
             singleViewPlatform.MainView = (UserControl)window;
             TopLevel = TopLevel.GetTopLevel(singleViewPlatform.MainView);
+
+            if (TopLevel?.InsetsManager is not null and var m)
+            {
+                m.IsSystemBarVisible = true;
+                m.DisplayEdgeToEdge = false;
+                m.SystemBarColor = Colors.White;
+            }
         }
 
         base.OnFrameworkInitializationCompleted();

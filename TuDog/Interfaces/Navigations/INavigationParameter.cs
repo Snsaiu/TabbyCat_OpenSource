@@ -8,4 +8,6 @@ public interface INavigationParameter
     T Get<T>(string key);
 
     bool HasKey(string key);
+    
+    bool TryAndGet<T>(string key, out T value);
 }

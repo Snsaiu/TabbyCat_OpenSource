@@ -1,14 +1,18 @@
 ﻿using System.Net.Http;
+using CommunityToolkit.Mvvm.ComponentModel;
 using TabbyCat.Models.RequestModelList;
 using TabbyCat.Shared.Enums;
 
 namespace TabbyCat.Models;
 
-public class DeepSeekModel : OpenAiApiModel
+public partial class DeepSeekModel : OpenAiApiModel
 {
     public override AiModelType Provider => AiModelType.DeepSeek;
-    public override string ApiDomain { get; set; } = "https://api.deepseek.com";
 
+    public DeepSeekModel()
+    {
+        ApiDomain = "https://api.deepseek.com";
+    }
     public override string ApiPath { get; set; } = "/chat/completions";
 
     public override async Task<IEnumerable<string>> GetModelsAsync()

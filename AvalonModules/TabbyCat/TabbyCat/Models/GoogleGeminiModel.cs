@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TabbyCat.Models.RequestModelList;
@@ -9,16 +10,16 @@ using TuDog.Bootstrap;
 
 namespace TabbyCat.Models;
 
-public class GoogleGeminiModel : AiApiHasModelsModelBase
+public partial class GoogleGeminiModel : AiApiHasModelsModelBase
 {
-    public override AiModelType Provider { get; } = AiModelType.GoogleGemini;
+    public override AiModelType Provider => AiModelType.GoogleGemini;
 
-
-    //https://generativelanguage.googleapis.com/v1beta/models
-    public override string ApiDomain { get; set; } = "https://generativelanguage.googleapis.com";
-    
     private ILogger<GoogleGeminiModel> _logger=TuDogApplication.ServiceProvider.GetRequiredService<ILogger<GoogleGeminiModel>>();
 
+    public GoogleGeminiModel()
+    {
+        ApiDomain = "https://generativelanguage.googleapis.com";
+    }
     public override async Task<IEnumerable<string>> GetModelsAsync()
     {
         if (string.IsNullOrEmpty(ApiKey))

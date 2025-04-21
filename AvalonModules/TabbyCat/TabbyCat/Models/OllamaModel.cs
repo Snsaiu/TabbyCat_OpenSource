@@ -1,18 +1,21 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
 
 namespace TabbyCat.Models;
 
-public class OllamaModel : AiApiModelBase, IApiDomain, IHasModels<string>, IApiPath
+public partial class OllamaModel : AiApiModelBase, IApiDomain, IHasModels<string>, IApiPath
 {
-    public override AiModelType Provider { get; } = AiModelType.Ollama;
-    public string ApiDomain { get; set; } = "http://127.0.0.1:11434";
-    public string SelectedModel { get; set; } = string.Empty;
+    public override AiModelType Provider => AiModelType.Ollama;
 
-    public string ApiPath { get; set; } = string.Empty;
+    [ObservableProperty] private string _apiDomain = "http://127.0.0.1:11434";
+
+    [ObservableProperty] private string _selectedModel = string.Empty;
+
+    [ObservableProperty] private string _apiPath = string.Empty;
 
     public async Task<IEnumerable<string>> GetModelsAsync()
     {

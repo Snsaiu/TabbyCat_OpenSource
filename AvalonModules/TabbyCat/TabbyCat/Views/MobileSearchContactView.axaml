@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:models="clr-namespace:TabbyCat.Models"
+             xmlns:converters="clr-namespace:TabbyCat.Converters"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:MobileSearchContactViewModel"
+             x:Class="TabbyCat.Views.MobileSearchContactView">
+   
+    <Grid RowDefinitions="Auto,Auto,*">
+        <controls:MobileTitleBar Grid.Row="0" Title="搜索" ShowLeftArrow="True" LeftArrowCommand="{Binding PopCommand}"></controls:MobileTitleBar>
+        <TextBox Grid.Row="1" Text="{Binding SearchText}" BorderThickness="0" HorizontalAlignment="Stretch" Watermark="搜索..." ></TextBox>
+        
+        <ListBox Grid.Row="2" ItemsSource="{Binding FilteredOccupations}" SelectedItem="{Binding SelectedOccupation}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="models:OccupationType">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Border Width="50" Background="{Binding OccupationName,Converter={converters:String2ColorConverter}}" Height="50" CornerRadius="25">
+                            <TextBlock Foreground="White" HorizontalAlignment="Center" Text="{Binding OccupationName,Converter={converters:String2FirstCharConverter}}" VerticalAlignment="Center"></TextBlock>
+                        </Border>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding OccupationName}" HorizontalAlignment="Left" Grid.Column="1" Margin="10,0,0,0"  TextTrimming="{x:Static TextTrimming.CharacterEllipsis}"></TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

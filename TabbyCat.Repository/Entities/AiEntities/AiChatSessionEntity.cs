@@ -34,12 +34,14 @@ public partial class AiChatSessionEntity : UserBaseEntity
     public string? CustomOccupationName { get; set; }
 
     /// <summary>
-    /// 是否是默认的绘画
+    /// 是否是默认的会话
     /// </summary>
     public bool  IsDefault { get; set; }
 
-    public static AiChatSessionEntity CreateDefault()
+    public static AiChatSessionEntity CreateDefault(AssistantOccupation occupation=AssistantOccupation.Common)
     {
-        return new() { Theme = "默认会话", Occupation = AssistantOccupation.Common, IsDefault = true};
+        return new() { Theme = "默认会话", Occupation = occupation, IsDefault = true};
     }
+    
+    
 }

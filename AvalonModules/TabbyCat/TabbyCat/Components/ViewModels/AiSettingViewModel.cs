@@ -24,13 +24,13 @@ public partial class AiSettingViewModel(
     IUser user,
     IStoreChatRecordService storeChatRecordService) : ViewModelBase
 {
-    [ObservableProperty] private AiApiModelBase? aiTemplate;
+    [ObservableProperty] private AiApiModelBase? _aiTemplate;
 
-    [ObservableProperty] private string selectAiModelType=string.Empty;
+    [ObservableProperty] private string _selectAiModelType = string.Empty;
 
-    [ObservableProperty] private ObservableCollection<string> aiModelProviders = [];
+    [ObservableProperty] private ObservableCollection<string> _aiModelProviders = [];
 
-    [ObservableProperty] private bool storeChatRecord;
+    [ObservableProperty] private bool _storeChatRecord;
 
     [RelayCommand]
     private async Task RefreshModel()
@@ -46,7 +46,7 @@ public partial class AiSettingViewModel(
             {
                 logger.LogWarning("没有任何模型名称被选中。");
             }
-            
+
         }
     }
 
@@ -63,7 +63,7 @@ public partial class AiSettingViewModel(
     {
         storeChatRecordService.Set(value);
     }
-    
+
     partial void OnSelectAiModelTypeChanged(string? oldValue, string newValue)
     {
         if (newValue == "Custom")
@@ -160,11 +160,14 @@ public partial class AiSettingViewModel(
         {
             result.AddRange(from object? item in Enum.GetValues(typeof(AiModelType)) where item is not AiModelType.TabbyCatAi select item.ToString()!);
         }
-        var customEntities = await aiTemplateSettingService.QueryAsync(x => x.Provider == AiModelType.Custom&& x.Email==user.Email);
+
+        var aiTemplates = await aiTemplateSettingService.QueryAsync(x => x.Email == user.Email);
+        var customEntities = aiTemplates.Where(x => x.Provider == AiModelType.Custom);
         if (customEntities.Any())
             result.AddRange(customEntities.Select(x => x.ModelName));
         AiModelProviders.Reset(result);
-
+        if (aiTemplates.FirstOrDefault(x => x.IsDefault) is { } defaultEntity)
+            SelectAiModelType = defaultEntity.Provider.ToString();
     }
 
 

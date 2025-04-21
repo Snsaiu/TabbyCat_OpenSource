@@ -2,11 +2,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TabbyCat.AiFunctionCalls;
+using TabbyCat.Factories;
 using TabbyCat.IServices;
+using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
 using TabbyCat.Repository.Entities.AiEntities;
 using TabbyCat.Service.AiServices;
+using TabbyCat.Shared;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
 using TabbyCat.Shared.Languages;
@@ -15,19 +19,117 @@ using TuDog.Bootstrap;
 
 namespace TabbyCat.ViewModels;
 
-public abstract partial class AiViewModelBase(
-    IAiTemplateSettingService aiTemplateSettingService,
-    IAiChatMessageRecordService aiChatMessageRecordService) : ViewModelBase
+public abstract partial class AiViewModelBase : ViewModelBase
 {
     [ObservableProperty] private ObservableCollection<string> aiModelProviders = [];
 
-    protected IUser user = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
+    protected IAiTemplateSettingService aiTemplateSettingService =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingService>();
+
+    protected IAiChatSessionService chatSessionService =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiChatSessionService>();
+    
+    protected IAiChatMessageRecordService aiChatMessageRecordService=TuDogApplication.ServiceProvider.GetRequiredService<IAiChatMessageRecordService>();
+    
+    protected ICustomAssistantOccupationService customAssistantOccupationService=TuDogApplication.ServiceProvider.GetRequiredService<ICustomAssistantOccupationService>();
+    
+    
+    protected IUseMarkdownService useMarkdownService=TuDogApplication.ServiceProvider.GetRequiredService<IUseMarkdownService>();
+    
+    [ObservableProperty]
+    private ObservableCollection<MessagesItem> chatModels = new();
+    
+    [ObservableProperty] private AiChatSessionEntity? aiChatSession;
+
+    
 
     private ILogger<AiViewModelBase> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<AiViewModelBase>>();
+    
+    
+    protected AiApiModelBase? aiApiModelBase;
+    
+    protected MessageSessionBase? messageSession;
+    
+   
+    protected async Task InitChatModelsAsync(bool addDefaultMessage = true)
+    {
+        ChatModels.Clear();
+        messageSession?.Messages.Clear();
+
+        if (AiChatSession is not { } chatSession)
+        {
+            logger.LogError("初始化聊天模型时,{0}不能为空。",nameof(AiChatSession));
+            return;
+        }
+
+        if (addDefaultMessage)
+        {
+            if (chatSession.Occupation == AssistantOccupation.Custom)
+            {
+                var occupation =
+                    await customAssistantOccupationService.QueryAsync(x =>
+                        x.Name == chatSession.CustomOccupationName&& x.Email==CurrentUser.Email);
+                messageSession?.Messages.Add(new MessagesItem
+                {
+                    Content = occupation.FirstOrDefault()?.Description ?? string.Empty, Role = Role.System,
+                    ShowMarkdownMode = useMarkdownService.Get()
+                });
+            }
+            else if (chatSession.Occupation == AssistantOccupation.Agent)
+            {
+                messageSession?.Messages.Add(new() { Content = AiFunctionFactory.Description(), Role = Role.System });
+            }
+            else
+            {
+                var discritpion = LocalizationResourceManager.Instance[$"{chatSession.Occupation.ToString()}Prompt"];
+                messageSession?.Messages.Add(new()
+                    { Content = discritpion, Role = Role.System, ShowMarkdownMode = useMarkdownService.Get() });
+            }
+        }
+    }
+    
+    protected void InitMessageSession()
+    {
+        if (aiApiModelBase is null)
+        {
+            logger.LogError("初始化{0}时，{1}不能为null，但是实际{2}为空",nameof(MessageSessionBase),nameof(AiApiModelBase),nameof(AiApiModelBase));
+            return;
+        }
+        messageSession = AiRequestFactory.CreateMessageSession(aiApiModelBase);
+        if (messageSession is null)
+        {
+            logger.LogError("创建消息会话失败！");
+        }
+
+    }
+
+    
+    protected async Task GetDefaultAiTemplateModelAsync()
+    {
+        var defaultModels = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==CurrentUser.Email);
+
+        if (!defaultModels.Any())
+        {
+            logger.LogWarning("查询默认的Ai聊天模板，数量是0");
+            await this.DialogServer.ShowMessageDialogAsync(AppResources.PleaseSelectAIModelFirst, AppResources.Warning,AppResources.Ok);
+            return;
+        }
+
+        aiApiModelBase = defaultModels.First().Provider == AiModelType.Custom
+            ? await AiTemplateFactory.GetTemplateAsync(defaultModels.First().ModelName, defaultModels)
+            : await AiTemplateFactory.GetTemplateAsync(defaultModels.First().Provider, defaultModels);
+        if (aiApiModelBase.Provider == AiModelType.TabbyCatAi && !CurrentUser.LoginSuccess())
+        {
+            logger.LogWarning("默认选择的模型是TabbyCatAi，但是用户没有登录。无法使用TabbyCatAi");
+            await DialogServer.ShowMessageDialogAsync(AppResources.MustLoginToUseTabbyCatAi,AppResources.Warning,AppResources.Ok);
+            return;
+        }
+        logger.LogInformation("获得默认的Ai聊天模板，提供方为:{0}",aiApiModelBase.Provider.ToString());
+    }
 
     protected async Task UpdateFavouriteStateAsync(MessagesItem item)
     {
-        var finds = await aiChatMessageRecordService.QueryAsync(x => x.Key == item.Key&& x.Email==user.Email);
+        var finds = await aiChatMessageRecordService.QueryAsync(x => x.Key == item.Key&& x.Email==CurrentUser.Email);
         if (!finds.Any())
         {
             logger.LogError("根据{0}未发现聊天历史内容",item.Key);
@@ -52,7 +154,7 @@ public abstract partial class AiViewModelBase(
             Provider = model.Provider,
             IsDefault = model.IsDefault,
             Template = json,
-            Email = user.Email
+            Email = CurrentUser.Email
         };
         if (model.Provider == AiModelType.Custom)
         {
@@ -65,24 +167,24 @@ public abstract partial class AiViewModelBase(
             }
 
             var finds = await aiTemplateSettingService.QueryAsync(x =>
-                x.Provider == AiModelType.Custom && x.ModelName == customModelName&& x.Email==user.Email);
+                x.Provider == AiModelType.Custom && x.ModelName == customModelName&& x.Email==CurrentUser.Email);
             if (finds.Any()) await aiTemplateSettingService.DeleteRangeAsync(finds);
             saveModel.ModelName = customModelName;
         }
         else
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.Provider == model.Provider&& x.Email==user.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.Provider == model.Provider&& x.Email==CurrentUser.Email);
             if (finds.Any()) await aiTemplateSettingService.DeleteRangeAsync(finds);
         }
 
         if (!saveModel.IsDefault)
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==user.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==CurrentUser.Email);
             if (!finds.Any()) saveModel.IsDefault = true;
         }
         else
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==user.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==CurrentUser.Email);
             if (finds.Any())
                 foreach (var item in finds)
                 {

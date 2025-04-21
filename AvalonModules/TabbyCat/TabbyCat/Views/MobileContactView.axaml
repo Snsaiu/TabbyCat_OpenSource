@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:models="clr-namespace:TabbyCat.Models"
+             xmlns:converters="clr-namespace:TabbyCat.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TabbyCat.Views.MobileContactView"
+             x:DataType="viewModels:MobileContactViewModel">
+    <Grid RowDefinitions="Auto,*" HorizontalAlignment="Stretch">
+        <controls:MobileTitleBar Title="联系人">
+            <controls:MobileTitleBar.RightContent>
+                <StackPanel Orientation="Horizontal">
+                    <Button Classes="icon" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Magnifier}" Command="{Binding SearchCommand}" Margin="0,0,10,0" ></Button>
+                    <Button Classes="icon" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Add}" Command="{Binding AddNewOccupationCommand}"></Button>
+                </StackPanel>
+            </controls:MobileTitleBar.RightContent>
+        </controls:MobileTitleBar>
+        
+        <ListBox Grid.Row="1"  ItemContainerTheme="{StaticResource NoIndicatorListBoxStyle}" ItemsSource="{Binding Occupations}" SelectedItem="{Binding SelectedOccupation}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="models:OccupationType">
+                    <controls:SwipeControl >
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Border Width="50" Background="{Binding OccupationName,Converter={converters:String2ColorConverter}}" Height="50" CornerRadius="25">
+                            <TextBlock Foreground="White" HorizontalAlignment="Center" Text="{Binding OccupationName,Converter={converters:String2FirstCharConverter}}" VerticalAlignment="Center"></TextBlock>
+                        </Border>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding OccupationName}" HorizontalAlignment="Left" Grid.Column="1" Margin="10,0,0,0"  TextTrimming="{x:Static TextTrimming.CharacterEllipsis}"></TextBlock>
+                    </Grid>
+                    </controls:SwipeControl>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+       
+        </ListBox>
+    </Grid>
+   
+</UserControl>

@@ -1,4 +1,5 @@
-﻿using TabbyCat.Shared.Enums;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
 
 namespace TabbyCat.Models;
@@ -6,15 +7,20 @@ namespace TabbyCat.Models;
 /// <summary>
 /// 兼容OpenAi的Api模型
 /// </summary>
-public class CompatibleOpenAiApiModel : AiApiDomainModelBase, IAlias, IApiPath, IDeployName, ITopP, ISaved
+public partial class CompatibleOpenAiApiModel : AiApiDomainModelBase, IAlias, IApiPath, IDeployName, ITopP, ISaved
 {
-    public override AiModelType Provider { get; } = AiModelType.Custom;
+    public override AiModelType Provider => AiModelType.Custom;
 
-    public string ApiPath { get; set; } = "/chat/completions";
-    public string DeployName { get; set; } = "gpt-4o";
+    [ObservableProperty] private string _apiPath = "/chat/completions";
+    [ObservableProperty] private string _deployName = "gpt-4o";
 
-    public override string ApiDomain { get; set; } = "https://api.openai.com/v1";
-    public double TopP { get; set; }
-    public string Alias { get; set; } = string.Empty;
-    public bool IsSaved { get; set; }
+    [ObservableProperty] private double _topP = 0.1;
+    [ObservableProperty] private string _alias = string.Empty;
+
+    [ObservableProperty] private bool _isSaved;
+
+    public CompatibleOpenAiApiModel()
+    {
+        ApiDomain = "https://api.openai.com/v1";
+    }
 }

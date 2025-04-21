@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using TuDog.Bases.Regions;
 using TuDog.Bootstrap;
 using TuDog.Extensions;
+using TuDog.Interfaces.Navigations;
 using TuDog.IocContainers;
 using TuDog.ViewLocators;
 
@@ -30,7 +31,7 @@ public class RegionManager(RegionContainerBase regionContainer, IContainer conta
     {
         if (vm is not (TuDogViewModelBase and var tuDogViewModelBase))
             throw new ArgumentException("VM is not of type TuDogViewModelBase");
-        
+
         var control = viewLocatorBase.Build(vm);
         if (control is null)
             return;
@@ -69,6 +70,7 @@ public class RegionManager(RegionContainerBase regionContainer, IContainer conta
 
         throw new ArgumentException("ParameterViewModelBase not found");
     }
+    
 
     public IViewModelResult AddToRegionForResult<T>(string regionName) where T : TuDogViewModelBase, IViewModelResult => BuildControlReturnVm<T>(regionName);
 

@@ -1,12 +1,14 @@
+using CommunityToolkit.Mvvm.Input;
 using TabbyCat.Components.ViewModels;
-
+using TuDog.Interfaces.Navigations;
 using TuDog.Interfaces.RegionManagers;
 using TuDog.IocAttribute;
 
 namespace TabbyCat.ViewModels;
 
 [Register]
-public partial class SettingViewModel(IRegionManager regionManager) : ViewModelBase
+public partial class SettingViewModel(IRegionManager regionManager, INavigationService navigationService)
+    : ViewModelBase
 {
     protected override Task OnLoaded()
     {
@@ -17,5 +19,11 @@ public partial class SettingViewModel(IRegionManager regionManager) : ViewModelB
         regionManager.AddToRegion<ExperimentalFeaturesSettingViewModel>("experimentalFeaturesContainer");
         return Task.CompletedTask;
 
+    }
+
+    [RelayCommand]
+    private Task ReturnPage()
+    {
+        return navigationService.PopAsync();
     }
 }

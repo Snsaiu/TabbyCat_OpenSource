@@ -1,0 +1,50 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             xmlns:models="clr-namespace:TabbyCat.Models"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:converters="clr-namespace:TabbyCat.Converters"
+             xmlns:aiEntities="clr-namespace:TabbyCat.Repository.Entities.AiEntities;assembly=TabbyCat.Repository"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:views="clr-namespace:TabbyCat.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TabbyCat.Views.MobileChatListView"
+             x:DataType="viewModels:MobileChatListViewModel">
+    <Grid RowDefinitions="Auto,*">
+     <controls:MobileTitleBar  Title="对话" ShowLeftArrow="False"></controls:MobileTitleBar>
+        <ScrollViewer Grid.Row="1">
+            <ListBox ItemsSource="{Binding ChatList}"
+                     ItemContainerTheme="{StaticResource NoIndicatorListBoxStyle}" SelectedItem="{Binding SelectedChat}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="aiEntities:AiChatSessionEntity">
+                        <controls:SwipeControl>
+                            <DockPanel LastChildFill="True" >
+                                <Border DockPanel.Dock="Left" CornerRadius="25" Width="50" Height="50"
+                                        Background="{Binding Occupation,Converter={converters:String2ColorConverter}}">
+                                    <TextBlock Text="{Binding Occupation,Converter={converters:String2FirstCharConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                               FontSize="20"  Foreground="White"/>
+                                </Border>
+                                <Grid RowDefinitions="*,*" DockPanel.Dock="Right" Margin="10,0,0,0">
+                                    <TextBlock Text="{Binding Path=.,Converter={converters:OccupationNameConverter}}" VerticalAlignment="Center" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding Header}"
+                                               VerticalAlignment="Center" 
+                                               TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" Grid.Row="1" />
+                                </Grid>
+                            </DockPanel>
+                            <controls:SwipeControl.SwipeContent>
+                                    <Button Command="{Binding $parent[views:MobileChatListView].((viewModels:MobileChatListViewModel)DataContext).DeleteChatCommand }"
+                                            CommandParameter="{Binding .}"
+                                            VerticalAlignment="Stretch" Width="80" Padding="0" Background="OrangeRed" Foreground="White" BorderThickness="0" Classes="icon" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Delete}"></Button>
+                            </controls:SwipeControl.SwipeContent>
+                        </controls:SwipeControl>
+                      
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using TabbyCat.IServices;
 using TabbyCat.Shared;
 using TuDog.Bootstrap;
 using TuDog.Interfaces.IDialogServers;
@@ -12,6 +13,10 @@ namespace TabbyCat.ViewModels
     {
         protected IDialogServer DialogServer { get; } =
             TuDogApplication.ServiceProvider.GetRequiredService<IDialogServer>();
+
+
+        [ObservableProperty]
+        private IUser _currentUser = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
 
         protected LocalizationResourceManager ResourceManager { get; } = LocalizationResourceManager.Instance;
 
