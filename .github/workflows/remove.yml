@@ -1,0 +1,2 @@
+- name: Remove artifacts
+  uses: c-hive/gha-remove-artifacts@v1.4.0
