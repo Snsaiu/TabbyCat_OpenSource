@@ -8,6 +8,11 @@ public class AiChatMessageRecordEntity : UserBaseEntity
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
+    /// 附件
+    /// </summary>
+    public string Appendix { get; set; } = string.Empty;
+
+    /// <summary>
     /// 只能是User或者Assistant
     /// </summary>
     public Role Role { get; set; }

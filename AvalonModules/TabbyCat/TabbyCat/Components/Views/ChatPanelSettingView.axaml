@@ -47,7 +47,7 @@
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="{x:Static languages:AppResources.ChooseCharacter}"></TextBlock>
                 <ComboBox SelectedItem="{Binding SelectedOccupationType}"
-                          
+
                           ItemsSource="{Binding Occupations}" >
                    <ComboBox.ItemTemplate>
                        <DataTemplate x:DataType="models:OccupationType">
@@ -59,7 +59,7 @@
                                        CommandParameter="{Binding .}"
                                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
                                        IsVisible="{Binding Occupation,Converter={converters:Enum2BoolConverter},ConverterParameter=Custom}">
-                                   
+
                                </Button>
                            </Grid>
                        </DataTemplate>
@@ -74,7 +74,7 @@
             </StackPanel>
         </Expander>
 
-        <Expander Header="{x:Static languages:AppResources.ModelSetting}">
+        <Expander Header="{x:Static languages:AppResources.ModelSetting}" IsVisible="{Binding ShowModelSetting}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
                 <TextBlock Text="{x:Static languages:AppResources.Model}" HorizontalAlignment="Left">
                 </TextBlock>

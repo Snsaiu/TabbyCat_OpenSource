@@ -1,0 +1,56 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:TabbyCat.Controls"
+        xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+        xmlns:tabbyCat="clr-namespace:TabbyCat">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|BoxControl">
+        <Setter Property="CornerRadius" Value="10"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="Gray"></Setter>
+        <Setter Property="Height" Value="80"></Setter>
+        <Setter Property="Width" Value="80"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:BoxControl">
+                    <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"  CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid RowDefinitions="*,30">
+                            <ContentPresenter Grid.RowSpan="2" Content="{TemplateBinding Content}"></ContentPresenter>
+                            <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                <ContentPresenter VerticalAlignment="Center" Content="{TemplateBinding AttachContent}"></ContentPresenter>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|DeleteBoxControl">
+        <Setter Property="CornerRadius" Value="10"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="Gray"></Setter>
+        <Setter Property="Height" Value="80"></Setter>
+        <Setter Property="Width" Value="80"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:DeleteBoxControl">
+                    <Border ClipToBounds="True" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid RowDefinitions="*,30">
+                            <ContentPresenter Grid.RowSpan="2" Content="{TemplateBinding Content}"></ContentPresenter>
+                            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
+                               <Button Command="{TemplateBinding DeleteCommand}" CommandParameter="{TemplateBinding DeleteCommandParameter}" FontSize="10" 
+                                       extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Delete}" Classes="icon"></Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</Styles>

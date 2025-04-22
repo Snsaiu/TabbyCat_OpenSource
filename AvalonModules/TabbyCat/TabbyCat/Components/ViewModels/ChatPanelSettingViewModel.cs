@@ -40,6 +40,8 @@ public partial class ChatPanelSettingViewModel(
 
     private bool storeChatRecord;
 
+    [ObservableProperty] private bool _showModelSetting = true;
+
 
     [ObservableProperty]
     private ObservableCollection<string> models = [];
@@ -81,7 +83,7 @@ public partial class ChatPanelSettingViewModel(
             logger.LogError("{0}不能为空", nameof(settingParameter));
             return;
         }
-        
+
         AiModel = settingParameter.AiApiModel;
         Sessions.Reset(settingParameter.AllSessions.OrderByDescending(x => x.IsDefault));
         SelectedAiChatSessionEntity = Sessions.FirstOrDefault(x => x.IsDefault);
@@ -92,19 +94,20 @@ public partial class ChatPanelSettingViewModel(
         }
 
         await InitOccupationsAsync();
+        if (settingParameter.AiApiModel is TabbyCatAiModel) ShowModelSetting = false;
     }
 
     private async Task InitOccupationsAsync()
     {
         Occupations.Reset( await occupationService.GetAllOccupationsAsync());
-        
+
         if(SelectedAiChatSessionEntity is not {}  selected)
         {
             logger.LogError("{0}不能为空", nameof(SelectedAiChatSessionEntity));
             return;
         }
-            
-        
+
+
         if (selected.Occupation != AssistantOccupation.Custom)
             SelectedOccupationType =
                 Occupations.FirstOrDefault(x => selected.Occupation == x.Occupation);
@@ -124,7 +127,7 @@ public partial class ChatPanelSettingViewModel(
                 occupationType.OccupationName));
         if(!deleteConfirm)
             return;
-        
+
         await customAssistantOccupationService.DeleteAsync(x => occupationType.OccupationName == x.Name);
         if (deleteConfirm)
         {
@@ -191,7 +194,7 @@ public partial class ChatPanelSettingViewModel(
             NewOccupationDescription = string.Empty;
             NewOccupationIsDefault = false;
         }
-       
+
     }
 
     [RelayCommand]

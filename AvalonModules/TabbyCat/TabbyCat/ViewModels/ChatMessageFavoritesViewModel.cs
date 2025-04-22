@@ -80,11 +80,19 @@ public sealed partial class ChatMessageFavoritesViewModel(
         var list = new List<ChatMessageDateGroupModel>();
         foreach (var item in group)
         {
-            var items = item.Select(x => new MessagesItem()
+            var items = new List<MessagesItem>();
+            foreach (var chat in item)
             {
-                Key = x.Key, Content = x.Content, IsFavourite = x.IsFavourite,
-                Role = x.Role, ShowMarkdownMode = showMarkdown
-            });
+                var message = new MessagesItem()
+                {
+                    Key = chat.Key, Content = chat.Content, IsFavourite = chat.IsFavourite,
+                    Role = chat.Role, ShowMarkdownMode = showMarkdown
+                };
+                if (!string.IsNullOrEmpty(chat.Appendix))
+                    message.Appendixes = JsonConvert.DeserializeObject<IEnumerable<AppendixModel>>(chat.Appendix);
+                items.Add(message);
+            }
+
             var model = new ChatMessageDateGroupModel(item.Key, items);
             list.Add(model);
 
@@ -92,7 +100,7 @@ public sealed partial class ChatMessageFavoritesViewModel(
 
         Chats.Reset(list);
     }
-    
+
     protected override Task<bool> OnConfirmAsync()
     {
         return Task.FromResult(true);

@@ -105,7 +105,7 @@ namespace TabbyCat
             {
                 window = new MainWindow();
                 window.ShowInTaskbar = false;
-#if DEBUG
+#if !DEBUG
                 window.Topmost = TuDogApplication.ServiceProvider.GetRequiredService<ITopMostService>().Get();
 #endif
                 return window;

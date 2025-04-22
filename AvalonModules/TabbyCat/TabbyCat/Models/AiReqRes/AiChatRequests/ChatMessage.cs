@@ -14,6 +14,8 @@ public abstract class MessageSessionBase:ModelBase
     [JsonProperty("model")] public virtual string Model { get; set; } = string.Empty;
 
     [JsonProperty("stream")] public virtual bool Stream { get; set; } = true;
+
+
 }
 
 public partial class MessagesItem : ModelBase
@@ -36,7 +38,22 @@ public partial class MessagesItem : ModelBase
     [ObservableProperty] [property: JsonIgnore]
     private bool showMarkdownMode;
 
+    [JsonIgnore] public IEnumerable<AppendixModel> Appendixes { get; set; } = [];
+
+    public static MessagesItem Create(string content, Role role, Guid key, bool showMarkdownMode, bool streamEnd = true,
+        IEnumerable<AppendixModel>? appendixes = null)
+    {
+        var model = new MessagesItem()
+            { Content = content, Role = role, Key = key, ShowMarkdownMode = showMarkdownMode, StreamEnd = streamEnd };
+
+        if (appendixes is not null)
+            model.Appendixes = appendixes;
+
+        return model;
+    }
+
 }
+
 
 public class ResponseFormat
 {

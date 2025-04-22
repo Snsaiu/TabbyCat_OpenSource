@@ -16,6 +16,7 @@
     xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
     xmlns:views="clr-namespace:TabbyCat.Views"
     xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+    xmlns:models="clr-namespace:TabbyCat.Models"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="viewModels:ChatViewModel"
@@ -25,9 +26,10 @@
         <viewModels:ChatViewModel />
     </Design.DataContext>
     <Grid Name="mainGrid" RowDefinitions="Auto,*,Auto,Auto">
-        <Border IsVisible="{OnPlatform Default=true, Android=false,iOS=false}" Background="{DynamicResource SolidBackgroundFillColorTransparent}">
+        <Border IsVisible="{OnPlatform Default=true, Android=false,iOS=false}"
+                Background="{DynamicResource SolidBackgroundFillColorTransparent}">
             <Grid Margin="5">
-                
+
                 <TextBlock
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -76,11 +78,12 @@
                 </StackPanel>
             </Grid>
         </Border>
-        
-        <controls:MobileTitleBar IsVisible="{OnPlatform Default=true,Windows=false,macOS=false,Linux=false}" 
+
+        <controls:MobileTitleBar IsVisible="{OnPlatform Default=true,Windows=false,macOS=false,Linux=false}"
                                  Title="{Binding AiChatSession, Converter={converters:OccupationNameConverter}}"
-                                 ShowLeftArrow="True" 
-                                 LeftArrowCommand="{Binding ReturnPageCommand}"></controls:MobileTitleBar>
+                                 ShowLeftArrow="True"
+                                 LeftArrowCommand="{Binding ReturnPageCommand}">
+        </controls:MobileTitleBar>
 
         <!--  主要内容  -->
 
@@ -101,8 +104,31 @@
                 Command="{Binding CancelRequestChatCommand}" />
         <Grid Grid.Row="3" Grid.RowDefinitions="Auto,*">
             <!--  第一行是类似上传图片的功能按键，第二行是文本输入框，第三行是发送按钮  -->
-            <StackPanel Orientation="Horizontal">
-                <!--  功能按钮  -->
+            <StackPanel Orientation="Vertical">
+                <!-- 放悬浮的图片 -->
+                <StackPanel Orientation="Horizontal">
+                    <ItemsControl ItemsSource="{Binding AppendixModels}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="models:AppendixModel">
+                                <Border>
+                                  <ContentControl ContentTemplate="{StaticResource AppendixDataTemplateSelector}" Content="{Binding .}"></ContentControl>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <!--  功能按钮  -->
+                    <Button Classes="icon"
+                            Command="{Binding ShowImagePickerCommand}"
+                            extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Image}"></Button>
+                    <!-- <Button Classes="icon" Margin="{StaticResource Left6}" -->
+                    <!--         extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.File}"> -->
+                    <!-- </Button> -->
+                    <!-- <Button Classes="icon" Margin="{StaticResource Left6}" -->
+                    <!--         extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Link}"> -->
+                    <!-- </Button> -->
+                </StackPanel>
             </StackPanel>
             <DockPanel Grid.Row="1" LastChildFill="True">
                 <Button

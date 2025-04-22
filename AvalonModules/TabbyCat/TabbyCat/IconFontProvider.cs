@@ -3,9 +3,24 @@
 namespace TabbyCat;
 
 [IconBuild(
-    @"https://at.alicdn.com/t/c/font_4833862_8btfhx1wg83.json?spm=a313x.manage_type_myprojects.i1.13.2db03a81seQtqP&file=font_4833862_8btfhx1wg83.json")]
+    @"https://at.alicdn.com/t/c/font_4833862_4huwehg7x1b.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81yP1PaN&file=font_4833862_4huwehg7x1b.json")]
 public static partial class IconFontProvider
 {
+///<summary>
+///图片
+///</summary>
+public const string Image = "\ue606";
+
+///<summary>
+///文件
+///</summary>
+public const string File = "\ue60f";
+
+///<summary>
+///回形针
+///</summary>
+public const string Link = "\ue7f1";
+
 ///<summary>
 ///添加联系人
 ///</summary>
@@ -220,5 +235,4 @@ public const string NewChatSession = "\ue603";
 ///聊天设置
 ///</summary>
 public const string ChatPanelSetting = "\ue73a";
-
 }

@@ -18,10 +18,12 @@ public partial class TabbyCatAiModel : OpenAiApiModel
 
    public override AiModelType Provider => AiModelType.TabbyCatAi;
 
+   public override string ApiPath { get; set; } = "/compatible-mode/v1/chat/completions";
+
    public TabbyCatAiModel()
    {
        httpclient = httpclientfactory.CreateClient(ConstParameter.Auth);
-       ApiDomain = "https://api.openai-hk.com";
+       ApiDomain = "https://dashscope.aliyuncs.com";
    }
 
    public override async Task<ResultBase<bool>> InitializeAsync()
@@ -38,6 +40,6 @@ public partial class TabbyCatAiModel : OpenAiApiModel
 
    public override Task<IEnumerable<string>> GetModelsAsync()
    {
-       return Task.FromResult<IEnumerable<string>>(["gpt-3.5-turbo"]);
+       return Task.FromResult<IEnumerable<string>>(["qwen-omni-turbo"]);
    }
 }

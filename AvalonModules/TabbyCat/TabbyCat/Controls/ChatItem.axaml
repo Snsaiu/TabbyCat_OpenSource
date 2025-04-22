@@ -11,6 +11,7 @@
     xmlns:mdxaml="https://github.com/whistyun/Markdown.Avalonia.Tight"
     xmlns:tabbyCat="clr-namespace:TabbyCat"
     xmlns:mdsyntax="https://github.com/whistyun/Markdown.Avalonia.SyntaxHigh"
+    xmlns:models="clr-namespace:TabbyCat.Models"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -60,6 +61,19 @@
 
                 <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
 
+                    <ItemsControl ItemsSource="{Binding $parent[controls:ChatItem].Message.Appendixes,Mode=OneTime}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="models:AppendixModel">
+                                <ContentControl ContentTemplate="{StaticResource AppendixDataTemplateViewSelector}"
+                                                Content="{Binding .}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                     <mdxaml:MarkdownScrollViewer SelectionEnabled="True"
                                                  MarkdownStyleName="MarkdownStyle.GithubLike"
                                                  IsVisible="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode}"
@@ -72,7 +86,7 @@
                                    <Setter Property="FontFamily" Value="{StaticResource iconFont}" />
                                </Style>
                            </Styles>
-                           
+
                        </mdxaml:MarkdownScrollViewer.Styles>
 
                         <mdxaml:MarkdownScrollViewer.Plugins>

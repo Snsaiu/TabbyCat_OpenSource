@@ -89,7 +89,15 @@ public partial class AiSettingViewModel(
             throw new NullReferenceException();
 
         var backSelectAiModelType = SelectAiModelType;
+        if (AiTemplate.Provider == AiModelType.TabbyCatAi)
+        {
+            var tabbycatModel = AiTemplate as TabbyCatAiModel;
+            var temp = new TabbyCatAiModel();
+            tabbycatModel.ApiDomain = temp.ApiDomain;
+            tabbycatModel.ApiPath = temp.ApiPath;
+        }
         var json = JsonConvert.SerializeObject(AiTemplate);
+
         var saveModel = new AiTemplateSettingEntity
         {
             Provider = AiTemplate.Provider,
@@ -97,6 +105,9 @@ public partial class AiSettingViewModel(
             Template = json,
             Email = user.Email
         };
+
+
+
         if (AiTemplate.Provider == AiModelType.Custom)
         {
             var customModelName = ((IAlias)AiTemplate).Alias;

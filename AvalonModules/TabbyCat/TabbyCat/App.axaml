@@ -26,6 +26,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="Styles/Templates/AiModelSettingTemplate.axaml" />
+                <MergeResourceInclude Source="Styles/Templates/AppendixDataTemplate.axaml"></MergeResourceInclude>
                 <MergeResourceInclude Source="Styles/GenericStyle.axaml" />
                 <MergeResourceInclude Source="Styles/NavigationButtonStyle.axaml" />
                 <MergeResourceInclude Source="Styles/ListBoxItemStyle.axaml"></MergeResourceInclude>
@@ -47,6 +48,7 @@
         <StyleInclude Source="Styles/BorderStyle.axaml"></StyleInclude>
         <StyleInclude Source="Styles/TextBoxStyle.axaml"></StyleInclude>
         <StyleInclude Source="Styles/SwipeControlStyle.axaml"></StyleInclude>
+        <StyleInclude Source="Styles/BoxControlStyle.axaml"></StyleInclude>
       
         <StyleInclude Source="avares://TuDog/UIs/Styles/DialogWindowStyle.axaml" />
     </Application.Styles>
