@@ -1,0 +1,39 @@
+name: Cleanup Artifacts
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # 每天凌晨3点（UTC时间，北京时间+8 = 早上11点）
+  workflow_dispatch:     # 支持手动触发
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean up old artifacts
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const keepLatestCount = 5; // 保留最新 5 个 artifacts
+
+            const artifacts = await github.rest.actions.listArtifactsForRepo({
+              owner,
+              repo,
+              per_page: 100
+            });
+
+            const sortedArtifacts = artifacts.data.artifacts.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            const toDelete = sortedArtifacts.slice(0, Math.max(0, sortedArtifacts.length - keepLatestCount));
+
+            for (const artifact of toDelete) {
+              console.log(`🗑️ Deleting artifact: ${artifact.name} (id=${artifact.id})`);
+              await github.rest.actions.deleteArtifact({
+                owner,
+                repo,
+                artifact_id: artifact.id
+              });
+            }
+
+            console.log(`✅ Cleanup finished. Kept latest ${keepLatestCount} artifacts.`);
