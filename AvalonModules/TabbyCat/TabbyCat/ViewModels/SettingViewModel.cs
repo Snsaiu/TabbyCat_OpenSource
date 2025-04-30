@@ -15,7 +15,7 @@ public partial class SettingViewModel(IRegionManager regionManager, INavigationS
         regionManager.AddToRegion<GeneralSettingViewModel>("commonContainer");
         regionManager.AddToRegion<AiSettingViewModel>("aiContainer");
         regionManager.AddToRegion<PersonalizationViewModel>("personalizationContainer");
-        regionManager.AddToRegion<RunningHubSettingViewModel>("runningHubContainer");
+        regionManager.AddToRegion<MediaSettingViewModel>("mediaSettingContainer");
         regionManager.AddToRegion<ExperimentalFeaturesSettingViewModel>("experimentalFeaturesContainer");
         return Task.CompletedTask;
 

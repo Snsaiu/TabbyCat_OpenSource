@@ -19,7 +19,7 @@ public sealed partial class MobileSearchContactViewModel:AiViewModelBase
     private readonly INavigationService _navigationService;
     private readonly IOccupationService _occupationService;
     [ObservableProperty] private string searchText = string.Empty;
-    
+
     [ObservableProperty] private ObservableCollection<OccupationType> occupations = [];
 
     [ObservableProperty]
@@ -29,12 +29,12 @@ public sealed partial class MobileSearchContactViewModel:AiViewModelBase
 
     [ObservableProperty]
     private ReadOnlyObservableCollection<OccupationType> _filteredOccupations;
-    
+
     public MobileSearchContactViewModel( INavigationService navigationService,IOccupationService occupationService)
     {
         _navigationService = navigationService;
         _occupationService = occupationService;
-        _occupationCache = new SourceCache<OccupationType, string>(x=>x.OccupationName);
+        _occupationCache = new(x=>x.OccupationName);
 
         _occupationCache.Connect().Filter(this.WhenValueChanged(x => x.SearchText).Select(search =>
                 new Func<OccupationType, bool>(o =>
@@ -54,7 +54,7 @@ public sealed partial class MobileSearchContactViewModel:AiViewModelBase
     {
         if(value is null)
             return;
-       
+
         var paraemters = new NavigationParameter();
         paraemters.Add("New",true);
         paraemters.Add("Occupation",value.Occupation);

@@ -20,7 +20,7 @@ public sealed partial class ChatMessageFavoritesViewModel(
     ILogger<ChatMessageFavoritesViewModel> logger,
     IUser user,
     IUseMarkdownService markdownService)
-    : DialogViewModelBase<bool>
+    : DialogViewModelBaseAsync<bool,bool>
 {
     [ObservableProperty] private ObservableCollection<ChatMessageDateGroupModel> chats = [];
 
@@ -101,8 +101,14 @@ public sealed partial class ChatMessageFavoritesViewModel(
         Chats.Reset(list);
     }
 
-    protected override Task<bool> OnConfirmAsync()
+
+    public override Task<bool> ConfirmAsync()
     {
         return Task.FromResult(true);
+    }
+
+    public override Task<bool> CancelAsync()
+    {
+      return Task.FromResult(false);
     }
 }

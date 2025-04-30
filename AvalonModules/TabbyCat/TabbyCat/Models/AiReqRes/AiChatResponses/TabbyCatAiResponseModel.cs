@@ -25,6 +25,11 @@ public class TabbyCatResponseAudio
 public class TabbyCatResponseDelta
 {
     [JsonProperty("audio")] public TabbyCatResponseAudio Audio { get; set; }
+
+    [JsonProperty("content")] public string Content { get; set; } = string.Empty;
+
+    [JsonProperty("reasoning_content")] public string ReasoningContent { get; set; } = string.Empty;
+
 }
 
 public class TabbyCatResponseChoicesItem

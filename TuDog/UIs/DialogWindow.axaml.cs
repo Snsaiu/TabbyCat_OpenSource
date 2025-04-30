@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.Input;
 using FluentAvalonia.UI.Windowing;
 using TuDog.Bootstrap;
+using TuDog.Interfaces;
 using TuDog.Models;
 
 namespace TuDog.UIs;
@@ -19,7 +20,7 @@ public partial class DialogWindow : Window
     private Button _primaryButton;
     private Button _secondaryButton;
 
-    public DialogViewModelBase DialogViewModel { get; set; }
+    public IViewModelResultAsync DialogViewModel { get; set; }
 
     public string PrimaryButtonText
     {
@@ -41,24 +42,19 @@ public partial class DialogWindow : Window
     [RelayCommand]
     private async Task Confirm()
     {
-        if (await DialogViewModel.CanConfirmAsync())
-        {
-            var result = await DialogViewModel.ConfirmAsync();
-            DialogResultData data = new(true, result);
-            Close(data);
-        }
+        if (!await DialogViewModel.CanConfirmAsync()) return;
+        var result = await DialogViewModel.ConfirmAsync();
+        DialogResultData data = new(true, result);
+        Close(data);
     }
 
 
     [RelayCommand]
     private async Task Cancel()
     {
-        if (await DialogViewModel.CanCancelAsync())
-        {
-            var result = await DialogViewModel.CancelAsync();
-            DialogResultData data = new(false, result);
-            Close(data);
-        }
+        var result = await DialogViewModel.CancelAsync();
+        DialogResultData data = new(false, result);
+        Close(data);
     }
 
 
@@ -79,14 +75,11 @@ public partial class DialogWindow : Window
             if (x is not UserControl userControl) return;
             Width = userControl.Width;
             Height = userControl.Height + 24 * 7;
-
         });
     }
 
     public DialogWindow()
     {
         InitializeComponent();
-
-
     }
 }

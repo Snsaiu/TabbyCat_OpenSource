@@ -7,7 +7,7 @@ namespace TuDog.Extensions;
 
 internal static class AvaloniaObjectExtension
 {
-    public static void AttachLoadedBehavior(this AvaloniaObject view, TuDogViewModelBase vm)
+    public static void AttachLoadedBehavior(this AvaloniaObject view, ITuDogViewModel vm)
     {
         var eventTriggerBehavior = new EventTriggerBehavior()
         {
@@ -21,7 +21,7 @@ internal static class AvaloniaObjectExtension
         Interaction.GetBehaviors(view).Add(eventTriggerBehavior);
     }
 
-    public static void AttachUnLoadedBehavior(this AvaloniaObject view, TuDogViewModelBase vm)
+    public static void AttachUnLoadedBehavior(this AvaloniaObject view, ITuDogViewModel vm)
     {
         var eventTriggerBehavior = new EventTriggerBehavior()
         {

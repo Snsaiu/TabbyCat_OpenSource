@@ -15,15 +15,15 @@ public sealed partial class LogoutViewModel(
     IAiChatSessionService aiChatSessionService,
     ICustomAssistantOccupationService customAssistantOccupationService,
     ILoginUserService loginUserService,
-    IRunningHubService runningHubService,
-    IRunningHubResourceService runningHubResourceService,
-    IRunningHubResultService runningHubResultService,
+    IAiMediaService runningHubService,
+    IAiMediaResourceService runningHubResourceService,
+    IAiMediaResultService runningHubResultService,
     ILogger<LogoutViewModel> logger,
-    IAiTemplateSettingService aiTemplateSettingService) : DialogViewModelBase<LogoutOptionModel>
+    IAiTemplateSettingService aiTemplateSettingService) : DialogViewModelBaseAsync<bool,LogoutOptionModel>
 {
     [ObservableProperty] private LogoutOptionModel model = new();
 
-    protected override async Task<LogoutOptionModel?> OnConfirmAsync()
+    public override async Task<LogoutOptionModel?> ConfirmAsync()
     {
         var user = loginUserService.Get();
         if (Model.ClearChats)
@@ -49,5 +49,10 @@ public sealed partial class LogoutViewModel(
         }
 
         return Model;
+    }
+
+    public override Task<LogoutOptionModel> CancelAsync()
+    {
+        return null;
     }
 }

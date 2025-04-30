@@ -1,42 +1,66 @@
-﻿using TuDog.Interfaces;
+using TuDog.Interfaces;
 
 namespace TuDog.Bootstrap;
 
-public abstract class DialogViewModelBase<TResult> : DialogViewModelBase
+public abstract class DialogViewModelBase:TuDogViewModelBase, IViewModelResult,IParameter
 {
-    protected abstract Task<TResult?> OnConfirmAsync();
 
-    protected virtual Task<TResult?> OnCancelAsync()
+    public abstract object Confirm();
+
+    public abstract object Cancel();
+    
+    public virtual bool CanConfirm()
     {
-        return Task.FromResult(default(TResult?));
+        return true;
     }
 
-    public sealed override async Task<object?> ConfirmAsync()
-    {
-        var result = await OnConfirmAsync();
-        return result;
-    }
-
-    public sealed override async Task<object?> CancelAsync()
-    {
-        var result = await OnCancelAsync();
-        return result;
-    }
+    public object? Parameter { get; set; }
 }
 
-public abstract class DialogViewModelBase : ParameterViewModelBase, IViewModelResultAsync
+public abstract class DialogViewModelBaseAsync : TuDogViewModelBase, IViewModelResultAsync, IParameter
 {
-    public virtual Task<bool> CanCancelAsync()
-    {
-        return Task.FromResult(true);
-    }
-
-    public virtual Task<bool> CanConfirmAsync()
-    {
-        return Task.FromResult(true);
-    }
-
-
     public abstract Task<object?> ConfirmAsync();
+
+
     public abstract Task<object?> CancelAsync();
+ 
+
+    public Task<bool> CanConfirmAsync()
+    {
+        return Task.FromResult(true);
+    }
+
+    public object? Parameter { get; set; }
 }
+
+public abstract class DialogViewModelBase<TParameter,TResult> : TuDogViewModelBase, IViewModelResult<TResult>,IParameter<TParameter>
+{
+    private TParameter? _parameter;
+    public abstract TResult Confirm();
+
+
+    public abstract TResult Cancel();
+  
+    public bool CanConfirm()
+    {
+        return true;
+    }
+    
+    public TParameter? Parameter { get; set; }
+}
+
+public abstract class DialogViewModelBaseAsync<TParameter,TResult> : TuDogViewModelBase, IViewModelResultAsync<TResult>,IParameter<TParameter>
+{
+    public Task<bool> CanConfirmAsync()
+    {
+        return Task.FromResult(true);
+    }
+
+    public abstract Task<TResult> ConfirmAsync();
+
+
+    public abstract Task<TResult> CancelAsync();
+
+    public TParameter? Parameter { get; set; }
+}
+

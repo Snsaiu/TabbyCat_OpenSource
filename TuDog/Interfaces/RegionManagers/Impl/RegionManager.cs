@@ -25,7 +25,9 @@ public class RegionManager(RegionContainerBase regionContainer, IContainer conta
     }
 
     private T BuildControlReturnVmAsync<T>(string regionName) where T : TuDogViewModelBase, IViewModelResult => BuildControlReturnVm<T>(regionName);
-    private T BuildControlReturnVmAsync<T, TResult>(string regionName) where T : TuDogViewModelBase, IViewModelResult<TResult> => BuildControlReturnVm<T>(regionName);
+    private T BuildControlReturnVmAsync<T, TResult>(string regionName) where T : TuDogViewModelBase, IViewModelResultAsync<TResult> => BuildControlReturnVm<T>(regionName);
+
+   // private T BuildControlReturnVmAsync<T, TResult>(string regionName) where T : TuDogViewModelBase, IViewModelResultAsync<TResult> => BuildControlReturnVm<T>(regionName);
 
     private void BuildControl(string regionName, object vm)
     {
@@ -53,15 +55,15 @@ public class RegionManager(RegionContainerBase regionContainer, IContainer conta
         return vm;
     }
 
-    public void AddToRegion<T>(string regionName, object? parameter) where T : ParameterViewModelBase => BuildControlReturnVm<T>(regionName, parameter);
+    public void AddToRegion<T>(string regionName, object? parameter) where T : IParameter => BuildControlReturnVm<T>(regionName, parameter);
 
-    private T BuildControlReturnVm<T>(string regionName, object? parameter) where T : ParameterViewModelBase
+    private T BuildControlReturnVm<T>(string regionName, object? parameter) where T : IParameter
     {
         if (!regionContainer.Exists(regionName))
             throw new ArgumentException("Region not found");
         var vm = container.GetRequiredService<T>();
 
-        if (vm is ParameterViewModelBase parameterViewModelBase)
+        if (vm is IParameter parameterViewModelBase)
         {
             parameterViewModelBase.Parameter = parameter;
             BuildControl(regionName, parameterViewModelBase);
@@ -74,16 +76,16 @@ public class RegionManager(RegionContainerBase regionContainer, IContainer conta
 
     public IViewModelResult AddToRegionForResult<T>(string regionName) where T : TuDogViewModelBase, IViewModelResult => BuildControlReturnVm<T>(regionName);
 
-    public IViewModelResult AddToRegionForResult<T>(string regionName, object? parameter) where T : ParameterViewModelBase, IViewModelResult => BuildControlReturnVm<T>(regionName, parameter);
+    public IViewModelResult AddToRegionForResult<T>(string regionName, object? parameter) where T : IParameter, IViewModelResult => BuildControlReturnVm<T>(regionName, parameter);
 
     public IViewModelResultAsync<TResult> AddToRegionForResultAsync<T, TResult>(string regionName)
         where T : TuDogViewModelBase, IViewModelResultAsync<TResult> =>
         BuildControlReturnVmAsync<T, TResult>(regionName);
 
-    public IViewModelResult<TResult> AddToRegionForResult<T, TResult>(string regionName)
-        where T : TuDogViewModelBase, IViewModelResult<TResult> =>
-        BuildControlReturnVmAsync<T, TResult>(regionName);
-
+    // public IViewModelResult<TResult> AddToRegionForResult<T, TResult>(string regionName)
+    //     where T : TuDogViewModelBase, IViewModelResult<TResult> =>
+    //     BuildControlReturnVmAsync<T, TResult>(regionName);
+    //
 
     private void UnRemoveRegion(object? sender, RoutedEventArgs e)
     {

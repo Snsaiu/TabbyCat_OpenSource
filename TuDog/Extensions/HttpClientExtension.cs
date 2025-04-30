@@ -89,6 +89,32 @@ public static class HttpClientExtensions
 
     }
 
+    /// <summary>
+    /// 上传文件
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="fileName"></param>
+    /// <param name="uploadUrl"></param>
+    /// <returns></returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public static async Task<string> UploadFile(this HttpClient client, string fileName, string uploadUrl)
+    {
+        if (!File.Exists(fileName))
+            throw new FileNotFoundException("File not found.", fileName);
+
+        using var form = new MultipartFormDataContent();
+        using var fileStream = File.OpenRead(fileName);
+        var streamContent = new StreamContent(fileStream);
+        streamContent.Headers.ContentType = new("application/octet-stream");
+
+        form.Add(streamContent, "file", Path.GetFileName(fileName));
+
+        var response = await client.PostAsync(uploadUrl, form);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadAsStringAsync();
+    }
+
     public static async Task DownloadFileAsync(this HttpClient client, string url, string savePath)
     {
         if (string.IsNullOrWhiteSpace(url))

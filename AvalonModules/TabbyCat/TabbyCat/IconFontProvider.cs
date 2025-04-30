@@ -3,9 +3,129 @@
 namespace TabbyCat;
 
 [IconBuild(
-    @"https://at.alicdn.com/t/c/font_4833862_4huwehg7x1b.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81yP1PaN&file=font_4833862_4huwehg7x1b.json")]
+    @"https://at.alicdn.com/t/c/font_4833862_lnog0s40119.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81nu8JOP&file=font_4833862_lnog0s40119.json")]
 public static partial class IconFontProvider
 {
+   ///<summary>
+///涂鸦
+///</summary>
+public const string Doodle = "\ue727";
+
+///<summary>
+///扩展
+///</summary>
+public const string ExpandImage = "\ue620";
+
+///<summary>
+///移动
+///</summary>
+public const string Move = "\ue62e";
+
+///<summary>
+///上色
+///</summary>
+public const string Colorize = "\ue626";
+
+///<summary>
+///分辨率
+///</summary>
+public const string SuperResoluntion = "\ue62f";
+
+///<summary>
+///点选修复
+///</summary>
+public const string EraseEdit = "\ue609";
+
+///<summary>
+///去水印
+///</summary>
+public const string RemoveMark = "\ue60a";
+
+///<summary>
+///缩小
+///</summary>
+public const string ZoomOut = "\ue607";
+
+///<summary>
+///放大
+///</summary>
+public const string Enlarge = "\ue608";
+
+///<summary>
+///清空
+///</summary>
+public const string Clear = "\ue62b";
+
+///<summary>
+///画笔大小
+///</summary>
+public const string PenSize = "\ue6bf";
+
+///<summary>
+///画笔
+///</summary>
+public const string Pen = "\ue61f";
+
+///<summary>
+///橡皮
+///</summary>
+public const string Eraser = "\ue60d";
+
+///<summary>
+///指令绘图
+///</summary>
+public const string CommandEditImage = "\ue62a";
+
+///<summary>
+///局部绘图
+///</summary>
+public const string PartialDrawImage = "\ue679";
+
+///<summary>
+///深度思考
+///</summary>
+public const string DeepThink = "\ue876";
+
+///<summary>
+///联网功能
+///</summary>
+public const string UseInternet = "\ue611";
+
+///<summary>
+///停止
+///</summary>
+public const string Stop2 = "\ue686";
+
+///<summary>
+///播放
+///</summary>
+public const string Play = "\ue643";
+
+///<summary>
+///暂停
+///</summary>
+public const string Pause = "\ue669";
+
+///<summary>
+///编辑视频
+///</summary>
+public const string VideoEdit = "\ue625";
+
+///<summary>
+///文生视频
+///</summary>
+public const string TextToVideo = "\ue61b";
+
+///<summary>
+///图片编辑
+///</summary>
+public const string ImageEdit = "\ue684";
+
+///<summary>
+///图生视频
+///</summary>
+public const string ImageToVideo = "\ue69c";
+
 ///<summary>
 ///图片
 ///</summary>
@@ -235,4 +355,5 @@ public const string NewChatSession = "\ue603";
 ///聊天设置
 ///</summary>
 public const string ChatPanelSetting = "\ue73a";
+
 }

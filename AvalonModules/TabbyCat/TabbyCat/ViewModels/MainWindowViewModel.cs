@@ -100,7 +100,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     private async Task Logout()
     {
         var result =
-            await dialogService.ShowDialogAsync<LogoutViewModel, LogoutOptionModel>(AppResources.Logout,
+            await dialogService.ShowDialogAsync<LogoutViewModel,bool, LogoutOptionModel>(AppResources.Logout,
                 AppResources.Logout,AppResources.Cancel);
         if (result is { Ok: true })
         {

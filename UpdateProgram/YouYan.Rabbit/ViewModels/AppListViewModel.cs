@@ -200,7 +200,7 @@ public sealed partial class AppListViewModel(
         model.Description = selected.Description;
         model.Version = selected.LatestVersion;
 
-        await DialogServer.ShowDialogAsync<WhatNewViewModel, bool>("Whats New", cancelButtonText: string.Empty,
+        await DialogServer.ShowDialogAsync<WhatNewViewModel, AppReleaseModel,bool>("Whats New", cancelButtonText: string.Empty,
             parameter: model);
     }
 

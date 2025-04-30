@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<PackageReference Include="Serilog" />
 		<PackageReference Include="Serilog.Extensions.Logging" />
+		<PackageReference Include="Serilog.Sinks.Console"/>
 		<PackageReference Include="Serilog.Sinks.Grafana.Loki" />
 		<PackageReference Include="System.Diagnostics.DiagnosticSource" />
 	</ItemGroup>

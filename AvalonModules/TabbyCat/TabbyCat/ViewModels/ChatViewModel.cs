@@ -13,6 +13,7 @@ using TabbyCat.Extensions;
 using TabbyCat.Factories;
 using TabbyCat.Models;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
+using TabbyCat.Models.AiReqRes.AiChatRequests.TabbyCatAi;
 using TabbyCat.Models.AiReqRes.AiChatResponses;
 using TabbyCat.Models.Appendix;
 using TabbyCat.Repository.Entities.AiEntities;
@@ -49,6 +50,53 @@ public partial class ChatViewModel(
 
     private bool showMarkDownState;
 
+    [ObservableProperty] private bool _useInternet;
+
+    [ObservableProperty] private bool _useDeepThinking;
+
+
+    [RelayCommand]
+    private async Task UseInternetChanged()
+    {
+        if (UseInternet && !CurrentUser.LoginSuccess())
+        {
+            await DialogServer.ShowMessageDialogAsync("联网功能必须要登录才能使用！", AppResources.Warning, AppResources.Ok);
+            UseInternet = false;
+            return;
+        }
+
+        if (UseInternet && aiApiModelBase is not TabbyCatAiModel tabbyCatAiModel)
+        {
+            await DialogServer.ShowMessageDialogAsync("联网功能只能使用TabbyCatAiModel", AppResources.Warning, AppResources.Ok);
+            UseInternet = false;
+            return;
+        }
+
+        var request = messageSession as TabbyCatAiRequestModel;
+        request.EnableUseInternet = UseInternet;
+    }
+
+    [RelayCommand]
+    private async Task UseDeepThinkChanged()
+    {
+        if (UseInternet && !CurrentUser.LoginSuccess())
+        {
+            await DialogServer.ShowMessageDialogAsync("深度思考功能必须要登录才能使用！", AppResources.Warning, AppResources.Ok);
+            UseDeepThinking = false;
+            return;
+        }
+
+        if (UseInternet && aiApiModelBase is not TabbyCatAiModel tabbyCatAiModel)
+        {
+            await DialogServer.ShowMessageDialogAsync("深度思考只能使用TabbyCatAiModel", AppResources.Warning, AppResources.Ok);
+            UseDeepThinking = false;
+            return;
+        }
+
+        var request = messageSession as TabbyCatAiRequestModel;
+        request.EnableDeepThinking = UseDeepThinking;
+    }
+
     protected override Task OnLoaded()
     {
         showMarkDownState = useMarkdownService.Get();
@@ -77,6 +125,7 @@ public partial class ChatViewModel(
         await InitChatHistoryAsync();
     }
 
+
     [RelayCommand]
     private Task DeleteAppendix(AppendixModel? appendix)
     {
@@ -99,10 +148,17 @@ public partial class ChatViewModel(
             return;
 
         var image = result[0].Path.LocalPath;
-        var base64Image = Util.ImagePathToBase64(image);
+
+        // 在这里就开始上传
+        var urlResult = await RemoteServerService.UploadImageAsync(image);
+        if (!urlResult.Ok)
+        {
+            await DialogServer.ShowMessageDialogAsync("上传图片失败", AppResources.Warning, AppResources.Ok);
+            return;
+        }
 
         AppendixModels.Reset([
-            new() { Content = base64Image, AppendixType = AppendixType.Image }
+            new() { Content = urlResult.Data, AppendixType = AppendixType.Image }
         ]);
     }
 
@@ -464,7 +520,7 @@ public partial class ChatViewModel(
     [RelayCommand]
     private async Task OpenFavouriteDialog()
     {
-        await DialogServer.ShowDialogAsync<ChatMessageFavoritesViewModel, bool>(AppResources.Favourite,
+        await DialogServer.ShowDialogAsync<ChatMessageFavoritesViewModel, bool, bool>(AppResources.Favourite,
             cancelButtonText: string.Empty);
         InitMessageSession();
         await InitChatModelsAsync();

@@ -14,7 +14,7 @@
         <DataTemplate x:Key="Image" DataType="models:AppendixModel">
             <controls:BoxControl>
                 <Image Width="80" Height="80"
-                       Source="{Binding Content ,Converter={extensions1:Base64ToImageConverterExtension}}"
+                       extensions:RemoteImageUrl.Url="{Binding Content}"
                        Stretch="UniformToFill">
                   <Image.Clip>
                       <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,80,80"></RectangleGeometry>
@@ -40,9 +40,9 @@
     <dataTemplateSelector:AppendixDataTemplateSelector x:Key="AppendixDataTemplateViewSelector">
         <DataTemplate x:Key="Image" DataType="models:AppendixModel">
             <controls:BoxControl>
-                <Image Width="80" Height="80"
-                       Source="{Binding Content ,Converter={extensions1:Base64ToImageConverterExtension}}"
+                <Image Width="80" Height="80" extensions:RemoteImageUrl.Url="{Binding Content}"
                        Stretch="UniformToFill">
+
                     <Image.Clip>
                         <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,80,80" />
                     </Image.Clip>

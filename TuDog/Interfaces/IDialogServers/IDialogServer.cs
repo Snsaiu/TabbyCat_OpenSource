@@ -16,8 +16,8 @@ public interface IDialogServer
         string placeHolder = "请输入...", string confirmButtonText = "确定",
         string cancelButtonText = "取消", string? defaultValue = null);
 
-    public Task<DialogResultData<TResult>?> ShowDialogAsync<TViewModel, TResult>(string title,
+    public Task<DialogResultData<TResult>?> ShowDialogAsync<TViewModel,TParameter, TResult>(string title,
         string confirmButtonText = "确定",
-        string cancelButtonText = "取消", object? parameter = null)
-        where TViewModel : DialogViewModelBase<TResult>;
+        string cancelButtonText = "取消", TParameter? parameter=default )
+        where TViewModel : DialogViewModelBaseAsync<TParameter,TResult>;
 }

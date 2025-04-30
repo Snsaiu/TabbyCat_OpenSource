@@ -14,22 +14,22 @@ namespace TabbyCat.ViewModels;
 
 public partial class LoginViewModelBase:ViewModelBase
 {
-    
+
     [ObservableProperty]
     private bool isLogined;
-        
+
     [ObservableProperty]
     private IUser currentUser = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
-    
+
     private ILogger<LoginViewModelBase> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<LoginViewModelBase>>();
-    
+
     protected IDialogServer dialogService = TuDogApplication.ServiceProvider.GetRequiredService<IDialogServer>();
 
     protected ILoginUserService userService = TuDogApplication.ServiceProvider.GetRequiredService<ILoginUserService>();
-    
+
     protected OidcClient oidcClient = TuDogApplication.ServiceProvider.GetRequiredService<OidcClient>();
 
-    
+
     protected async Task LoginAsync()
     {
         var result = await OidcLogin();
@@ -50,12 +50,12 @@ public partial class LoginViewModelBase:ViewModelBase
 
         IsLogined = true;
     }
-    
+
     private async Task<LoginResult?> OidcLogin()
     {
         try
         {
-            var result = await oidcClient.LoginAsync(new() { BrowserTimeout = 10 });
+            var result = await oidcClient.LoginAsync(new() { BrowserTimeout = 30 });
             if (result.IsError)
             {
                 await dialogService.ShowMessageDialogAsync($"{AppResources.LoginFailed}: {result.Error}",
@@ -70,7 +70,7 @@ public partial class LoginViewModelBase:ViewModelBase
             return null;
         }
     }
-    
+
     private string? WriteUserInfo(LoginResult result)
     {
         var claims = result.User.Claims;
@@ -85,7 +85,7 @@ public partial class LoginViewModelBase:ViewModelBase
             this.logger.LogError("邮箱不能为空，但实际为空！");
             return null;
         }
-                
+
 
         var newUser = new LoginUserModel(email, phone, string.Empty, acccessToken, accessTokenExpiration, Sex.Man,
             refreshToken);
@@ -93,7 +93,7 @@ public partial class LoginViewModelBase:ViewModelBase
         userService.Set(newUser);
         return email;
     }
-    
+
     protected async Task ValidateLoginAsync()
     {
         if (!CurrentUser.LoginSuccess())
@@ -123,7 +123,7 @@ public partial class LoginViewModelBase:ViewModelBase
         }
         else
         {
-            IsLogined = true;  
+            IsLogined = true;
         }
     }
 }

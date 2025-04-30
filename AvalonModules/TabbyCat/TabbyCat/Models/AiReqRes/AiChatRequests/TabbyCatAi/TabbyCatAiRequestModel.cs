@@ -15,20 +15,38 @@ public class TabbyCatAiRequestModel : OpenAiRequestModel
 
 
     [JsonProperty("messages")] public List<TabbyCatMessageItem> Contents { get; set; } = [];
-}
 
-public class TabbyCatMessageItem
-{
-    [JsonConverter(typeof(RoleConverter))]
-    [JsonProperty("role")]
-    public virtual Role Role { get; set; }
+    [JsonProperty("enable_search")] public bool EnableUseInternet { get; set; }
 
-    [JsonProperty("content")] public IEnumerable<IAiAppendixModel> AppendixModels { get; set; } = [];
-}
+    [JsonProperty("search_options")] public SearchOptions SearchOption { get; set; } = new();
 
-public class AudioModel
-{
-    [JsonProperty("voice")] public string Voice { get; set; } = "Cherry";
+    /// <summary>
+    /// 是否要支持深度思考
+    /// </summary>
+    [JsonIgnore]
+    public bool EnableDeepThinking { get; set; }
 
-    [JsonProperty("format")] public string Format { get; set; } = "wav";
+
+    public class SearchOptions
+    {
+        [JsonProperty("forced_search")] public bool ForcedSearch { get; set; } = true;
+        [JsonProperty("search_strategy")] public string SearchStrategy { get; set; } = "pro";
+    }
+
+    public class TabbyCatMessageItem
+    {
+        [JsonConverter(typeof(RoleConverter))]
+        [JsonProperty("role")]
+        public virtual Role Role { get; set; }
+
+        [JsonProperty("content")] public object Content { get; set; }
+    }
+
+    public class AudioModel
+    {
+        [JsonProperty("voice")] public string Voice { get; set; } = "Cherry";
+
+        [JsonProperty("format")] public string Format { get; set; } = "wav";
+    }
+
 }

@@ -28,7 +28,7 @@ public partial class ChatPanelSettingViewModel(
     IUser user,
     IOccupationService occupationService,
     ICustomAssistantOccupationService customAssistantOccupationService,
-    IStoreChatRecordService storeChatRecordService) : ParameterViewModelBase, IViewModelResult
+    IStoreChatRecordService storeChatRecordService) : DialogViewModelBase
 {
     [ObservableProperty] private AiApiModelBase? aiModel;
 
@@ -298,7 +298,7 @@ public partial class ChatPanelSettingViewModel(
         }
     }
 
-    public object Confirm()
+    public override object Confirm()
     {
         if (SelectedAiChatSessionEntity is not null and var select)
         {
@@ -324,7 +324,7 @@ public partial class ChatPanelSettingViewModel(
 
     }
 
-    public object Cancel()
+    public override object Cancel()
     {
         return null;
     }

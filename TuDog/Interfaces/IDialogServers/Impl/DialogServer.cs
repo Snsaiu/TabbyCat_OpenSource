@@ -66,10 +66,10 @@ public class DialogServer(ViewLocatorBase viewLocatorBase, IContainer container)
         return new(false, string.Empty);
     }
 
-    public async Task<DialogResultData<TResult>?> ShowDialogAsync<TViewModel, TResult>(string title,
+    public async Task<DialogResultData<TResult>?> ShowDialogAsync<TViewModel,TParameter, TResult>(string title,
         string confirmButtonText = "确定",
-        string cancelButtonText = "取消", object? parameter = null)
-        where TViewModel : DialogViewModelBase<TResult>
+        string cancelButtonText = "取消", TParameter? parameter = default)
+        where TViewModel : DialogViewModelBaseAsync<TParameter,TResult>
     {
         var vm = container.GetRequiredService<TViewModel>();
         if (vm is null)
@@ -85,6 +85,7 @@ public class DialogServer(ViewLocatorBase viewLocatorBase, IContainer container)
         view.AttachLoadedBehavior(vm);
         view.AttachUnLoadedBehavior(vm);
 
+     
         var dialog = new DialogWindow()
         {
             Title = title,
@@ -93,6 +94,7 @@ public class DialogServer(ViewLocatorBase viewLocatorBase, IContainer container)
             Content = view,
             DialogViewModel = vm
         };
+      
         var result = await dialog.ShowDialog<DialogResultData>(TuDogApplication.MainWindow);
         return result;
     }

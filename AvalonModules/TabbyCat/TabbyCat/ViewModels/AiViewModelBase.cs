@@ -26,31 +26,34 @@ public abstract partial class AiViewModelBase : ViewModelBase
     protected IAiTemplateSettingService aiTemplateSettingService =
         TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingService>();
 
+    protected IRemoteServerService RemoteServerService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IRemoteServerService>();
+
     protected IAiChatSessionService chatSessionService =
         TuDogApplication.ServiceProvider.GetRequiredService<IAiChatSessionService>();
-    
+
     protected IAiChatMessageRecordService aiChatMessageRecordService=TuDogApplication.ServiceProvider.GetRequiredService<IAiChatMessageRecordService>();
-    
+
     protected ICustomAssistantOccupationService customAssistantOccupationService=TuDogApplication.ServiceProvider.GetRequiredService<ICustomAssistantOccupationService>();
-    
-    
+
+
     protected IUseMarkdownService useMarkdownService=TuDogApplication.ServiceProvider.GetRequiredService<IUseMarkdownService>();
-    
+
     [ObservableProperty]
     private ObservableCollection<MessagesItem> chatModels = new();
-    
+
     [ObservableProperty] private AiChatSessionEntity? aiChatSession;
 
-    
+
 
     private ILogger<AiViewModelBase> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<AiViewModelBase>>();
-    
-    
+
+
     protected AiApiModelBase? aiApiModelBase;
-    
+
     protected MessageSessionBase? messageSession;
-    
-   
+
+
     protected async Task InitChatModelsAsync(bool addDefaultMessage = true)
     {
         ChatModels.Clear();
@@ -87,7 +90,7 @@ public abstract partial class AiViewModelBase : ViewModelBase
             }
         }
     }
-    
+
     protected void InitMessageSession()
     {
         if (aiApiModelBase is null)
@@ -103,7 +106,7 @@ public abstract partial class AiViewModelBase : ViewModelBase
 
     }
 
-    
+
     protected async Task GetDefaultAiTemplateModelAsync()
     {
         var defaultModels = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==CurrentUser.Email);

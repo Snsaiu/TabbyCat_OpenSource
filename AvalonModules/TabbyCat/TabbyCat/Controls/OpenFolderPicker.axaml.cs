@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.Input;
@@ -20,7 +21,7 @@ public partial class OpenFolderPicker : UserControl
 
     public static readonly StyledProperty<string> SavePathProperty =
         AvaloniaProperty.Register<OpenFolderPicker, string>(
-            nameof(SavePath));
+            nameof(SavePath), defaultBindingMode: BindingMode.TwoWay);
 
     public string SavePath
     {

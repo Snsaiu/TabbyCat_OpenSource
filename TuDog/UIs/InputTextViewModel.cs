@@ -4,19 +4,19 @@ using TuDog.Interfaces;
 
 namespace TuDog.UIs;
 
-public partial class InputTextViewModel : ParameterViewModelBase, IViewModelResult
+public partial class InputTextViewModel : DialogViewModelBase
 {
-    [ObservableProperty] private string watermark = string.Empty;
+    [ObservableProperty] private string _watermark = string.Empty;
 
-    [ObservableProperty] private string text = string.Empty;
+    [ObservableProperty] private string _text = string.Empty;
 
-
-    public object Confirm()
+    
+    public override object Confirm()
     {
         return Text;
     }
 
-    public object Cancel()
+    public override object Cancel()
     {
         return string.Empty;
     }

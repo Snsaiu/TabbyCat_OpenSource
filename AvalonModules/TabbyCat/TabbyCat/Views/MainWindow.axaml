@@ -71,26 +71,6 @@
                    Stretch="UniformToFill"
                    IsVisible="{Binding BackgroundImageConfig.Status,Converter={converters:Enum2BoolConverter} ,ConverterParameter={x:Static enums:BackgroundImageStatus.Custom}}"
                    Opacity="{Binding BackgroundImageConfig.Opacity,UpdateSourceTrigger=PropertyChanged}">
-                <Image.Styles>
-                    <Style Selector="Image">
-                        <Style.Animations>
-                            <Animation Duration="00:00:05">
-                                <KeyFrame Cue="0%">
-                                    <Setter Property="Opacity" Value="0" />
-                                </KeyFrame>
-                                <KeyFrame Cue="30%">
-                                    <Setter Property="Opacity" Value="1" />
-                                </KeyFrame>
-                                <KeyFrame Cue="60%">
-                                    <Setter Property="Opacity" Value="1" />
-                                </KeyFrame>
-                                <KeyFrame Cue="100%">
-                                    <Setter Property="Opacity" Value="0.5" />
-                                </KeyFrame>
-                            </Animation>
-                        </Style.Animations>
-                    </Style>
-                </Image.Styles>
             </Image>
             <ContentControl attachs:RegionBehavior.Region="mainContainer">
                 <ContentControl.Styles>

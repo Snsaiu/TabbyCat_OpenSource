@@ -1608,8 +1608,10 @@
   <data name="Send" xml:space="preserve">
     <value>Send</value>
   </data>
-  <data name="InputDescription" xml:space="preserve">
-    <value>Please input description</value>
+  <data name="TextToImagePromptDescription" xml:space="preserve">
+    <value>Positive prompt words are used to describe the elements and visual features expected to be included in the generated image.
+Supports Chinese and English, with a length of no more than 800 characters. Each Chinese character/letter occupies one character, and the excess will be automatically truncated.
+Example value: A sitting orange cat with a happy expression, lively and cute, realistic and accurate.</value>
   </data>
   <data name="ImageScale" xml:space="preserve">
     <value>Image Scale</value>
@@ -1805,5 +1807,188 @@
   </data>
   <data name="SelectBackgroundImage" xml:space="preserve">
     <value>Select a background image</value>
+  </data>
+  <data name="ImageCount" xml:space="preserve">
+    <value>Number of pictures</value>
+  </data>
+  <data name="TextToImageNegativePromptDescription" xml:space="preserve">
+    <value>Reverse prompt words are used to describe content that you do not want to see in the screen, and can limit the screen.
+Supports Chinese and English, and the length does not exceed 500 characters. The excess will be automatically truncated.
+Example values: low resolution, error, worst quality, low quality, incomplete, extra fingers, poor proportions, etc.</value>
+  </data>
+  <data name="ImageProcessing" xml:space="preserve">
+    <value>Image Processing</value>
+  </data>
+  <data name="VideoProcessing" xml:space="preserve">
+    <value>Video Processing</value>
+  </data>
+  <data name="TextToVideo" xml:space="preserve">
+    <value>Text To Video</value>
+  </data>
+  <data name="ImageToVideo" xml:space="preserve">
+    <value>Image To Video</value>
+  </data>
+  <data name="TextToVideoPromptDescription" xml:space="preserve">
+    <value>Try to input the picture in your mind and describe it as clearly as possible. You can try to use some style modifiers to assist your expression.</value>
+  </data>
+  <data name="VideoSize" xml:space="preserve">
+    <value>Video size</value>
+  </data>
+    <data name="GlobalStylization" xml:space="preserve">
+    <value>Global Stylization</value>
+  </data>
+    <data name="LocalStylization" xml:space="preserve">
+    <value>Local stylization</value>
+  </data>
+    <data name="CommandsEdit" xml:space="preserve">
+    <value>CommandsEdit</value>
+  </data>
+    <data name="PartialRepaint" xml:space="preserve">
+    <value>Partial repaint</value>
+  </data>
+    <data name="RemoveWatermark" xml:space="preserve">
+    <value>Remove watermark</value>
+  </data>
+    <data name="ExpandImage" xml:space="preserve">
+    <value>Expand image</value>
+  </data>
+    <data name="ImageSuperResolution" xml:space="preserve">
+    <value>Image super-resolution</value>
+  </data>
+    <data name="ImageColorization" xml:space="preserve">
+    <value>Image colorization</value>
+  </data>
+    <data name="LineDrawing" xml:space="preserve">
+    <value>Line drawing</value>
+  </data>
+    <data name="MatMap" xml:space="preserve">
+    <value>Mat map</value>
+  </data>
+  <data name="FileUploadError" xml:space="preserve">
+    <value>File upload error!</value>
+  </data>
+  <data name="CommandEditImagePromptDescription" xml:space="preserve">
+    <value>Usage scenario: Personal appearance, such as adding accessories (such as wearing sunglasses/earrings), changing hair color, etc.
+Tips for prompt words: It is recommended to explicitly write "add" or "modify" as a prompt word.</value>
+  </data>
+  <data name="PartialRepaintImagePromptDescription" xml:space="preserve">
+    <value>For adding or modifying operations, you can describe the prompt words in the following two ways.
+Method 1: Describe the specific action, such as "add a hat to the puppy".
+Method 2: Objectively describe the expected content, such as "a puppy wearing a hat".
+For deleting operations, you need to classify and handle them according to the actual situation:
+When deleting elements that occupy less space in the picture, the prompt word can be left blank (prompt="").
+When deleting elements that occupy a large space in the picture, you need to describe the erased content in detail, such as "a transparent glass vase is placed on the table", rather than simply describing it as "delete xxx".</value>
+  </data>
+  <data name="DrawMask" xml:space="preserve">
+    <value>Drawing Mask</value>
+  </data>
+  <data name="TaskErrorResetPlease" xml:space="preserve">
+    <value>Task failed, please try again!</value>
+  </data>
+  <data name="ExpandImagePromptDescription" xml:space="preserve">
+    <value>Usage scenarios: poster design (expanding the vertical image to horizontal to fit the cover size), secondary composition of photography (re-adjusting the subject position after expanding the background), etc.
+Tips for prompt words: The prompt words need to describe the content of the image after the expansion.
+Input prompt words: A family on the lawn in the park.</value>
+  </data>
+    <data name="RemoveWaterMarkPromptDescription" xml:space="preserve">
+    <value>Use scenarios: secondary image processing (removing text interference), advertising design (removing brand watermarks), etc.
+Tips for prompt words: It is recommended to write the prompt word as "remove text from the image" or describe the type of text to be removed, such as "remove English text".
+Enter the prompt word: Remove text from the image.</value>
+  </data>
+  <data name="ImageSuperResolutionPromptDescription" xml:space="preserve">
+    <value>Usage scenarios: restoration of old photos, high-definition printing of images (enlarging small-size images to high resolution), etc.
+Tips for prompt words: It is recommended to write the prompt word as "image super-resolution" or describe the super-resolution image.
+Input prompt word: Image super-resolution.</value>
+  </data>
+  <data name="Clarity" xml:space="preserve">
+    <value>Clarity</value>
+  </data>
+  <data name="ImageColorizationPromptDescription" xml:space="preserve">
+    <value>Usage scenarios: historical photo restoration, children's picture book coloring, etc.
+Tips for prompt words: You can specify colors in the prompt words (such as "blue background, yellow leaves"). If the color is not specified, the model will automatically select the appropriate color.</value>
+  </data>
+  <data name="DoodlePromptDescription" xml:space="preserve">
+    <value>Application scenarios: architectural concept design, illustration design, graffiti painting, etc.
+Tips for prompt words: The prompt words should describe the desired image content in detail. The more specific the description, the better the generation effect.</value>
+  </data>
+  <data name="UseSketch" xml:space="preserve">
+    <value>Use sketch</value>
+  </data>
+  <data name="GraffitiPaintingPromptDescription" xml:space="preserve">
+    <value>Hint words are used to describe the elements and visual features expected to be included in the generated image.
+Supports Chinese and English, with a length of no more than 75 characters, and the excess will be automatically truncated.
+Example value: a towering tree.</value>
+  </data>
+  <data name="3DCartoon" xml:space="preserve">
+    <value>3D Cartoon</value>
+  </data>
+  <data name="Cartoon" xml:space="preserve">
+    <value>Cartoon</value>
+  </data>
+  <data name="WaterColor" xml:space="preserve">
+    <value>Watercolor</value>
+  </data>
+  <data name="FlatIllustrations" xml:space="preserve">
+    <value>Flat illustrations</value>
+  </data>
+  <data name="OilPainting" xml:space="preserve">
+    <value>oil painting</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>auto</value>
+  </data>
+  <data name="Sketch" xml:space="preserve">
+    <value>sketch</value>
+  </data>
+  <data name="ChinesePainting" xml:space="preserve">
+    <value>chinese painting</value>
+  </data>
+  <data name="SketchWeight" xml:space="preserve">
+    <value>Sketch Weight</value>
+  </data>
+  <data name="GraffitiPainting" xml:space="preserve">
+    <value>Graffiti painting</value>
+  </data>
+  <data name="GraffitiStyle" xml:space="preserve">
+    <value>Graffiti style</value>
+  </data>
+  <data name="ImageErasureAndCompletion" xml:space="preserve">
+    <value>Image erasure and completion</value>
+  </data>
+  <data name="Strength" xml:space="preserve">
+    <value>Strength</value>
+  </data>
+  <data name="DrawTheEraseArea" xml:space="preserve">
+    <value>Draw the erase area</value>
+  </data>
+  <data name="DrawReservedArea" xml:space="preserve">
+    <value>Draw reserved area</value>
+  </data>
+  <data name="FastMode" xml:space="preserve">
+    <value>Fast Mode</value>
+  </data>
+  <data name="GetKeyError" xml:space="preserve">
+    <value>Failed to obtain key.</value>
+  </data>
+  <data name="PleaseDrawMaskFirst" xml:space="preserve">
+    <value>Please draw the mask</value>
+  </data>
+  <data name="PleaseInputPrompt" xml:space="preserve">
+    <value>Please enter a prompt word</value>
+  </data>
+    <data name="DoYouWantToClearRunningTasks" xml:space="preserve">
+    <value>Are you sure you want to delete all running tasks?</value>
+  </data>
+  <data name="ResourceSettings" xml:space="preserve">
+    <value>Resource Settings</value>
+  </data>
+  <data name="DoYouWantToMigrateResources" xml:space="preserve">
+    <value>Do you want to migrate resources?</value>
+  </data>
+  <data name="TaskRunningNoSet" xml:space="preserve">
+    <value>There is a task in progress and cannot be set!</value>
+  </data>
+  <data name="MigrationSuccessful" xml:space="preserve">
+    <value>Migration successful!</value>
   </data>
 </root>

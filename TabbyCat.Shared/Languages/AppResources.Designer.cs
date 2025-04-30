@@ -60,6 +60,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 3D Cartoon.
+        /// </summary>
+        public static string _3DCartoon {
+            get {
+                return ResourceManager.GetString("3DCartoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Academician.
         /// </summary>
         public static string Academician {
@@ -519,6 +528,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to auto.
+        /// </summary>
+        public static string Auto {
+            get {
+                return ResourceManager.GetString("Auto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ayurveda Food Tester.
         /// </summary>
         public static string AyurvedaFoodTester {
@@ -668,6 +686,15 @@ namespace TabbyCat.Shared.Languages {
         public static string CarNavigationSystemPrompt {
             get {
                 return ResourceManager.GetString("CarNavigationSystemPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cartoon.
+        /// </summary>
+        public static string Cartoon {
+            get {
+                return ResourceManager.GetString("Cartoon", resourceCulture);
             }
         }
         
@@ -870,6 +897,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to chinese painting.
+        /// </summary>
+        public static string ChinesePainting {
+            get {
+                return ResourceManager.GetString("ChinesePainting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose Character.
         /// </summary>
         public static string ChooseCharacter {
@@ -884,6 +920,15 @@ namespace TabbyCat.Shared.Languages {
         public static string ChooseImage {
             get {
                 return ResourceManager.GetString("ChooseImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clarity.
+        /// </summary>
+        public static string Clarity {
+            get {
+                return ResourceManager.GetString("Clarity", resourceCulture);
             }
         }
         
@@ -938,6 +983,25 @@ namespace TabbyCat.Shared.Languages {
         public static string Color {
             get {
                 return ResourceManager.GetString("Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usage scenario: Personal appearance, such as adding accessories (such as wearing sunglasses/earrings), changing hair color, etc.
+        ///Tips for prompt words: It is recommended to explicitly write &quot;add&quot; or &quot;modify&quot; as a prompt word..
+        /// </summary>
+        public static string CommandEditImagePromptDescription {
+            get {
+                return ResourceManager.GetString("CommandEditImagePromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CommandsEdit.
+        /// </summary>
+        public static string CommandsEdit {
+            get {
+                return ResourceManager.GetString("CommandsEdit", resourceCulture);
             }
         }
         
@@ -1446,11 +1510,30 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application scenarios: architectural concept design, illustration design, graffiti painting, etc.
+        ///Tips for prompt words: The prompt words should describe the desired image content in detail. The more specific the description, the better the generation effect..
+        /// </summary>
+        public static string DoodlePromptDescription {
+            get {
+                return ResourceManager.GetString("DoodlePromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
         public static string Download {
             get {
                 return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete all running tasks?.
+        /// </summary>
+        public static string DoYouWantToClearRunningTasks {
+            get {
+                return ResourceManager.GetString("DoYouWantToClearRunningTasks", resourceCulture);
             }
         }
         
@@ -1464,11 +1547,47 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to migrate resources?.
+        /// </summary>
+        public static string DoYouWantToMigrateResources {
+            get {
+                return ResourceManager.GetString("DoYouWantToMigrateResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The account needs to be logged in again. Are you sure you want to log in again?.
         /// </summary>
         public static string DoYouWantToRelogin {
             get {
                 return ResourceManager.GetString("DoYouWantToRelogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawing Mask.
+        /// </summary>
+        public static string DrawMask {
+            get {
+                return ResourceManager.GetString("DrawMask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draw reserved area.
+        /// </summary>
+        public static string DrawReservedArea {
+            get {
+                return ResourceManager.GetString("DrawReservedArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draw the erase area.
+        /// </summary>
+        public static string DrawTheEraseArea {
+            get {
+                return ResourceManager.GetString("DrawTheEraseArea", resourceCulture);
             }
         }
         
@@ -1734,6 +1853,26 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expand image.
+        /// </summary>
+        public static string ExpandImage {
+            get {
+                return ResourceManager.GetString("ExpandImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usage scenarios: poster design (expanding the vertical image to horizontal to fit the cover size), secondary composition of photography (re-adjusting the subject position after expanding the background), etc.
+        ///Tips for prompt words: The prompt words need to describe the content of the image after the expansion.
+        ///Input prompt words: A family on the lawn in the park..
+        /// </summary>
+        public static string ExpandImagePromptDescription {
+            get {
+                return ResourceManager.GetString("ExpandImagePromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Experimental Features.
         /// </summary>
         public static string ExperimentalFeatures {
@@ -1815,6 +1954,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fast Mode.
+        /// </summary>
+        public static string FastMode {
+            get {
+                return ResourceManager.GetString("FastMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Favourite.
         /// </summary>
         public static string Favourite {
@@ -1829,6 +1977,15 @@ namespace TabbyCat.Shared.Languages {
         public static string File {
             get {
                 return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File upload error!.
+        /// </summary>
+        public static string FileUploadError {
+            get {
+                return ResourceManager.GetString("FileUploadError", resourceCulture);
             }
         }
         
@@ -1865,6 +2022,15 @@ namespace TabbyCat.Shared.Languages {
         public static string FilmCriticPrompt {
             get {
                 return ResourceManager.GetString("FilmCriticPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flat illustrations.
+        /// </summary>
+        public static string FlatIllustrations {
+            get {
+                return ResourceManager.GetString("FlatIllustrations", resourceCulture);
             }
         }
         
@@ -1986,6 +2152,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to obtain key..
+        /// </summary>
+        public static string GetKeyError {
+            get {
+                return ResourceManager.GetString("GetKeyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to girl of dreams, modify as per liking.
         /// </summary>
         public static string girlofdreamsmodifyasperliking {
@@ -2040,6 +2215,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Global Stylization.
+        /// </summary>
+        public static string GlobalStylization {
+            get {
+                return ResourceManager.GetString("GlobalStylization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gnomist.
         /// </summary>
         public static string Gnomist {
@@ -2072,6 +2256,35 @@ namespace TabbyCat.Shared.Languages {
         public static string GomokuplayerPrompt {
             get {
                 return ResourceManager.GetString("GomokuplayerPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Graffiti painting.
+        /// </summary>
+        public static string GraffitiPainting {
+            get {
+                return ResourceManager.GetString("GraffitiPainting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hint words are used to describe the elements and visual features expected to be included in the generated image.
+        ///Supports Chinese and English, with a length of no more than 75 characters, and the excess will be automatically truncated.
+        ///Example value: a towering tree..
+        /// </summary>
+        public static string GraffitiPaintingPromptDescription {
+            get {
+                return ResourceManager.GetString("GraffitiPaintingPromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Graffiti style.
+        /// </summary>
+        public static string GraffitiStyle {
+            get {
+                return ResourceManager.GetString("GraffitiStyle", resourceCulture);
             }
         }
         
@@ -2193,6 +2406,52 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image colorization.
+        /// </summary>
+        public static string ImageColorization {
+            get {
+                return ResourceManager.GetString("ImageColorization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usage scenarios: historical photo restoration, children&apos;s picture book coloring, etc.
+        ///Tips for prompt words: You can specify colors in the prompt words (such as &quot;blue background, yellow leaves&quot;). If the color is not specified, the model will automatically select the appropriate color..
+        /// </summary>
+        public static string ImageColorizationPromptDescription {
+            get {
+                return ResourceManager.GetString("ImageColorizationPromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of pictures.
+        /// </summary>
+        public static string ImageCount {
+            get {
+                return ResourceManager.GetString("ImageCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image erasure and completion.
+        /// </summary>
+        public static string ImageErasureAndCompletion {
+            get {
+                return ResourceManager.GetString("ImageErasureAndCompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Processing.
+        /// </summary>
+        public static string ImageProcessing {
+            get {
+                return ResourceManager.GetString("ImageProcessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image Scale.
         /// </summary>
         public static string ImageScale {
@@ -2202,11 +2461,31 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please input description.
+        ///   Looks up a localized string similar to Image super-resolution.
         /// </summary>
-        public static string InputDescription {
+        public static string ImageSuperResolution {
             get {
-                return ResourceManager.GetString("InputDescription", resourceCulture);
+                return ResourceManager.GetString("ImageSuperResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usage scenarios: restoration of old photos, high-definition printing of images (enlarging small-size images to high resolution), etc.
+        ///Tips for prompt words: It is recommended to write the prompt word as &quot;image super-resolution&quot; or describe the super-resolution image.
+        ///Input prompt word: Image super-resolution..
+        /// </summary>
+        public static string ImageSuperResolutionPromptDescription {
+            get {
+                return ResourceManager.GetString("ImageSuperResolutionPromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image To Video.
+        /// </summary>
+        public static string ImageToVideo {
+            get {
+                return ResourceManager.GetString("ImageToVideo", resourceCulture);
             }
         }
         
@@ -2517,6 +2796,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Line drawing.
+        /// </summary>
+        public static string LineDrawing {
+            get {
+                return ResourceManager.GetString("LineDrawing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LinkedIn Ghostwriter.
         /// </summary>
         public static string LinkedInGhostwriter {
@@ -2567,6 +2855,15 @@ namespace TabbyCat.Shared.Languages {
         public static string LLMResearcherPrompt {
             get {
                 return ResourceManager.GetString("LLMResearcherPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local stylization.
+        /// </summary>
+        public static string LocalStylization {
+            get {
+                return ResourceManager.GetString("LocalStylization", resourceCulture);
             }
         }
         
@@ -2796,6 +3093,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mat map.
+        /// </summary>
+        public static string MatMap {
+            get {
+                return ResourceManager.GetString("MatMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum number of context messages.
         /// </summary>
         public static string MaximumNumberOfContextMessages {
@@ -2846,6 +3152,15 @@ namespace TabbyCat.Shared.Languages {
         public static string MidjourneyPromptGeneratorPrompt {
             get {
                 return ResourceManager.GetString("MidjourneyPromptGeneratorPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Migration successful!.
+        /// </summary>
+        public static string MigrationSuccessful {
+            get {
+                return ResourceManager.GetString("MigrationSuccessful", resourceCulture);
             }
         }
         
@@ -3192,6 +3507,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to oil painting.
+        /// </summary>
+        public static string OilPainting {
+            get {
+                return ResourceManager.GetString("OilPainting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string Ok {
@@ -3233,6 +3557,29 @@ namespace TabbyCat.Shared.Languages {
         public static string OpenImage {
             get {
                 return ResourceManager.GetString("OpenImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Partial repaint.
+        /// </summary>
+        public static string PartialRepaint {
+            get {
+                return ResourceManager.GetString("PartialRepaint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For adding or modifying operations, you can describe the prompt words in the following two ways.
+        ///Method 1: Describe the specific action, such as &quot;add a hat to the puppy&quot;.
+        ///Method 2: Objectively describe the expected content, such as &quot;a puppy wearing a hat&quot;.
+        ///For deleting operations, you need to classify and handle them according to the actual situation:
+        ///When deleting elements that occupy less space in the picture, the prompt word can be left blank (prompt=&quot;&quot;).
+        ///When deleting elements that occupy a large s [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string PartialRepaintImagePromptDescription {
+            get {
+                return ResourceManager.GetString("PartialRepaintImagePromptDescription", resourceCulture);
             }
         }
         
@@ -3449,6 +3796,24 @@ namespace TabbyCat.Shared.Languages {
         public static string PlagiarismCheckerPrompt {
             get {
                 return ResourceManager.GetString("PlagiarismCheckerPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please draw the mask.
+        /// </summary>
+        public static string PleaseDrawMaskFirst {
+            get {
+                return ResourceManager.GetString("PleaseDrawMaskFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a prompt word.
+        /// </summary>
+        public static string PleaseInputPrompt {
+            get {
+                return ResourceManager.GetString("PleaseInputPrompt", resourceCulture);
             }
         }
         
@@ -3741,6 +4106,26 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove watermark.
+        /// </summary>
+        public static string RemoveWatermark {
+            get {
+                return ResourceManager.GetString("RemoveWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use scenarios: secondary image processing (removing text interference), advertising design (removing brand watermarks), etc.
+        ///Tips for prompt words: It is recommended to write the prompt word as &quot;remove text from the image&quot; or describe the type of text to be removed, such as &quot;remove English text&quot;.
+        ///Enter the prompt word: Remove text from the image..
+        /// </summary>
+        public static string RemoveWaterMarkPromptDescription {
+            get {
+                return ResourceManager.GetString("RemoveWaterMarkPromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rename.
         /// </summary>
         public static string Rename {
@@ -3791,6 +4176,15 @@ namespace TabbyCat.Shared.Languages {
         public static string RequestFileDownloadFailed {
             get {
                 return ResourceManager.GetString("RequestFileDownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resource Settings.
+        /// </summary>
+        public static string ResourceSettings {
+            get {
+                return ResourceManager.GetString("ResourceSettings", resourceCulture);
             }
         }
         
@@ -4128,6 +4522,24 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to sketch.
+        /// </summary>
+        public static string Sketch {
+            get {
+                return ResourceManager.GetString("Sketch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sketch Weight.
+        /// </summary>
+        public static string SketchWeight {
+            get {
+                return ResourceManager.GetString("SketchWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Smart Domain Name Generator.
         /// </summary>
         public static string SmartDomainNameGenerator {
@@ -4452,6 +4864,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Strength.
+        /// </summary>
+        public static string Strength {
+            get {
+                return ResourceManager.GetString("Strength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Structured Iterative Reasoning Protocol (SIRP).
         /// </summary>
         public static string StructuredIterativeReasoningProtocolSIRP {
@@ -4556,6 +4977,24 @@ namespace TabbyCat.Shared.Languages {
         public static string TalentCoachPrompt {
             get {
                 return ResourceManager.GetString("TalentCoachPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task failed, please try again!.
+        /// </summary>
+        public static string TaskErrorResetPlease {
+            get {
+                return ResourceManager.GetString("TaskErrorResetPlease", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a task in progress and cannot be set!.
+        /// </summary>
+        public static string TaskRunningNoSet {
+            get {
+                return ResourceManager.GetString("TaskRunningNoSet", resourceCulture);
             }
         }
         
@@ -4700,6 +5139,46 @@ namespace TabbyCat.Shared.Languages {
         public static string TextToImage {
             get {
                 return ResourceManager.GetString("TextToImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reverse prompt words are used to describe content that you do not want to see in the screen, and can limit the screen.
+        ///Supports Chinese and English, and the length does not exceed 500 characters. The excess will be automatically truncated.
+        ///Example values: low resolution, error, worst quality, low quality, incomplete, extra fingers, poor proportions, etc..
+        /// </summary>
+        public static string TextToImageNegativePromptDescription {
+            get {
+                return ResourceManager.GetString("TextToImageNegativePromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positive prompt words are used to describe the elements and visual features expected to be included in the generated image.
+        ///Supports Chinese and English, with a length of no more than 800 characters. Each Chinese character/letter occupies one character, and the excess will be automatically truncated.
+        ///Example value: A sitting orange cat with a happy expression, lively and cute, realistic and accurate..
+        /// </summary>
+        public static string TextToImagePromptDescription {
+            get {
+                return ResourceManager.GetString("TextToImagePromptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text To Video.
+        /// </summary>
+        public static string TextToVideo {
+            get {
+                return ResourceManager.GetString("TextToVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try to input the picture in your mind and describe it as clearly as possible. You can try to use some style modifiers to assist your expression..
+        /// </summary>
+        public static string TextToVideoPromptDescription {
+            get {
+                return ResourceManager.GetString("TextToVideoPromptDescription", resourceCulture);
             }
         }
         
@@ -4920,6 +5399,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use sketch.
+        /// </summary>
+        public static string UseSketch {
+            get {
+                return ResourceManager.GetString("UseSketch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UX/UI Developer.
         /// </summary>
         public static string UXUIDeveloper {
@@ -4934,6 +5422,24 @@ namespace TabbyCat.Shared.Languages {
         public static string UXUIDeveloperPrompt {
             get {
                 return ResourceManager.GetString("UXUIDeveloperPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video Processing.
+        /// </summary>
+        public static string VideoProcessing {
+            get {
+                return ResourceManager.GetString("VideoProcessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video size.
+        /// </summary>
+        public static string VideoSize {
+            get {
+                return ResourceManager.GetString("VideoSize", resourceCulture);
             }
         }
         
@@ -4979,6 +5485,15 @@ namespace TabbyCat.Shared.Languages {
         public static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Watercolor.
+        /// </summary>
+        public static string WaterColor {
+            get {
+                return ResourceManager.GetString("WaterColor", resourceCulture);
             }
         }
         

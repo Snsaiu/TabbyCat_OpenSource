@@ -20,14 +20,15 @@
     </Design.DataContext>
 
     <fluent:NavigationView
-        Grid.Row="1"
         MenuItemsSource="{Binding MenuItems}"
         SelectedItem="{Binding SelectMenuItem}"
         SelectionChanged="NavigationView_OnSelectionChanged">
 
         <fluent:NavigationView.MenuItemTemplate>
             <DataTemplate DataType="{x:Type models:NavigationMenuItem}">
-                <fluent:NavigationViewItem Content="{Binding Header}" FontFamily="{StaticResource iconFont}">
+                <fluent:NavigationViewItem Content="{Binding Header}"
+                                           MenuItemsSource="{Binding Children}"
+                                           FontFamily="{StaticResource iconFont}">
                     <fluent:NavigationViewItem.IconSource>
                         <fluent:FontIconSource FontFamily="{StaticResource iconFont}" Glyph="{Binding Icon}" />
                     </fluent:NavigationViewItem.IconSource>

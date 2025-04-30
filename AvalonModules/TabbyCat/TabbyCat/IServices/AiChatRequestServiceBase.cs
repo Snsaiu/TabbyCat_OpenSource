@@ -25,15 +25,15 @@ public abstract class
     protected readonly TAiModel _aiModel;
 
     protected ILoggerFactory LoggerFactory = TuDogApplication.ServiceProvider.GetRequiredService<ILoggerFactory>();
-    private ILogger _logger;
+    protected ILogger Logger { get; private set; }
 
     private HttpClient _httpClient;
     protected AiChatRequestServiceBase(TRequestModel requestModel, TAiModel aiModel)
     {
         var factory = TuDogApplication.ServiceProvider.GetRequiredService<IHttpClientFactory>();
         _httpClient = factory.CreateClient();
-        _logger = LoggerFactory.CreateLogger(nameof(AiChatRequestServiceBase<TRequestModel, TAiModel, TResponseModel>));
-        
+        Logger = LoggerFactory.CreateLogger(nameof(AiChatRequestServiceBase<TRequestModel, TAiModel, TResponseModel>));
+
         _requestModel = requestModel;
         _aiModel = aiModel;
     }
@@ -57,7 +57,7 @@ public abstract class
             return new SuccessResultModel<HttpRequestMessage>( request);
         }
 
-        this._logger.LogError("暂不支持提供者{0}不是{1}类型的AiModel。",aiModel.Provider.ToString(),typeof(IApiDomain));
+        this.Logger.LogError("暂不支持提供者{0}不是{1}类型的AiModel。",aiModel.Provider.ToString(),typeof(IApiDomain));
 
         return new ErrorResultModel<HttpRequestMessage>(string.Format(AppResources.NotSupport,aiModel.Provider));
     }
@@ -72,12 +72,14 @@ public abstract class
         var requestMessageResult = BuildHttpRequestMessage(_aiModel);
         if(!requestMessageResult.Ok)
             return new ErrorResultModel<HttpRequestMessage>(requestMessageResult.ErrorMsg??string.Format(AppResources.UnableConstructObject,typeof(HttpRequestMessage)));
-        
+
         var json = await RequestModelToJsonString(_requestModel);
 
         var content = new StringContent(
             json,
             Encoding.UTF8, "application/json");
+
+        Logger.LogDebug("聊天请求的json数据:{0}", json);
 
         requestMessageResult.Data.Content = content;
 
@@ -130,14 +132,14 @@ public abstract class
                 await action.Invoke(UnityResponseModel.Error(requestMessage.ErrorMsg??string.Empty));
                 return;
             }
-            
-            
+
+
             using var response = await _httpClient.SendAsync(requestMessage.Data, HttpCompletionOption.ResponseHeadersRead,
                 cancellationToken);
 
             if (response.IsSuccessStatusCode == false)
             {
-                _logger.LogError("数据解析错误:{0}",response.ReasonPhrase);
+                Logger.LogError("数据解析错误:{0}",response.ReasonPhrase);
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     await action.Invoke(UnityResponseModel.Error(AppResources.MustLoginToUseTabbyCatAi));
@@ -146,7 +148,7 @@ public abstract class
                 {
                     await action.Invoke(UnityResponseModel.Error(response.ReasonPhrase ?? string.Empty));
                 }
-              
+
                 return;
             }
 
@@ -164,6 +166,9 @@ public abstract class
 
                             var line = await reader.ReadLineAsync(cancellationToken);
                             cancellationToken.ThrowIfCancellationRequested();
+
+                            Logger.LogDebug("聊天返回数据:{0}", line);
+
                         if (!string.IsNullOrWhiteSpace(line))
                             try
                             {
@@ -187,8 +192,8 @@ public abstract class
                             }
                             catch (Exception e)
                             {
-                                _logger.LogError(e,e.Message);
-                                
+                                Logger.LogError(e,e.Message);
+
                             }
                         }
                         catch (OperationCanceledException)
@@ -204,12 +209,12 @@ public abstract class
         }
         catch (OperationCanceledException taskCanceledException)
         {
-            _logger.LogWarning(taskCanceledException,"接收聊天内容取消。");
-            
+            Logger.LogWarning(taskCanceledException,"接收聊天内容取消。");
+
         }
         catch (Exception e)
         {
-            _logger.LogError(e,e.Message);
+            Logger.LogError(e,e.Message);
             await action.Invoke(UnityResponseModel.Error(e.Message));
         }
     }

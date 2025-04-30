@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:TextToVideoViewModel"
+             Classes="AiMediaStyle"
+             x:Class="TabbyCat.Views.TextToVideoView">
+    <StackPanel Orientation="Vertical" Margin="{StaticResource LeftRight10}" VerticalAlignment="Center">
+        <TextBox Height="200" Watermark="{x:Static languages:AppResources.TextToVideoPromptDescription}"
+                 Text="{Binding Prompt}" TextWrapping="Wrap" />
+        <StackPanel Orientation="Vertical" Margin="{StaticResource Top2}">
+            <TextBlock Text="{x:Static languages:AppResources.VideoSize}" />
+            <ComboBox ItemsSource="{Binding Size}" SelectedItem="{Binding SelectedSize}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

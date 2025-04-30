@@ -10,11 +10,17 @@
              x:DataType="viewModels:TextToImageViewModel">
 
     <StackPanel Orientation="Vertical" Margin="{StaticResource LeftRight10}" VerticalAlignment="Center">
-        <TextBox Height="300" Watermark="{x:Static languages:AppResources.InputDescription}"
+        <TextBox Height="200" Watermark="{x:Static languages:AppResources.TextToImagePromptDescription}"
                  Text="{Binding ImageDescription}" TextWrapping="Wrap" />
+        <TextBox Height="200" Text="{Binding NegativePrompt}" TextWrapping="Wrap" Margin="{StaticResource Top2}"
+                 Watermark="{x:Static languages:AppResources.TextToImageNegativePromptDescription}" />
         <StackPanel Orientation="Vertical" Margin="{StaticResource Top2}">
             <TextBlock Text="{x:Static languages:AppResources.ImageScale}" />
             <ComboBox ItemsSource="{Binding ImageSizes}" SelectedItem="{Binding SelectImageSize}" />
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="{StaticResource Top2}">
+            <TextBlock Text="{x:Static languages:AppResources.ImageCount}" />
+            <ComboBox ItemsSource="{Binding Count}" SelectedItem="{Binding SelectCount}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

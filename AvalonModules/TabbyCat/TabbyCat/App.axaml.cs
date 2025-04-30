@@ -1,3 +1,4 @@
+using System.Net;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
@@ -30,6 +31,8 @@ namespace TabbyCat
 
         public override void Initialize()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             this.EnableHotReload();
             AvaloniaXamlLoader.Load(this);
             base.Initialize();
@@ -121,7 +124,7 @@ namespace TabbyCat
 
         private void StartRunningHubWatch()
         {
-            var mannager = ServiceProvider.GetRequiredService<IRunningHubStateManager>();
+            var mannager = ServiceProvider.GetRequiredService<IAiMediaRunningStateManager>();
             mannager.StartWatchAsync();
         }
 
@@ -157,7 +160,9 @@ namespace TabbyCat
         {
             collection.AddSingleton(typeof(OidcClient), _ => new OidcClient(OidcOptions.GetOptions()));
             collection.AddTransient<TokenHandler>();
-            collection.AddHttpClient(ConstParameter.Auth).AddHttpMessageHandler<TokenHandler>();
+            collection.AddHttpClient(ConstParameter.Auth,
+                    client => { client.BaseAddress = new("https://api.yyan.cc/api"); })
+                .AddHttpMessageHandler<TokenHandler>();
 
             collection.AddLoggerBuilder("http://24.233.2.12:3100", LogLabelProvider.GetLabels());
         }

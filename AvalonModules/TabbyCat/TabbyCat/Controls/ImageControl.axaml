@@ -1,0 +1,48 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:TabbyCat.Controls"
+        xmlns:tabbyCat="clr-namespace:TabbyCat"
+        xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+        xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:extensions1="clr-namespace:TuDog.Extensions;assembly=TuDog">
+    <Design.PreviewWith>
+        <controls:ImageControl />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|ImageControl">
+
+        <Setter Property="Width" Value="200"></Setter>
+        <Setter Property="Height" Value="200"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid RowDefinitions="Auto,*" Name="PART_Container" Height="{TemplateBinding Height}"
+                      Width="{TemplateBinding Width}" >
+
+                    <TextBlock FontSize="14" Grid.Row="0" Text="{TemplateBinding Header}" Margin="0,0,0,10"
+                               IsVisible="{TemplateBinding ShowHeader}" />
+                    <Grid Grid.Row="1" Background="{StaticResource SolidBackgroundFillColorBase}">
+                        <Image  Name="PART_SourceImage" Source="{TemplateBinding ImageSource,Converter={extensions1:ImageConverter}}"></Image>
+                        <controls1:FontIcon  FontSize="30" Opacity="0"
+                                            Classes="icon" Glyph="{x:Static tabbyCat:IconFontProvider.AddImage}"
+                                            Name="PART_Add" HorizontalAlignment="Center"
+                                            Foreground="{StaticResource TextFillColorPrimary}"
+                                            VerticalAlignment="Center">
+                        </controls1:FontIcon>
+                        
+                        <controls1:FontIcon  FontSize="10" Classes="icon" Glyph="{x:Static tabbyCat:IconFontProvider.Delete}" Name="PART_Delete" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{StaticResource TextFillColorInverse}">
+                            
+                        </controls1:FontIcon>
+                    </Grid>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ controls1|FontIcon#PART_Add">
+            <Setter Property="Opacity" Value="0.2"></Setter>
+        </Style>
+        <Style Selector="^:pointerover:not(:pressed) /template/ controls1|FontIcon#PART_Add">
+            <Setter Property="Opacity" Value="0.5"></Setter>
+        </Style>
+    </Style>
+</Styles>

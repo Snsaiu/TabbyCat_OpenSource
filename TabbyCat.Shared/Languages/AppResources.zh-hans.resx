@@ -981,8 +981,10 @@
   <data name="Send" xml:space="preserve">
     <value>发送</value>
   </data>
-  <data name="InputDescription" xml:space="preserve">
-    <value>请输入描述内容</value>
+  <data name="TextToImagePromptDescription" xml:space="preserve">
+    <value>正向提示词，用来描述生成图像中期望包含的元素和视觉特点。
+支持中英文，长度不超过800个字符，每个汉字/字母占一个字符，超过部分会自动截断。
+示例值：一只坐着的橘黄色的猫，表情愉悦，活泼可爱，逼真准确。</value>
   </data>
   <data name="ImageScale" xml:space="preserve">
     <value>图片比例</value>
@@ -1093,7 +1095,7 @@
     <value>执行成功</value>
   </data>
   <data name="AnErrorOccurred" xml:space="preserve">
-    <value>发生错：{0}</value>
+    <value>发生错误：{0}</value>
   </data>
   <data name="PleaseSelectAIModelFirst" xml:space="preserve">
     <value>请先选择一个AI模型</value>
@@ -1193,5 +1195,188 @@
   </data>
   <data name="SelectBackgroundImage" xml:space="preserve">
     <value>选择背景图片</value>
+  </data>
+  <data name="ImageCount" xml:space="preserve">
+    <value>图片数量</value>
+  </data>
+  <data name="TextToImageNegativePromptDescription" xml:space="preserve">
+    <value>反向提示词，用来描述不希望在画面中看到的内容，可以对画面进行限制。
+支持中英文，长度不超过500个字符，超过部分会自动截断。
+示例值：低分辨率、错误、最差质量、低质量、残缺、多余的手指、比例不良等。</value>
+  </data>
+  <data name="ImageProcessing" xml:space="preserve">
+    <value>图片处理</value>
+  </data>
+  <data name="VideoProcessing" xml:space="preserve">
+    <value>视频处理</value>
+  </data>
+  <data name="TextToVideo" xml:space="preserve">
+    <value>文本生成视频</value>
+  </data>
+  <data name="ImageToVideo" xml:space="preserve">
+    <value>图片生成视频</value>
+  </data>
+  <data name="TextToVideoPromptDescription" xml:space="preserve">
+    <value>尝试输入你心中的画面，尽量的描述清楚，可以尝试使用一些风格修饰词辅助你的表达。</value>
+  </data>
+  <data name="VideoSize" xml:space="preserve">
+    <value>视频尺寸</value>
+  </data>
+    <data name="GlobalStylization" xml:space="preserve">
+    <value>全局风格化</value>
+  </data>
+    <data name="LocalStylization" xml:space="preserve">
+    <value>局部风格化</value>
+  </data>
+    <data name="CommandsEdit" xml:space="preserve">
+    <value>指令编辑</value>
+  </data>
+    <data name="PartialRepaint" xml:space="preserve">
+    <value>局部重绘</value>
+  </data>
+    <data name="RemoveWatermark" xml:space="preserve">
+    <value>去水印</value>
+  </data>
+    <data name="ExpandImage" xml:space="preserve">
+    <value>扩图</value>
+  </data>
+    <data name="ImageSuperResolution" xml:space="preserve">
+    <value>图像超分</value>
+  </data>
+    <data name="ImageColorization" xml:space="preserve">
+    <value>图像上色</value>
+  </data>
+    <data name="LineDrawing" xml:space="preserve">
+    <value>线稿生图</value>
+  </data>
+    <data name="MatMap" xml:space="preserve">
+    <value>垫图</value>
+  </data>
+    <data name="FileUploadError" xml:space="preserve">
+    <value>文件上传失败！</value>
+  </data>
+    <data name="CommandEditImagePromptDescription" xml:space="preserve">
+    <value>使用场景：个人形象装扮，比如增加配饰（如戴墨镜/戴耳环）、换发色等。
+提示词技巧：提示词推荐显式写明“添加”、“修改”这类操作描述</value>
+  </data>
+  <data name="PartialRepaintImagePromptDescription" xml:space="preserve">
+    <value>针对增加或修改操作，您可通过以下两种方式描述提示词。
+方式一：描述具体动作，例如“给小狗添加一顶帽子”。
+方式二：客观描述期望生成的内容，例如“一只戴着帽子的小狗”。
+针对删除操作，需根据实际情况分类处理：
+删除占据图片空间较少的元素时，提示词可留空（prompt=""）。
+删除占据图片空间较大的元素时，需详细描述擦除后的内容，例如“一个透明玻璃花瓶放在桌子上”，而非简单描述为“删除xxx”。</value>
+  </data>
+  <data name="DrawMask" xml:space="preserve">
+    <value>绘制蒙版</value>
+  </data>
+  <data name="TaskErrorResetPlease" xml:space="preserve">
+    <value>任务失败，请重试！</value>
+  </data>
+  <data name="ExpandImagePromptDescription" xml:space="preserve">
+    <value>使用场景：海报设计（将竖图扩为横版以适应封面尺寸）、摄影二次构图（扩展背景后重新调整主体位置）等。
+提示词技巧：提示词需要描述扩图后的图片内容。
+输入提示词：一家人在公园草坪上。</value>
+  </data>
+    <data name="RemoveWaterMarkPromptDescription" xml:space="preserve">
+    <value>使用场景：图像二次处理（去除文字干扰）、广告设计（去除品牌水印标识）等。
+提示词技巧：提示词推荐写为“去除图像中的文字”或者描述要去除的文字类型，比如“去除英文文字”。
+输入提示词：去除图像中的文字。</value>
+  </data>
+  <data name="ImageSuperResolutionPromptDescription" xml:space="preserve">
+    <value>使用场景：老旧照片修复、图像高清打印（将小尺寸图片放大到高分辨率）等。
+提示词技巧：提示词推荐写为“图像超分”或描述超分后的图片。
+输入提示词：图片超分。</value>
+  </data>
+  <data name="Clarity" xml:space="preserve">
+    <value>清晰度</value>
+  </data>
+  <data name="ImageColorizationPromptDescription" xml:space="preserve">
+    <value>使用场景：历史照片还原、儿童绘本上色等。
+提示词技巧：在提示词中可指定颜色（如“蓝色背景，黄色叶子”）。若未指定颜色，模型将自动选择适合的颜色。</value>
+  </data>
+  <data name="DoodlePromptDescription" xml:space="preserve">
+    <value>使用场景：建筑概念设计、插画设计、涂鸦作画等。
+提示词技巧：提示词应详细描述期望生成的图像内容，描述越具体，生成效果越好。</value>
+  </data>
+  <data name="UseSketch" xml:space="preserve">
+    <value>使用线稿</value>
+  </data>
+  <data name="GraffitiPaintingPromptDescription" xml:space="preserve">
+    <value>提示词，用来描述生成图像中期望包含的元素和视觉特点。
+支持中英文，长度不超过75个字符，超过部分会自动截断。
+示例值：一棵参天大树。</value>
+  </data>
+  <data name="3DCartoon" xml:space="preserve">
+    <value>3D 卡通</value>
+  </data>
+  <data name="Cartoon" xml:space="preserve">
+    <value>卡通</value>
+  </data>
+  <data name="WaterColor" xml:space="preserve">
+    <value>水彩</value>
+  </data>
+  <data name="FlatIllustrations" xml:space="preserve">
+    <value>扁平插画</value>
+  </data>
+  <data name="OilPainting" xml:space="preserve">
+    <value>油画</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Sketch" xml:space="preserve">
+    <value>素描</value>
+  </data>
+  <data name="ChinesePainting" xml:space="preserve">
+    <value>中国画</value>
+  </data>
+  <data name="SketchWeight" xml:space="preserve">
+    <value>草图权重</value>
+  </data>
+  <data name="GraffitiPainting" xml:space="preserve">
+    <value>涂鸦作画</value>
+  </data>
+  <data name="GraffitiStyle" xml:space="preserve">
+    <value>涂鸦风格</value>
+  </data>
+  <data name="ImageErasureAndCompletion" xml:space="preserve">
+    <value>图像擦除补全</value>
+  </data>
+  <data name="Strength" xml:space="preserve">
+    <value>强度</value>
+  </data>
+  <data name="DrawTheEraseArea" xml:space="preserve">
+    <value>绘制擦除区域</value>
+  </data>
+  <data name="DrawReservedArea" xml:space="preserve">
+    <value>绘制保留区域</value>
+  </data>
+  <data name="FastMode" xml:space="preserve">
+    <value>快速模式</value>
+  </data>
+  <data name="GetKeyError" xml:space="preserve">
+    <value>获得key失败。</value>
+  </data>
+  <data name="PleaseDrawMaskFirst" xml:space="preserve">
+    <value>请绘制蒙版</value>
+  </data>
+  <data name="PleaseInputPrompt" xml:space="preserve">
+    <value>请输入提示词</value>
+  </data>
+    <data name="DoYouWantToClearRunningTasks" xml:space="preserve">
+    <value>确定要删除所有正在执行的任务吗？</value>
+  </data>
+  <data name="ResourceSettings" xml:space="preserve">
+    <value>资源设置</value>
+  </data>
+  <data name="DoYouWantToMigrateResources" xml:space="preserve">
+    <value>是否要迁移资源？</value>
+  </data>
+  <data name="TaskRunningNoSet" xml:space="preserve">
+    <value>有正在进行的任务，无法设置！</value>
+  </data>
+  <data name="MigrationSuccessful" xml:space="preserve">
+    <value>迁移成功！</value>
   </data>
 </root>

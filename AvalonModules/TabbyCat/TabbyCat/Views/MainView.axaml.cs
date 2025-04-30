@@ -24,9 +24,9 @@ namespace TabbyCat.Views
             {
                 _regionManager.AddToRegion<SettingViewModel>("navigationViewContainer");
             }
-            else if (e.SelectedItem is NavigationMenuItem x)
+            else if (e.SelectedItem is NavigationMenuItem { Content: not null and Type content })
             {
-                _regionManager.AddToRegion("navigationViewContainer", x.Content);
+                _regionManager.AddToRegion("navigationViewContainer", content);
             }
         }
     }

@@ -1,40 +1,48 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using TabbyCat.Models.RunningHubs;
+using TabbyCat.Models.AiMediaResponses;
 using TabbyCat.Shared.Enums;
 using TuDog.IocAttribute;
 
 namespace TabbyCat.ViewModels;
 
 [Register]
-public partial class TextToImageViewModel : AiMediaViewModelBase
+public partial class TextToImageViewModel : AiMediaViewModelBase<TextToImageRequestModel,
+    TextToImageRequestModel.TextToImagePrompt, TextToImageRequestModel.TextToImageParameter>
 {
-    protected override RunningHubWorkType RunningHubWorkType { get; } = RunningHubWorkType.TextToImage;
-    protected override long WorkFlowId { get; } = 1896880845263675393;
+    protected override AiMediaWorkType RunningHubWorkType { get; } = AiMediaWorkType.TextToImage;
 
     [ObservableProperty] private string imageDescription = string.Empty;
 
+    [ObservableProperty] private string negativePrompt = string.Empty;
+
     [ObservableProperty] private ObservableCollection<string> imageSizes =
     [
-        "1:1 (Perfect Square)", "2:3 (Classic Portrait)", "3:4 (Golden Ratio)", "3:5 (Elegant Vertical)",
-        "4:5 (Artistic Frame)", "5:7 (Balanced Portrait)", "5:8 (Tall Portrait)", "7:9 (Modern Portrait)",
-        "9:16 (Slim Vertical)", "9:19 (Tall Slim)", "9:21 (Ultra Tall)", "9:32 (Skyline)", "3:2 (Golden Landscape)",
-        "4:3 (Classic Landscape)", "5:3 (Wide Horizon)", "5:4 (Balanced Frame)", "7:5 (Elegant Landscape)",
-        "8:5 (Cinematic View)", "9:7 (Artful Horizon)", "16:9 (Panorama)", "19:9 (Cinematic Ultrawide)"
+        "512*512", "1024*1024", "1280*720"
     ];
 
-    [ObservableProperty] private string selectImageSize = "3:4 (Golden Ratio)";
+    [ObservableProperty] private ObservableCollection<int> _count = [1, 2, 3, 4];
+
+    [ObservableProperty] private int _selectCount = 1;
+
+    [ObservableProperty] private string selectImageSize = "512*512";
+
+    protected override string DownloadFileExtension => ".png";
 
     protected override Task<bool> ValidateConfirmAsync()
     {
         return Task.FromResult(!string.IsNullOrEmpty(ImageDescription));
     }
 
-    protected override async Task<bool> OnConfirmAsync()
+    protected override string CreateTaskUrl =>
+        "https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis";
+
+    protected override Task<TextToImageRequestModel> CreatePublishModelAsync()
     {
-        var ratioNode = new NodeInfoListItem()
-            { NodeId = "52", FieldName = "aspect_ratio", FieldValue = SelectImageSize };
-        var txtNode = new NodeInfoListItem() { NodeId = "50", FieldName = "text", FieldValue = ImageDescription };
-        return await PublishTaskAsync([txtNode, ratioNode]);
+        return Task.FromResult(new TextToImageRequestModel()
+        {
+            Input = new() { Prompt = ImageDescription }, Model = "wanx2.1-t2i-turbo", Parameters =
+                new() { Count = SelectCount, Size = SelectImageSize }
+        });
     }
 }

@@ -26,4 +26,6 @@ public class NavigationButton : RadioButton
         get => GetValue(SelectedIconProperty);
         set => SetValue(SelectedIconProperty, value);
     }
+
+   
 }

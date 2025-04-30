@@ -11,15 +11,15 @@ public interface IRegionManager
 
     void AddToRegion(string regionName, Type vmType);
 
-    void AddToRegion<T>(string regionName, object? parameter) where T : ParameterViewModelBase;
+    void AddToRegion<T>(string regionName, object? parameter) where T : IParameter;
 
     Control GetViewByViewModel<T>() where T : TuDogViewModelBase;
     
-    IViewModelResult AddToRegionForResult<T>(string regionName) where T : TuDogViewModelBase, IViewModelResult;
+    // IViewModelResult AddToRegionForResult<T>(string regionName) where T : TuDogViewModelBase, IViewModelResult;
 
-    IViewModelResult AddToRegionForResult<T>(string regionName, object? parameter) where T : ParameterViewModelBase, IViewModelResult;
+    IViewModelResult AddToRegionForResult<T>(string regionName, object? parameter) where T : IParameter, IViewModelResult;
 
-    IViewModelResultAsync<TResult> AddToRegionForResultAsync<T, TResult>(string regionName) where T : TuDogViewModelBase, IViewModelResultAsync<TResult>;
-
-    IViewModelResult<TResult> AddToRegionForResult<T, TResult>(string regionName) where T : TuDogViewModelBase, IViewModelResult<TResult>;
+    // IViewModelResultAsync<TResult> AddToRegionForResultAsync<T, TResult>(string regionName) where T : TuDogViewModelBase, IViewModelResultAsync<TResult>;
+    //
+    // IViewModelResult<TResult> AddToRegionForResult<T, TResult>(string regionName) where T : TuDogViewModelBase, IViewModelResult<TResult>;
 }

@@ -1,22 +1,30 @@
+using TuDog.Bootstrap;
+
 namespace TuDog.Interfaces;
 
 
-public interface IViewModelResult
+public interface IViewModelResult:ITuDogViewModel
 {
     object Confirm();
     object Cancel();
+    
+    bool CanConfirm();
 }
 
-public interface IViewModelResultAsync
+public interface IViewModelResultAsync:ITuDogViewModel
 {
     Task<object?> ConfirmAsync();
     Task<object?> CancelAsync();
+    
+    Task<bool> CanConfirmAsync();
 }
 
 public interface IViewModelResult<out TResult> : IViewModelResult
 {
     new TResult Confirm();
     new TResult Cancel();
+    
+    
 
     object IViewModelResult.Confirm()
     {
@@ -33,38 +41,22 @@ public interface IViewModelResult<out TResult> : IViewModelResult
     }
 }
 
-public interface IViewModelResultAsync<TResult> : IViewModelResult<TResult>
+public interface IViewModelResultAsync<TResult> : IViewModelResultAsync
 {
     Task<TResult> ConfirmAsync();
     Task<TResult> CancelAsync();
+    
+    Task<bool> CanConfirmAsync();
 
-    TResult IViewModelResult<TResult>.Confirm()
+
+    async Task< object?> IViewModelResultAsync.ConfirmAsync()
     {
-        if( ConfirmAsync().GetAwaiter().GetResult() is not null and var v)
-            return v;
-        throw new NullReferenceException("ConfirmAsync() is null");
+       return await ConfirmAsync();
     }
 
-    TResult IViewModelResult<TResult>.Cancel()
-    {
-        return CancelAsync().GetAwaiter().GetResult();
-    }
-
-    object IViewModelResult.Confirm()
-    {
-        if( ConfirmAsync().GetAwaiter().GetResult() is not null and var v)
-            return v;
-        throw new NullReferenceException("ConfirmAsync() is null");
-    }
-
-    object IViewModelResult.Cancel()
-    {
-        if( CancelAsync().GetAwaiter().GetResult() is not null and var v)
-            return v;
-        throw new NullReferenceException("CancelAsync() is null");
-    }
-}
-
-public interface IDialogViewModelResult
-{
+   async Task<object?> IViewModelResultAsync.CancelAsync()
+   {
+       return await CancelAsync();
+   }
+   
 }

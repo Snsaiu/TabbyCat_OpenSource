@@ -17,10 +17,10 @@
     </Design.DataContext>
 
     <Grid RowDefinitions="Auto,*">
-        <controls:MobileTitleBar 
+        <controls:MobileTitleBar
             IsVisible="{OnPlatform Default=false,Android=true,iOS=true}"
             LeftArrowCommand="{Binding  ReturnPageCommand}" ShowLeftArrow="True" Title="{x:Static languages:AppResources.Setting}" />
-            
+
         <DockPanel LastChildFill="True" Grid.Row="1">
             <!-- <Button DockPanel.Dock="Bottom" Content="退出" HorizontalAlignment="Stretch" /> -->
             <Grid DockPanel.Dock="Top">
@@ -35,8 +35,8 @@
                         <Expander Header="AI">
                             <ContentControl attachs:RegionBehavior.Region="aiContainer" />
                         </Expander>
-                        <Expander Header="{x:Static languages:AppResources.RunningHub}">
-                            <ContentControl attachs:RegionBehavior.Region="runningHubContainer" />
+                        <Expander Header="{x:Static languages:AppResources.ResourceSettings}">
+                            <ContentControl attachs:RegionBehavior.Region="mediaSettingContainer" />
                         </Expander>
                         <Expander Header="{x:Static languages:AppResources.ExperimentalFeatures}">
                             <ContentControl attachs:RegionBehavior.Region="experimentalFeaturesContainer" />

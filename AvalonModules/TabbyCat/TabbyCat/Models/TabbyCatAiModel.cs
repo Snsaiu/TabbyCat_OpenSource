@@ -4,6 +4,7 @@ using FantasyResultModel;
 using FantasyResultModel.Impls;
 using Microsoft.Extensions.DependencyInjection;
 using TabbyCat.Extensions;
+using TabbyCat.IServices;
 using TabbyCat.Shared.Enums;
 using TuDog.Bootstrap;
 using TuDog.Extensions;
@@ -12,9 +13,8 @@ namespace TabbyCat.Models;
 
 public partial class TabbyCatAiModel : OpenAiApiModel
 {
-    private IHttpClientFactory httpclientfactory = TuDogApplication.ServiceProvider.GetRequiredService<IHttpClientFactory>();
 
-    private HttpClient httpclient;
+   private readonly IRemoteServerService remoteServerService= TuDogApplication.ServiceProvider.GetRequiredService<IRemoteServerService>();
 
    public override AiModelType Provider => AiModelType.TabbyCatAi;
 
@@ -22,17 +22,21 @@ public partial class TabbyCatAiModel : OpenAiApiModel
 
    public TabbyCatAiModel()
    {
-       httpclient = httpclientfactory.CreateClient(ConstParameter.Auth);
+
        ApiDomain = "https://dashscope.aliyuncs.com";
    }
 
    public override async Task<ResultBase<bool>> InitializeAsync()
    {
-       var queryKeyResult = await httpclient.GetAsync("https://api.yyan.cc/api/app/ai-api-key/api-key");
-       if (!queryKeyResult.IsSuccessStatusCode)
-           return new ErrorResultModel<bool>(queryKeyResult.ReasonPhrase ?? "query api key error!");
-
-       ApiKey = await queryKeyResult.Content.ReadAsStringAsync();
+      var keyResult =  await remoteServerService.GetAiKeyAsync();
+      if (keyResult.Ok)
+      {
+          ApiKey = keyResult.Data;
+      }
+      else
+      {
+          return new ErrorResultModel<bool>(keyResult.ErrorMsg);
+      }
        Models.Reset(await GetModelsAsync());
        SelectedModel = Models.FirstOrDefault()??string.Empty;
        return new SuccessResultModel<bool>();
@@ -40,6 +44,6 @@ public partial class TabbyCatAiModel : OpenAiApiModel
 
    public override Task<IEnumerable<string>> GetModelsAsync()
    {
-       return Task.FromResult<IEnumerable<string>>(["qwen-omni-turbo"]);
+       return Task.FromResult<IEnumerable<string>>(["qwen-vl-max"]);
    }
 }

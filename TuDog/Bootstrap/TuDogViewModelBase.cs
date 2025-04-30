@@ -3,28 +3,34 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace TuDog.Bootstrap;
 
-public abstract partial class TuDogViewModelBase:ModelBase
-{
-    [RelayCommand]
-    private Task Loaded()
-    {
-        return OnLoaded();
-    }
 
+public interface ITuDogViewModel
+{
+    IAsyncRelayCommand LoadedCommand { get; }
+    IAsyncRelayCommand UnLoadedCommand { get; }
+}
+
+public abstract class TuDogViewModelBase:ModelBase, ITuDogViewModel
+{
+    
     protected virtual Task OnLoaded()
     {
         return Task.CompletedTask;
             
     }
     
-    [RelayCommand]
-    private Task UnLoaded()
-    {
-        return OnUnLoaded();
-    }
     
     protected virtual Task OnUnLoaded()
     {
         return Task.CompletedTask;
     }
+
+    public TuDogViewModelBase()
+    {
+        this.LoadedCommand=new AsyncRelayCommand(OnLoaded);
+        this.UnLoadedCommand=new AsyncRelayCommand(OnUnLoaded);
+    }
+
+    public IAsyncRelayCommand LoadedCommand { get; }
+    public IAsyncRelayCommand UnLoadedCommand { get; }
 }

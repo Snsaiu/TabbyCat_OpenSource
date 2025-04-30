@@ -1,0 +1,17 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Classes="AiMediaStyle"
+             x:DataType="viewModels:DoodleImageViewModel"
+             x:Class="TabbyCat.Views.DoodleImageView">
+    <ContentControl Content="{Binding .}"
+                    ContentTemplate="{StaticResource OnlyOneImageUploadAiGenerateImageBaseTemplate}" />
+    <extensions:AttachContent.AttachContent>
+        <ToggleButton Content="{x:Static languages:AppResources.UseSketch}" IsChecked="{Binding IsSketch}" />
+    </extensions:AttachContent.AttachContent>
+</UserControl>

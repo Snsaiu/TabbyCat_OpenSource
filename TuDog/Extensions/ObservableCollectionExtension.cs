@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Avalonia.Threading;
 
 namespace TuDog.Extensions;
 
@@ -19,8 +20,11 @@ public static class ObservableCollectionExtension
     {
         lock (_lock)
         {
-            collection.Clear();
-            foreach (var value in values) collection.Add(value);
+            Dispatcher.UIThread.Invoke(() =>
+            {
+                collection.Clear();
+                foreach (var value in values) collection.Add(value);
+            });
             return collection;
         }
     }

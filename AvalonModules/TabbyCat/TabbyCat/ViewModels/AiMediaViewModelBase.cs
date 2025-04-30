@@ -1,60 +1,119 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Reactive.Linq;
 using System.Text;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DynamicData;
+using FantasyResultModel;
+using FluentAvalonia.UI.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using TabbyCat.Enums;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
-using TabbyCat.Models.RunningHubs;
-using TabbyCat.Repository.Entities.RunningHubEntities;
+using TabbyCat.Models.AiMediaResponses;
+using TabbyCat.Repository.Entities.AiMediaEntities;
 using TabbyCat.Service.RunningHubServices;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
 using TuDog.Bootstrap;
 using TuDog.Extensions;
+using ILogger = Serilog.ILogger;
 
 namespace TabbyCat.ViewModels;
 
-public abstract partial class AiMediaViewModelBase:ViewModelBase
+public abstract partial class AiMediaViewModelBase : ViewModelBase
 {
-    [ObservableProperty] private int workingTaskCount;
+    [ObservableProperty] private bool _isBackgroundTaskRunning = false;
 
-    [ObservableProperty] private bool showPanel;
+    [ObservableProperty] private int _workingTaskCount;
 
-    [ObservableProperty] private ObservableCollection<RunningHubResultEntity> results = [];
+    [ObservableProperty] private bool _showPanel = false;
 
-    [ObservableProperty] private ObservableCollection<string> lastBuildResultImages = [];
+    protected ILogger<AiMediaViewModelBase> Logger { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger<AiMediaViewModelBase>();
 
-    private ILogger<AiMediaViewModelBase> _logger =
-        TuDogApplication.ServiceProvider.GetRequiredService<ILogger<AiMediaViewModelBase>>();
 
-    protected IRunningHubService RunningHubService { get; }=TuDogApplication.ServiceProvider.GetRequiredService<IRunningHubService>();
+    protected Task<ResultBase<string>> UploadImageAsync(string fileName)
+    {
+        return _remoteServerService.UploadImageAsync(fileName);
+    }
 
-    protected IRunningHubStateService RunningHubStateService { get; } =
-        TuDogApplication.ServiceProvider.GetRequiredService<IRunningHubStateService>();
 
-    protected IRunningHubResourceService RunningHubResourceService { get; } =
-        TuDogApplication.ServiceProvider.GetRequiredService<IRunningHubResourceService>();
+    protected async Task<string> GetUploadImageUrlAsync(string fileName)
+    {
+        var result = await UploadImageAsync(fileName);
+        return result.Ok ? result.Data : throw new(result.ErrorMsg);
+    }
 
-    protected IRunningHubStateManager RunningHubStateManager { get; } =
-        TuDogApplication.ServiceProvider.GetRequiredService<IRunningHubStateManager>();
-    
+
+    /// <summary>
+    /// 最后一次生成的多媒体文件
+    /// </summary>
+    [ObservableProperty] private ObservableCollection<string> _lastBuildResultMedia = [];
+
+
+    [ObservableProperty] private ObservableCollection<AiMediaResultEntity> _imageCollectionViewSource = [];
+
+    [ObservableProperty] private ObservableCollection<AiMediaResultEntity> _videoCollectionViewSource = [];
+
+    protected abstract AiMediaWorkType RunningHubWorkType { get; }
+
+
+
+    protected IAiMediaService AiMediaService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiMediaService>();
+
+    protected IRunningStateService RunningStateService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IRunningStateService>();
+
+    protected IAiMediaResourceService AiMediaResourceService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiMediaResourceService>();
+
+    protected IAiMediaRunningStateManager RunningHubStateManager { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiMediaRunningStateManager>();
+
     protected IUser user = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
 
-    protected RunningHubEntity? RunningHubEntity { get; private set; }
+    protected AiMediaResultEntity? AiMediaResultEntity { get; set; }
 
-    protected IRunningHubResultService RunningHubResultService { get; } =
-        TuDogApplication.ServiceProvider.GetRequiredService<IRunningHubResultService>();
+    protected IAiMediaResultService AiMediaResultService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiMediaResultService>();
 
+    protected HttpClient HttpClient { get; private set; }
 
+    protected IRemoteServerService _remoteServerService =
+        TuDogApplication.ServiceProvider.GetRequiredService<IRemoteServerService>();
 
-    protected string BaseAddress { get; } = @"https://www.runninghub.cn";
+    public AiMediaViewModelBase()
+    {
+        var httpFactory = TuDogApplication.ServiceProvider.GetRequiredService<IHttpClientFactory>();
+        HttpClient = httpFactory.CreateClient();
+    }
 
-    protected abstract RunningHubWorkType RunningHubWorkType { get; }
+    protected abstract Task ConfirmAsync();
+
+    /// <summary>
+    /// 获得正在进行的任务数量
+    /// </summary>
+    protected async Task QueryIsRunningTaskCountAsync()
+    {
+        var count = await RunningStateService.CountAsync(x =>
+            x.TaskStatus == TaskState.Running && x.WorkType == RunningHubWorkType);
+        WorkingTaskCount = count;
+    }
+
+    [RelayCommand]
+    private Task Confirm()
+    {
+        return ConfirmAsync();
+    }
+
 
     [RelayCommand]
     private Task ClosePortfolioPanel()
@@ -64,13 +123,13 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
     }
 
     [RelayCommand]
-    private Task OpenImageByDefaultProgram(RunningHubResultEntity selected)
+    private Task OpenImageByDefaultProgram(AiMediaResultEntity selected)
     {
         return App.TopLevel.Launcher.LaunchUriAsync(new(selected.SavePath));
     }
 
     [RelayCommand]
-    private async Task SaveFileToLocal(RunningHubResultEntity selected)
+    private async Task SaveFileToLocal(AiMediaResultEntity selected)
     {
         var fileName = Path.GetFileName(selected.SavePath);
 
@@ -82,37 +141,56 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
         await DialogServer.ShowMessageDialogAsync(AppResources.ExportedSuccessfully);
     }
 
+    [RelayCommand]
+    private async Task ClearTasks()
+    {
+        if (!await DialogServer.ShowConfirmDialogAsync(AppResources.DoYouWantToClearRunningTasks, AppResources.Warning,
+                AppResources.Ok))
+            return;
+        await RunningHubStateManager.ClearTasksAsync();
+        await QueryIsRunningTaskCountAsync();
+    }
+
+
     /// <summary>
     /// 删除媒体
     /// </summary>
     /// <param name="selected"></param>
     [RelayCommand]
-    private async Task DeleteMedia(RunningHubResultEntity selected)
+    private async Task DeleteMedia(AiMediaResultEntity selected)
     {
         var deleteConfirm = await DialogServer.ShowConfirmDialogAsync(AppResources.ConfirmDeleteItem);
         if (!deleteConfirm)
             return;
 
-        if ((await RunningHubResultService.DeleteAsync(x => x.Key == selected.Key)) is not null)
+        if (await AiMediaResultService.DeleteAsync(x => x.Key == selected.Key) is not null)
         {
-            if (File.Exists(selected.SavePath))
+            if (selected.FileType == ".png")
             {
-                File.Delete(selected.SavePath);
+                if (File.Exists(selected.SavePath)) File.Delete(selected.SavePath);
+                ImageCollectionViewSource.Remove(selected);
             }
-
-            Results.Remove(selected);
+            else if (selected.FileType == ".mp4")
+            {
+                if (File.Exists(selected.SavePath)) File.Delete(selected.SavePath);
+                if (File.Exists(selected.ThumbnailPath)) File.Delete(selected.ThumbnailPath);
+                VideoCollectionViewSource.Remove(selected);
+            }
         }
     }
 
     /// <summary>
     /// 获得结果集
     /// </summary>
-    private async Task ResetResultsAsync()
+    protected async Task<IEnumerable<AiMediaResultEntity>> ResetResultsAsync()
     {
-        Results.Reset((await RunningHubResultService.QueryAsync(x=>x.Email==user.Email)).OrderByDescending(x => x.UpdateTime));
+        var list = (await AiMediaResultService.QueryAsync(x => x.Email == user.Email))
+            .OrderByDescending(x => x.UpdateTime);
+        VideoCollectionViewSource.Reset(list.Where(x => x.FileType == ".mp4"));
+        ImageCollectionViewSource.Reset(list.Where(x => x.FileType == ".png"));
+        return list;
     }
 
-    protected abstract long WorkFlowId { get; }
 
     /// <summary>
     /// 打开作品集
@@ -124,48 +202,11 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
         await ResetResultsAsync();
         ShowPanel = true;
     }
+}
 
-    protected HttpClient HttpClient { get; } = new();
-
-    protected async Task<string?> UploadImageAsync(string imagePath)
-    {
-
-        if (RunningHubEntity is not { } runningHubEntity)
-        {
-            _logger.LogError("上传图片时,{0}不能为空。",nameof(RunningHubEntity));
-            await DialogServer.ShowMessageDialogAsync(AppResources.AnErrorOccurred, AppResources.Warning, AppResources.Ok);
-            
-            return null;
-        }
-        
-        var url = $"{BaseAddress}/task/openapi/upload";
-        using MultipartFormDataContent form = new MultipartFormDataContent();
-        // 添加 apiKey
-        form.Add(new StringContent(runningHubEntity.ApiKey), "apiKey");
-
-        // 添加 fileType
-        form.Add(new StringContent("image"), "fileType");
-
-        // 添加文件
-        await using (FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
-        {
-            HttpContent fileContent = new StreamContent(fileStream);
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg"); // 确保 MIME 类型正确
-            form.Add(fileContent, "file", Path.GetFileName(imagePath));
-
-            // 发送请求
-            HttpResponseMessage response = await HttpClient.PostAsync(url, form);
-            string result = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<RunningHubResponseModel<UploadImageResponseModel>>(result);
-            if(data is null)
-                throw new NullReferenceException();
-            if (data.Msg == "success")
-                return data.Data?.FileName;
-            await DialogServer.ShowMessageDialogAsync(data.Msg);
-            return null;
-        }
-    }
-
+public abstract partial class AiMediaViewModelBase<TPublishModel, TInput, TParameters> : AiMediaViewModelBase
+    where TPublishModel : AiMediaRequestModelBase<TInput, TParameters>
+{
     protected override Task OnUnLoaded()
     {
 #pragma warning disable CS8601 // Possible null reference assignment.
@@ -176,203 +217,52 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
         return Task.CompletedTask;
     }
 
-    private async Task TaskOkAsync(Guid key)
+    private async Task TaskOkAsync(string key, AiMediaWorkType workType)
     {
-        await DownloadResultAsync(key);
         await QueryIsRunningTaskCountAsync();
-        await ResetResultsAsync();
+        var list = await ResetResultsAsync();
+        var temps = list.Where(x => x.WorkType == workType && x.TaskId == key)
+            .Select(x => x.SavePath);
+       LastBuildResultMedia.Reset(temps);
+
     }
+
 
     private Task RunningTaskCountChangedAsync(int count)
     {
-        IsBackgroundTaskRunning=count>0;
+        IsBackgroundTaskRunning = count > 0;
         return Task.CompletedTask;
     }
 
-    private async Task TaskFailAsync(Guid key)
+    private Task TaskFailAsync(string key)
     {
-        await QueryIsRunningTaskCountAsync();
-    }
-
-    private async Task DownloadResultAsync(Guid key)
-    {
-        var find = await RunningHubStateService.QueryAsync(x => x.Key == key && x.TaskStatus == TaskState.Success&& x.Email==user.Email);
-        if (!find.Any())
+        return Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            ErrorMessage = AppResources.EntityNotFound;
-            return;
-        }
-
-        var entity = find.First();
-
-        var jsonData = $@"{{
-            ""taskId"": ""{entity.TaskId}"",
-            ""apiKey"": ""{entity.ApiKey}""
-        }}";
-
-        // 创建 HttpContent
-        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-        HttpClient.DefaultRequestHeaders.Clear();
-        // 添加 Headers
-        HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Apifox/1.0.0 (https://apifox.com)");
-        HttpClient.DefaultRequestHeaders.Accept.ParseAdd("*/*");
-
-        var url = $"{BaseAddress}/task/openapi/outputs";
-        var response = await HttpClient.PostAsync(url, content);
-        response.EnsureSuccessStatusCode();
-        if (response.StatusCode != System.Net.HttpStatusCode.OK)
-        {
-            ErrorMessage = string.Format(AppResources.RequestFileDownloadFailed, response.ReasonPhrase);
-            return;
-        }
-
-        var responseBody = await response.Content.ReadAsStringAsync();
-
-        var outputs =
-            JsonConvert.DeserializeObject<RunningHubResponseModel<List<RunningHubOutputResponseModel>>>(responseBody);
-
-        if (outputs is null)
-            throw new NullReferenceException();
-
-        if (outputs.Msg != "success" || outputs.Data is null)
-        {
-            ErrorMessage = string.Format(AppResources.FailedToObtainDownloadFileLink, outputs.Msg);
-            return;
-        }
-        
-        await DownloadAsync(outputs.Data, entity.TaskId);
-    }
-
-    private async Task DownloadAsync(IEnumerable<RunningHubOutputResponseModel> data, string taskId)
-    {
-        var entities = new List<RunningHubResultEntity>();
-        var savePath = RunningHubResourceService.Get();
-
-
-        foreach (var item in data)
-        {
-            var fileName = Path.Combine(savePath, Path.GetFileNameWithoutExtension(item.FileUrl) +
-                                                  Path.GetExtension(item.FileUrl));
-
-            await HttpClient.DownloadFileAsync(item.FileUrl, fileName, null);
-
-            entities.Add(new()
-            {
-                FileType = Path.GetExtension(item.FileUrl), SavePath = fileName, TaskId = taskId,
-                CreateTime = DateTime.Now, UpdateTime = DateTime.Now
-            });
-        }
-
-        if (await RunningHubResultService.AddRangeAsync(entities))
-        {
-            LastBuildResultImages.Reset(entities.Select(x => x.SavePath));
-            return ;
-        }
-
-        ErrorMessage = AppResources.SaveFailed;
-
+            await DialogServer.ShowMessageDialogAsync(AppResources.TaskErrorResetPlease, AppResources.Warning,
+                AppResources.Ok);
+            await QueryIsRunningTaskCountAsync();
+        });
     }
 
 
-    protected override async Task OnLoaded()
+    protected override async Task ConfirmAsync()
     {
-        RunningHubStateManager.OnSuccess += TaskOkAsync;
-        RunningHubStateManager.OnFailure += TaskFailAsync;
-        RunningHubStateManager.OnBackgroundTaskCount += RunningTaskCountChangedAsync;
-
-        await QueryIsRunningTaskCountAsync();
-
-       var find = await this.RunningHubService.QueryAsync(x=> x.Email==user.Email);
-       if (!find.Any())
-       {
-           await DialogServer.ShowMessageDialogAsync(AppResources.AddRunningHubApiKeyInSettings);
-          return;
-       }
-       RunningHubEntity=find.First();
-
-
-    }
-
-    protected string ErrorMessage { get; set; } = string.Empty;
-
-    private string SuccessMessage { get; set; } = AppResources.ExecutedSuccessfully;
-
-    protected virtual Task<bool> ValidateConfirmAsync()
-    {
-        return Task.FromResult(true);
-    }
-
-
-    /// <summary>
-    /// 发布任务
-    /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    protected async  Task<bool> PublishTaskAsync(IEnumerable<NodeInfoListItem> data)
-    {
-        var parameter = new RunningHubTaskPublishResponseModel
-        {
-            ApiKey = RunningHubEntity!.ApiKey,
-            WorkflowId = WorkFlowId,
-            NodeInfoList = data
-        };
-
-        HttpClient.DefaultRequestHeaders.Clear();
-        // 添加请求头
-        HttpClient.DefaultRequestHeaders.Add("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
-        HttpClient.DefaultRequestHeaders.Add("Accept", "*/*");
-        HttpClient.DefaultRequestHeaders.Add("Host", "www.runninghub.cn");
-        HttpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
-
-        // 序列化 JSON
-        string json = JsonConvert.SerializeObject(parameter);
-        HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var url = $"{BaseAddress}/task/openapi/create";
-        // 发送 POST 请求
-        var response = await HttpClient.PostAsync(url, content);
-        string result = await response.Content.ReadAsStringAsync();
-
-        var model = JsonConvert.DeserializeObject<RunningHubResponseModel<RunningHubTaskResponseModel>>(result);
-
-        if (model is null)
-            throw new NullReferenceException();
-
-        if (model.Msg == "success" && model.Data is not null)
-        {
-            // 将任务写入数据库并且开始轮询
-            return await RunningHubStateManager.AddTaskAsync(RunningHubStateEntity.Create(model.Data.TaskId,
-                model.Data.ClientId,
-                RunningHubEntity.ApiKey, RunningHubWorkType,user.Email));
-        }
-
-        ErrorMessage = string.Format(AppResources.AnErrorOccurred, model.Msg);
-        return false;
-    }
-
-
-    /// <summary>
-    /// 获得正在进行的任务数量
-    /// </summary>
-    private async Task QueryIsRunningTaskCountAsync()
-    {
-        var count = await RunningHubStateService.CountAsync(x =>
-            x.TaskStatus == TaskState.Running && x.RunningHubWorkType == RunningHubWorkType);
-        WorkingTaskCount = count;
-    }
-
-
-    [ObservableProperty]
-    private bool isBackgroundTaskRunning = true;
-
-    [RelayCommand]
-    private async Task Confirm()
-    {
-        if (RunningHubEntity is null)
+        if (!CurrentUser.LoginSuccess())
         {
             await DialogServer.ShowMessageDialogAsync(AppResources.AddRunningHubApiKeyInSettings);
             return;
+        }
+
+        if (_apiKey is null)
+        {
+            var queryKey = await _remoteServerService.GetAiKeyAsync();
+            if (!queryKey.Ok)
+            {
+                await DialogServer.ShowMessageDialogAsync(queryKey.ErrorMsg, AppResources.Warning, AppResources.Ok);
+                return;
+            }
+
+            _apiKey = queryKey.Data;
         }
 
         if (await ValidateConfirmAsync())
@@ -386,17 +276,129 @@ public abstract partial class AiMediaViewModelBase:ViewModelBase
             {
                 await DialogServer.ShowMessageDialogAsync(ErrorMessage);
             }
-
         }
         else
         {
             await DialogServer.ShowMessageDialogAsync(ErrorMessage);
         }
-
-
-
     }
 
-    protected abstract Task<bool> OnConfirmAsync();
+    protected abstract string DownloadFileExtension { get; }
 
+
+    protected virtual Dictionary<string, string> AddHttpHeaders()
+    {
+        return new Dictionary<string, string>();
+    }
+
+    private string _apiKey = string.Empty;
+
+    protected override async Task OnLoaded()
+    {
+        if (!CurrentUser.LoginSuccess())
+        {
+            await DialogServer.ShowMessageDialogAsync(AppResources.MustLoginToUseTabbyCatAi, AppResources.Message,
+                AppResources.Ok);
+            return;
+        }
+
+        var keyResult = await _remoteServerService.GetAiKeyAsync();
+        if (!keyResult.Ok)
+        {
+            await DialogServer.ShowMessageDialogAsync(AppResources.GetKeyError, AppResources.Message, AppResources.Ok);
+            return;
+        }
+
+        _apiKey = keyResult.Data;
+
+        HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {keyResult.Data}");
+        HttpClient.DefaultRequestHeaders.Add("X-DashScope-Async", "enable");
+
+        foreach (var item in AddHttpHeaders())
+        {
+            HttpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
+        }
+
+
+        RunningHubStateManager.OnSuccess += TaskOkAsync;
+        RunningHubStateManager.OnFailure += TaskFailAsync;
+        RunningHubStateManager.OnBackgroundTaskCount += RunningTaskCountChangedAsync;
+
+        await QueryIsRunningTaskCountAsync();
+
+        var find = await this.AiMediaService.QueryAsync(x => x.Email == user.Email);
+
+        AiMediaResultEntity = find.FirstOrDefault();
+        var lastRunTask =
+            (await RunningStateService.QueryAsync(x =>
+                x.Email == user.Email && x.WorkType == RunningHubWorkType && x.TaskStatus == TaskState.Success))
+            .OrderByDescending(x => x.UpdateTime).FirstOrDefault();
+        if (lastRunTask != null)
+            LastBuildResultMedia.Reset(
+                (await AiMediaResultService.QueryAsync(x => x.TaskId == lastRunTask.TaskId)).Select(x => x.SavePath));
+    }
+
+    protected string ErrorMessage { get; set; } = string.Empty;
+
+    private string SuccessMessage { get; set; } = AppResources.ExecutedSuccessfully;
+
+    protected virtual Task<bool> ValidateConfirmAsync()
+    {
+        return Task.FromResult(true);
+    }
+
+
+    protected abstract string CreateTaskUrl { get; }
+
+    /// <summary>
+    /// 发布任务
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    protected async Task<bool> PublishTaskAsync(TPublishModel data)
+    {
+        // 序列化 JSON
+        var json = JsonConvert.SerializeObject(data);
+        HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        Logger.LogDebug("发布任务请求json:{json}", json);
+
+        // 发送 POST 请求
+        var response = await HttpClient.PostAsync(CreateTaskUrl, content);
+        var result = await response.Content.ReadAsStringAsync();
+
+        var model = JsonConvert.DeserializeObject<CreateAiMediaTaskResponseModel>(result);
+
+        if (model is null)
+            throw new NullReferenceException();
+
+        Logger.LogDebug("获得返回任务json:{json}", result);
+
+        if (model.Output.TaskStatus is AiMediaRunningStatus.Failed or AiMediaRunningStatus.Unknown ||
+            string.IsNullOrEmpty(model.Output.TaskId))
+        {
+            ErrorMessage = string.Format(AppResources.AnErrorOccurred, AppResources.AnErrorOccurred);
+            return false;
+        }
+
+        return await RunningHubStateManager.AddTaskAsync(
+            AiMediaRunningStateEntity.Create(model.Output.TaskId, _apiKey, RunningHubWorkType, user.Email,
+                DownloadFileExtension));
+    }
+
+    protected virtual async Task<bool> OnConfirmAsync()
+    {
+        try
+        {
+            var model = await CreatePublishModelAsync();
+            return await PublishTaskAsync(model);
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
+            return false;
+        }
+    }
+
+    protected abstract Task<TPublishModel> CreatePublishModelAsync();
 }

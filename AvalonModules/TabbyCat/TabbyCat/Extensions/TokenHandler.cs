@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading;
 using Duende.IdentityModel.OidcClient;
 using TabbyCat.IServices;
@@ -13,6 +14,7 @@ public class TokenHandler(IUser user, OidcClient oidcClient, ILoginUserService u
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
+
         if (user.AccessTokenExpiration is null)
             return await base.SendAsync(request, cancellationToken);
 

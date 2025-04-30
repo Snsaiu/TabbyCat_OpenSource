@@ -102,6 +102,7 @@
         <Button Grid.Row="2" HorizontalAlignment="Center" Classes="icon" IsVisible="{Binding IsBusy}"
                 extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
                 Command="{Binding CancelRequestChatCommand}" />
+
         <Grid Grid.Row="3" Grid.RowDefinitions="Auto,*">
             <!--  第一行是类似上传图片的功能按键，第二行是文本输入框，第三行是发送按钮  -->
             <StackPanel Orientation="Vertical">
@@ -128,6 +129,13 @@
                     <!-- <Button Classes="icon" Margin="{StaticResource Left6}" -->
                     <!--         extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Link}"> -->
                     <!-- </Button> -->
+
+                    <ToggleButton Classes="icon" IsChecked="{Binding UseInternet}"
+                                  Command="{Binding UseInternetChangedCommand}"
+                                  extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.UseInternet}" />
+                    <ToggleButton Classes="icon" IsChecked="{Binding UseDeepThinking}"
+                                  Command="{Binding UseDeepThinkChangedCommand}"
+                                  extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.DeepThink}" />
                 </StackPanel>
             </StackPanel>
             <DockPanel Grid.Row="1" LastChildFill="True">

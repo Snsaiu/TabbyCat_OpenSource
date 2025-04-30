@@ -75,6 +75,8 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <mdxaml:MarkdownScrollViewer SelectionEnabled="True"
+
+                                                 SaveScrollValueWhenContentUpdated="True"
                                                  MarkdownStyleName="MarkdownStyle.GithubLike"
                                                  IsVisible="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode}"
                                                  Markdown="{Binding $parent[controls:ChatItem].Message.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
