@@ -152,32 +152,42 @@ jobs:
          # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
         echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
 
-    - name: 设置环境变量
+    - name: 上传 ZIP 包和描述到后台（分片上传）
+      shell: bash
       run: |
-        echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-        git log -1 --pretty=%B >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
-
-          # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
-        echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
-
-    - name: Upload ZIP package as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: tabbycat-macOS-ZIP
-        path: AvalonModules/TabbyCat/TabbyCat.Desktop/app-release.zip
-
-    - name: Upload ZIP package and metadata
-      run: |
+        FILE="AvalonModules/TabbyCat/TabbyCat.Desktop/app-release.zip"
+        CHUNK_SIZE=$((20 * 1024 * 1024)) # 20MB
+        TOTAL_SIZE=$(stat -f%z "$FILE")
+        START_BYTE=0
         
+        RELEASE_NOTES="$(git log -1 --pretty=%B)"
+        VERSION=$(date +"%Y.%m.%d.%H%M%S")
+        
+        echo "🔎 文件总大小：$TOTAL_SIZE 字节"
         echo "🔎 RELEASE_NOTES: $RELEASE_NOTES"
         echo "🔎 VERSION: $VERSION"
         
-        curl -X POST "${{ secrets.UPLOAD_APP_URL }}" \
-             -F "file=@AvalonModules/TabbyCat/TabbyCat.Desktop/app-release.zip" \
-             -F "description=$RELEASE_NOTES" \
-             -F "appName=TabbyCat" \
-             -F "osType=1" \
-             -F "version=$VERSION"
+        while [ $START_BYTE -lt $TOTAL_SIZE ]; do
+          END_BYTE=$((START_BYTE + CHUNK_SIZE - 1))
+          [ $END_BYTE -ge $TOTAL_SIZE ] && END_BYTE=$((TOTAL_SIZE - 1))
+          CHUNK_FILE="chunk_${START_BYTE}_${END_BYTE}.zip"
         
-        echo "✅ 上传成功"
+          dd if="$FILE" of="$CHUNK_FILE" bs=1 skip=$START_BYTE count=$((END_BYTE - START_BYTE + 1)) status=none
+        
+          echo "⬆️ 上传分片 $START_BYTE - $END_BYTE"
+        
+          RESPONSE=$(curl -s -X POST "${{ secrets.UPLOAD_APP_URL }}" \
+            -F "file=@$CHUNK_FILE" \
+            -F "description=$RELEASE_NOTES" \
+            -F "appName=TabbyCat" \
+            -F "osType=1" \
+            -F "version=$VERSION" \
+            -F "startByte=$START_BYTE" \
+            -F "endByte=$END_BYTE" \
+            -F "totalSize=$TOTAL_SIZE")
+        
+          echo "✅ 上传成功，响应：$RESPONSE"
+        
+          rm "$CHUNK_FILE"
+          START_BYTE=$((END_BYTE + 1))
+        done

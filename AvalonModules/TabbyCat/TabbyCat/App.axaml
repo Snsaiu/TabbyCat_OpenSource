@@ -39,7 +39,6 @@
     </Application.Resources>
 
     <Application.Styles>
-        <SimpleTheme />
         <styling:FluentAvaloniaTheme PreferSystemTheme="True" />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <StyleInclude Source="Styles/ButtonStyle.axaml" />

@@ -14,73 +14,80 @@ jobs:
       Project_Path: AvalonModules/TabbyCat/TabbyCat.Desktop    # 你的主项目路径
 
     steps:
-    - name: Checkout 代码
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0   # 获取完整提交历史，以便提取提交日志
+      - name: Checkout 代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 获取完整提交历史，以便提取提交日志
 
-    - name: 安装 .NET SDK
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
+      - name: 安装 .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
 
-    - name: 恢复依赖
-      run: dotnet restore $env:Solution_Name
+      - name: 恢复依赖
+        run: dotnet restore $env:Solution_Name
 
-    - name: 编译项目
-      run: |
-        PROJECT_NAME="TabbyCat.Desktop"
-        dotnet build $env:Project_Path/$PROJECT_NAME.csproj --configuration Release --no-restore
+      - name: 编译项目
+        run: |
+          dotnet build $env:Project_Path/TabbyCat.Desktop.csproj --configuration Release --no-restore
 
-    - name: 打包 ZIP 文件
-      run: |
-        Compress-Archive -Path $env:Project_Path\bin\Release\* -DestinationPath app-release.zip
+      - name: 打包 ZIP 文件
+        run: |
+          Compress-Archive -Path $env:Project_Path\bin\Release\* -DestinationPath app-release.zip
 
-    - name: 获取发布描述 (提交日志) 和版本号
-      id: get_release_notes
-      run: |
-        echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-        git log -1 --pretty=%B >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
+      - name: 获取发布描述 (提交日志) 和版本号
+        id: get_release_notes
+        run: |
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          git log -1 --pretty=%B >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
+          echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $GITHUB_ENV
 
-        # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
-        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $GITHUB_ENV
 
-    - name: 设置环境变量
-      run: |
-        echo "RELEASE_NOTES=$(git log -1 --pretty=%B)" >> $env:GITHUB_ENV
-        echo "VERSION=$(Get-Date -Format 'yyyy.MM.dd.HHmmss')" >> $env:GITHUB_ENV
-    
-    - name: 上传 ZIP 包和描述到后台
-      run: |
-        $releaseNotes = if ($env:RELEASE_NOTES) { $env:RELEASE_NOTES } else { "" }
-        
-        $formData = @{
-            file = Get-Item -Path ".\app-release.zip"
+      - name: 上传 ZIP 包和描述到后台（分片上传）
+        run: |
+          $filePath = ".\app-release.zip"
+          $chunkSize = 20MB  # 每个分片大小
+          $fileStream = [System.IO.File]::OpenRead($filePath)
+          $totalSize = $fileStream.Length
+          $startByte = 0
+          
+          $releaseNotes = git log -1 --pretty=%B
+          $vsersion = Get-Date -Format 'yyyy.MM.dd.HHmmss'
+          
+          while ($startByte -lt $totalSize) {
+          $endByte = [Math]::Min($startByte + $chunkSize, $totalSize) - 1
+          $buffer = New-Object byte[] ($endByte - $startByte + 1)
+          $fileStream.Read($buffer, 0, $buffer.Length) | Out-Null
+          
+          $chunkPath = ".\chunk_${startByte}_${endByte}.zip"
+          [System.IO.File]::WriteAllBytes($chunkPath, $buffer)
+          
+          $formData = @{
+            file = Get-Item -Path $chunkPath
             description = $releaseNotes
             appName = "TabbyCat"
             osType = 0
-            version = $env:VERSION
-        }
-    
-        Write-Host "🔎 RELEASE_NOTES: $releaseNotes"
-        Write-Host "🔎 VERSION: $env:VERSION"
-        $response = Invoke-WebRequest `
-                -Uri "${{ secrets.UPLOAD_APP_URL }}" `
-                -Method Post `
-                -Form $formData `
-                -ErrorAction Stop
-    
-        Write-Host "✅ 上传成功"
-        Write-Host "响应内容: $($response.Content)"
-    
-       
-
-   
-
-  
-
-    
-
-
-     
+            version = $vsersion
+            startByte = $startByte
+            endByte = $endByte
+            totalSize = $totalSize
+          }
+          
+          Write-Host "🔎 上传分片：$startByte - $endByte"
+          $response = Invoke-WebRequest `
+            -Uri "${{ secrets.UPLOAD_APP_URL }}" `
+            -Method Post `
+            -Form $formData `
+            -ErrorAction Stop
+          
+          Write-Host "✅ 上传成功"
+          Write-Host "响应内容: $($response.Content)"
+          
+          Remove-Item -Path $chunkPath  # 上传成功后删除临时分片
+          $startByte = $endByte + 1
+          }
+          
+          $fileStream.Close()
