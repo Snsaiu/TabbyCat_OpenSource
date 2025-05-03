@@ -116,47 +116,48 @@ echo "Making application executable..."
 chmod +x "$MACOS_PATH/TabbyCat.Desktop"
 
 # Sign the application
-#echo "Signing application..."
-#codesign --deep --force --options runtime \
-#    --entitlements "$CONTENT_PATH/entitlements.plist" \
-#    --sign "Developer ID Application: liujun fang (7443K5WM8B)" \
-#    "$APP_NAME"
-#
-#if [ $? -ne 0 ]; then
-#    echo "Signing failed"
-#    exit 1
-#fi
+echo "Signing application..."
+codesign --deep --force --options runtime \
+    --entitlements "$CONTENT_PATH/entitlements.plist" \
+    --sign "Developer ID Application: liujun fang (7443K5WM8B)" \
+    "$APP_NAME"
+
+if [ $? -ne 0 ]; then
+    echo "Signing failed"
+    exit 1
+fi
+
 
 # Create DMG for distribution
-#echo "Creating DMG for distribution..."
-#hdiutil create -volname "TabbyCat.Desktop" -srcfolder "$APP_NAME" -ov -format UDZO "TabbyCat.Desktop.dmg"
-#
-#if [ $? -ne 0 ]; then
-#    echo "DMG creation failed"
-#    exit 1
-#fi
-#
-## Submit DMG for notarization
-#echo "Submitting DMG for notarization..."
-#xcrun notarytool submit "YourProjectName.dmg" \
-#    --wait \
-#    --apple-id "snsaiu@outlook.com" \
-#    --password "Lihuiwen19950606" \
-#    --team-id "7443K5WM8B"
-#
-#if [ $? -ne 0 ]; then
-#    echo "Notarization submission failed"
-#    exit 1
-#fi
-#
-## Staple the notarization to the DMG
-#echo "Stapling notarization to DMG..."
-#xcrun stapler staple "TeachersLittleHelper.dmg"
-#
-#if [ $? -ne 0 ]; then
-#    echo "Stapling failed"
-#    exit 1
-#fi
+echo "Creating DMG for distribution..."
+hdiutil create -volname "TabbyCat.Desktop" -srcfolder "$APP_NAME" -ov -format UDZO "TabbyCat.dmg"
+
+if [ $? -ne 0 ]; then
+    echo "DMG creation failed"
+    exit 1
+fi
+
+# Submit DMG for notarization
+echo "Submitting DMG for notarization..."
+xcrun notarytool submit "TabbyCat.dmg" \
+    --wait \
+    --apple-id "snsaiu@outlook.com" \
+    --password "ozvk-mzka-vqlg-ayku" \
+    --team-id "7443K5WM8B"
+
+if [ $? -ne 0 ]; then
+    echo "Notarization submission failed"
+    exit 1
+fi
+
+# Staple the notarization to the DMG
+echo "Stapling notarization to DMG..."
+xcrun stapler staple "TabbyCat.dmg"
+
+if [ $? -ne 0 ]; then
+    echo "Stapling failed"
+    exit 1
+fi
 
 echo "All steps completed successfully."
 

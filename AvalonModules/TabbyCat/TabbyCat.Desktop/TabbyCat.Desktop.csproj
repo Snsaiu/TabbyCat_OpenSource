@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <!-- 拷贝 libvlc 文件夹下的所有文件和子目录到输出目录 -->
-    <Content Include="lib\**\*.*" Exclude="lib\**\plugins.dat">
+    <Content Include="lib\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
