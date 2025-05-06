@@ -1988,4 +1988,22 @@ Example value: a towering tree.</value>
   <data name="MigrationSuccessful" xml:space="preserve">
     <value>Migration successful!</value>
   </data>
+  <data name="MustLoginToUserInternet" xml:space="preserve">
+    <value>You must log in to use the online function</value>
+  </data>
+  <data name="InternetFunctionOnlyTabbycatAiModel" xml:space="preserve">
+    <value>The networking function can only use TabbyCatAiModel</value>
+  </data>
+  <data name="MustLoginToUseDeepThinking" xml:space="preserve">
+    <value>You must log in to use the Deep Thinking function</value>
+  </data>
+  <data name="DeepThinkingOnlyTabbycatAiModel" xml:space="preserve">
+    <value>Deep Thinking can only use TabbyCatAiModel</value>
+  </data>
+  <data name="UploadImageMustLogin" xml:space="preserve">
+    <value>You must be logged in to upload pictures</value>
+  </data>
+  <data name="PictureChatOnlyTabbycatAiModel" xml:space="preserve">
+    <value>Picture chat only supports TabbyCatAiModel</value>
+  </data>
 </root>

@@ -62,14 +62,16 @@ public partial class ChatViewModel(
     {
         if (UseInternet && !CurrentUser.LoginSuccess())
         {
-            await DialogServer.ShowMessageDialogAsync("联网功能必须要登录才能使用！", AppResources.Warning, AppResources.Ok);
+            await DialogServer.ShowMessageDialogAsync(AppResources.MustLoginToUserInternet, AppResources.Warning,
+                AppResources.Ok);
             UseInternet = false;
             return;
         }
 
         if (UseInternet && aiApiModelBase is not TabbyCatAiModel tabbyCatAiModel)
         {
-            await DialogServer.ShowMessageDialogAsync("联网功能只能使用TabbyCatAiModel", AppResources.Warning, AppResources.Ok);
+            await DialogServer.ShowMessageDialogAsync(AppResources.InternetFunctionOnlyTabbycatAiModel,
+                AppResources.Warning, AppResources.Ok);
             UseInternet = false;
             return;
         }
@@ -83,14 +85,16 @@ public partial class ChatViewModel(
     {
         if (UseInternet && !CurrentUser.LoginSuccess())
         {
-            await DialogServer.ShowMessageDialogAsync("深度思考功能必须要登录才能使用！", AppResources.Warning, AppResources.Ok);
+            await DialogServer.ShowMessageDialogAsync(AppResources.MustLoginToUseDeepThinking, AppResources.Warning,
+                AppResources.Ok);
             UseDeepThinking = false;
             return;
         }
 
         if (UseInternet && aiApiModelBase is not TabbyCatAiModel tabbyCatAiModel)
         {
-            await DialogServer.ShowMessageDialogAsync("深度思考只能使用TabbyCatAiModel", AppResources.Warning, AppResources.Ok);
+            await DialogServer.ShowMessageDialogAsync(AppResources.DeepThinkingOnlyTabbycatAiModel,
+                AppResources.Warning, AppResources.Ok);
             UseDeepThinking = false;
             return;
         }
@@ -138,13 +142,27 @@ public partial class ChatViewModel(
     [RelayCommand]
     private async Task ShowImagePicker()
     {
+        if (!CurrentUser.LoginSuccess())
+        {
+            await DialogServer.ShowMessageDialogAsync(AppResources.UploadImageMustLogin, AppResources.Warning,
+                AppResources.Ok);
+            return;
+        }
+
+        if (aiApiModelBase.Provider != AiModelType.TabbyCatAi)
+        {
+            await DialogServer.ShowMessageDialogAsync(AppResources.PictureChatOnlyTabbycatAiModel, AppResources.Warning,
+                AppResources.Ok);
+            return;
+        }
+
         var result = await App.TopLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             AllowMultiple = false, FileTypeFilter = new List<FilePickerFileType>()
             {
                 FilePickerFileTypes.ImageAll
             },
-            Title = "选择图片"
+            Title = AppResources.ChooseImage
         });
         if (!result.Any())
             return;
@@ -158,7 +176,8 @@ public partial class ChatViewModel(
             var urlResult = await RemoteServerService.UploadImageAsync(image);
             if (!urlResult.Ok)
             {
-                await DialogServer.ShowMessageDialogAsync("上传图片失败", AppResources.Warning, AppResources.Ok);
+                await DialogServer.ShowMessageDialogAsync(AppResources.FailedToUploadImage, AppResources.Warning,
+                    AppResources.Ok);
                 return;
             }
 

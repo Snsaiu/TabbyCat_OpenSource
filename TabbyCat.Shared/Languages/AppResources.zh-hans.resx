@@ -1379,4 +1379,22 @@
   <data name="MigrationSuccessful" xml:space="preserve">
     <value>迁移成功！</value>
   </data>
+  <data name="MustLoginToUserInternet" xml:space="preserve">
+    <value>联网功能必须要登录才能使用</value>
+  </data>
+  <data name="InternetFunctionOnlyTabbycatAiModel" xml:space="preserve">
+    <value>联网功能只能使用TabbyCatAiModel</value>
+  </data>
+  <data name="MustLoginToUseDeepThinking" xml:space="preserve">
+    <value>深度思考功能必须要登录才能使用</value>
+  </data>
+  <data name="DeepThinkingOnlyTabbycatAiModel" xml:space="preserve">
+    <value>深度思考只能使用TabbyCatAiModel</value>
+  </data>
+  <data name="UploadImageMustLogin" xml:space="preserve">
+    <value>上传图片必须要登录</value>
+  </data>
+  <data name="PictureChatOnlyTabbycatAiModel" xml:space="preserve">
+    <value>图片聊天仅支持TabbyCatAiModel</value>
+  </data>
 </root>

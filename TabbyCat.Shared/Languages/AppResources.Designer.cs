@@ -1267,6 +1267,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deep Thinking can only use TabbyCatAiModel.
+        /// </summary>
+        public static string DeepThinkingOnlyTabbycatAiModel {
+            get {
+                return ResourceManager.GetString("DeepThinkingOnlyTabbycatAiModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
         public static string Default {
@@ -2562,6 +2571,15 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The networking function can only use TabbyCatAiModel.
+        /// </summary>
+        public static string InternetFunctionOnlyTabbycatAiModel {
+            get {
+                return ResourceManager.GetString("InternetFunctionOnlyTabbycatAiModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IT Architect.
         /// </summary>
         public static string ITArchitect {
@@ -3354,6 +3372,24 @@ namespace TabbyCat.Shared.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must log in to use the Deep Thinking function.
+        /// </summary>
+        public static string MustLoginToUseDeepThinking {
+            get {
+                return ResourceManager.GetString("MustLoginToUseDeepThinking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must log in to use the online function.
+        /// </summary>
+        public static string MustLoginToUserInternet {
+            get {
+                return ResourceManager.GetString("MustLoginToUserInternet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You must log in to use the TabbyCatAi model.
         /// </summary>
         public static string MustLoginToUseTabbyCatAi {
@@ -3760,6 +3796,15 @@ namespace TabbyCat.Shared.Languages {
         public static string PHPInterpreterPrompt {
             get {
                 return ResourceManager.GetString("PHPInterpreterPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Picture chat only supports TabbyCatAiModel.
+        /// </summary>
+        public static string PictureChatOnlyTabbycatAiModel {
+            get {
+                return ResourceManager.GetString("PictureChatOnlyTabbycatAiModel", resourceCulture);
             }
         }
         
@@ -5386,6 +5431,15 @@ namespace TabbyCat.Shared.Languages {
         public static string UpdateFailed {
             get {
                 return ResourceManager.GetString("UpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must be logged in to upload pictures.
+        /// </summary>
+        public static string UploadImageMustLogin {
+            get {
+                return ResourceManager.GetString("UploadImageMustLogin", resourceCulture);
             }
         }
         

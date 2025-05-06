@@ -74,7 +74,7 @@ public partial class AiSettingViewModel(
 
         Task.Run(async () =>
         {
-            var templateSettingEntities = await aiTemplateSettingService.QueryAsync();
+            var templateSettingEntities = await aiTemplateSettingService.QueryAsync(x => x.Email == CurrentUser.Email);
             AiTemplate = Enum.IsDefined(typeof(AiModelType), newValue) &&
                          Enum.TryParse(newValue, out AiModelType modelType)
                 ? await AiTemplateFactory.GetTemplateAsync(modelType, templateSettingEntities)

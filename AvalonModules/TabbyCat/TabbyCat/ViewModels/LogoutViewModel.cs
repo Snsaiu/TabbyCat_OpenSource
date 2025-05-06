@@ -4,6 +4,7 @@ using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models.Users;
 using TabbyCat.Service.AiServices;
 using TabbyCat.Service.RunningHubServices;
+using TabbyCat.Shared.Enums;
 using TuDog.Bootstrap;
 using TuDog.IocAttribute;
 
@@ -32,20 +33,22 @@ public sealed partial class LogoutViewModel(
             await aiChatSessionService.DeleteRangeAsync(x => x.Email == user.Email);
             await customAssistantOccupationService.DeleteRangeAsync(x => x.Email == user.Email);
             await runningHubService.DeleteRangeAsync(x => x.Email == user.Email);
-            logger.LogInformation("清空聊天历史记录成功。");
+            logger.LogDebug("清空聊天历史记录成功。");
         }
 
         if (Model.ClearImageResource )
         {
             runningHubResourceService.Set(runningHubResourceService.Default);
             await runningHubResultService.DeleteRangeAsync(x => x.Email == user.Email);
-            logger.LogInformation("清空图片资源成功。");
+            logger.LogDebug("清空图片资源成功。");
         }
+
+        await aiTemplateSettingService.DeleteRangeAsync(x => x.Provider == AiModelType.TabbyCatAi);
 
         if (Model.ClearAiApiKeys)
         {
             await aiTemplateSettingService.DeleteRangeAsync(x => x.Email == user.Email);
-            logger.LogInformation("清空Ai API Key成功。");
+            logger.LogDebug("清空Ai API Key成功。");
         }
 
         return Model;
@@ -53,6 +56,6 @@ public sealed partial class LogoutViewModel(
 
     public override Task<LogoutOptionModel> CancelAsync()
     {
-        return null;
+        return Task.FromResult<LogoutOptionModel>(null);
     }
 }

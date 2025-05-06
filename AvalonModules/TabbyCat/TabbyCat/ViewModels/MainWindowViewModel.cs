@@ -7,7 +7,11 @@ using Microsoft.Extensions.Logging;
 using TabbyCat.Enums;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
+using TabbyCat.Models;
 using TabbyCat.Models.Users;
+using TabbyCat.Repository.Entities.AiEntities;
+using TabbyCat.Service.AiServices;
+using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
 using TuDog.Bootstrap;
 using TuDog.Interfaces.IDialogServers;
@@ -25,6 +29,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     private OidcClient oidcClient = TuDogApplication.ServiceProvider.GetRequiredService<OidcClient>();
 
     private ILogger<MainWindowViewModel> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<MainWindowViewModel>>();
+
+    private IAiTemplateSettingService _aiTemplateSettingService =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingService>();
 
     private IRegionManager _regionManager { get; }=TuDogApplication.ServiceProvider.GetRequiredService<IRegionManager>();
 
@@ -61,7 +68,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
                     CurrentUser.Clear();
                     userService.SetNull();
 
-                    logger.LogInformation("清空本地登录信息。");
+                    logger.LogDebug("清空本地登录信息。");
                 }
             }
         }
@@ -93,7 +100,23 @@ public sealed partial class MainWindowViewModel : ViewModelBase
             return;
         }
 
+        // 查看是否有默认的ai模型
+        await SetDefaultAiModel();
         IsLogined = true;
+    }
+
+    private async Task SetDefaultAiModel()
+    {
+        if (!(await _aiTemplateSettingService.QueryAsync(x => x.IsDefault)).Any())
+        {
+            var aiModel = new TabbyCatAiModel();
+            await _aiTemplateSettingService.AddAsync(new()
+            {
+                IsDefault = true, Template = JsonConvert.SerializeObject(aiModel), Email = CurrentUser.Email,
+                Key = Guid.NewGuid(), Provider = AiModelType.TabbyCatAi, CreateTime = DateTime.Now,
+                UpdateTime = DateTime.Now
+            });
+        }
     }
 
     [RelayCommand]
@@ -124,10 +147,10 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     {
         if (result is null)
         {
-            
+
             return null;
         }
-        
+
         var claims = result.User.Claims;
         var email = claims.FirstOrDefault(x => x.Type == "email")?.Value;
         var phone = claims.FirstOrDefault(x => x.Type == "phone_number")?.Value;

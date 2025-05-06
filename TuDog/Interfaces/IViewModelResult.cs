@@ -7,7 +7,7 @@ public interface IViewModelResult:ITuDogViewModel
 {
     object Confirm();
     object Cancel();
-    
+
     bool CanConfirm();
 }
 
@@ -15,7 +15,7 @@ public interface IViewModelResultAsync:ITuDogViewModel
 {
     Task<object?> ConfirmAsync();
     Task<object?> CancelAsync();
-    
+
     Task<bool> CanConfirmAsync();
 }
 
@@ -23,8 +23,8 @@ public interface IViewModelResult<out TResult> : IViewModelResult
 {
     new TResult Confirm();
     new TResult Cancel();
-    
-    
+
+
 
     object IViewModelResult.Confirm()
     {
@@ -45,7 +45,7 @@ public interface IViewModelResultAsync<TResult> : IViewModelResultAsync
 {
     Task<TResult> ConfirmAsync();
     Task<TResult> CancelAsync();
-    
+
     Task<bool> CanConfirmAsync();
 
 
@@ -56,7 +56,10 @@ public interface IViewModelResultAsync<TResult> : IViewModelResultAsync
 
    async Task<object?> IViewModelResultAsync.CancelAsync()
    {
-       return await CancelAsync();
+       var result = await CancelAsync();
+       if (result is null)
+           return null;
+       return result;
    }
-   
+
 }

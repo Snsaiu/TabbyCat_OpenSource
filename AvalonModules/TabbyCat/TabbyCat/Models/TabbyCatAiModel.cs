@@ -22,7 +22,8 @@ public partial class TabbyCatAiModel : OpenAiApiModel
 
    public TabbyCatAiModel()
    {
-
+       Temperature = 0.2;
+       TopP = 0.2;
        ApiDomain = "https://dashscope.aliyuncs.com";
    }
 
