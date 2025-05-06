@@ -146,6 +146,7 @@
                     Command="{Binding SendCommand}"
                     Content="{x:Static languages:AppResources.Send}"
                     CornerRadius="0"
+                    IsEnabled="{Binding CanSend}"
                     DockPanel.Dock="Right" />
 
                 <TextBox

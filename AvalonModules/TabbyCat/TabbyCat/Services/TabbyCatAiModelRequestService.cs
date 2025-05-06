@@ -7,6 +7,7 @@ using TabbyCat.Models.AiReqRes.AiChatRequests.OpenAi;
 using TabbyCat.Models.AiReqRes.AiChatRequests.TabbyCatAi;
 using TabbyCat.Models.AiReqRes.AiChatResponses;
 using TabbyCat.Models.Appendix;
+using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Extensions;
 using TuDog.Bootstrap;
 
@@ -15,7 +16,7 @@ namespace TabbyCat.Services;
 public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel requestModel, TabbyCatAiModel aiModel)
     : AiChatRequestServiceBase<TabbyCatAiRequestModel, TabbyCatAiModel, TabbyCatAiResponseModel>(requestModel, aiModel)
 {
-    
+
     protected override Task<string> RequestModelToJsonString(TabbyCatAiRequestModel requestModel)
     {
         // 用新的模型，不要修改入参的模型
@@ -23,7 +24,7 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
         var newsModel = requestModel.ToJson().ToObject<TabbyCatAiRequestModel>();
 
         newsModel.Contents = [];
-        
+
         var lastMessasge = requestModel.Messages.LastOrDefault();
         if (lastMessasge is not null)
         {
@@ -33,6 +34,9 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
                 newsModel.Model = "qwen-vl-max";
                 newsModel.EnableUseInternet = false;
                 Logger.LogDebug("用户输入的消息中带有附件，使用模型{Model},并且关闭联网搜索功能。",newsModel.Model);
+                // 删除system角色
+                requestModel.Messages.RemoveAll(x => x.Role == Role.System);
+
             }
             else
             {
@@ -47,7 +51,7 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
                 }
             }
         }
-        
+
         foreach (var message in requestModel.Messages)
         {
             var newMessage = new TabbyCatAiRequestModel.TabbyCatMessageItem
@@ -57,7 +61,7 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
 
             if (message.Appendixes.Any() && newsModel is { EnableUseInternet: false, EnableDeepThinking: false })
             {
-                
+
                 // 修改message中content属性的内容
                 List<IAiAppendixModel> appendixModels = [];
                 foreach (var item in message.Appendixes)
@@ -93,7 +97,7 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
 
             newsModel.Contents.Add(newMessage);
         }
-        
+
         return Task.FromResult<string>(JsonConvert.SerializeObject(newsModel));
 
     }

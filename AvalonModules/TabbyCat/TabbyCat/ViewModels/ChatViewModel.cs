@@ -44,6 +44,8 @@ public partial class ChatViewModel(
 
     private IViewModelResult? panelSettingResult;
 
+    [ObservableProperty] private bool canSend = true;
+
     [ObservableProperty] private string inputTextContent = string.Empty;
 
     [ObservableProperty] private ObservableCollection<AppendixModel> _appendixModels = [];
@@ -149,17 +151,26 @@ public partial class ChatViewModel(
 
         var image = result[0].Path.LocalPath;
 
-        // 在这里就开始上传
-        var urlResult = await RemoteServerService.UploadImageAsync(image);
-        if (!urlResult.Ok)
+        CanSend = false;
+        try
         {
-            await DialogServer.ShowMessageDialogAsync("上传图片失败", AppResources.Warning, AppResources.Ok);
-            return;
+            // 在这里就开始上传
+            var urlResult = await RemoteServerService.UploadImageAsync(image);
+            if (!urlResult.Ok)
+            {
+                await DialogServer.ShowMessageDialogAsync("上传图片失败", AppResources.Warning, AppResources.Ok);
+                return;
+            }
+
+            AppendixModels.Reset([
+                new() { Content = urlResult.Data, AppendixType = AppendixType.Image }
+            ]);
+        }
+        finally
+        {
+            CanSend = true;
         }
 
-        AppendixModels.Reset([
-            new() { Content = urlResult.Data, AppendixType = AppendixType.Image }
-        ]);
     }
 
 
