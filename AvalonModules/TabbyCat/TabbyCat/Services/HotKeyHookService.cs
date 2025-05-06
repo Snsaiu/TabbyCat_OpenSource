@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Timers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SharpHook;
 using SharpHook.Native;
 using TabbyCat.IServices;
@@ -9,7 +10,7 @@ using TuDog.IocAttribute;
 namespace TabbyCat.Services;
 
 [Register<IHotKeyHookService>(ServiceLifetime.Singleton)]
-public class HotKeyHookService:IHotKeyHookService
+public class HotKeyHookService(ILogger<HotKeyHookService> logger) : IHotKeyHookService
 {
     private TaskPoolGlobalHook? hook;
     private readonly HashSet<KeyCode> keyCodes = [];
@@ -20,7 +21,7 @@ public class HotKeyHookService:IHotKeyHookService
         {
             if (keyCodes.Any())
             {
-                Debug.WriteLine("定时器启动并清空");
+                logger.LogDebug("定时器启动并清空");
                 keyCodes.Clear();
             }
 
@@ -32,7 +33,7 @@ public class HotKeyHookService:IHotKeyHookService
             keyCodes.Add(e.Data.KeyCode);
             if (keyCodes.Count > 1)
             {
-                Debug.WriteLine("HotKey hooked:" + string.Join(",", keyCodes));
+                logger.LogDebug("HotKey hooked:{0}", string.Join(",", keyCodes));
                 Action?.Invoke(new List<KeyCode>(keyCodes));
             }
         };
@@ -43,9 +44,7 @@ public class HotKeyHookService:IHotKeyHookService
             if (!timer.Enabled)
                 timer.Start();
         };
-#if !DEBUG
         hook.RunAsync();
-#endif
 
     }
 

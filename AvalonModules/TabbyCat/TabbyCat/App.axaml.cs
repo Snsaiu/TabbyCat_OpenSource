@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -8,7 +9,7 @@ using Duende.IdentityModel.OidcClient;
 using HotAvalonia;
 
 using Microsoft.Extensions.DependencyInjection;
-
+using Serilog;
 using SharpHook.Native;
 
 using TabbyCat.Extensions;
@@ -82,18 +83,19 @@ namespace TabbyCat
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if (window is null)
-                        return;
+                    Debug.Assert(window is not null, "windows 不应该为空");
 
                     if (window.IsActive)
                     {
                         window.Hide();
+                        Log.Debug("隐藏窗口");
                     }
                     else
                     {
                         window.WindowState = WindowState.Normal;
                         window.Show();
                         window.Activate();
+                        Log.Debug("显示窗口");
                     }
                 });
 
