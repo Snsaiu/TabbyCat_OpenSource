@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -112,6 +111,7 @@ public class AutoRegisterSourceGenerator : IIncrementalGenerator
                 sb.AppendLine($"{collection}<{model.InterfaceFullName},{model.ImplementFullName}>();");
             }
         }
+        sb.AppendLine($"collection.AddSingleton<TuDog.Interfaces.IViewLocatorService,TuDog.Services.ViewLocatorService>();");
 
         sb.AppendLine("     }");
 

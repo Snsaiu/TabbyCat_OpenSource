@@ -1,23 +1,24 @@
-using System;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using HotAvalonia;
-using Microsoft.Extensions.DependencyInjection;
-using Avalonia.Platform;
 using Avalonia.Threading;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using SharpHook;
+
+using System;
+
 using TuDog.Bootstrap;
 using TuDog.Interfaces.IDialogServers;
-using YouYan.Rabbit.ViewModels;
+
 using YouYan.Rabbit.Views;
 
 namespace YouYan.Rabbit;
 
 public partial class App : TuDogApplication
 {
-    public static Window _window;
+    public static Window? _window = null;
     public override object CreateShell()
     {
         var hook = new TaskPoolGlobalHook();
@@ -48,7 +49,6 @@ public partial class App : TuDogApplication
 
     public override void Initialize()
     {
-        this.EnableHotReload();
         AvaloniaXamlLoader.Load(this);
         base.Initialize();
     }
@@ -79,7 +79,7 @@ public partial class App : TuDogApplication
         {
             var x = screen.WorkingArea.Width - _window.Width - 10;
             var y = 10;
-            _window.Position = new((int)x, (int)y);
+            _window.Position = new((int)x, y);
             _window.Show();
             _window.Activate();
         }
@@ -89,7 +89,7 @@ public partial class App : TuDogApplication
     {
         var v = _window as MainWindow;
         if (v.CanExit())
-           Environment.Exit(0);
+            Environment.Exit(0);
         var dialog = ServiceProvider.GetService<IDialogServer>();
         await dialog.ShowMessageDialogAsync("有任务正在进行，无法退出");
     }

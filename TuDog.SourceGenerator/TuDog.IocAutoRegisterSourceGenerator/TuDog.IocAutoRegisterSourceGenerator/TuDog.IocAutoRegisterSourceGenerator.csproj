@@ -22,19 +22,19 @@
 	
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" >
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp"  />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces"  />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
 
     </ItemGroup>
 
 	<ItemGroup>
 		<!-- Take a private dependency on Newtonsoft.Json (PrivateAssets=all) Consumers of this generator will not reference it.
          Set GeneratePathProperty=true so we can reference the binaries via the PKGNewtonsoft_Json property -->
-		<PackageReference Include="Newtonsoft.Json"  PrivateAssets="all" GeneratePathProperty="true">
+		<PackageReference Include="Newtonsoft.Json" PrivateAssets="all" GeneratePathProperty="true">
 		
 		</PackageReference>
 

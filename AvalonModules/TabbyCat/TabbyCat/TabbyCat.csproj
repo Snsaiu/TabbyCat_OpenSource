@@ -29,10 +29,10 @@
     <PackageReference Include="DynamicData" />
       <PackageReference Include="FantasyResultModel" />
     <PackageReference Include="FluentAvaloniaUI" />
-    <PackageReference Include="LibVLCSharp"/>
-    <PackageReference Include="LibVLCSharp.Avalonia"/>
+    <PackageReference Include="LibVLCSharp" />
+    <PackageReference Include="LibVLCSharp.Avalonia" />
       <PackageReference Include="Markdig" />
-    <PackageReference Include="Markdown.Avalonia.YouYan"/>
+    <PackageReference Include="Markdown.Avalonia.YouYan" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
       <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Newtonsoft.Json" />
@@ -47,9 +47,9 @@
 	  <!--<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" />-->
 	  <PackageReference Include="SQLitePCLRaw.bundle_green" />
 <!--    <PackageReference Include="VideoLAN.LibVLC.Mac"/>-->
-    <PackageReference Include="VideoLAN.LibVLC.Windows"/>
-    <PackageReference Include="Xabe.FFmpeg"/>
-      <PackageReference Include="Xamarin.Essentials"/>
+    <PackageReference Include="VideoLAN.LibVLC.Windows" />
+    <PackageReference Include="Xabe.FFmpeg" />
+      <PackageReference Include="Xamarin.Essentials" />
 	  <!--<PackageReference Include="SQLitePCLRaw.core" />
 		<PackageReference Include="SQLitePCLRaw.lib.e_sqlite3"  />
 		<PackageReference Include="SQLitePCLRaw.provider.e_sqlite3"  />-->

@@ -1,18 +1,36 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Templates;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using TuDog.Bootstrap;
+using TuDog.Interfaces;
 
 namespace TuDog.ViewLocators
 {
-    public abstract class ViewLocatorBase
+
+
+    public abstract partial class ViewLocatorBase
     {
+
+        protected ViewLocatorBase()
+        {
+            var service = TuDogApplication.ServiceProvider.GetRequiredService<IViewLocatorService>();
+            _controlDictionary = service.InitControlDictionaryControls();
+
+        }
+
+        private readonly IDictionary<Type, Func<Control>>? _controlDictionary;
+
         public Control? Build(object? param)
         {
             var viewType = GetViewType(param);
             if (viewType is null)
                 return ErrorView(param);
 
-            return (Control)Activator.CreateInstance(viewType)!;
+            if (_controlDictionary is null)
+                return null;
+
+            return _controlDictionary.TryGetValue(viewType, out Func<Control>? func) ? func() : null;
         }
 
 
