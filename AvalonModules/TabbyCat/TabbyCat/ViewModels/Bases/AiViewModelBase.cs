@@ -14,10 +14,9 @@ using TabbyCat.Shared;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Interfaces;
 using TabbyCat.Shared.Languages;
-using TabbyCat.SqliteService.AiServices;
 using TuDog.Bootstrap;
 
-namespace TabbyCat.ViewModels;
+namespace TabbyCat.ViewModels.Bases;
 
 public abstract partial class AiViewModelBase : ViewModelBase
 {
@@ -200,5 +199,14 @@ public abstract partial class AiViewModelBase : ViewModelBase
             await DialogServer.ShowMessageDialogAsync(AppResources.UpdatedSuccessfully);
         else
             await DialogServer.ShowMessageDialogAsync(AppResources.UpdatedSuccessfully);
+    }
+
+    partial void OnAiChatSessionChanged(AiChatSessionEntity? value)
+    {
+        SelectSessionChanged(value);
+    }
+
+    protected virtual void SelectSessionChanged(AiChatSessionEntity? value)
+    {
     }
 }

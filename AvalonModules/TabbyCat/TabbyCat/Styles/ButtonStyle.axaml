@@ -17,6 +17,7 @@
                 <ControlTemplate TargetType="Button">
                     <Border Name="PART_BorderElement" Margin="5" Background="{TemplateBinding Background}"
                             BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <controls:FontIcon
                             Name="Icon"
                             Foreground="{TemplateBinding Foreground}"
@@ -24,6 +25,10 @@
                             FontSize="{TemplateBinding FontSize}"
                             FontWeight="{TemplateBinding FontWeight}"
                             Glyph="{Binding Path=(extensions:IconAttach.Icon), RelativeSource={RelativeSource Self}}" />
+                        <ContentPresenter Foreground="{TemplateBinding Foreground}"
+                                          FontSize="{TemplateBinding FontSize}" Content="{TemplateBinding Content}"
+                                          Margin="5,0,0,0" />
+                        </StackPanel>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -31,12 +36,12 @@
         <Setter Property="Background" Value="Transparent"></Setter>
 
     </Style>
-    
+
     <Style Selector="Button.return">
         <Setter Property="Margin" Value="5,0,0,0"></Setter>
         <Setter Property="extensions:IconAttach.Icon" Value="{x:Static tabbyCat:IconFontProvider.Return}"></Setter>
     </Style>
-    
+
     <Style Selector="Button:pointerover /template/ Border controls|FontIcon#Icon">
         <Setter Property="Opacity" Value="0.8" />
     </Style>
@@ -111,7 +116,7 @@
 
         <!-- <Setter Property="CornerRadius" Value="8"></Setter> -->
     </Style>
-    
+
     <Style Selector="Button.MobileDefaultStyle">
         <Setter Property="Margin" Value="5"></Setter>
         <Setter Property="CornerRadius" Value="10"></Setter>

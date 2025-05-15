@@ -2,6 +2,7 @@
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.ViewModels;
 using TuDog.IocAttribute;
+using ViewModelBase = TabbyCat.ViewModels.Bases.ViewModelBase;
 
 namespace TabbyCat.Components.ViewModels;
 

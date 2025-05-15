@@ -6,6 +6,7 @@ using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
 using TabbyCat.Service.AiServices;
+using TabbyCat.ViewModels.Bases;
 using TuDog.Extensions;
 using TuDog.IocAttribute;
 
@@ -15,7 +16,7 @@ namespace TabbyCat.ViewModels;
 [Register]
 public partial class MobileFavouriteViewModel( IAiChatMessageRecordService aiChatMessageRecordService,
     ILogger<MobileFavouriteViewModel> logger,
-    IUseMarkdownService markdownService):ViewModelBase
+    IUseMarkdownService markdownService) : ViewModelBase
 {
      [ObservableProperty] private ObservableCollection<ChatMessageDateGroupModel> chats = [];
 
@@ -87,5 +88,5 @@ public partial class MobileFavouriteViewModel( IAiChatMessageRecordService aiCha
 
         Chats.Reset(list);
     }
-    
+
 }

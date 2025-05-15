@@ -23,6 +23,7 @@
     </TrayIcon.Icons>
 
     <Application.Resources>
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="Styles/Templates/AiModelSettingTemplate.axaml" />
@@ -35,8 +36,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         <FontFamily x:Key="iconFont">avares://TabbyCat/Assets/Font/iconfont.ttf#iconfont</FontFamily>
-
     </Application.Resources>
+
+
 
     <Application.Styles>
         <styling:FluentAvaloniaTheme PreferSystemTheme="True" />
@@ -51,7 +53,6 @@
         <StyleInclude Source="Styles/SwipeControlStyle.axaml"></StyleInclude>
         <StyleInclude Source="Styles/BoxControlStyle.axaml"></StyleInclude>
         <StyleInclude Source="Controls/ImageControl.axaml"></StyleInclude>
-
-        <StyleInclude Source="avares://TuDog/UIs/Styles/DialogWindowStyle.axaml" />
+        <StyleInclude Source="avares://TuDog/Bootstrap/TuDogStyles.axaml" />
     </Application.Styles>
 </Application>

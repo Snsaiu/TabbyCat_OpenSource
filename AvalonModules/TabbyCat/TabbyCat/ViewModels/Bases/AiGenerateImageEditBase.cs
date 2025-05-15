@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Avalonia;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,7 +9,7 @@ using TabbyCat.Models.AiMediaResponses;
 using TabbyCat.Shared.Languages;
 using TuDog.Bootstrap;
 
-namespace TabbyCat.ViewModels;
+namespace TabbyCat.ViewModels.Bases;
 
 /// <summary>
 /// 通用图片编辑基类

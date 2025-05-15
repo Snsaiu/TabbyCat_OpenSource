@@ -13,7 +13,7 @@ namespace TabbyCat.ViewModels;
 /// 局部重绘
 /// </summary>
 [Register]
-public sealed partial class PartialRepaintImageViewModel():MaskImageUploadAiGenerateImageBase
+public sealed partial class PartialRepaintImageViewModel():Bases.MaskImageUploadAiGenerateImageBase
 {
 
     [RelayCommand]

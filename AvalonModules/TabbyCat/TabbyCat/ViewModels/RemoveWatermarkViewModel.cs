@@ -1,6 +1,7 @@
 ﻿using TabbyCat.Models.AiMediaResponses;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
+using TabbyCat.ViewModels.Bases;
 using TuDog.IocAttribute;
 
 namespace TabbyCat.ViewModels;

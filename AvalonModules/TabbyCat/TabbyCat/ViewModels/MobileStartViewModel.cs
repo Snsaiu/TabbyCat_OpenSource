@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TabbyCat.Enums;
+using TabbyCat.ViewModels.Bases;
 using TuDog.Interfaces.RegionManagers;
 using TuDog.IocAttribute;
 

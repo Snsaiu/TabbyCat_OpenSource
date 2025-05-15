@@ -9,7 +9,7 @@ using TuDog.IocAttribute;
 namespace TabbyCat.ViewModels;
 
 [Register]
-public sealed partial class GraffitiPaintingViewModel : AiGenerateImageEditBase<GraffitiPaintingImageEditModel,
+public sealed partial class GraffitiPaintingViewModel : Bases.AiGenerateImageEditBase<GraffitiPaintingImageEditModel,
     GraffitiPaintingImageEditModel.OnlyOneImageAiGenerateImageInput, object>
 {
     [ObservableProperty] private Dictionary<string, string> _styles = [];
@@ -23,7 +23,7 @@ public sealed partial class GraffitiPaintingViewModel : AiGenerateImageEditBase<
     public GraffitiPaintingViewModel()
     {
         Styles.Add(AppResources.Auto, "<auto>");
-        Styles.Add(AppResources._3DCartoon, "<3d cartoon>");
+        Styles.Add(AppResources.ThreeDCartoon, "<3d cartoon>");
         Styles.Add(AppResources.Cartoon, "<anime>");
         Styles.Add(AppResources.OilPainting, "<oil painting>");
         Styles.Add(AppResources.Sketch, "<sketch>");

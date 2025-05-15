@@ -14,7 +14,7 @@ using TuDog.IocAttribute;
 namespace TabbyCat.ViewModels;
 
 [Register]
-public sealed partial class MobileSearchContactViewModel:AiViewModelBase
+public sealed partial class MobileSearchContactViewModel : Bases.AiViewModelBase
 {
     private readonly INavigationService _navigationService;
     private readonly IOccupationService _occupationService;

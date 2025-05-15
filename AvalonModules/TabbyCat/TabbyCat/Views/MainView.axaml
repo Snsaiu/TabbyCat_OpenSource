@@ -20,10 +20,10 @@
     </Design.DataContext>
 
     <fluent:NavigationView
-        MenuItemsSource="{Binding MenuItems}"
-        SelectedItem="{Binding SelectMenuItem}"
+        Name="navigationView"
+        MenuItemsSource="{Binding NavigationMenuItemService.MenuItems,Mode=OneTime}"
+        SelectedItem="{Binding NavigationMenuItemService.SelectMenuItem,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
         SelectionChanged="NavigationView_OnSelectionChanged">
-
         <fluent:NavigationView.MenuItemTemplate>
             <DataTemplate DataType="{x:Type models:NavigationMenuItem}">
                 <fluent:NavigationViewItem Content="{Binding Header}"

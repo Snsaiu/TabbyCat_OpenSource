@@ -1,0 +1,96 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:TuDog.UIs"
+        xmlns:models="clr-namespace:TuDog.Models"
+        xmlns:enums="clr-namespace:TuDog.Enums"
+        xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+    <Design.PreviewWith>
+        <controls:InfoBox />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|InfoBox">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate TargetType="controls:InfoBox">
+               <ItemsControl Name="PART_ItemControl">
+                   <ItemsControl.ItemTemplate>
+                       <DataTemplate DataType="{x:Type models:InfoModel}">
+                           <Border CornerRadius="10" Opacity="0"
+                                   MinWidth="50"
+                                   Name="Border"
+                                   VerticalAlignment="Center"
+                                   Padding="5">
+                               <Border.Styles>
+                                   <Style Selector="Border">
+                                       <Style.Animations>
+                                           <Animation Duration="0:0:5">
+                                               <KeyFrame Cue="0%">
+                                                   <Setter Property="Opacity" Value="0"></Setter>
+                                               </KeyFrame>
+                                               <KeyFrame Cue="10%">
+                                                   <Setter Property="Opacity" Value="1"></Setter>
+                                               </KeyFrame>
+                                               <KeyFrame Cue="90%">
+                                                   <Setter Property="Opacity" Value="1" />
+                                               </KeyFrame>
+                                               <KeyFrame Cue="100%">
+                                                   <Setter Property="Opacity" Value="0" />
+                                               </KeyFrame>
+                                           </Animation>
+                                       </Style.Animations>
+                                   </Style>
+                               </Border.Styles>
+                               <Interaction.Behaviors>
+                                   <DataTriggerBehavior Binding="{Binding Type}"
+                                                        ComparisonCondition="Equal"
+                                                        Value="{x:Static enums:MessageState.Success}">
+                                       <ChangePropertyAction TargetObject="Border" PropertyName="Background"
+                                                             Value="{DynamicResource InfoBarSuccessSeverityBackgroundBrush}" />
+                                   </DataTriggerBehavior>
+                                   <DataTriggerBehavior Binding="{Binding Type}"
+                                                        ComparisonCondition="Equal"
+                                                        Value="{x:Static enums:MessageState.Error}">
+                                       <ChangePropertyAction TargetObject="Border" PropertyName="Background"
+                                                             Value="{DynamicResource InfoBarErrorSeverityBackgroundBrush}" />
+                                   </DataTriggerBehavior>
+                                   <DataTriggerBehavior Binding="{Binding Type}"
+                                                        ComparisonCondition="Equal"
+                                                        Value="{x:Static enums:MessageState.Warning}">
+                                       <ChangePropertyAction TargetObject="Border" PropertyName="Background"
+                                                             Value="{DynamicResource InfoBarWarningSeverityBackgroundBrush}" />
+                                   </DataTriggerBehavior>
+                               </Interaction.Behaviors>
+                               <StackPanel HorizontalAlignment="Left">
+                                   <TextBlock Foreground="{DynamicResource InfoBarTitleForeground}" FontWeight="Bold"
+                                              VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding Title}" />
+                                   <DockPanel LastChildFill="True">
+                                       <TextBlock Foreground="{DynamicResource InfoBarMessageForeground}"
+                                                  VerticalAlignment="Center" DockPanel.Dock="Left"
+                                                  Text="{Binding Message}" />
+
+                                       <Button Name="CloseButton"
+                                               VerticalAlignment="Center"
+                                               Command="{Binding CloseCommand,  RelativeSource={RelativeSource  AncestorType=controls:InfoBox}}"
+                                               CommandParameter="{Binding .}"
+                                               HorizontalAlignment="Right"
+                                               IsVisible="{Binding ShowClose}"
+                                               Theme="{StaticResource InfoBarCloseButtonStyle}">
+
+                                           <Viewbox Width="{StaticResource InfoBarCloseButtonGlyphSize}"
+                                                    Height="{StaticResource InfoBarCloseButtonGlyphSize}"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                               <controls1:SymbolIcon Symbol="{StaticResource InfoBarCloseButtonSymbol}" />
+                                           </Viewbox>
+                                       </Button>
+
+                                   </DockPanel>
+                               </StackPanel>
+                           </Border>
+                       </DataTemplate>
+                   </ItemsControl.ItemTemplate>
+               </ItemsControl>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

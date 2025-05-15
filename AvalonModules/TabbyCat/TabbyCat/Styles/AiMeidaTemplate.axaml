@@ -3,10 +3,11 @@
                     xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
                     xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
                     xmlns:controls="clr-namespace:TabbyCat.Controls"
-                    xmlns:extensions="clr-namespace:TabbyCat.Extensions">
+                    xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+                    xmlns:bases="clr-namespace:TabbyCat.ViewModels.Bases">
 
 
-    <DataTemplate DataType="viewModels:OnlyOneImageUploadAiGenerateImageBase"
+    <DataTemplate DataType="bases:OnlyOneImageUploadAiGenerateImageBase"
                   x:Key="OnlyOneImageUploadAiGenerateImageBaseTemplate">
         <StackPanel Orientation="Vertical" Margin="{StaticResource LeftRight10}" VerticalAlignment="Center">
             <controls:ImageControl HorizontalAlignment="Left" ShowHeader="True"

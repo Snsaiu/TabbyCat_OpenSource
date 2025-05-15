@@ -11,7 +11,10 @@ public class LocalizationResourceManager : INotifyPropertyChanged
         AppResources.Culture = new("en-US");
     }
 
-    public static LocalizationResourceManager Instance { get; } = new();
+    private static LocalizationResourceManager _instance;
+    
+    
+    public static LocalizationResourceManager Instance => _instance ??= new LocalizationResourceManager();
 
     public string this[string resourceKey] =>
         AppResources.ResourceManager.GetString(resourceKey, AppResources.Culture) ?? string.Empty;

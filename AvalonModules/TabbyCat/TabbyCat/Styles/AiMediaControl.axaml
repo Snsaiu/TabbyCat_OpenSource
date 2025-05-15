@@ -7,7 +7,8 @@
         xmlns:tabbyCat="clr-namespace:TabbyCat"
         xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
         xmlns:aiMediaEntities="clr-namespace:TabbyCat.Repository.Entities.AiMediaEntities;assembly=TabbyCat.Repository"
-        xmlns:controls1="clr-namespace:TabbyCat.Controls">
+        xmlns:controls1="clr-namespace:TabbyCat.Controls"
+        xmlns:bases="clr-namespace:TabbyCat.ViewModels.Bases">
     <Design.PreviewWith>
         <Border Padding="20">
             <!-- Add Controls for Previewer Here -->
@@ -21,7 +22,7 @@
                     <Grid RowDefinitions="Auto,*,Auto" Name="mainGrid">
                         <StackPanel Orientation="Vertical">
                             <ProgressBar IsIndeterminate="True"
-                                         IsVisible="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).IsBackgroundTaskRunning}" />
+                                         IsVisible="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).IsBackgroundTaskRunning}" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <controls:FontIcon ToolTip.Tip="{x:Static languages:AppResources.RunningTaskCount}"
                                                    Classes="icon"
@@ -30,16 +31,16 @@
                                 <TextBlock
                                     Margin="0,0,10,0"
                                     VerticalAlignment="Center"
-                                    Text="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).WorkingTaskCount}" />
+                                    Text="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).WorkingTaskCount}" />
                                 <Button Classes="icon"
                                         extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
-                                        Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).ClearTasksCommand}"
-                                        IsVisible="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).IsBackgroundTaskRunning}"
+                                        Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ClearTasksCommand}"
+                                        IsVisible="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).IsBackgroundTaskRunning}"
                                         Margin="{StaticResource LeftRight6}" />
                                 <Button ToolTip.Tip="{x:Static languages:AppResources.Portfolio}"
                                         Classes="icon"
                                         extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Portfolio}"
-                                        Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).OpenPortfolioCommand}"
+                                        Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).OpenPortfolioCommand}"
                                         HorizontalAlignment="Right" />
                             </StackPanel>
                         </StackPanel>
@@ -49,7 +50,7 @@
                             <ContentPresenter Content="{TemplateBinding Content}" />
                             <ScrollViewer VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1">
                                 <ItemsControl
-                                    ItemsSource="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).LastBuildResultMedia}">
+                                    ItemsSource="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).LastBuildResultMedia}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <ContentControl Content="{Binding .}"
@@ -67,7 +68,7 @@
                         </Grid>
 
                         <Button Width="100" Grid.Row="2" Content="{x:Static languages:AppResources.Perform}"
-                                Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).ConfirmCommand}"
+                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ConfirmCommand}"
                                 HorizontalAlignment="Left" Margin="{StaticResource Margin10}" />
                         <controls:PickerFlyoutPresenter
                             Grid.Row="0"
@@ -76,14 +77,14 @@
                             Height="{Binding ElementName=mainGrid, Path=Height}"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Stretch"
-                            IsVisible="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).ShowPanel}">
+                            IsVisible="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ShowPanel}">
 
                             <TabControl TabStripPlacement="Top">
                                 <TabItem Header="Images">
                                     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                                   VerticalScrollBarVisibility="Auto">
                                         <ListBox
-                                            ItemsSource="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).ImageCollectionViewSource}">
+                                            ItemsSource="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ImageCollectionViewSource}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate DataType="aiMediaEntities:AiMediaResultEntity">
                                                     <Grid RowDefinitions="*,Auto">
@@ -97,7 +98,7 @@
                                                             <Button Classes="icon"
                                                                     CommandParameter="{Binding .}"
                                                                     ToolTip.Tip="{x:Static languages:AppResources.OpenImage}"
-                                                                    Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).OpenImageByDefaultProgramCommand}"
+                                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).OpenImageByDefaultProgramCommand}"
                                                                     extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Look}" />
 
                                                             <Button Classes="icon" HorizontalAlignment="Center"
@@ -105,12 +106,12 @@
                                                                     ToolTip.Tip="{x:Static languages:AppResources.Download}"
                                                                     extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Download}"
                                                                     CommandParameter="{Binding .}"
-                                                                    Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).SaveFileToLocalCommand}" />
+                                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SaveFileToLocalCommand}" />
 
                                                             <Button Classes="icon"
                                                                     Grid.Column="2"
                                                                     ToolTip.Tip="{x:Static languages:AppResources.Delete}"
-                                                                    Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).DeleteMediaCommand}"
+                                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).DeleteMediaCommand}"
                                                                     CommandParameter="{Binding .}"
                                                                     extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Delete}" />
                                                         </Grid>
@@ -128,7 +129,7 @@
                                 <TabItem Header="Video">
 
                                     <ListBox
-                                        ItemsSource="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).VideoCollectionViewSource}">
+                                        ItemsSource="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).VideoCollectionViewSource}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="aiMediaEntities:AiMediaResultEntity">
                                                 <Grid RowDefinitions="*,Auto">
@@ -143,7 +144,7 @@
                                                         <Button Classes="icon"
                                                                 CommandParameter="{Binding .}"
                                                                 ToolTip.Tip="{x:Static languages:AppResources.OpenImage}"
-                                                                Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).OpenImageByDefaultProgramCommand}"
+                                                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).OpenImageByDefaultProgramCommand}"
                                                                 extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Look}" />
 
                                                         <Button Classes="icon" HorizontalAlignment="Center"
@@ -151,12 +152,12 @@
                                                                 ToolTip.Tip="{x:Static languages:AppResources.Download}"
                                                                 extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Download}"
                                                                 CommandParameter="{Binding .}"
-                                                                Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).SaveFileToLocalCommand}" />
+                                                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SaveFileToLocalCommand}" />
 
                                                         <Button Classes="icon"
                                                                 Grid.Column="2"
                                                                 ToolTip.Tip="{x:Static languages:AppResources.Delete}"
-                                                                Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).DeleteMediaCommand}"
+                                                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).DeleteMediaCommand}"
                                                                 CommandParameter="{Binding .}"
                                                                 extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Delete}" />
                                                     </Grid>
@@ -184,7 +185,7 @@
                             <Interaction.Behaviors>
                                 <EventTriggerBehavior EventName="Confirmed">
                                     <InvokeCommandAction
-                                        Command="{Binding $parent[UserControl].((viewModels:AiMediaViewModelBase)DataContext).ClosePortfolioPanelCommand}" />
+                                        Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ClosePortfolioPanelCommand}" />
                                 </EventTriggerBehavior>
                                 <!-- <EventTriggerBehavior EventName="Dismissed"> -->
                                 <!--     <InvokeCommandAction Command="{Binding SettingDismissCommand}" /> -->

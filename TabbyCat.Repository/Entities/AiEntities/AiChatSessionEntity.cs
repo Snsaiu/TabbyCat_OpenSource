@@ -11,13 +11,14 @@ public partial class AiChatSessionEntity : UserBaseEntity
     /// <summary>
     /// 多轮对话的主题内容，默认可能是会话1 会话2 会话3......
     /// </summary>
-    public string Theme { get; set; } = string.Empty;
+    [NotifyPropertyChangedFor(nameof(Header))] [ObservableProperty]
+    private string _theme = string.Empty;
 
     /// <summary>
     /// 自定义主题名称，如果为空，那么默认使用Theme，否则优先使用CustomTheme
     /// </summary>
     [NotifyPropertyChangedFor(nameof(Header))] [ObservableProperty]
-    public string? customTheme;
+    private string? _customTheme;
 
 
     [Ignore]
@@ -40,8 +41,12 @@ public partial class AiChatSessionEntity : UserBaseEntity
 
     public static AiChatSessionEntity CreateDefault(AssistantOccupation occupation=AssistantOccupation.Common)
     {
-        return new() { Theme = "默认会话", Occupation = occupation, IsDefault = true};
+        return new AiChatSessionEntity { Theme = "默认会话", Occupation = occupation, IsDefault = true};
     }
-    
-    
+
+    public static AiChatSessionEntity CreateCustom(string occupationName)
+    {
+        return new AiChatSessionEntity(){Theme = "默认会话",Occupation = AssistantOccupation.Custom,IsDefault = true,CustomOccupationName = occupationName};
+    }
+
 }

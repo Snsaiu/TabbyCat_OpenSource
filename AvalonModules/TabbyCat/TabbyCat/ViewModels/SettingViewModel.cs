@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using TabbyCat.Components.ViewModels;
+using TabbyCat.ViewModels.Bases;
 using TuDog.Interfaces.Navigations;
 using TuDog.Interfaces.RegionManagers;
 using TuDog.IocAttribute;

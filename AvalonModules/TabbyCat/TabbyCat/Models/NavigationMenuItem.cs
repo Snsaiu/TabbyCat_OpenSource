@@ -13,7 +13,9 @@ public partial class NavigationMenuItem:ModelBase
 
     [ObservableProperty] private Type? _content;
 
-    [ObservableProperty] private IEnumerable<NavigationMenuItem> children = [];
+    [ObservableProperty] private IEnumerable<NavigationMenuItem> _children = [];
+
+    [ObservableProperty] private bool isSelected;
 
 
     public static NavigationMenuItem Create(string header, string icon, IEnumerable<NavigationMenuItem> children)

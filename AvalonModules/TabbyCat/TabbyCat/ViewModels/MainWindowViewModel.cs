@@ -13,6 +13,7 @@ using TabbyCat.Repository.Entities.AiEntities;
 using TabbyCat.Service.AiServices;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
+using TabbyCat.ViewModels.Bases;
 using TuDog.Bootstrap;
 using TuDog.Interfaces.IDialogServers;
 using TuDog.Interfaces.RegionManagers;

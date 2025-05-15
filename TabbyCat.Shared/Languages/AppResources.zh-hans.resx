@@ -1307,9 +1307,6 @@
 支持中英文，长度不超过75个字符，超过部分会自动截断。
 示例值：一棵参天大树。</value>
   </data>
-  <data name="3DCartoon" xml:space="preserve">
-    <value>3D 卡通</value>
-  </data>
   <data name="Cartoon" xml:space="preserve">
     <value>卡通</value>
   </data>
@@ -1396,5 +1393,35 @@
   </data>
   <data name="PictureChatOnlyTabbycatAiModel" xml:space="preserve">
     <value>图片聊天仅支持TabbyCatAiModel</value>
+  </data>
+    <data name="Contact" xml:space="preserve">
+    <value>联系人</value>
+  </data>
+  <data name="AddContact" xml:space="preserve">
+    <value>添加联系人</value>
+  </data>
+  <data name="MustInputContact" xml:space="preserve">
+    <value>请输入新联系人的名称</value>
+  </data>
+  <data name="MustInputContactDescription" xml:space="preserve">
+    <value>请输入联系人描述</value>
+  </data>
+  <data name="ExistContactName" xml:space="preserve">
+    <value>已经存在名为‘{0}’的联系人</value>
+  </data>
+    <data name="DeleteContact" xml:space="preserve">
+    <value>删除联系人</value>
+  </data>
+  <data name="DeleteConversation" xml:space="preserve">
+    <value>删除该会话</value>
+  </data>
+  <data name="ThreeDCartoon" xml:space="preserve">
+    <value>3D 卡通</value>
+  </data>
+    <data name="RenameSession" xml:space="preserve">
+    <value>重命名会话</value>
+  </data>
+  <data name="HasChatHistoryCannotDeleteContact" xml:space="preserve">
+    <value>当前联系人还有聊天记录，请删除聊天记录后再试。</value>
   </data>
 </root>

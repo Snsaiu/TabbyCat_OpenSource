@@ -1,18 +1,13 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using System.Reactive.Linq;
 using System.Text;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
 using FantasyResultModel;
-using FluentAvalonia.UI.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using TabbyCat.Enums;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
@@ -23,9 +18,8 @@ using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
 using TuDog.Bootstrap;
 using TuDog.Extensions;
-using ILogger = Serilog.ILogger;
 
-namespace TabbyCat.ViewModels;
+namespace TabbyCat.ViewModels.Bases;
 
 public abstract partial class AiMediaViewModelBase : ViewModelBase
 {
@@ -186,8 +180,8 @@ public abstract partial class AiMediaViewModelBase : ViewModelBase
     {
         var list = (await AiMediaResultService.QueryAsync(x => x.Email == user.Email))
             .OrderByDescending(x => x.UpdateTime);
-        VideoCollectionViewSource.Reset(list.Where(x => x.FileType == ".mp4"));
-        ImageCollectionViewSource.Reset(list.Where(x => x.FileType == ".png"));
+        ObservableCollectionExtension.Reset(VideoCollectionViewSource, list.Where(x => x.FileType == ".mp4"));
+        ObservableCollectionExtension.Reset(ImageCollectionViewSource, list.Where(x => x.FileType == ".png"));
         return list;
     }
 
@@ -223,7 +217,7 @@ public abstract partial class AiMediaViewModelBase<TPublishModel, TInput, TParam
         var list = await ResetResultsAsync();
         var temps = list.Where(x => x.WorkType == workType && x.TaskId == key)
             .Select(x => x.SavePath);
-       LastBuildResultMedia.Reset(temps);
+        ObservableCollectionExtension.Reset(LastBuildResultMedia, temps);
 
     }
 
@@ -334,7 +328,7 @@ public abstract partial class AiMediaViewModelBase<TPublishModel, TInput, TParam
                 x.Email == user.Email && x.WorkType == RunningHubWorkType && x.TaskStatus == TaskState.Success))
             .OrderByDescending(x => x.UpdateTime).FirstOrDefault();
         if (lastRunTask != null)
-            LastBuildResultMedia.Reset(
+            ObservableCollectionExtension.Reset(LastBuildResultMedia,
                 (await AiMediaResultService.QueryAsync(x => x.TaskId == lastRunTask.TaskId)).Select(x => x.SavePath));
     }
 

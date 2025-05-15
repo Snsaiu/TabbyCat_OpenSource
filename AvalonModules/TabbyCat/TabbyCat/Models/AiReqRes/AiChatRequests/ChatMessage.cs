@@ -14,6 +14,9 @@ public abstract class MessageSessionBase:ModelBase
     [JsonProperty("model")] public virtual string Model { get; set; } = string.Empty;
 
     [JsonProperty("stream")] public virtual bool Stream { get; set; } = true;
+    
+    [JsonIgnore]
+    public AssistantOccupation Occupation { get; set; }
 
 
 }

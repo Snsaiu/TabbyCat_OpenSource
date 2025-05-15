@@ -7,12 +7,13 @@ using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models.Users;
 using TabbyCat.Shared.Languages;
+using TabbyCat.ViewModels.Bases;
 using TuDog.Bootstrap;
 using TuDog.Interfaces.IDialogServers;
 
 namespace TabbyCat.ViewModels;
 
-public partial class LoginViewModelBase:ViewModelBase
+public partial class LoginViewModelBase : ViewModelBase
 {
 
     [ObservableProperty]

@@ -6,6 +6,7 @@ using TabbyCat.Models;
 using TabbyCat.Repository.Entities.AiEntities;
 using TabbyCat.Service.AiServices;
 using TabbyCat.Shared.Languages;
+using TabbyCat.ViewModels.Bases;
 using TuDog.Extensions;
 using TuDog.Interfaces.Navigations;
 using TuDog.Interfaces.Navigations.Impl;

@@ -19,6 +19,7 @@ public partial class DialogWindow : Window
 
     private Button _primaryButton;
     private Button _secondaryButton;
+    private InfoBox _infoBox;
 
     public IViewModelResultAsync DialogViewModel { get; set; }
 
@@ -63,6 +64,7 @@ public partial class DialogWindow : Window
         base.OnApplyTemplate(e);
         _primaryButton = e.NameScope.Find<Button>("PrimaryButton") ?? throw new NullReferenceException();
         _secondaryButton = e.NameScope.Find<Button>("SecondaryButton") ?? throw new NullReferenceException();
+        _infoBox = e.NameScope.Find<InfoBox>("PART_InfoBox") ?? throw new NullReferenceException();
 
         this.GetObservable(PrimaryButtonTextProperty)
             .Subscribe(x => _primaryButton.IsVisible = !string.IsNullOrEmpty(x));
@@ -76,6 +78,10 @@ public partial class DialogWindow : Window
             Width = userControl.Width;
             Height = userControl.Height + 24 * 7;
         });
+        DialogViewModel.ErrorMessageAction += (message, title, state) =>
+        {
+            _infoBox.AddNewMessage(InfoModel.Create(message, title, true, state));
+        };
     }
 
     public DialogWindow()

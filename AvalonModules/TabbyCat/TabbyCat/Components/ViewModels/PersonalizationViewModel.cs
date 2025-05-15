@@ -8,6 +8,7 @@ using TabbyCat.Models.Users.Configs;
 using TabbyCat.Shared.Languages;
 using TabbyCat.ViewModels;
 using TuDog.IocAttribute;
+using ViewModelBase = TabbyCat.ViewModels.Bases.ViewModelBase;
 
 namespace TabbyCat.Components.ViewModels;
 

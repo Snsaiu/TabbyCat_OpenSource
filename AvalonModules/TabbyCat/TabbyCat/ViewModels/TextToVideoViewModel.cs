@@ -5,6 +5,7 @@ using TabbyCat.Extensions;
 using TabbyCat.Models.AiMediaResponses;
 using TabbyCat.Repository.Entities.AiMediaEntities;
 using TabbyCat.Shared.Enums;
+using TabbyCat.ViewModels.Bases;
 using TuDog.IocAttribute;
 
 namespace TabbyCat.ViewModels;

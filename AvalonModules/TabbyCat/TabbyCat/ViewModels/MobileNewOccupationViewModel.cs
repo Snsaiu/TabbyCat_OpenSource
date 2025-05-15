@@ -10,7 +10,7 @@ using TuDog.IocAttribute;
 namespace TabbyCat.ViewModels;
 
 [Register]
-public partial class MobileNewOccupationViewModel(INavigationService navigationService) : AiViewModelBase
+public partial class MobileNewOccupationViewModel(INavigationService navigationService) : Bases.AiViewModelBase
 {
     [ObservableProperty] private string occupationName = string.Empty;
     [ObservableProperty] private string description = string.Empty;

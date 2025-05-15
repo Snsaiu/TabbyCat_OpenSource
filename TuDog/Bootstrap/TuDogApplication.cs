@@ -9,6 +9,8 @@ using TuDog.Bases.Regions;
 using TuDog.Bases.Regions.Impl;
 using TuDog.Interfaces.IDialogServers;
 using TuDog.Interfaces.IDialogServers.Impl;
+using TuDog.Interfaces.MessageBarService;
+using TuDog.Interfaces.MessageBarService.Impl;
 using TuDog.Interfaces.Navigations;
 using TuDog.Interfaces.Navigations.Impl;
 using TuDog.Interfaces.PreferenceServices;
@@ -52,6 +54,7 @@ public abstract class TuDogApplication : Application
         collection.AddSingleton<IDialogServer, DialogServer>();
         collection.AddSingleton<IPreferenceService, JsonPreferenceService>();
         collection.AddSingleton<INavigationService>(_ => new NavigationService(ApplicationLifetime));
+        collection.AddSingleton<IMessageBarService, MessageBarService>();
     }
 
     private void DisableAvaloniaDataAnnotationValidation()

@@ -3,10 +3,20 @@
 namespace TabbyCat;
 
 [IconBuild(
-    @"https://at.alicdn.com/t/c/font_4833862_lnog0s40119.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81nu8JOP&file=font_4833862_lnog0s40119.json")]
+    @"https://at.alicdn.com/t/c/font_4833862_rgds4peqgz.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81cMWXGA&file=font_4833862_rgds4peqgz.json")]
 public static partial class IconFontProvider
 {
-   ///<summary>
+  ///<summary>
+///More
+///</summary>
+public const string More = "\ue60b";
+
+///<summary>
+///chat
+///</summary>
+public const string Chat = "\ue69d";
+
+///<summary>
 ///涂鸦
 ///</summary>
 public const string Doodle = "\ue727";

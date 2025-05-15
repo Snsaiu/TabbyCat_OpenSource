@@ -17,6 +17,7 @@
                      xmlns:extensions1="clr-namespace:TuDog.Extensions;assembly=TuDog"
                      xmlns:converters="clr-namespace:TabbyCat.Converters"
                      xmlns:enums="clr-namespace:TabbyCat.Enums"
+                     xmlns:uIs="clr-namespace:TuDog.UIs;assembly=TuDog"
                      ExtendClientAreaChromeHints="NoChrome"
                      ExtendClientAreaToDecorationsHint="True"
                      x:DataType="viewModels:MainWindowViewModel">
@@ -93,6 +94,7 @@
             </ContentControl>
 
         </Grid>
+        <uIs:InfoBox Grid.RowSpan="3" HorizontalAlignment="Right" Margin="0,20,5,0" VerticalAlignment="Top"/>
     </Grid>
     <i:Interaction.Behaviors>
         <ia:EventTriggerBehavior EventName="Loaded">

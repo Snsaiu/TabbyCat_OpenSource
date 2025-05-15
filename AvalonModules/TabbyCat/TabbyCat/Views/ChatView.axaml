@@ -17,6 +17,7 @@
     xmlns:views="clr-namespace:TabbyCat.Views"
     xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
     xmlns:models="clr-namespace:TabbyCat.Models"
+    xmlns:aiEntities="clr-namespace:TabbyCat.Repository.Entities.AiEntities;assembly=TabbyCat.Repository"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="viewModels:ChatViewModel"
@@ -70,11 +71,22 @@
                         Command="{Binding OpenFavouriteDialogCommand}"
                         ToolTip.Tip="{x:Static languages:AppResources.OpenFavorites}" />
 
-                    <Button
-                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.ChatPanelSetting}"
-                        Classes="icon"
-                        Command="{Binding OpenSettingCommand}"
-                        ToolTip.Tip="{x:Static languages:AppResources.ChatSetting}" />
+                    <!-- <Button -->
+                    <!--     extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.ChatPanelSetting}" -->
+                    <!--     Classes="icon" -->
+                    <!--     Command="{Binding OpenSettingCommand}" -->
+                    <!--     ToolTip.Tip="{x:Static languages:AppResources.ChatSetting}" /> -->
+
+                    <Button Classes="icon" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.More}">
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuItem Header="{x:Static languages:AppResources.RenameSession}"
+                                          Command="{Binding OpenRenameSessionDialogCommand}" />
+                                <MenuItem Header="{x:Static languages:AppResources.DeleteConversation}" Command="{Binding DeleteConversationCommand}"></MenuItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+
                 </StackPanel>
             </Grid>
         </Border>
@@ -87,7 +99,60 @@
 
         <!--  主要内容  -->
 
-        <ScrollViewer Grid.Row="1" Name="sv" IsScrollChainingEnabled="False">
+        <DockPanel LastChildFill="True" Grid.Row="1">
+
+            <!-- 列表 -->
+            <Grid Width="250" DockPanel.Dock="Left"
+                  IsVisible="{OnPlatform Windows=true,macOS=true,Linux=true,Default=false}">
+
+                <Border BorderThickness="0,0,1,0">
+                    <ScrollViewer>
+                        <ListBox
+                            SelectedItem="{Binding AiChatSession}"
+                            ItemsSource="{Binding ChatList}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="aiEntities:AiChatSessionEntity">
+                                    <controls:SwipeControl>
+                                        <DockPanel LastChildFill="True">
+                                            <Border DockPanel.Dock="Left" CornerRadius="10" Width="50" Height="50"
+                                                    Background="{Binding Occupation,Converter={converters:String2ColorConverter}}">
+                                                <TextBlock
+                                                    Text="{Binding Occupation,Converter={converters:String2FirstCharConverter}}"
+                                                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                    FontSize="20" Foreground="White" />
+                                            </Border>
+                                            <Grid RowDefinitions="*,*" DockPanel.Dock="Right" Margin="10,0,0,0">
+                                                <TextBlock
+                                                    Text="{Binding Path=.,Converter={converters:OccupationNameConverter}}"
+                                                    VerticalAlignment="Center" FontWeight="Bold" />
+                                                <TextBlock Text="{Binding Header}"
+                                                           VerticalAlignment="Center"
+                                                           TextTrimming="{x:Static TextTrimming.CharacterEllipsis}"
+                                                           Grid.Row="1" />
+                                            </Grid>
+                                        </DockPanel>
+                                        <controls:SwipeControl.SwipeContent>
+                                            <Button
+                                                Command="{Binding $parent[views:MobileChatListView].((viewModels:MobileChatListViewModel)DataContext).DeleteChatCommand }"
+                                                CommandParameter="{Binding .}"
+                                                VerticalAlignment="Stretch" Width="80" Padding="0"
+                                                Background="OrangeRed"
+                                                Foreground="White" BorderThickness="0" Classes="icon"
+                                                extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Delete}" />
+                                        </controls:SwipeControl.SwipeContent>
+                                    </controls:SwipeControl>
+
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </ScrollViewer>
+                </Border>
+
+
+            </Grid>
+
+            <Grid DockPanel.Dock="Right" RowDefinitions="*,Auto,Auto">
+                <ScrollViewer Grid.Row="0" Name="sv" IsScrollChainingEnabled="False">
             <ItemsControl ItemsSource="{Binding ChatModels}" Name="itemsControl"
                           ScrollViewer.IsScrollChainingEnabled="False">
                 <ItemsControl.ItemTemplate>
@@ -99,11 +164,11 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <Button Grid.Row="2" HorizontalAlignment="Center" Classes="icon" IsVisible="{Binding IsBusy}"
-                extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
-                Command="{Binding CancelRequestChatCommand}" />
+                <Button Grid.Row="1" HorizontalAlignment="Center" Classes="icon" IsVisible="{Binding IsBusy}"
+                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
+                        Command="{Binding CancelRequestChatCommand}" />
 
-        <Grid Grid.Row="3" Grid.RowDefinitions="Auto,*">
+                <Grid Grid.Row="2" Grid.RowDefinitions="Auto,*">
             <!--  第一行是类似上传图片的功能按键，第二行是文本输入框，第三行是发送按钮  -->
             <StackPanel Orientation="Vertical">
                 <!-- 放悬浮的图片 -->
@@ -176,25 +241,9 @@
 
 
         </Grid>
+            </Grid>
+        </DockPanel>
 
-        <fluent:PickerFlyoutPresenter
-            Grid.Row="0"
-            Grid.RowSpan="4"
-            Width="300"
-            Height="{Binding ElementName=mainGrid, Path=Height}"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Stretch"
-            IsVisible="{Binding ShowPanel}">
-            <ContentControl attachs:RegionBehavior.Region="chatPanelSettingContainer" />
-            <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="Confirmed">
-                    <ia:InvokeCommandAction Command="{Binding SettingConfirmCommand}" />
-                </ia:EventTriggerBehavior>
-                <ia:EventTriggerBehavior EventName="Dismissed">
-                    <ia:InvokeCommandAction Command="{Binding SettingDismissCommand}" />
-                </ia:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </fluent:PickerFlyoutPresenter>
 
     </Grid>
 </UserControl>

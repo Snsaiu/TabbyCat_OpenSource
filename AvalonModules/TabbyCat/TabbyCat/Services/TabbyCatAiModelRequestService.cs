@@ -47,6 +47,20 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
                 }
                 else
                 {
+
+                    if (requestModel.Occupation is AssistantOccupation.DeveloperRelationsconsultant
+                        or AssistantOccupation.EthereumDeveloper or AssistantOccupation.FullstackSoftwareDeveloper
+                        or AssistantOccupation.knowledgeableSoftwareDevelopmentMentor
+                        or AssistantOccupation.SeniorFrontendDeveloper or AssistantOccupation.SeniorFrontendDeveloper
+                        or AssistantOccupation.UXUIDeveloper)
+                    {
+                        newsModel.Model = "qwen-coder-plus";
+                    }
+                    else
+                    {
+                        newsModel.Model = "qwen-plus";
+                    }
+                 
                     Logger.LogDebug("用户没有使用联网功能和深度思考功能，使用的模型为{Model}。",newsModel.Model);
                 }
             }

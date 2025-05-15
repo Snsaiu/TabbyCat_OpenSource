@@ -1916,9 +1916,6 @@ Tips for prompt words: The prompt words should describe the desired image conten
 Supports Chinese and English, with a length of no more than 75 characters, and the excess will be automatically truncated.
 Example value: a towering tree.</value>
   </data>
-  <data name="3DCartoon" xml:space="preserve">
-    <value>3D Cartoon</value>
-  </data>
   <data name="Cartoon" xml:space="preserve">
     <value>Cartoon</value>
   </data>
@@ -2005,5 +2002,35 @@ Example value: a towering tree.</value>
   </data>
   <data name="PictureChatOnlyTabbycatAiModel" xml:space="preserve">
     <value>Picture chat only supports TabbyCatAiModel</value>
+  </data>
+    <data name="Contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="AddContact" xml:space="preserve">
+    <value>Add a contact</value>
+  </data>
+  <data name="MustInputContact" xml:space="preserve">
+    <value>Please enter a name for your new contact</value>
+  </data>
+  <data name="MustInputContactDescription" xml:space="preserve">
+    <value>Please enter a description for your contact</value>
+  </data>
+  <data name="ExistContactName" xml:space="preserve">
+    <value>A contact named {0} already exists</value>
+  </data>
+    <data name="DeleteContact" xml:space="preserve">
+    <value>Delete Contact</value>
+  </data>
+  <data name="DeleteConversation" xml:space="preserve">
+    <value>Delete this conversation</value>
+  </data>
+  <data name="ThreeDCartoon" xml:space="preserve">
+    <value>3D Cartoon</value>
+  </data>
+    <data name="RenameSession" xml:space="preserve">
+    <value>Rename session</value>
+  </data>
+  <data name="HasChatHistoryCannotDeleteContact" xml:space="preserve">
+    <value>The current contact still has chat history. Please delete the chat history and try again.</value>
   </data>
 </root>

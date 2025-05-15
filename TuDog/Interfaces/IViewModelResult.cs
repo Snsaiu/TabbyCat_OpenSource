@@ -1,4 +1,5 @@
 using TuDog.Bootstrap;
+using TuDog.Enums;
 
 namespace TuDog.Interfaces;
 
@@ -13,6 +14,7 @@ public interface IViewModelResult:ITuDogViewModel
 
 public interface IViewModelResultAsync:ITuDogViewModel
 {
+    Action<string, string, MessageState> ErrorMessageAction { get; set; }
     Task<object?> ConfirmAsync();
     Task<object?> CancelAsync();
 

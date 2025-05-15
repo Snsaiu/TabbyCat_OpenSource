@@ -13,11 +13,14 @@
                     <Grid RowDefinitions="Auto,*,Auto" Background="{DynamicResource ContentDialogTopOverlay}">
                         <Border Padding="24" BorderThickness="0,0,0,1"
                                 BorderBrush="{DynamicResource ContentDialogBorderBrush}">
-                            <TextBlock FontSize="20" Text="{TemplateBinding Title}"
-                                       FontWeight="DemiBold"
-                                       Foreground="{DynamicResource TextControlForeground}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" />
+                            <StackPanel Orientation="Vertical">
+
+                                <TextBlock FontSize="20" Text="{TemplateBinding Title}"
+                                           FontWeight="DemiBold"
+                                           Foreground="{DynamicResource TextControlForeground}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                            </StackPanel>
                         </Border>
                         <Grid Grid.Row="1">
                             <ContentPresenter Content="{TemplateBinding Content}" />
@@ -45,6 +48,9 @@
                                         Content="{TemplateBinding SecondaryButtonText}" />
                             </StackPanel>
                         </Border>
+                        <uIs:InfoBox Name="PART_InfoBox" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Right"
+                                     VerticalAlignment="Top"
+                                     Margin="0,5,0,0" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

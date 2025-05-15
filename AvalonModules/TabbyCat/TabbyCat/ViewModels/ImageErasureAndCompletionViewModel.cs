@@ -11,7 +11,7 @@ using TuDog.Models;
 namespace TabbyCat.ViewModels;
 
 [Register]
-public sealed partial class ImageErasureAndCompletionViewModel : AiGenerateImageEditBase<ImageEraseCompletionEditModel,
+public sealed partial class ImageErasureAndCompletionViewModel : Bases.AiGenerateImageEditBase<ImageEraseCompletionEditModel,
     ImageEraseCompletionEditModel.ImageEraseCompletionEditInput,
     ImageEraseCompletionEditModel.ImageEraseCompletionParameter>
 {

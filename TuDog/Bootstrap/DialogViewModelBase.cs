@@ -1,3 +1,4 @@
+using TuDog.Enums;
 using TuDog.Interfaces;
 
 namespace TuDog.Bootstrap;
@@ -8,7 +9,7 @@ public abstract class DialogViewModelBase:TuDogViewModelBase, IViewModelResult,I
     public abstract object Confirm();
 
     public abstract object Cancel();
-    
+
     public virtual bool CanConfirm()
     {
         return true;
@@ -19,11 +20,12 @@ public abstract class DialogViewModelBase:TuDogViewModelBase, IViewModelResult,I
 
 public abstract class DialogViewModelBaseAsync : TuDogViewModelBase, IViewModelResultAsync, IParameter
 {
+    public Action<string, string, MessageState> ErrorMessageAction { get; set; }
     public abstract Task<object?> ConfirmAsync();
 
 
     public abstract Task<object?> CancelAsync();
- 
+
 
     public Task<bool> CanConfirmAsync()
     {
@@ -40,21 +42,26 @@ public abstract class DialogViewModelBase<TParameter,TResult> : TuDogViewModelBa
 
 
     public abstract TResult Cancel();
-  
+
     public bool CanConfirm()
     {
         return true;
     }
-    
+
     public TParameter? Parameter { get; set; }
 }
 
 public abstract class DialogViewModelBaseAsync<TParameter,TResult> : TuDogViewModelBase, IViewModelResultAsync<TResult>,IParameter<TParameter>
 {
-    public Task<bool> CanConfirmAsync()
+    public virtual Task<bool> CanConfirmAsync()
     {
         return Task.FromResult(true);
     }
+
+    /// <summary>
+    /// message,title,state
+    /// </summary>
+    public Action<string, string, MessageState> ErrorMessageAction { get; set; }
 
     public abstract Task<TResult> ConfirmAsync();
 
@@ -63,4 +70,3 @@ public abstract class DialogViewModelBaseAsync<TParameter,TResult> : TuDogViewMo
 
     public TParameter? Parameter { get; set; }
 }
-
