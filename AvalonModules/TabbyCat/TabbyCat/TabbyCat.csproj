@@ -35,6 +35,7 @@
     <PackageReference Include="Markdown.Avalonia.YouYan" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
       <PackageReference Include="Microsoft.Extensions.Http" />
+      <PackageReference Include="NCalcSync" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="OpenTelemetry" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" />

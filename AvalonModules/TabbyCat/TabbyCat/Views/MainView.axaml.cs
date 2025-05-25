@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TabbyCat.IServices;
 using TabbyCat.Models;
 using TabbyCat.ViewModels;
+using TabbyCat.ViewModels.Bases;
 using TuDog.Bootstrap;
 using TuDog.Interfaces.RegionManagers;
 
@@ -37,7 +38,16 @@ namespace TabbyCat.Views
             else if (e.SelectedItem is NavigationMenuItem { Content: not null } and var item)
             {
                 item.IsSelected = true;
-                _regionManager.AddToRegion("navigationViewContainer", item.Content);
+               
+                var vm = _regionManager.AddToRegionReturnViewModel("navigationViewContainer", item.Content);
+                if (vm is IMediaNavigation mediaNavigation && _navigationMenuItemService.Parameter is not null)
+                {
+                    mediaNavigation.NavigationAsync(_navigationMenuItemService.Parameter).ContinueWith(x =>
+                    {
+                        _navigationMenuItemService.Parameter = null;
+                    });
+                }
+              
             }
 
         }

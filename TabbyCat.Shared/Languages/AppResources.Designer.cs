@@ -3842,5 +3842,107 @@ namespace TabbyCat.Shared.Languages {
                 return ResourceManager.GetString("HasChatHistoryCannotDeleteContact", resourceCulture);
             }
         }
+        
+        public static string SendTo {
+            get {
+                return ResourceManager.GetString("SendTo", resourceCulture);
+            }
+        }
+        
+        public static string Look {
+            get {
+                return ResourceManager.GetString("Look", resourceCulture);
+            }
+        }
+        
+        public static string ReferUploadedImageStyle {
+            get {
+                return ResourceManager.GetString("ReferUploadedImageStyle", resourceCulture);
+            }
+        }
+        
+        public static string RetroComics {
+            get {
+                return ResourceManager.GetString("RetroComics", resourceCulture);
+            }
+        }
+        
+        public static string ThreeDFairyTale {
+            get {
+                return ResourceManager.GetString("ThreeDFairyTale", resourceCulture);
+            }
+        }
+        
+        public static string TwoDFairyTale {
+            get {
+                return ResourceManager.GetString("TwoDFairyTale", resourceCulture);
+            }
+        }
+        
+        public static string SmallFresh {
+            get {
+                return ResourceManager.GetString("SmallFresh", resourceCulture);
+            }
+        }
+        
+        public static string FutureTechnology {
+            get {
+                return ResourceManager.GetString("FutureTechnology", resourceCulture);
+            }
+        }
+        
+        public static string ChinesePaintingAncientStyle {
+            get {
+                return ResourceManager.GetString("ChinesePaintingAncientStyle", resourceCulture);
+            }
+        }
+        
+        public static string ArmorStyle {
+            get {
+                return ResourceManager.GetString("ArmorStyle", resourceCulture);
+            }
+        }
+        
+        public static string ColorfulCartoon {
+            get {
+                return ResourceManager.GetString("ColorfulCartoon", resourceCulture);
+            }
+        }
+        
+        public static string ElegantChineseStyle {
+            get {
+                return ResourceManager.GetString("ElegantChineseStyle", resourceCulture);
+            }
+        }
+        
+        public static string WelcomeNewYear {
+            get {
+                return ResourceManager.GetString("WelcomeNewYear", resourceCulture);
+            }
+        }
+        
+        public static string AvatarStylization {
+            get {
+                return ResourceManager.GetString("AvatarStylization", resourceCulture);
+            }
+        }
+        
+        public static string SelectReferenceImage {
+            get {
+                return ResourceManager.GetString("SelectReferenceImage", resourceCulture);
+            }
+        }
+        
+        public static string SendMessage {
+            get {
+                return ResourceManager.GetString("SendMessage", resourceCulture);
+            }
+        }
+        
+        public static string ContactDescription {
+            get {
+                return ResourceManager.GetString("ContactDescription", resourceCulture);
+            }
+        }
     }
 }

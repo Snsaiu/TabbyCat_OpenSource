@@ -2033,4 +2033,55 @@ Example value: a towering tree.</value>
   <data name="HasChatHistoryCannotDeleteContact" xml:space="preserve">
     <value>The current contact still has chat history. Please delete the chat history and try again.</value>
   </data>
+  <data name="SendTo" xml:space="preserve">
+    <value>Send to</value>
+  </data>
+  <data name="Look" xml:space="preserve">
+    <value>Look</value>
+  </data>
+  <data name="ReferUploadedImageStyle" xml:space="preserve">
+    <value>Refer to the uploaded image style</value>
+  </data>
+  <data name="RetroComics" xml:space="preserve">
+    <value>Retro comics</value>
+  </data>
+  <data name="ThreeDFairyTale" xml:space="preserve">
+    <value>3D Fairy Tale</value>
+  </data>
+  <data name="TwoDFairyTale" xml:space="preserve">
+    <value>2D Animation</value>
+  </data>
+  <data name="SmallFresh" xml:space="preserve">
+    <value>Small Fresh</value>
+  </data>
+  <data name="FutureTechnology" xml:space="preserve">
+    <value>Future Technology</value>
+  </data>
+  <data name="ChinesePaintingAncientStyle" xml:space="preserve">
+    <value>Chinese painting ancient style</value>
+  </data>
+  <data name="ArmorStyle" xml:space="preserve">
+    <value>Armor style</value>
+  </data>
+  <data name="ColorfulCartoon" xml:space="preserve">
+    <value>Colorful cartoon</value>
+  </data>
+  <data name="ElegantChineseStyle" xml:space="preserve">
+    <value>Elegant Chinese style</value>
+  </data>
+  <data name="WelcomeNewYear" xml:space="preserve">
+    <value>Welcome the New Year</value>
+  </data>
+  <data name="AvatarStylization" xml:space="preserve">
+    <value>Avatar Stylization</value>
+  </data>
+  <data name="SelectReferenceImage" xml:space="preserve">
+    <value>Select a reference image</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>Send Message</value>
+  </data>
+  <data name="ContactDescription" xml:space="preserve">
+    <value>Contact Description:</value>
+  </data>
 </root>

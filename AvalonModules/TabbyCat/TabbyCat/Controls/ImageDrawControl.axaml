@@ -28,7 +28,7 @@
                 </Image>
             </Grid>
       
-        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 0 0 10" Spacing="10">
+        <StackPanel  Background="#7691CC" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 0 0 10" Spacing="10">
             <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.Pen}" Icon="{x:Static tabbyCat:IconFontProvider.Pen}" IsChecked="True" GroupName="pen" Click="SetPen"></controls:NavigationButton>
             <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.Eraser}" Icon="{x:Static tabbyCat:IconFontProvider.Eraser}" Click="SetEraser" GroupName="pen"></controls:NavigationButton>
             <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.Move}" Icon="{x:Static tabbyCat:IconFontProvider.Move}" GroupName="pen" Click="SetMove"></controls:NavigationButton>

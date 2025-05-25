@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
@@ -32,6 +33,8 @@ public abstract partial class AiMediaViewModelBase : ViewModelBase
     protected ILogger<AiMediaViewModelBase> Logger { get; } =
         TuDogApplication.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger<AiMediaViewModelBase>();
 
+    protected INavigationMenuItemService NavigationMenuItemService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<INavigationMenuItemService>();
 
     protected Task<ResultBase<string>> UploadImageAsync(string fileName)
     {
@@ -56,8 +59,12 @@ public abstract partial class AiMediaViewModelBase : ViewModelBase
 
     [ObservableProperty] private ObservableCollection<AiMediaResultEntity> _videoCollectionViewSource = [];
 
-    protected abstract AiMediaWorkType RunningHubWorkType { get; }
+    [ObservableProperty] private IList selectedMediaFiles;
+    
+    [ObservableProperty]
+    private IList _selectedResultMediaEntities;
 
+    protected abstract AiMediaWorkType RunningHubWorkType { get; }
 
 
     protected IAiMediaService AiMediaService { get; } =
@@ -173,6 +180,36 @@ public abstract partial class AiMediaViewModelBase : ViewModelBase
         }
     }
 
+    [RelayCommand]
+    private Task SendTo(AiMediaWorkType workType)
+    {
+        List<string> files = new();
+        foreach (var file in SelectedMediaFiles)
+        {
+            if (file is null)
+                continue;
+            files.Add(file.ToString());
+        }
+
+        return this.NavigationMenuItemService.NavigationAsync(workType, files.AsReadOnly());
+    }
+
+
+    [RelayCommand]
+    private Task ListSendTo(AiMediaWorkType workType)
+    {
+        List<string> files = new();
+        foreach (var file in SelectedResultMediaEntities)
+        {
+            if (file is null)
+                continue;
+            var f = (AiMediaResultEntity)file;
+            files.Add(f.SavePath);
+        }
+
+        return this.NavigationMenuItemService.NavigationAsync(workType, files.AsReadOnly());
+    }
+
     /// <summary>
     /// 获得结果集
     /// </summary>
@@ -196,6 +233,19 @@ public abstract partial class AiMediaViewModelBase : ViewModelBase
         await ResetResultsAsync();
         ShowPanel = true;
     }
+
+    [RelayCommand]
+    private async Task Look()
+    {
+        foreach (var item in SelectedMediaFiles)
+        {
+            var file = item.ToString();
+            if (!File.Exists(file))
+                continue;
+            
+            await App.TopLevel.Launcher.LaunchUriAsync(new Uri(item.ToString()));
+        }
+    }
 }
 
 public abstract partial class AiMediaViewModelBase<TPublishModel, TInput, TParameters> : AiMediaViewModelBase
@@ -218,7 +268,6 @@ public abstract partial class AiMediaViewModelBase<TPublishModel, TInput, TParam
         var temps = list.Where(x => x.WorkType == workType && x.TaskId == key)
             .Select(x => x.SavePath);
         ObservableCollectionExtension.Reset(LastBuildResultMedia, temps);
-
     }
 
 

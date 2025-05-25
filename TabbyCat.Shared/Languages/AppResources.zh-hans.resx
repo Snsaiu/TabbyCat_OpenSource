@@ -504,9 +504,6 @@
   <data name="SocialMediaManager" xml:space="preserve">
     <value>社交媒体经理</value>
   </data>
-  <data name="Elocutionist" xml:space="preserve">
-    <value>演说家</value>
-  </data>
   <data name="ScientificDataVisualizer" xml:space="preserve">
     <value>科学数据可视化工具</value>
   </data>
@@ -1423,5 +1420,59 @@
   </data>
   <data name="HasChatHistoryCannotDeleteContact" xml:space="preserve">
     <value>当前联系人还有聊天记录，请删除聊天记录后再试。</value>
+  </data>
+  <data name="SendTo" xml:space="preserve">
+    <value>发送到</value>
+  </data>
+  <data name="Look" xml:space="preserve">
+    <value>查看</value>
+  </data>
+  <data name="ReferUploadedImageStyle" xml:space="preserve">
+    <value>参考上传图片风格</value>
+  </data>
+  <data name="ThreeDFairyTale" xml:space="preserve">
+    <value>3D童话</value>
+  </data>
+  <data name="TwoDFairyTale" xml:space="preserve">
+    <value>二次元</value>
+  </data>
+  <data name="SmallFresh" xml:space="preserve">
+    <value>小清晰</value>
+  </data>
+  <data name="FutureTechnology" xml:space="preserve">
+    <value>未来科技</value>
+  </data>
+  <data name="ChinesePaintingAncientStyle" xml:space="preserve">
+    <value>国画古风</value>
+  </data>
+  <data name="ArmorStyle" xml:space="preserve">
+    <value>将军百战</value>
+  </data>
+  <data name="ColorfulCartoon" xml:space="preserve">
+    <value>炫彩卡通</value>
+  </data>
+  <data name="ElegantChineseStyle" xml:space="preserve">
+    <value>清雅国风</value>
+  </data>
+  <data name="Elocutionist" xml:space="preserve">
+    <value>演说家</value>
+  </data>
+  <data name="WelcomeNewYear" xml:space="preserve">
+    <value>喜迎新年</value>
+  </data>
+  <data name="RetroComics" xml:space="preserve">
+    <value>复古漫画</value>
+  </data>
+  <data name="AvatarStylization" xml:space="preserve">
+    <value>人像风格重绘</value>
+  </data>
+  <data name="SelectReferenceImage" xml:space="preserve">
+    <value>选择参考图片</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>发消息</value>
+  </data>
+  <data name="ContactDescription" xml:space="preserve">
+    <value>联系人描述：</value>
   </data>
 </root>

@@ -4,12 +4,13 @@ using TabbyCat.Components.ViewModels;
 using TabbyCat.Models.AiMediaResponses;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
+using TabbyCat.ViewModels.Bases;
 using TuDog.IocAttribute;
 
 namespace TabbyCat.ViewModels;
 
 [Register]
-public sealed partial class GraffitiPaintingViewModel : Bases.AiGenerateImageEditBase<GraffitiPaintingImageEditModel,
+public sealed partial class GraffitiPaintingViewModel : AiGenerateImageEditBase<GraffitiPaintingImageEditModel,
     GraffitiPaintingImageEditModel.OnlyOneImageAiGenerateImageInput, object>
 {
     [ObservableProperty] private Dictionary<string, string> _styles = [];

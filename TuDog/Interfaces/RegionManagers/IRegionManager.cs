@@ -10,6 +10,8 @@ public interface IRegionManager
     void AddToRegion<T>(string regionName) where T : TuDogViewModelBase;
 
     void AddToRegion(string regionName, Type vmType);
+    
+    TuDogViewModelBase AddToRegionReturnViewModel(string regionName,Type vmType);
 
     void AddToRegion<T>(string regionName, object? parameter) where T : IParameter;
 

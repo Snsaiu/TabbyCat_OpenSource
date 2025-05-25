@@ -90,6 +90,7 @@ public sealed class AiMediaRunningStateManager(
                         AiMediaWorkType.RemoveWatermark or
                         AiMediaWorkType.ImageColorization or
                         AiMediaWorkType.DoodleImage or
+                        AiMediaWorkType.AvatarStylization or
                         AiMediaWorkType.ImageSuperResolution =>
                         JsonConvert.DeserializeObject<GenerateImageEditResponseModel>(
                         responseBody),

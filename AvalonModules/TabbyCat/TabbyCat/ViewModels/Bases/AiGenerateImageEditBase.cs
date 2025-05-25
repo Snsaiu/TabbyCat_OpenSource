@@ -19,10 +19,12 @@ namespace TabbyCat.ViewModels.Bases;
 /// <typeparam name="TParameter"></typeparam>
 public abstract partial class
     AiGenerateImageEditBase<TPublishModel, TInput, TParameter> : AiMediaViewModelBase<TPublishModel, TInput,
-    TParameter>
+        TParameter>
     where TPublishModel : UploadSourceImageAiGenerateImageEditModelBase<TInput, TParameter>
     where TInput : OnlyOneImageInput
 {
+    
+    
     protected override string CreateTaskUrl =>
         "https://dashscope.aliyuncs.com/api/v1/services/aigc/image2image/image-synthesis";
 
@@ -94,12 +96,33 @@ public abstract partial class
         model.Input.Image = file;
         return model;
     }
+
+}
+
+public abstract class
+    NavigationAiMediaBase<TPublishModel, TInput, TParameter> : AiGenerateImageEditBase<TPublishModel,
+    TInput, TParameter>,IMediaNavigation
+    where TPublishModel : UploadSourceImageAiGenerateImageEditModelBase<TInput, TParameter>
+    where TInput : OnlyOneImageInput
+{
+    public Task NavigationAsync(object? parameter)
+    {
+        if (parameter is IReadOnlyCollection<string> { Count: 1 } and var paths)
+        {
+            var file = paths.First();
+            this.LocalImage = file;
+            return Task.CompletedTask;
+        }
+
+        throw new ArgumentException();
+
+    }
 }
 
 /// <summary>
 /// 只要上传一张图+提示词就可以生成图片
 /// </summary>
-public abstract class OnlyOneImageUploadAiGenerateImageBase : AiGenerateImageEditBase<
+public abstract class OnlyOneImageUploadAiGenerateImageBase : NavigationAiMediaBase<
     OnlyOneImageUploadAiGenerateImageEditModel,
     OnlyOneImageUploadAiGenerateImageEditModel.OnlyOneImageAiGenerateImageInput, object>
 {
@@ -107,14 +130,12 @@ public abstract class OnlyOneImageUploadAiGenerateImageBase : AiGenerateImageEdi
     {
         return Task.FromResult( !string.IsNullOrEmpty(LocalImage)&&File.Exists(LocalImage)&&!string.IsNullOrEmpty(Prompt));
     }
-
-
 }
 
 /// <summary>
 /// 需要上传一张mask+一张原图+提示词可以生成图片
 /// </summary>
-public abstract partial class MaskImageUploadAiGenerateImageBase : AiGenerateImageEditBase<
+public abstract partial class MaskImageUploadAiGenerateImageBase : NavigationAiMediaBase<
     MaskImageUploadAiGenerateImageEditModel, MaskImageUploadAiGenerateImageEditModel.MaskImageUploadImageInput,
     ImageCountParameter>
 {

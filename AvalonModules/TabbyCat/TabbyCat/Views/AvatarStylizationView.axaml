@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:converters="clr-namespace:TabbyCat.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Classes="AiMediaStyle"
+             x:Class="TabbyCat.Views.AvatarStylizationView"
+             x:DataType="viewModels:AvatarStylizationViewModel">
+    <StackPanel Orientation="Vertical" Margin="{StaticResource LeftRight10}" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal">
+            
+            <controls:ImageControl HorizontalAlignment="Left" ShowHeader="True"
+                                   Header="{x:Static languages:AppResources.ChooseImage}"
+                                   Command="{Binding OpenPickImageDialogCommand}"
+                                   ImageSource="{Binding LocalImage}" />
+            <controls:ImageControl HorizontalAlignment="Left" ShowHeader="True"
+                                   Margin="{StaticResource Left6}"
+                                   IsVisible="{Binding SelectedStyle ,Converter={converters:Count2BoolConverter},ConverterParameter='==-1'}"
+                                   Header="{x:Static languages:AppResources.SelectReferenceImage}"
+                                   Command="{Binding OpenRefImageDialogCommand}"
+                                   ImageSource="{Binding RefImage}" />
+        </StackPanel>
+        <ComboBox Margin="{StaticResource Top4}" ItemsSource="{Binding StyleDictionary}" DisplayMemberBinding="{Binding Key}" SelectedValueBinding="{Binding Value}"
+                  SelectedValue="{Binding SelectedStyle}"></ComboBox>
+    </StackPanel>
+</UserControl>

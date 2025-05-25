@@ -9,4 +9,6 @@ public abstract class AiMediaRequestModelBase<TInput,TParameters>
 
     [JsonProperty("parameters")]
     public virtual TParameters Parameters { get; set; }
+    
+    public bool ShouldSerializeParameters() => Parameters != null;
 }

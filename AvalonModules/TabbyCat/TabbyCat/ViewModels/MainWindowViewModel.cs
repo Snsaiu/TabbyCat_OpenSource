@@ -178,7 +178,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     {
         try
         {
-            var result = await oidcClient.LoginAsync(new() { BrowserTimeout = 10 });
+            var result = await oidcClient.LoginAsync(new() { BrowserTimeout = 30 });
             if (result.IsError)
             {
                 await dialogService.ShowMessageDialogAsync($"{AppResources.LoginFailed}: {result.Error}",

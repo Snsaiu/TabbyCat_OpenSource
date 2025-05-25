@@ -27,6 +27,7 @@
     <PackageVersion Include="Markdown.Avalonia.YouYan" Version="11.2.0-a3" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.13.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.0-preview.1.25080.5" />
+    <PackageVersion Include="NCalcSync" Version="5.5.0-alpha" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="OpenTelemetry" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.Prometheus.HttpListener" Version="1.11.2-beta.1" />

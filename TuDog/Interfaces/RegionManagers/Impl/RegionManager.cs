@@ -45,6 +45,10 @@ public class RegionManager(RegionContainerBase regionContainer, IContainer conta
     }
 
     public void AddToRegion(string regionName, Type vmType) => BuildControlReturnVm(regionName, vmType);
+    public TuDogViewModelBase AddToRegionReturnViewModel(string regionName, Type vmType)
+    {
+       return BuildControlReturnVm(regionName, vmType) as TuDogViewModelBase;
+    }
 
     private object BuildControlReturnVm(string regionName, Type vmType)
     {

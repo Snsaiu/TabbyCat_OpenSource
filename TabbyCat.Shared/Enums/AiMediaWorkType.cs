@@ -2,6 +2,8 @@
 
 public enum AiMediaWorkType
 {
+    Contact,
+    AiChat,
     Cutout,
     TextToImage,
     ImageToImage,
@@ -15,5 +17,6 @@ public enum AiMediaWorkType
     ImageColorization,
     DoodleImage,
     GraffitiPainting,
-    ImageEraseCompletion
+    ImageEraseCompletion,
+    AvatarStylization
 }

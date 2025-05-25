@@ -5,13 +5,14 @@ using TabbyCat.Components.ViewModels;
 using TabbyCat.Models.AiMediaResponses;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
+using TabbyCat.ViewModels.Bases;
 using TuDog.IocAttribute;
 using TuDog.Models;
 
 namespace TabbyCat.ViewModels;
 
 [Register]
-public sealed partial class ImageErasureAndCompletionViewModel : Bases.AiGenerateImageEditBase<ImageEraseCompletionEditModel,
+public sealed partial class ImageErasureAndCompletionViewModel : NavigationAiMediaBase<ImageEraseCompletionEditModel,
     ImageEraseCompletionEditModel.ImageEraseCompletionEditInput,
     ImageEraseCompletionEditModel.ImageEraseCompletionParameter>
 {
@@ -97,4 +98,5 @@ public sealed partial class ImageErasureAndCompletionViewModel : Bases.AiGenerat
 
         return model;
     }
+    
 }

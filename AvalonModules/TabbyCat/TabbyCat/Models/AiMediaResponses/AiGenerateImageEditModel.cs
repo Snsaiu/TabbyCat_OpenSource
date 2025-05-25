@@ -41,6 +41,23 @@ public class GraffitiPaintingImageEditModel : UploadSourceImageAiGenerateImageEd
     }
 }
 
+public class AvatarStylizationEditModel : UploadSourceImageAiGenerateImageEditModelBase<AvatarStylizationEditModel.AvatarStylizationInput,object>
+{
+    public class AvatarStylizationInput:OnlyOneImageInput
+    {
+        [JsonProperty("image_url")]
+        public override string Image { get; set; }
+        
+        [JsonProperty("style_index")]
+        public int StyleIndex { get; set; }
+        
+        [JsonProperty("style_ref_url")]
+        public string StyleRefImage { get; set; }
+        
+        public bool ShouldSerializeStyleRefImage() => !string.IsNullOrEmpty(StyleRefImage);
+    }
+}
+
 /// <summary>
 /// 图像擦除完成
 /// </summary>

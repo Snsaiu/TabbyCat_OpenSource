@@ -1,5 +1,6 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
+using TabbyCat.Shared.Enums;
 using TuDog.Bootstrap;
 
 namespace TabbyCat.Models;
@@ -16,15 +17,17 @@ public partial class NavigationMenuItem:ModelBase
     [ObservableProperty] private IEnumerable<NavigationMenuItem> _children = [];
 
     [ObservableProperty] private bool isSelected;
-
-
+    
+    [ObservableProperty] private AiMediaWorkType _mediaWorkType;
+    
     public static NavigationMenuItem Create(string header, string icon, IEnumerable<NavigationMenuItem> children)
     {
-        return new() { Header = header, Icon = icon, Children = children };
+        return new NavigationMenuItem { Header = header, Icon = icon, Children = children };
     }
 
-    public static NavigationMenuItem Create(string header, string icon, Type? content)
+    public static NavigationMenuItem Create(string header, string icon, Type? content,AiMediaWorkType mediaWorkType)
     {
-        return new() { Header = header, Icon = icon, Content = content };
+       return new NavigationMenuItem { Header = header, Icon = icon, Content = content ,MediaWorkType = mediaWorkType};
+       
     }
 }
