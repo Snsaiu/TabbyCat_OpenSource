@@ -61,8 +61,18 @@ public static class HttpClientExtensions
         {
             return default;
         }
-
     }
+    
+    public static async Task PostRequestAsync<TParams>(this HttpClient client, string url,
+        TParams request) where TParams : class
+    {
+            var json = JsonConvert.SerializeObject(request);
+            var content = new StringContent(json);
+            content.Headers.ContentType = new("application/json");
+            var response = await client.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+    }
+    
 
     /// <summary>
     /// 异步下载文件，并保存到指定路径。

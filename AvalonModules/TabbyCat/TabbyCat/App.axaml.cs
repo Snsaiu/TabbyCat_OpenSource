@@ -16,6 +16,7 @@ using TabbyCat.Extensions;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.Models.Users.Configs;
+using TabbyCat.Service.AiServices;
 using TabbyCat.Shared;
 using TabbyCat.ViewModels;
 using TabbyCat.Views;
@@ -39,6 +40,7 @@ namespace TabbyCat
             base.Initialize();
 
             ValidateUserLoginState();
+            SyncAiTemplateSettings();
             InitBackgroundImage();
             if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
             {
@@ -69,6 +71,13 @@ namespace TabbyCat
             var userService = ServiceProvider.GetRequiredService<ILoginUserService>();
             var u = userService.GetOrDefault();
             if (u is not null) user.ResetData(u);
+        }
+
+        private void SyncAiTemplateSettings()
+        {
+            var aiTemplateSettingAsyncManager = ServiceProvider.GetRequiredService<IAiTemplateSettingSyncManager>();
+            aiTemplateSettingAsyncManager.StartLoopAsync();
+            
         }
 
         private void HotKeyImplement(IEnumerable<KeyCode> code)

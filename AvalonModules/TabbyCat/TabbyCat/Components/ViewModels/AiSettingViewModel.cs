@@ -22,7 +22,7 @@ namespace TabbyCat.Components.ViewModels;
 public partial class AiSettingViewModel(
     IAiTemplateSettingService aiTemplateSettingService,
     ILogger<AiSettingViewModel> logger,
-    IUser user,
+    IAiTemplateSettingSyncService aiTemplateSettingSyncService,
     IStoreChatRecordService storeChatRecordService) : ViewModelBase
 {
     [ObservableProperty] private AiApiModelBase? _aiTemplate;
@@ -56,7 +56,6 @@ public partial class AiSettingViewModel(
         StoreChatRecord = storeChatRecordService.Get();
 
         await InitAiModelProvidersAsync();
-        SelectAiModelType = AiModelProviders.First();
         AiTemplate = await AiTemplateFactory.GetTemplateAsync(AiModelType.OpenAiApi);
     }
 
@@ -104,7 +103,7 @@ public partial class AiSettingViewModel(
             Provider = AiTemplate.Provider,
             IsDefault = AiTemplate.IsDefault,
             Template = json,
-            Email = user.Email
+            Email = CurrentUser.Email
         };
 
 
@@ -121,25 +120,25 @@ public partial class AiSettingViewModel(
             }
 
             var finds = await aiTemplateSettingService.QueryAsync(x =>
-                x.Provider == AiModelType.Custom && x.ModelName == customModelName && x.Email==user.Email);
+                x.Provider == AiModelType.Custom && x.ModelName == customModelName && x.Email==CurrentUser.Email);
             if (finds.Any()) await aiTemplateSettingService.DeleteRangeAsync(finds);
             saveModel.ModelName = customModelName;
             backSelectAiModelType = customModelName;
         }
         else
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.Provider == AiTemplate.Provider&& x.Email==user.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.Provider == AiTemplate.Provider&& x.Email==CurrentUser.Email);
             if (finds.Any()) await aiTemplateSettingService.DeleteRangeAsync(finds);
         }
 
         if (!saveModel.IsDefault)
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==user.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==CurrentUser.Email);
             if (!finds.Any()) saveModel.IsDefault = true;
         }
         else
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==user.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==CurrentUser.Email);
             if (finds.Any())
                 foreach (var item in finds)
                 {
@@ -150,10 +149,10 @@ public partial class AiSettingViewModel(
 
         if (await aiTemplateSettingService.AddAsync(saveModel))
         {
+            await SyncAiTemplateSettingsAsync();
             // ToastService.ShowSuccess("保存成功");
             await DialogServer.ShowMessageDialogAsync(AppResources.SavedSuccessfully,AppResources.Message,AppResources.Ok);
             await InitAiModelProvidersAsync();
-            SelectAiModelType = backSelectAiModelType;
         }
         else
         {
@@ -163,23 +162,55 @@ public partial class AiSettingViewModel(
 
     }
 
+    private async Task SyncAiTemplateSettingsAsync()
+    {
+        if (!CurrentUser.LoginSuccess())
+            return;
+        
+        var remoteVersionResult = await aiTemplateSettingSyncService.QueryLatestVersionAsync(CurrentUser.Email);
+        if (!remoteVersionResult.Ok)
+        {
+            this.MessageBarService.ShowError(string.Format(AppResources.AnErrorOccurred,remoteVersionResult.ErrorMsg),AppResources.Warning,true);
+            return;
+        }
+
+        var uploadVersion = remoteVersionResult.Data+1;
+        var settings = await aiTemplateSettingService.QueryAsync(x => x.Email == CurrentUser.Email);
+        
+        if (!settings.Any())
+            return;
+        
+        foreach (var item in settings)
+        {
+                item.Version = uploadVersion;
+                item.LastUpdateTime = DateTime.Now;
+        }
+        await aiTemplateSettingService.DeleteRangeAsync(x=>x.Email==CurrentUser.Email);
+        await aiTemplateSettingService.AddRangeAsync(settings);
+        await aiTemplateSettingSyncService.UploadNewVersionAsync(CurrentUser.Email,settings);
+    }
+    
     private async Task InitAiModelProvidersAsync()
     {
         var result = new List<string>();
-        if(user.LoginSuccess())
+        if(CurrentUser.LoginSuccess())
             result.AddRange(from object? item in Enum.GetValues(typeof(AiModelType)) select item.ToString()!);
         else
         {
             result.AddRange(from object? item in Enum.GetValues(typeof(AiModelType)) where item is not AiModelType.TabbyCatAi select item.ToString()!);
         }
 
-        var aiTemplates = await aiTemplateSettingService.QueryAsync(x => x.Email == user.Email);
+        var aiTemplates = await aiTemplateSettingService.QueryAsync(x => x.Email == CurrentUser.Email);
         var customEntities = aiTemplates.Where(x => x.Provider == AiModelType.Custom);
         if (customEntities.Any())
             result.AddRange(customEntities.Select(x => x.ModelName));
         AiModelProviders.Reset(result);
         if (aiTemplates.FirstOrDefault(x => x.IsDefault) is { } defaultEntity)
             SelectAiModelType = defaultEntity.Provider.ToString();
+        else
+        {
+            SelectAiModelType = AiModelProviders.First();
+        }
     }
 
 

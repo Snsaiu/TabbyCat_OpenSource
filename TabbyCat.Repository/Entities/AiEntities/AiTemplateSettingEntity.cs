@@ -5,7 +5,7 @@ namespace TabbyCat.Repository.Entities.AiEntities;
 /// <summary>
 /// Ai模板设置
 /// </summary>
-public class AiTemplateSettingEntity : UserBaseEntity
+public class AiTemplateSettingEntity : RemoteSyncEntityBase
 {
     /// <summary>
     /// 模型模板,序列化json

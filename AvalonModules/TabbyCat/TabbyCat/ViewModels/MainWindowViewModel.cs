@@ -33,6 +33,8 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     private IAiTemplateSettingService _aiTemplateSettingService =
         TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingService>();
+    
+    private IAiTemplateSettingSyncManager aiTemplateSettingSyncManager=TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingSyncManager>();
 
     private IRegionManager _regionManager { get; }=TuDogApplication.ServiceProvider.GetRequiredService<IRegionManager>();
 
@@ -108,6 +110,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     private async Task SetDefaultAiModel()
     {
+
+       await aiTemplateSettingSyncManager.SyncSetting();
+        
         if (!(await _aiTemplateSettingService.QueryAsync(x => x.IsDefault)).Any())
         {
             var aiModel = new TabbyCatAiModel();

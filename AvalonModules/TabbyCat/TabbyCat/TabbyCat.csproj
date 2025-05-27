@@ -77,6 +77,7 @@
     <ProjectReference Include="..\..\..\TuDog.LoggerMetrics\TuDog.LoggerMetrics.csproj" />
         <ProjectReference Include="..\..\..\TuDog.SourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\..\TuDog\TuDog.csproj" />
+    <ProjectReference Include="..\..\..\YouYan.Hamster\YouYan.Hamster.csproj" />
   </ItemGroup>
 
 	<PropertyGroup>

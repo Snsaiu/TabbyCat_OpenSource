@@ -16,8 +16,8 @@
                     <TextBlock Text="{x:Static languages:AppResources.ModelProvider}" />
                     <ComboBox
                         HorizontalAlignment="Stretch"
-                        SelectedItem="{Binding SelectAiModelType}"
-                        ItemsSource="{Binding AiModelProviders}"
+                        SelectedItem="{Binding SelectAiModelType,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ItemsSource="{Binding AiModelProviders,UpdateSourceTrigger=PropertyChanged}"
                         Margin="{StaticResource Top2}" />
                     <ContentControl Content="{Binding AiTemplate}"
                                     ContentTemplate="{StaticResource AiModelSettingDataTemplateSelector}" />
