@@ -2,16 +2,15 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-
 using Microsoft.Extensions.DependencyInjection;
-
 using SharpHook;
-
 using System;
-
+using System.Globalization;
 using TuDog.Bootstrap;
 using TuDog.Interfaces.IDialogServers;
-
+using TuDog.Interfaces.MessageBarService;
+using YouYan.Rabbit.IServices.LocalConfigs;
+using YouYan.Rabbit.Languages;
 using YouYan.Rabbit.Views;
 
 namespace YouYan.Rabbit;
@@ -19,8 +18,10 @@ namespace YouYan.Rabbit;
 public partial class App : TuDogApplication
 {
     public static Window? _window = null;
+
     public override object CreateShell()
     {
+        InitLanguage();
         var hook = new TaskPoolGlobalHook();
         hook.MouseClicked += (s, e) =>
         {
@@ -29,20 +30,21 @@ public partial class App : TuDogApplication
 
             if (_window is null)
                 return;
-            var mousePosition = _window.Screens.ScreenFromPoint(new(x, y));
+            var mousePosition = _window.Screens.ScreenFromPoint(new PixelPoint(x, y));
 
             if (mousePosition != null)
             {
                 // 将全局坐标转换为窗口内坐标
-                var localPosition = _window.PointToClient(new(x, y));
+                var localPosition = _window.PointToClient(new PixelPoint(x, y));
 
                 // 判断是否在窗口内
                 if (!_window.Bounds.Contains(localPosition))
                     Dispatcher.UIThread.Invoke(() => { _window.Hide(); });
             }
         };
-
+#if !DEBUG
         hook.RunAsync();
+#endif
         _window = new MainWindow();
         return _window;
     }
@@ -71,7 +73,7 @@ public partial class App : TuDogApplication
             // 计算托盘位置 (右下角)
             var x = screen.WorkingArea.Width - _window.Width - 10;
             var y = screen.WorkingArea.Height - _window.Height;
-            _window.Position = new((int)x, (int)y);
+            _window.Position = new PixelPoint((int)x, (int)y);
             _window.Show();
             _window.Activate();
         }
@@ -79,18 +81,26 @@ public partial class App : TuDogApplication
         {
             var x = screen.WorkingArea.Width - _window.Width - 10;
             var y = 10;
-            _window.Position = new((int)x, y);
+            _window.Position = new PixelPoint((int)x, y);
             _window.Show();
             _window.Activate();
         }
     }
 
-    private async void Exit(object? sender, EventArgs e)
+    private void Exit(object? sender, EventArgs e)
     {
         var v = _window as MainWindow;
         if (v.CanExit())
             Environment.Exit(0);
-        var dialog = ServiceProvider.GetService<IDialogServer>();
-        await dialog.ShowMessageDialogAsync("有任务正在进行，无法退出");
+
+        var messageBarService = ServiceProvider.GetService<IMessageBarService>();
+        messageBarService.ShowWarning(Language.HasTaskNoExit, Language.Warning, true);
+    }
+
+    private void InitLanguage()
+    {
+        var languageService = ServiceProvider.GetRequiredService<ILanguageService>();
+        var language = languageService.Get();
+        LocalizationResourceManager.Instance.SetCulture(new CultureInfo(language));
     }
 }

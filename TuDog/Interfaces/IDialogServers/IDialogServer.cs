@@ -20,4 +20,8 @@ public interface IDialogServer
         string confirmButtonText = "确定",
         string cancelButtonText = "取消", TParameter? parameter=default )
         where TViewModel : DialogViewModelBaseAsync<TParameter,TResult>;
+
+    public Task<DialogResultData<object>?> ShowDialogAsync<TViewModel, TParameter>(string title,
+        string confirmButtonText = "确定",
+        string cancelButtonText = "取消", TParameter? parameter = default) where TViewModel : DialogViewModelBaseAsync;
 }

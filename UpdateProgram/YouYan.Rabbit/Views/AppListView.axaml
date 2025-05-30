@@ -17,8 +17,12 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Orientation="Vertical">
-            <Button Content="Rabbit新版本已发布！点击安装！" IsVisible="{Binding NewVersionAvailable}"
-                    Command="{Binding OpenRabbitHoleCommand}" />
+            <Grid ColumnDefinitions="*,Auto">
+                <Button Grid.Column="0" Content="{x:Static languages:Language.NewVersionPublish}" IsVisible="{Binding NewVersionAvailable}"
+                        Command="{Binding OpenRabbitHoleCommand}" />
+                
+                <Button Command="{Binding OpenSettingDialogCommand}" Margin="10,5" Grid.Column="1" extensions:IconAttach.Icon="{x:Static rabbit:IconFontProvider.Setting}" Classes="icon" HorizontalAlignment="Right"></Button>
+            </Grid>
             <Expander Header="{x:Static languages:Language.Installed}" IsExpanded="True">
                 <ListBox ItemsSource="{Binding InstalledApps}">
                     <ListBox.ItemTemplate>

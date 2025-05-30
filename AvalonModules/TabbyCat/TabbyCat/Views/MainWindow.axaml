@@ -74,23 +74,6 @@
                    Opacity="{Binding BackgroundImageConfig.Opacity,UpdateSourceTrigger=PropertyChanged}">
             </Image>
             <ContentControl attachs:RegionBehavior.Region="mainContainer">
-                <ContentControl.Styles>
-                    <Style Selector="ContentControl">
-                        <Style.Animations>
-                            <Animation Duration="00:00:08">
-                                <KeyFrame Cue="0%">
-                                    <Setter Property="Opacity" Value="0" />
-                                </KeyFrame>
-                                <KeyFrame Cue="60%">
-                                    <Setter Property="Opacity" Value="1" />
-                                </KeyFrame>
-                                <KeyFrame Cue="100%">
-                                    <Setter Property="Opacity" Value="1" />
-                                </KeyFrame>
-                            </Animation>
-                        </Style.Animations>
-                    </Style>
-                </ContentControl.Styles>
             </ContentControl>
 
         </Grid>

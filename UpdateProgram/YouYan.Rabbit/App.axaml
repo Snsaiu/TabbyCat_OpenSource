@@ -2,32 +2,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="YouYan.Rabbit.App"
              xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:YouYan.Rabbit.Languages"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-             <TrayIcon.Icons>
-                 <TrayIcons>
-                     <TrayIcon Icon="/Assets/app.ico">
-                         <TrayIcon.Menu>
-                             <NativeMenu>
-                                 <NativeMenuItem Header="显示" Click="Show" />
-                                 <NativeMenuItemSeparator />
-                                 <NativeMenuItem Header="退出"
-                                                 Click="Exit" />
-                             </NativeMenu>
-                         </TrayIcon.Menu>
-                     </TrayIcon>
-                 </TrayIcons>
-             </TrayIcon.Icons>
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Icon="/Assets/app.ico">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="{x:Static languages:Language.Display}" Click="Show" />
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem Header="{x:Static languages:Language.Exit}"
+                                        Click="Exit" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
 
-             <Application.Resources>
-                 <FontFamily x:Key="iconFont">avares://YouYan.Rabbit/Assets/Fonts/iconfont.ttf#iconfont</FontFamily>
-             </Application.Resources>
+    <Application.Resources>
+        <FontFamily x:Key="iconFont">avares://YouYan.Rabbit/Assets/Fonts/iconfont.ttf#iconfont</FontFamily>
+    </Application.Resources>
     <Application.Styles>
         <styling:FluentAvaloniaTheme PreferSystemTheme="True" />
         <StyleInclude Source="Styles/ConfirmViewStyle.axaml" />
         <StyleInclude Source="Styles/ButtonStyle.axaml" />
-        <StyleInclude Source="avares://TuDog/UIs/Styles/DialogWindowStyle.axaml" />
+        <StyleInclude Source="avares://TuDog/Bootstrap/TuDogStyles.axaml" />
     </Application.Styles>
 
 </Application>

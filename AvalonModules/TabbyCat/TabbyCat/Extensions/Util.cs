@@ -5,6 +5,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using SkiaSharp;
 using Xabe.FFmpeg;
+using Xabe.FFmpeg.Downloader;
 using PixelFormat = Xabe.FFmpeg.PixelFormat;
 
 namespace TabbyCat.Extensions;
@@ -19,7 +20,7 @@ public static class Util
         using var original = SKBitmap.Decode(stream);
 
         if (original == null)
-            throw new("无法读取图像文件");
+            throw new Exception("无法读取图像文件");
 
         // 计算等比缩放尺寸
         var ratioX = (float)maxWidth / original.Width;
@@ -50,6 +51,7 @@ public static class Util
     public static async Task<bool> GenerateThumbnail(string videoPath,
         TimeSpan snapshotTime, string outputImagePath)
     {
+        await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
         var conversion = await FFmpeg.Conversions.FromSnippet.Snapshot(videoPath, outputImagePath, snapshotTime);
         await conversion.Start();
         return File.Exists(outputImagePath);
@@ -72,11 +74,11 @@ public static class Util
         var dpi = original.Dpi;
         var stride = pixelSize.Width * 4; // 每行像素字节数
 
-     
+
         // 拷贝像素数据
         var pixelData = new byte[pixelSize.Height * stride];
-        IntPtr pixelPtr = Marshal.AllocHGlobal(pixelData.Length);
-        
+        var pixelPtr = Marshal.AllocHGlobal(pixelData.Length);
+
         try
         {
             original.CopyPixels(
@@ -92,10 +94,10 @@ public static class Util
         {
             Marshal.FreeHGlobal(pixelPtr);
         }
-   
+
 
         // 取反每个像素颜色
-        for (int i = 0; i < pixelData.Length; i += 4)
+        for (var i = 0; i < pixelData.Length; i += 4)
         {
             // BGRA顺序
             pixelData[i + 0] = (byte)(255 - pixelData[i + 0]); // B

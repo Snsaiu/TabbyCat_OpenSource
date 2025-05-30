@@ -11,7 +11,8 @@ public sealed class EnumToLocalizationConverter : ValueConvertBase
     {
         if (value is Enum @enum)
         {
-            var name = Language.ResourceManager.GetString(@enum.ToString());
+            var name = LocalizationResourceManager.Instance[@enum.ToString()];
+            // var name = Language.ResourceManager.GetString(@enum.ToString());
             return name;
         }
 

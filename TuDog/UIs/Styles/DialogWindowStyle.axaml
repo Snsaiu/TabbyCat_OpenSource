@@ -10,7 +10,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="uIs:DialogWindow">
-                    <Grid RowDefinitions="Auto,*,Auto" Background="{DynamicResource ContentDialogTopOverlay}">
+                    <Grid RowDefinitions="Auto,*,Auto" Background="{DynamicResource SolidBackgroundFillColorBase}">
                         <Border Padding="24" BorderThickness="0,0,0,1"
                                 BorderBrush="{DynamicResource ContentDialogBorderBrush}">
                             <StackPanel Orientation="Vertical">

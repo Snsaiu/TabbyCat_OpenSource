@@ -60,6 +60,33 @@ namespace YouYan.Rabbit.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to set application execution permission!.
+        /// </summary>
+        public static string AppFailPermission {
+            get {
+                return ResourceManager.GetString("AppFailPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to uninstall?.
+        /// </summary>
+        public static string AreYouUninstall {
+            get {
+                return ResourceManager.GetString("AreYouUninstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic startup.
+        /// </summary>
+        public static string AutomaticStartup {
+            get {
+                return ResourceManager.GetString("AutomaticStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available.
         /// </summary>
         public static string Available {
@@ -69,11 +96,83 @@ namespace YouYan.Rabbit.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel automatic start.
+        /// </summary>
+        public static string CancelAutomaticStart {
+            get {
+                return ResourceManager.GetString("CancelAutomaticStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cow Cat.
         /// </summary>
         public static string CowCat {
             get {
                 return ResourceManager.GetString("CowCat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display.
+        /// </summary>
+        public static string Display {
+            get {
+                return ResourceManager.GetString("Display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download failed.
+        /// </summary>
+        public static string DownloadFailed {
+            get {
+                return ResourceManager.GetString("DownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to delete cache files?.
+        /// </summary>
+        public static string DoYouDeleteCacheFile {
+            get {
+                return ResourceManager.GetString("DoYouDeleteCacheFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string General {
+            get {
+                return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a task in progress and cannot exit.
+        /// </summary>
+        public static string HasTaskNoExit {
+            get {
+                return ResourceManager.GetString("HasTaskNoExit", resourceCulture);
             }
         }
         
@@ -96,11 +195,56 @@ namespace YouYan.Rabbit.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is running and cannot be uninstalled!.
+        /// </summary>
+        public static string IsRunningNotUninstall {
+            get {
+                return ResourceManager.GetString("IsRunningNotUninstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Launch.
         /// </summary>
         public static string Launch {
             get {
                 return ResourceManager.GetString("Launch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version of Rabbit has been released! Click to install!.
+        /// </summary>
+        public static string NewVersionPublish {
+            get {
+                return ResourceManager.GetString("NewVersionPublish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personalization.
+        /// </summary>
+        public static string Personalization {
+            get {
+                return ResourceManager.GetString("Personalization", resourceCulture);
             }
         }
         
@@ -114,11 +258,56 @@ namespace YouYan.Rabbit.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is running and cannot be updated.
+        /// </summary>
+        public static string RunningNotUpdate {
+            get {
+                return ResourceManager.GetString("RunningNotUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Language.
+        /// </summary>
+        public static string SelectLanguage {
+            get {
+                return ResourceManager.GetString("SelectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set to start automatically at boot.
+        /// </summary>
+        public static string SetAutomatically {
+            get {
+                return ResourceManager.GetString("SetAutomatically", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tabby Cat.
         /// </summary>
         public static string TabbyCat {
             get {
                 return ResourceManager.GetString("TabbyCat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Take effect after restart.
+        /// </summary>
+        public static string TakeEffectAfterRestart {
+            get {
+                return ResourceManager.GetString("TakeEffectAfterRestart", resourceCulture);
             }
         }
         
@@ -132,11 +321,38 @@ namespace YouYan.Rabbit.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uninstallation failed.
+        /// </summary>
+        public static string UninstallationFailed {
+            get {
+                return ResourceManager.GetString("UninstallationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uninstall successfully.
+        /// </summary>
+        public static string UninstallSuccessfully {
+            get {
+                return ResourceManager.GetString("UninstallSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         public static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
         

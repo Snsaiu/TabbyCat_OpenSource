@@ -5,8 +5,9 @@
     xmlns:attachs="clr-namespace:TuDog.Attachs;assembly=TuDog"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
-    Title="兔子"
+    xmlns:uIs="clr-namespace:TuDog.UIs;assembly=TuDog"
+    xmlns:languages="clr-namespace:YouYan.Rabbit.Languages"
+
     Width="600"
     Height="550"
     MinHeight="550"
@@ -23,7 +24,8 @@
 
     <Grid RowDefinitions="Auto,*">
         <StackPanel HorizontalAlignment="Stretch">
-            <TextBlock Text="Rabbit" HorizontalAlignment="Center" Padding="0,5" VerticalAlignment="Bottom"
+            <TextBlock Text="{x:Static languages:Language.Rabbit}" HorizontalAlignment="Center" Padding="0,5"
+                       VerticalAlignment="Bottom"
                        FontWeight="DemiBold" />
         </StackPanel>
         <Grid Grid.Row="1">
@@ -33,7 +35,8 @@
                 Stretch="UniformToFill" />
             <ContentControl attachs:RegionBehavior.Region="container" Name="mainControl" />
         </Grid>
-
+        <uIs:InfoBox Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Right" Margin="0,20,5,0"
+                     VerticalAlignment="Top" />
     </Grid>
 
 </Window>

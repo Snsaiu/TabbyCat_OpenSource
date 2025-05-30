@@ -19,7 +19,10 @@ using YouYan.Rabbit.Models;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
+using TuDog.Interfaces;
+using TuDog.Interfaces.RegionManagers;
 using YouYan.Rabbit.Components.ViewModels;
+using YouYan.Rabbit.Languages;
 using YouYan.Rabbit.Services;
 
 namespace YouYan.Rabbit.ViewModels;
@@ -29,9 +32,11 @@ public sealed partial class AppListViewModel(
     IAppStateService appStateService,
     HttpClient httpClient,
     ISystemService systemService,
+    IRegionManager regionManager,
     IAppInstallPathService appInstallPathService,
-    ICacheFolderService cacheFolderService) : ViewModelBase
+    ICacheFolderService cacheFolderService) : ViewModelBase, IKeep
 {
+    private readonly IRegionManager _regionManager = regionManager;
     [ObservableProperty] private ObservableCollection<AppListItemModel> availableApps = [];
 
     [ObservableProperty] private ObservableCollection<AppListItemModel> installedApps = [];
@@ -44,20 +49,34 @@ public sealed partial class AppListViewModel(
 
     [ObservableProperty] private bool newVersionAvailable;
 
+    private bool isLoaded = false;
+
     protected override async Task OnLoaded()
     {
+        if (isLoaded)
+            return;
+        isLoaded = true;
+
         await LoadInstalledAppsAsync();
-        loadReleasesThread = new(LoopCheckVersion);
+        loadReleasesThread = new Thread(LoopCheckVersion);
         loadReleasesThread.IsBackground = true;
         loadReleasesThread.Start();
 
-        appsRunningStatusThread = new(LoopCheckAppRunningStatus);
+        appsRunningStatusThread = new Thread(LoopCheckAppRunningStatus);
         appsRunningStatusThread.IsBackground = true;
         appsRunningStatusThread.Start();
 
-        rabbitCheckVersionThread = new(LoopCheckRabbitVersion);
+        rabbitCheckVersionThread = new Thread(LoopCheckRabbitVersion);
         rabbitCheckVersionThread.IsBackground = true;
         rabbitCheckVersionThread.Start();
+    }
+
+
+    [RelayCommand]
+    private Task OpenSettingDialog()
+    {
+        _regionManager.AddToRegion<SettingViewModel>("container");
+        return Task.CompletedTask;
     }
 
 
@@ -130,7 +149,6 @@ public sealed partial class AppListViewModel(
     }
 
 
-
     protected override Task OnUnLoaded()
     {
         loadReleasesThread.Interrupt();
@@ -159,13 +177,14 @@ public sealed partial class AppListViewModel(
     [RelayCommand]
     private async Task UninstallApp(AppListItemModel selected)
     {
-        var deleteConfirm = await DialogServer.ShowConfirmDialogAsync("确定要卸载吗?");
+        var deleteConfirm = await DialogServer.ShowConfirmDialogAsync(Language.AreYouUninstall);
         if (!deleteConfirm)
             return;
 
         if (await appStateService.AppIsRunningAsync(selected.AppName, selected.ExeName()))
         {
-            await DialogServer.ShowMessageDialogAsync($"{selected.AppName.ToString()} 正在运行，无法卸载！");
+            await DialogServer.ShowMessageDialogAsync(string.Format(Language.IsRunningNotUninstall,
+                LocalizationResourceManager.Instance[selected.AppName.ToString()]));
             return;
         }
 
@@ -180,15 +199,15 @@ public sealed partial class AppListViewModel(
                 selected.AppName.ToString());
 
             if (Directory.Exists(folder))
-                if (await DialogServer.ShowConfirmDialogAsync("是否要删除缓存文件？"))
+                if (await DialogServer.ShowConfirmDialogAsync(Language.DoYouDeleteCacheFile, Language.Warning,
+                        Language.Ok))
                     Directory.Delete(folder, true);
 
-            await DialogServer.ShowMessageDialogAsync("卸载成功");
-
+            await DialogServer.ShowMessageDialogAsync(Language.UninstallSuccessfully, Language.Message, Language.Ok);
         }
         else
         {
-            await DialogServer.ShowMessageDialogAsync("卸载失败");
+            await DialogServer.ShowMessageDialogAsync(Language.UninstallationFailed, Language.Warning, Language.Ok);
         }
     }
 
@@ -200,8 +219,10 @@ public sealed partial class AppListViewModel(
         model.Description = selected.Description;
         model.Version = selected.LatestVersion;
 
-        await DialogServer.ShowDialogAsync<WhatNewViewModel, AppReleaseModel,bool>("Whats New", cancelButtonText: string.Empty,
-            parameter: model);
+        await DialogServer.ShowDialogAsync<WhatNewViewModel, AppReleaseModel, bool>(Language.WhatsNew,
+            Language.Ok,
+            string.Empty,
+            model);
     }
 
     [RelayCommand]
@@ -232,10 +253,7 @@ public sealed partial class AppListViewModel(
         if (!Directory.Exists(youyanPath)) Directory.CreateDirectory(youyanPath);
         installPath = Path.Combine(youyanPath, selected.AppName.ToString());
 
-        if (OperatingSystem.IsWindows())
-        {
-            SetPermissions(installPath);
-        }
+        if (OperatingSystem.IsWindows()) SetPermissions(installPath);
 
         if (!Directory.Exists(installPath)) Directory.CreateDirectory(installPath);
 
@@ -246,12 +264,11 @@ public sealed partial class AppListViewModel(
         }, error =>
         {
             //todo 写入日志
-
         });
         if (!downloadResult || !File.Exists(downloadAppName))
         {
             selected.Status = AppStatus.Available;
-            await DialogServer.ShowMessageDialogAsync("下载失败");
+            await DialogServer.ShowMessageDialogAsync(Language.DownloadFailed, Language.Warning, Language.Ok);
             return false;
         }
 
@@ -276,25 +293,23 @@ public sealed partial class AppListViewModel(
 
                 CopyFilesRecursively(son.First().FullName, installPath);
             }
-
-
         }
         else if (OperatingSystem.IsMacOS())
         {
             using (var zipfile = ZipFile.OpenRead(downloadAppName))
             {
-                if(Directory.Exists(installPath))
+                if (Directory.Exists(installPath))
                     Directory.Delete(installPath, true);
 
                 zipfile.ExtractToDirectory(installPath, true);
 
-                var appInstallFullPath = Path.Combine(installPath,$"{selected.AppName}.app");
+                var appInstallFullPath = Path.Combine(installPath, $"{selected.AppName}.app");
                 if (!MacOsHelper.RemoveQuarantine(appInstallFullPath))
                 {
-                    await DialogServer.ShowMessageDialogAsync("app 执行权限设置失败！");
+                    await DialogServer.ShowMessageDialogAsync(Language.AppFailPermission, Language.Warning,
+                        Language.Ok);
                     return false;
                 }
-
             }
         }
         else if (OperatingSystem.IsLinux())
@@ -317,7 +332,6 @@ public sealed partial class AppListViewModel(
         if (Directory.Exists(unzipFolder))
             Directory.Delete(unzipFolder, true);
         return true;
-
     }
 
     private int GetCurrentSystemEnumIndex()
@@ -336,7 +350,6 @@ public sealed partial class AppListViewModel(
             InstalledApps.Add(selected);
             AvailableApps.Remove(selected);
         }
-
     }
 
     [RelayCommand]
@@ -344,7 +357,9 @@ public sealed partial class AppListViewModel(
     {
         if (await appStateService.AppIsRunningAsync(selected.AppName, selected.ExeName()))
         {
-            await DialogServer.ShowMessageDialogAsync($"{selected.AppName}正在运行，无法更新");
+            await DialogServer.ShowMessageDialogAsync(
+                string.Format(Language.RunningNotUpdate,
+                    LocalizationResourceManager.Instance[selected.AppName.ToString()]), Language.Warning, Language.Ok);
             return;
         }
 
@@ -366,7 +381,7 @@ public sealed partial class AppListViewModel(
                 var startFolder = await appStateService.QueryAppLocationAsync(app);
                 var version = await appStateService.QueryAppInstalledVersionAsync(app);
                 if (version is not null)
-                    InstalledApps.Add(new()
+                    InstalledApps.Add(new AppListItemModel
                     {
                         AppName = app, InstallLocation = startFolder, Version = version, Status = AppStatus.Installed
                     });
@@ -377,7 +392,7 @@ public sealed partial class AppListViewModel(
                 var release = await appStateService.QueryLatestReleaseAsync(app);
                 if (release is null)
                     continue;
-                AvailableApps.Add(new()
+                AvailableApps.Add(new AppListItemModel
                 {
                     AppName = app, LatestVersion = release.Version, Description = release.Description,
                     Status = AppStatus.Available
@@ -488,4 +503,6 @@ public sealed partial class AppListViewModel(
     }
 
     #endregion
+
+    public bool Keep { get; } = true;
 }
