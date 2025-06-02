@@ -34,8 +34,7 @@ namespace TabbyCat
         public override void Initialize()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            this.EnableHotReload();
+            
             AvaloniaXamlLoader.Load(this);
             base.Initialize();
 
@@ -45,8 +44,10 @@ namespace TabbyCat
             if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
             {
                 var hotkeyStartProgramService = ServiceProvider.GetRequiredService<IHotKeyStartProgramService>();
+                var showQuickMenuService = ServiceProvider.GetRequiredService<IShowQuickMenuService>();
                 var useHotkey = hotkeyStartProgramService.Get();
-                if (useHotkey)
+                var useCpShowQuickMenu = showQuickMenuService.Get();
+                if (useHotkey||useCpShowQuickMenu)
                 {
                     var hotkeyService = ServiceProvider.GetRequiredService<IHotKeyHookService>();
                     hotkeyService.InitService();
@@ -175,7 +176,7 @@ namespace TabbyCat
                     client => { client.BaseAddress = new("https://api.yyan.cc/api"); })
                 .AddHttpMessageHandler<TokenHandler>();
 
-            collection.AddLoggerBuilder("http://24.233.2.12:3100", LogLabelProvider.GetLabels());
+            collection.AddLoggerBuilder("http://24.233.2.12:3100", LogLabelProvider.GetLabels(),"TabbyCat");
         }
     }
 }

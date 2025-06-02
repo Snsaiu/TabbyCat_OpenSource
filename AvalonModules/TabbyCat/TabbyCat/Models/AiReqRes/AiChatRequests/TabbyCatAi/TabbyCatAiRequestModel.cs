@@ -26,6 +26,22 @@ public class TabbyCatAiRequestModel : OpenAiRequestModel
     [JsonIgnore]
     public bool EnableDeepThinking { get; set; }
 
+    [JsonIgnore] public bool IsTranslate { get; set; }
+
+    [JsonProperty("translation_options")] public TranslationOptions TranslationParameter { get; set; } = new();
+
+    public bool ShouldSerializeTranslationParameter() => IsTranslate;
+
+    public bool ShouldSerializeModalities() => !IsTranslate;
+
+    public bool ShouldSerializeAudio() => !IsTranslate;
+
+    public bool ShouldSerializeEnableUseInternet() => !IsTranslate;
+
+    public bool ShouldSerializeSearchOption() => !IsTranslate;
+
+    public bool ShouldSerializeTemperature() => !IsTranslate;
+    public bool ShouldSerializeTopP() => !IsTranslate;
 
     public class SearchOptions
     {
@@ -49,4 +65,10 @@ public class TabbyCatAiRequestModel : OpenAiRequestModel
         [JsonProperty("format")] public string Format { get; set; } = "wav";
     }
 
+    public class TranslationOptions
+    {
+        [JsonProperty("source_lang")] public string SourceLang { get; set; } = string.Empty;
+
+        [JsonProperty("target_lang")] public string TargetLang { get; set; } = string.Empty;
+    }
 }

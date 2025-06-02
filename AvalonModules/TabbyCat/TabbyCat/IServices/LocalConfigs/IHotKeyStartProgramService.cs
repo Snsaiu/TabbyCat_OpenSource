@@ -1,6 +1,3 @@
 namespace TabbyCat.IServices.LocalConfigs;
 
-public interface IHotKeyStartProgramService:ILocalConfigService<bool>
-{
-    
-}
+public interface IHotKeyStartProgramService:ILocalConfigService<bool>;

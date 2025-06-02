@@ -14,6 +14,8 @@ public interface IUser
     Sex Sex { get; set; }
 
     bool LoginSuccess();
+    
+    bool IsLogin { get; }
 
     public void ResetData(IUser user)
     {

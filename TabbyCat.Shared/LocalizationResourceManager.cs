@@ -26,4 +26,9 @@ public class LocalizationResourceManager : INotifyPropertyChanged
         AppResources.Culture = culture;
         PropertyChanged?.Invoke(this, new(null));
     }
+
+    public CultureInfo GetCulture()
+    {
+        return AppResources.Culture;
+    }
 }

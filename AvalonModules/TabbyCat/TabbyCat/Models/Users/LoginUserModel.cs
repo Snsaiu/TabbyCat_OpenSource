@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using TabbyCat.Enums;
 using TabbyCat.IServices;
@@ -13,6 +14,7 @@ public sealed partial class LoginUserModel : ModelBase, IUser
 {
     public LoginUserModel()
     {
+        IsLogin = LoginSuccess();
     }
 
     public LoginUserModel(string email, string? phoneNumber, string? nickname, string accessToken,
@@ -48,4 +50,15 @@ public sealed partial class LoginUserModel : ModelBase, IUser
 
         return !(AccessTokenExpiration < DateTime.UtcNow);
     }
+    
+  
+    
+   
+
+    partial void OnEmailChanged(string value)
+    {
+        IsLogin = !string.IsNullOrEmpty(Email);
+    }
+    [ObservableProperty]
+    private bool _isLogin;
 }

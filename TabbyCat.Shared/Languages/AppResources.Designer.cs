@@ -3944,5 +3944,209 @@ namespace TabbyCat.Shared.Languages {
                 return ResourceManager.GetString("ContactDescription", resourceCulture);
             }
         }
+        
+        public static string AISearch {
+            get {
+                return ResourceManager.GetString("AISearch", resourceCulture);
+            }
+        }
+        
+        public static string Summarize {
+            get {
+                return ResourceManager.GetString("Summarize", resourceCulture);
+            }
+        }
+        
+        public static string Translate {
+            get {
+                return ResourceManager.GetString("Translate", resourceCulture);
+            }
+        }
+        
+        public static string Ask {
+            get {
+                return ResourceManager.GetString("Ask", resourceCulture);
+            }
+        }
+        
+        public static string AskTemplate {
+            get {
+                return ResourceManager.GetString("AskTemplate", resourceCulture);
+            }
+        }
+        
+        public static string SummaryTemplate {
+            get {
+                return ResourceManager.GetString("SummaryTemplate", resourceCulture);
+            }
+        }
+        
+        public static string Chinese {
+            get {
+                return ResourceManager.GetString("Chinese", resourceCulture);
+            }
+        }
+        
+        public static string English {
+            get {
+                return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        public static string Japanese {
+            get {
+                return ResourceManager.GetString("Japanese", resourceCulture);
+            }
+        }
+        
+        public static string Korean {
+            get {
+                return ResourceManager.GetString("Korean", resourceCulture);
+            }
+        }
+        
+        public static string Thai {
+            get {
+                return ResourceManager.GetString("Thai", resourceCulture);
+            }
+        }
+        
+        public static string French {
+            get {
+                return ResourceManager.GetString("French", resourceCulture);
+            }
+        }
+        
+        public static string German {
+            get {
+                return ResourceManager.GetString("German", resourceCulture);
+            }
+        }
+        
+        public static string Spanish {
+            get {
+                return ResourceManager.GetString("Spanish", resourceCulture);
+            }
+        }
+        
+        public static string Arabic {
+            get {
+                return ResourceManager.GetString("Arabic", resourceCulture);
+            }
+        }
+        
+        public static string Indonesian {
+            get {
+                return ResourceManager.GetString("Indonesian", resourceCulture);
+            }
+        }
+        
+        public static string Vietnamese {
+            get {
+                return ResourceManager.GetString("Vietnamese", resourceCulture);
+            }
+        }
+        
+        public static string Portuguese {
+            get {
+                return ResourceManager.GetString("Portuguese", resourceCulture);
+            }
+        }
+        
+        public static string Italian {
+            get {
+                return ResourceManager.GetString("Italian", resourceCulture);
+            }
+        }
+        
+        public static string Dutch {
+            get {
+                return ResourceManager.GetString("Dutch", resourceCulture);
+            }
+        }
+        
+        public static string Russian {
+            get {
+                return ResourceManager.GetString("Russian", resourceCulture);
+            }
+        }
+        
+        public static string Khmer {
+            get {
+                return ResourceManager.GetString("Khmer", resourceCulture);
+            }
+        }
+        
+        public static string Cebuano {
+            get {
+                return ResourceManager.GetString("Cebuano", resourceCulture);
+            }
+        }
+        
+        public static string Filipino {
+            get {
+                return ResourceManager.GetString("Filipino", resourceCulture);
+            }
+        }
+        
+        public static string Czech {
+            get {
+                return ResourceManager.GetString("Czech", resourceCulture);
+            }
+        }
+        
+        public static string Polish {
+            get {
+                return ResourceManager.GetString("Polish", resourceCulture);
+            }
+        }
+        
+        public static string Persian {
+            get {
+                return ResourceManager.GetString("Persian", resourceCulture);
+            }
+        }
+        
+        public static string Hebrew {
+            get {
+                return ResourceManager.GetString("Hebrew", resourceCulture);
+            }
+        }
+        
+        public static string Turkish {
+            get {
+                return ResourceManager.GetString("Turkish", resourceCulture);
+            }
+        }
+        
+        public static string Hindi {
+            get {
+                return ResourceManager.GetString("Hindi", resourceCulture);
+            }
+        }
+        
+        public static string Bengali {
+            get {
+                return ResourceManager.GetString("Bengali", resourceCulture);
+            }
+        }
+        
+        public static string Urdu {
+            get {
+                return ResourceManager.GetString("Urdu", resourceCulture);
+            }
+        }
+        
+        public static string UseCpShowQuickMenu {
+            get {
+                return ResourceManager.GetString("UseCpShowQuickMenu", resourceCulture);
+            }
+        }
+        
+        public static string MustLoginToUseFunction {
+            get {
+                return ResourceManager.GetString("MustLoginToUseFunction", resourceCulture);
+            }
+        }
     }
 }

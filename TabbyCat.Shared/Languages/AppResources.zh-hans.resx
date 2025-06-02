@@ -714,9 +714,6 @@
   <data name="cheaptravelticketadvisor" xml:space="preserve">
     <value>廉价旅行票务顾问</value>
   </data>
-  <data name="DataScientist" xml:space="preserve">
-    <value>数据科学家</value>
-  </data>
   <data name="LeagueofLegendsplayer" xml:space="preserve">
     <value>英雄联盟玩家</value>
   </data>
@@ -1474,5 +1471,106 @@
   </data>
   <data name="ContactDescription" xml:space="preserve">
     <value>联系人描述：</value>
+  </data>
+  <data name="AISearch" xml:space="preserve">
+    <value>Ai搜索</value>
+  </data>
+  <data name="Summarize" xml:space="preserve">
+    <value>总结</value>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="Ask" xml:space="preserve">
+    <value>询问</value>
+  </data>
+  <data name="AskTemplate" xml:space="preserve">
+    <value>帮我解释一下 “{0}”</value>
+  </data>
+  <data name="SummaryTemplate" xml:space="preserve">
+    <value>请帮我总结一下 “{0}”</value>
+  </data>
+  <data name="Japanese" xml:space="preserve">
+    <value>日语</value>
+  </data>
+  <data name="Korean" xml:space="preserve">
+    <value>韩语</value>
+  </data>
+  <data name="Thai" xml:space="preserve">
+    <value>泰语</value>
+  </data>
+  <data name="French" xml:space="preserve">
+    <value>法语</value>
+  </data>
+  <data name="German" xml:space="preserve">
+    <value>德语</value>
+  </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>西班牙语</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>阿拉伯语</value>
+  </data>
+  <data name="Indonesian" xml:space="preserve">
+    <value>印尼语</value>
+  </data>
+  <data name="Vietnamese" xml:space="preserve">
+    <value>越南语</value>
+  </data>
+  <data name="Portuguese" xml:space="preserve">
+    <value>巴西葡萄牙语</value>
+  </data>
+  <data name="Italian" xml:space="preserve">
+    <value>意大利语</value>
+  </data>
+  <data name="Dutch" xml:space="preserve">
+    <value>荷兰语</value>
+  </data>
+  <data name="Russian" xml:space="preserve">
+    <value>俄语</value>
+  </data>
+  <data name="Khmer" xml:space="preserve">
+    <value>高棉语
+
+</value>
+  </data>
+  <data name="Cebuano" xml:space="preserve">
+    <value>宿务语</value>
+  </data>
+  <data name="Filipino" xml:space="preserve">
+    <value>菲律宾语</value>
+  </data>
+  <data name="Czech" xml:space="preserve">
+    <value>捷克语</value>
+  </data>
+  <data name="DataScientist" xml:space="preserve">
+    <value>数据科学家</value>
+  </data>
+  <data name="Polish" xml:space="preserve">
+    <value>波兰语</value>
+  </data>
+  <data name="Persian" xml:space="preserve">
+    <value>波斯语</value>
+  </data>
+  <data name="Hebrew" xml:space="preserve">
+    <value>希伯来语</value>
+  </data>
+  <data name="Turkish" xml:space="preserve">
+    <value>土耳其语</value>
+  </data>
+  <data name="Hindi" xml:space="preserve">
+    <value>印地语</value>
+  </data>
+  <data name="Bengali" xml:space="preserve">
+    <value>孟加拉语</value>
+  </data>
+  <data name="Urdu" xml:space="preserve">
+    <value>乌尔都语</value>
+  </data>
+  <data name="UseCpShowQuickMenu" xml:space="preserve">
+    <value>框选文本或者使用Control+C（MAC：Command+C）显示快捷选项（需要重启）</value>
+  </data>
+  <data name="MustLoginToUseFunction" xml:space="preserve">
+    <value>必须登录才能使用此功能</value>
   </data>
 </root>

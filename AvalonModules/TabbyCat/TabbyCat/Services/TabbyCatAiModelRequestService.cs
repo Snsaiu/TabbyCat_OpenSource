@@ -45,6 +45,19 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
                     newsModel.Model = "qwq-plus";
                     Logger.LogDebug("用户输入的消息中没有附件，使用联网状态为:{EnableInternet};使用深度搜索状态为:{DeepThinking}；使用的模型为:{Model}",newsModel.EnableUseInternet,newsModel.EnableDeepThinking,newsModel.Model);
                 }
+                else if (requestModel.IsTranslate) //处理翻译
+                {
+                    newsModel.IsTranslate = true;
+                    newsModel.Model = "qwen-mt-turbo";
+                    requestModel.Messages.RemoveAll(x => x.Role == Role.System);
+                    var last = requestModel.Messages.LastOrDefault();
+                    if (last is null)
+                        throw new NullReferenceException("没有任何对话");
+                    
+                    requestModel.Messages.Clear();
+                    requestModel.Messages.Add(last);
+                    Logger.LogDebug("用户使用翻译，使用模型为:{Model}",newsModel.Model);
+                }
                 else
                 {
 
@@ -118,6 +131,8 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
 
     protected override string PreProcessResponse(string responseString)
     {
+        if (responseString == "data: [DONE]")
+            return string.Empty;
         return responseString.Replace("data: ", "");
     }
 

@@ -104,6 +104,8 @@ public abstract class
             response.EnsureSuccessStatusCode();
 
             var responseString = PreProcessResponse(await response.Content.ReadAsStringAsync());
+            if(string.IsNullOrEmpty(responseString))
+                return UnityResponseModel.Success();
             var responseModel = JsonConvert.DeserializeObject<TResponseModel>(responseString);
 
             return responseModel == null ? null : await ConvertResponseToUnityResponseModel(responseModel);
@@ -173,6 +175,8 @@ public abstract class
                             try
                             {
                                 var responseString = PreProcessResponse(line);
+                                if(string.IsNullOrEmpty(responseString))
+                                    return;
                                 var responseModel = JsonConvert.DeserializeObject<TResponseModel>(responseString);
                                 if (responseModel is null)
                                 {

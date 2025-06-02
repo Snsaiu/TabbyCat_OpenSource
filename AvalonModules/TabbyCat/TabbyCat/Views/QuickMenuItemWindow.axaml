@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tabbyCat="clr-namespace:TabbyCat"
+        xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+        xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TabbyCat.Views.QuickMenuItemWindow">
+   
+        <StackPanel Margin="10,5">
+                <StackPanel Orientation="Horizontal">
+                        <!-- <Button Classes="icon" FontSize="15" Content="{x:Static languages:AppResources.AISearch}" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.AISearch}"></Button> -->
+                        <Button Click="AskClick" Classes="icon"  FontSize="15" Content="{x:Static languages:AppResources.Ask}" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Ask}"></Button>
+                        <Button Classes="icon" Click="TranslateClick"  FontSize="15" Content="{x:Static languages:AppResources.Translate}" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Translate}"></Button>
+                        <Button Click="CopyClick" Classes="icon"  FontSize="15" Content="{x:Static languages:AppResources.Copy}" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Copy1}"></Button>
+                        <Button Classes="icon" Click="SummarizeClick"  FontSize="15" Content="{x:Static languages:AppResources.Summarize}" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Summarize}"></Button>
+                </StackPanel>
+                <Grid ColumnDefinitions="*,Auto,*" RowDefinitions="Auto,*,Auto" Name="translateGrid">
+                        <ComboBox  Name="lanSource" HorizontalAlignment="Stretch" Margin="0,0,0,5"></ComboBox>
+                        <ComboBox Grid.Column="2" Grid.Row="0"  Name="lanOutput" HorizontalAlignment="Stretch"  Margin="0,0,0,5"></ComboBox>
+                        <controls:FontIcon Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Classes="icon" Glyph="{x:Static tabbyCat:IconFontProvider.RightArrow}" ></controls:FontIcon>
+                        <TextBox Width="170"  Name="inputSource" Height="200" TextWrapping="Wrap" Grid.Row="1" Grid.Column="0"></TextBox>
+                        <TextBox Width="170" Name="outputSource" Height="200" TextWrapping="Wrap" Grid.Column="2" Grid.Row="1"></TextBox>
+                        <Button Grid.Column="0" Margin="0,5,5,0" Content="{x:Static languages:AppResources.Translate}" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Right" Click="ConfirmTraslateClick"></Button>
+                </Grid>
+        </StackPanel>
+</Window>
