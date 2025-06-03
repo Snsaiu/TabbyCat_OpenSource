@@ -1,11 +1,12 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
+using TabbyCat.Shared;
 using TabbyCat.Shared.Enums;
 using TuDog.Bootstrap;
 
 namespace TabbyCat.Models;
 
-public partial class NavigationMenuItem:ModelBase
+public partial class NavigationMenuItem : ModelBase
 {
     [ObservableProperty] private string _header = string.Empty;
 
@@ -17,17 +18,17 @@ public partial class NavigationMenuItem:ModelBase
     [ObservableProperty] private IEnumerable<NavigationMenuItem> _children = [];
 
     [ObservableProperty] private bool isSelected;
-    
+
     [ObservableProperty] private AiMediaWorkType _mediaWorkType;
-    
+
     public static NavigationMenuItem Create(string header, string icon, IEnumerable<NavigationMenuItem> children)
     {
         return new NavigationMenuItem { Header = header, Icon = icon, Children = children };
     }
 
-    public static NavigationMenuItem Create(string header, string icon, Type? content,AiMediaWorkType mediaWorkType)
+    public static NavigationMenuItem Create(string header, string icon, Type? content, AiMediaWorkType mediaWorkType)
     {
-       return new NavigationMenuItem { Header = header, Icon = icon, Content = content ,MediaWorkType = mediaWorkType};
-       
+        var lan = LocalizationResourceManager.Instance[header];
+        return new NavigationMenuItem { Header = lan, Icon = icon, Content = content, MediaWorkType = mediaWorkType };
     }
 }

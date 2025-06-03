@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using TabbyCat.IServices;
 using TabbyCat.Models;
+using TabbyCat.Shared;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
 using TabbyCat.ViewModels;
@@ -18,97 +19,93 @@ public sealed partial class NavigationMenuItemService : ModelBase, INavigationMe
     {
         var navigationMenuItems = new List<NavigationMenuItem>();
 
-        var contact = NavigationMenuItem.Create(AppResources.Contact, IconFontProvider.Contact,
+        var contact = NavigationMenuItem.Create("Contact", IconFontProvider.Contact,
             typeof(ContactViewModel),
             AiMediaWorkType.Contact);
-        
+
         _tailItems.Add(contact);
-        
+
         navigationMenuItems.Add(contact);
 
         var aichat = NavigationMenuItem.Create(
-            AppResources.Chat,
+            "Chat",
             IconFontProvider.TxtChat,
             typeof(ChatViewModel), AiMediaWorkType.AiChat
         );
-        
+
         _tailItems.Add(aichat);
-        
+
         navigationMenuItems.Add(aichat);
-        
-        navigationMenuItems.Add(new()
-        {
-            Header = AppResources.ImageProcessing,
-            Icon = IconFontProvider.ImageEdit,
-            Children =InitImageProcessMenuItems()
-          
-        });
+
+        navigationMenuItems.Add(
+            NavigationMenuItem.Create("ImageProcessing", IconFontProvider.ImageEdit, InitImageProcessMenuItems()));
 
 
         var textToVideo = NavigationMenuItem.Create(
-            AppResources.TextToVideo,
+            "TextToVideo",
             IconFontProvider.TextToVideo,
             typeof(TextToVideoViewModel),
             AiMediaWorkType.TextToVideo
         );
         _tailItems.Add(textToVideo);
-        
-        navigationMenuItems.Add(new()
+
+        navigationMenuItems.Add(new NavigationMenuItem
         {
-            Header = AppResources.VideoProcessing,
+            Header = "VideoProcessing",
             Icon = IconFontProvider.VideoEdit,
             Children =
             [
-             textToVideo  
+                textToVideo
             ]
         });
 
         MenuItems = navigationMenuItems;
     }
-    
-    
+
+
     private IEnumerable<NavigationMenuItem> InitImageProcessMenuItems()
     {
         IEnumerable<NavigationMenuItem> items =
         [
             NavigationMenuItem.Create(
-                AppResources.TextToImage,
+                "TextToImage",
                 IconFontProvider.WenShengTu,
                 typeof(TextToImageViewModel),
                 AiMediaWorkType.TextToImage
             ),
-            NavigationMenuItem.Create(AppResources.CommandsEdit, IconFontProvider.CommandEditImage,
+            NavigationMenuItem.Create("CommandsEdit", IconFontProvider.CommandEditImage,
                 typeof(CommandEditImageViewModel), AiMediaWorkType.CommandEditImage),
-            NavigationMenuItem.Create(AppResources.PartialRepaint, IconFontProvider.PartialDrawImage,
+            NavigationMenuItem.Create("PartialRepaint", IconFontProvider.PartialDrawImage,
                 typeof(PartialRepaintImageViewModel), AiMediaWorkType.PartialRepaintImage),
-            NavigationMenuItem.Create(AppResources.ExpandImage, IconFontProvider.ExpandImage,
+            NavigationMenuItem.Create("ExpandImage", IconFontProvider.ExpandImage,
                 typeof(ExpandImageViewModel), AiMediaWorkType.ExpandImage),
-            NavigationMenuItem.Create(AppResources.RemoveWatermark, IconFontProvider.RemoveMark,
+            NavigationMenuItem.Create("RemoveWatermark", IconFontProvider.RemoveMark,
                 typeof(RemoveWatermarkViewModel), AiMediaWorkType.RemoveWatermark),
-            NavigationMenuItem.Create(AppResources.ImageSuperResolution, IconFontProvider.SuperResoluntion,
+            NavigationMenuItem.Create("ImageSuperResolution", IconFontProvider.SuperResoluntion,
                 typeof(ImageSuperResolutionViewModel), AiMediaWorkType.ImageSuperResolution),
-            NavigationMenuItem.Create(AppResources.ImageColorization, IconFontProvider.Colorize,
+            NavigationMenuItem.Create("ImageColorization", IconFontProvider.Colorize,
                 typeof(ImageColorizationViewModel), AiMediaWorkType.ImageColorization),
-            NavigationMenuItem.Create(AppResources.GraffitiPainting, IconFontProvider.Doodle,
+            NavigationMenuItem.Create("GraffitiPainting", IconFontProvider.Doodle,
                 typeof(GraffitiPaintingViewModel), AiMediaWorkType.GraffitiPainting),
-            NavigationMenuItem.Create(AppResources.AvatarStylization,IconFontProvider.AvatarStylization,typeof(AvatarStylizationViewModel),AiMediaWorkType.AvatarStylization)
+            NavigationMenuItem.Create("AvatarStylization", IconFontProvider.AvatarStylization,
+                typeof(AvatarStylizationViewModel), AiMediaWorkType.AvatarStylization)
         ];
         _tailItems.AddRange(items);
         return items;
     }
 
     public IEnumerable<NavigationMenuItem> MenuItems { get; private set; }
-    
+
     private List<NavigationMenuItem> _tailItems = [];
 
     public Action<NavigationMenuItem> SelectMenuItemAction { get; set; }
     public object? Parameter { get; set; }
 
-    public Task NavigationAsync(AiMediaWorkType aiMediaWorkType,object? parameter)
+    public Task NavigationAsync(AiMediaWorkType aiMediaWorkType, object? parameter)
     {
         if (_tailItems.FirstOrDefault(x => x.MediaWorkType == aiMediaWorkType) is not null and NavigationMenuItem item)
-        { 
-            Parameter=parameter;
+        {
+            Parameter = parameter;
             SelectMenuItem = null;
             SelectMenuItem = item;
             return Task.CompletedTask;
