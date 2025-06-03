@@ -21,7 +21,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 {
     public Task<bool> QueryAppExistsAsync(AppName app)
     {
-        if (OperatingSystem.IsWindows()|| OperatingSystem.IsMacOS())
+        if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
         {
             var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), app.ToString());
             if (!Directory.Exists(folder))
@@ -45,7 +45,9 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
     {
         if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
         {
-            var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), name);
+            var folder = name == "Rabbit"
+                ? Path.Combine(appInstallPathService.GetRabbitInstallPath(), name)
+                : Path.Combine(appInstallPathService.GetAppInstallPath(), name);
             if (!Directory.Exists(folder))
                 return null;
             var versionFile = Directory.GetFiles(folder, "v");
@@ -147,7 +149,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
 
     public Task LaunchAppAsync(AppName app, string? customAppName = null, bool single = true, string[]? args = null)
     {
-        if (OperatingSystem.IsWindows() )
+        if (OperatingSystem.IsWindows())
         {
             var folder = Path.Combine(appInstallPathService.GetAppInstallPath(), app.ToString());
             if (!Directory.Exists(folder))
@@ -193,10 +195,10 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
         }
         else if (OperatingSystem.IsMacOS())
         {
-            string appName = app.ToString(); // 应用名
-            string command = $"ps aux | grep '{appName}.app' | grep -v 'grep'";
+            var appName = app.ToString(); // 应用名
+            var command = $"ps aux | grep '{appName}.app' | grep -v 'grep'";
 
-            Process process = new Process
+            var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -209,7 +211,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
             };
 
             process.Start();
-            string output = process.StandardOutput.ReadToEnd();
+            var output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
             return Task.FromResult(!string.IsNullOrWhiteSpace(output));
@@ -232,7 +234,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
     /// <returns></returns>
     public async Task<bool> UninstallAppAsync(AppName app)
     {
-        var location = await this.QueryAppLocationAsync(app);
+        var location = await QueryAppLocationAsync(app);
 
         try
         {
@@ -241,9 +243,7 @@ public sealed class FolderCheckAppService(IAppInstallPathService appInstallPathS
         }
         catch (Exception)
         {
-
             return false;
         }
-
     }
 }

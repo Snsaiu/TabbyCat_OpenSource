@@ -12,6 +12,7 @@ jobs:
     env:
       Solution_Name: TabbyCat.sln      # 你的解决方案路径
       Project_Path: UpdateProgram/YouYan.Rabbit    # 你的主项目路径
+      
   
     steps:
     - name: Checkout 代码
@@ -26,6 +27,10 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v4
+      
+    - name: Set VERSION
+      run: echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
+    
     - name: Install the Apple certificate and provisioning profile
       env:
         BUILD_CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_BASE64 }}
@@ -57,7 +62,7 @@ jobs:
         cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
     - name: Build and Create .app Bundle
-      run: |
+      run: | 
         PROJECT_NAME="YouYan.Rabbit"
         OUTPUT_DIR="$Project_Path/bin/Release/net9.0/osx-arm64/publish"
         
@@ -78,6 +83,7 @@ jobs:
         cp "$OUTPUT_DIR/$PROJECT_NAME" "$MACOS_PATH/"
         cp -R "$OUTPUT_DIR/" "$MACOS_PATH/"
         cp -R "$OUTPUT_DIR/"*.dylib "$MACOS_PATH/" 2>/dev/null || true
+        echo "$VERSION" > "$MACOS_PATH/v"
 
         if [ -d "$OUTPUT_DIR/Resources" ]; then
             cp -R "$OUTPUT_DIR/Resources" "$RESOURCES_PATH/"
@@ -209,25 +215,12 @@ jobs:
           exit 1
         fi
         
-        
-    - name: 获取发布描述 (提交日志) 和版本号
-      id: get_release_notes
-      run: |
-        echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-        git log -1 --pretty=%B >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
-
-         # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
-        echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
 
     - name: 设置环境变量
       run: |
         echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
         git log -1 --pretty=%B >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
-
-          # 使用当前时间作为版本号 (格式：yyyy.MM.dd.HHmmss)
-        echo "VERSION=$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
 
     - name: Upload zip as artifact
       uses: actions/upload-artifact@v4
@@ -246,8 +239,7 @@ jobs:
         START_BYTE=0
         
         RELEASE_NOTES="$(git log -1 --pretty=%B)"
-        VERSION=$(date +"%Y.%m.%d.%H%M%S")
-        
+     
         echo "🔎 文件总大小：$TOTAL_SIZE 字节"
         echo "🔎 RELEASE_NOTES: $RELEASE_NOTES"
         echo "🔎 VERSION: $VERSION"

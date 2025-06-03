@@ -3,4 +3,6 @@
 public interface IAppInstallPathService
 {
     string GetAppInstallPath();
+
+    string GetRabbitInstallPath();
 }

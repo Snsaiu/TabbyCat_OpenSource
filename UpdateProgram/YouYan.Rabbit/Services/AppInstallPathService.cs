@@ -32,4 +32,26 @@ public sealed class AppInstallPathService : IAppInstallPathService
 
         throw new NotImplementedException();
     }
+
+    public string GetRabbitInstallPath()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            return Path.Combine(localAppDataPath, "YouYan");
+        }
+        else if (OperatingSystem.IsLinux())
+        {
+        }
+        else if (OperatingSystem.IsMacOS())
+        {
+            return "/Applications/Rabbit.app/Contents/MacOS";
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
+
+        throw new NotImplementedException();
+    }
 }
