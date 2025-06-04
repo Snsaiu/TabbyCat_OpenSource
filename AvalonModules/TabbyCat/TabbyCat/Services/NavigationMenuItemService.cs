@@ -49,15 +49,12 @@ public sealed partial class NavigationMenuItemService : ModelBase, INavigationMe
         );
         _tailItems.Add(textToVideo);
 
-        navigationMenuItems.Add(new NavigationMenuItem
-        {
-            Header = "VideoProcessing",
-            Icon = IconFontProvider.VideoEdit,
-            Children =
-            [
-                textToVideo
-            ]
-        });
+        navigationMenuItems.Add(NavigationMenuItem.Create
+        (
+            "VideoProcessing",
+            IconFontProvider.VideoEdit,
+            [textToVideo]
+        ));
 
         MenuItems = navigationMenuItems;
     }

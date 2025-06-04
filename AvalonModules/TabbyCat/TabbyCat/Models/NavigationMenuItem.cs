@@ -23,7 +23,8 @@ public partial class NavigationMenuItem : ModelBase
 
     public static NavigationMenuItem Create(string header, string icon, IEnumerable<NavigationMenuItem> children)
     {
-        return new NavigationMenuItem { Header = header, Icon = icon, Children = children };
+        var lan = LocalizationResourceManager.Instance[header];
+        return new NavigationMenuItem { Header = lan, Icon = icon, Children = children };
     }
 
     public static NavigationMenuItem Create(string header, string icon, Type? content, AiMediaWorkType mediaWorkType)
