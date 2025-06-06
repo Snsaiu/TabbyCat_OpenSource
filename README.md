@@ -11,7 +11,8 @@
   <p align="center">
     一款跨平台（MACOS，WINDOWS，LINUX）的AI聊天助手
     <br />
-    <a href="https://github.com/Snsaiu/TabbyCat_OpenSource/wiki"><strong>查看文档</strong></a>
+    <br />
+    <a href="https://www.yyan.cc/product/tabbycat"><strong>直接到官网下载安装包</strong></a>
     <br />
     <br />
 </div>
@@ -22,6 +23,7 @@
 <details>
   <summary>内容列表</summary>
   <ol>
+    <li><a href="#界面概览">界面概览</a></li>
     <li>
       <a href="#关于项目">关于项目</a>
       <ul>
@@ -42,6 +44,14 @@
   </ol>
 </details>
 
+
+## 界面概览
+
+- ![联系人](readmeAssets/app_ui_1.png "联系人")
+- ![聊天](readmeAssets/app_ui_2.png "聊天")
+- ![多媒体处理](readmeAssets/app_ui_3.png "多媒体处理")
+- ![设置](readmeAssets/app_ui_4.png "设置")
+- ![设置](readmeAssets/app_ui_5.png "设置")
 
 
 <!-- ABOUT THE PROJECT -->
