@@ -1,0 +1,88 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TabbyCat.Components.ViewModels"
+             xmlns:aiEntities="clr-namespace:TabbyCat.Repository.Entities.AiEntities;assembly=TabbyCat.Repository"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             xmlns:views="clr-namespace:TabbyCat.Components.Views"
+             xmlns:models="clr-namespace:TabbyCat.Models"
+             xmlns:converters="clr-namespace:TabbyCat.Converters"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TabbyCat.Components.Views.ChatPanelSettingView"
+             x:DataType="viewModels:ChatPanelSettingViewModel">
+
+    <ScrollViewer>
+    <StackPanel Orientation="Vertical">
+        <Expander Header="{x:Static languages:AppResources.Session}" IsExpanded="True">
+            <ListBox ItemsSource="{Binding Sessions }" BorderThickness="1"
+                     CornerRadius="5"
+                     SelectedItem="{Binding SelectedAiChatSessionEntity}"
+                     Height="200">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="aiEntities:AiChatSessionEntity">
+                        <Grid ColumnDefinitions="*,Auto,Auto">
+                            <TextBlock TextTrimming="WordEllipsis"
+                                       MaxWidth="200"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Header,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Grid.Column="1" Classes="icon"
+                                    ToolTip.Tip="{x:Static languages:AppResources.Rename}"
+                                    Command="{Binding $parent[views:ChatPanelSettingView].((viewModels:ChatPanelSettingViewModel)DataContext).RenameSessionCommand}"
+                                    extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.zhongmingming}" />
+
+                            <Button Grid.Column="2"
+                                    ToolTip.Tip="{x:Static languages:AppResources.Delete}"
+                                    Classes="icon"
+                                    Command="{Binding $parent[views:ChatPanelSettingView].((viewModels:ChatPanelSettingViewModel)DataContext).DeleteSessionCommand}"
+                                    extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.shanchu1}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Expander>
+        <Expander Header="{x:Static languages:AppResources.CharacterSetting}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{x:Static languages:AppResources.ChooseCharacter}"></TextBlock>
+                <ComboBox SelectedItem="{Binding SelectedOccupationType}"
+
+                          ItemsSource="{Binding Occupations}" >
+                   <ComboBox.ItemTemplate>
+                       <DataTemplate x:DataType="models:OccupationType">
+                           <Grid ColumnDefinitions="*,Auto">
+                               <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding OccupationName}"></TextBlock>
+                               <Button Grid.Column="1"
+                                       Classes="icon"
+                                       Command="{Binding $parent[views:ChatPanelSettingView].((viewModels:ChatPanelSettingViewModel)DataContext).DeleteCustomOccupationCommand}"
+                                       CommandParameter="{Binding .}"
+                                       extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
+                                       IsVisible="{Binding Occupation,Converter={converters:Enum2BoolConverter},ConverterParameter=Custom}">
+
+                               </Button>
+                           </Grid>
+                       </DataTemplate>
+                   </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Text="{x:Static languages:AppResources.CharacterName}" Margin="{StaticResource Top2}"></TextBlock>
+                <TextBox Text="{Binding NewOccupationName}"></TextBox>
+                <TextBlock Text="{x:Static languages:AppResources.Description}" Margin="{StaticResource Top2}"></TextBlock>
+                <TextBox Height="100" Text="{Binding NewOccupationDescription}"></TextBox>
+                <ToggleSwitch IsChecked="{Binding NewOccupationIsDefault}" Content="{x:Static languages:AppResources.SetAsDefault}" Margin="{StaticResource Top2}"/>
+                <Button Command="{Binding AddNewOccupationCommand}" HorizontalAlignment="Stretch" Content="{x:Static languages:AppResources.Add}"></Button>
+            </StackPanel>
+        </Expander>
+
+        <Expander Header="{x:Static languages:AppResources.ModelSetting}" IsVisible="{Binding ShowModelSetting}">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                <TextBlock Text="{x:Static languages:AppResources.Model}" HorizontalAlignment="Left">
+                </TextBlock>
+                <ComboBox ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}"></ComboBox>
+            </StackPanel>
+
+        </Expander>
+
+    </StackPanel>
+    </ScrollViewer>
+</UserControl>

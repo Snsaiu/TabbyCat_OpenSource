@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:extensions="clr-namespace:TuDog.Extensions;assembly=TuDog"
+             xmlns:enums="clr-namespace:TabbyCat.Shared.Enums;assembly=TabbyCat.Shared"
+             xmlns:viewModels="clr-namespace:TabbyCat.Components.ViewModels"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TabbyCat.Components.Views.AiSettingView"
+             x:DataType="viewModels:AiSettingViewModel">
+    <Grid>
+        <TabControl TabStripPlacement="Top">
+            <TabItem Header="{x:Static languages:AppResources.ModelSetting}" FontSize="20">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{x:Static languages:AppResources.ModelProvider}" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        SelectedItem="{Binding SelectAiModelType,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                        ItemsSource="{Binding AiModelProviders,UpdateSourceTrigger=PropertyChanged}"
+                        Margin="{StaticResource Top2}" />
+                    <ContentControl Content="{Binding AiTemplate}"
+                                    ContentTemplate="{StaticResource AiModelSettingDataTemplateSelector}" />
+                    <ToggleSwitch Content="{x:Static languages:AppResources.Default}" IsChecked="{Binding AiTemplate.IsDefault}" />
+                    <Button Content="{x:Static languages:AppResources.Save}" HorizontalAlignment="Stretch" Command="{Binding SaveCommand}" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="{x:Static languages:AppResources.Miscellaneous}" FontSize="20">
+                <StackPanel>
+                    <ToggleSwitch Content="{x:Static languages:AppResources.DeleteSessionSaveChatRecord}" IsChecked="{Binding StoreChatRecord}"
+                                  ToolTip.Tip="{x:Static languages:AppResources.DeleteSessionSaveChatRecordTip}" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</UserControl>

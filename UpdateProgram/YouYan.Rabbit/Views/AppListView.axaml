@@ -1,0 +1,160 @@
+﻿<UserControl
+    x:Class="YouYan.Rabbit.Views.AppListView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extensions="clr-namespace:YouYan.Rabbit.Extensions"
+    xmlns:languages="clr-namespace:YouYan.Rabbit.Languages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:YouYan.Rabbit.Models"
+    xmlns:rabbit="clr-namespace:YouYan.Rabbit"
+    xmlns:viewModels="clr-namespace:YouYan.Rabbit.ViewModels"
+    xmlns:views="clr-namespace:YouYan.Rabbit.Views"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:AppListViewModel"
+    mc:Ignorable="d">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Orientation="Vertical">
+            <Grid ColumnDefinitions="*,Auto">
+                <Button Grid.Column="0" Content="{x:Static languages:Language.NewVersionPublish}" IsVisible="{Binding NewVersionAvailable}"
+                        Command="{Binding OpenRabbitHoleCommand}" />
+                
+                <Button Command="{Binding OpenSettingDialogCommand}" Margin="10,5" Grid.Column="1" extensions:IconAttach.Icon="{x:Static rabbit:IconFontProvider.Setting}" Classes="icon" HorizontalAlignment="Right"></Button>
+            </Grid>
+            <Expander Header="{x:Static languages:Language.Installed}" IsExpanded="True">
+                <ListBox ItemsSource="{Binding InstalledApps}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:AppListItemModel">
+                            <Grid ColumnDefinitions="30,*,Auto" RowDefinitions="*,*">
+                                <Image
+                                    Grid.RowSpan="2"
+                                    Margin="0,0,5,0"
+                                    Source="{Binding AppName,Converter={extensions:AppIconConverter}}"
+                                    Stretch="UniformToFill" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    VerticalAlignment="Top"
+                                    Grid.Column="1"
+                                    FontWeight="Bold"
+                                    Text="{Binding AppName, Converter={extensions:EnumToLocalizationConverter}}" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    VerticalAlignment="Bottom"
+                                    Grid.Column="1"
+                                    FontSize="10"
+                                    Foreground="Gray"
+                                    Text="{Binding Version}" />
+                                <DockPanel
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    LastChildFill="True">
+                                    <StackPanel Orientation="Horizontal"
+                                                IsVisible="{Binding Status ,Converter={extensions:ProgressBar2BoolConverter}}">
+                                        <ProgressBar Value="{Binding DownloadProgress}" ShowProgressText="True" />
+                                        <TextBlock Margin="5,0,5,0" VerticalAlignment="Center" Foreground="Gray"
+                                                   FontSize="8"
+                                                   Text="{Binding Status}" />
+                                    </StackPanel>
+                                    <Button Content="{x:Static languages:Language.Update}"
+                                            Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).UpdateCommand}"
+                                            CommandParameter="{Binding Path=.}"
+                                            IsVisible="{Binding Status ,Converter={extensions:AppState2BoolConverter}, ConverterParameter={x:Static extensions:AppStatus.NeedUpdate}}"
+                                            DockPanel.Dock="Left" />
+                                    <Button
+                                        extensions:IconAttach.Icon="{x:Static rabbit:IconFontProvider.ThreePoint}"
+                                        BorderThickness="0"
+                                        Classes="icon"
+                                        DockPanel.Dock="Right">
+                                        <Button.Flyout>
+                                            <MenuFlyout>
+                                                <MenuItem Header="{x:Static languages:Language.Launch}"
+                                                          IsVisible="{Binding Status,Converter={extensions:AppState2BoolConverter}, ConverterParameter={x:Static extensions:AppStatus.Installed}}"
+                                                          Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).LaunchCommand}"
+                                                          CommandParameter="{Binding Path=.}" />
+
+                                                <MenuItem Header="{x:Static languages:Language.WhatsNew}"
+                                                          IsVisible="{Binding Status,Converter={extensions:WhatNew2BoolConverter}}"
+                                                          Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).ShowWhatsNewCommand}"
+                                                          CommandParameter="{Binding Path=.}" />
+
+                                                <MenuItem Foreground="Red"
+                                                          IsVisible="{Binding Status,Converter={extensions:Uninstall2BoolConverter}}"
+                                                          Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).UninstallAppCommand}"
+                                                          CommandParameter="{Binding Path=.}"
+                                                          Header="{x:Static languages:Language.Uninstall}" />
+                                            </MenuFlyout>
+                                        </Button.Flyout>
+                                    </Button>
+                                </DockPanel>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Expander>
+            <Expander Header="{x:Static languages:Language.Available}" IsExpanded="True">
+                <ListBox ItemsSource="{Binding AvailableApps}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:AppListItemModel">
+                            <Grid ColumnDefinitions="30,*,Auto" RowDefinitions="*,*">
+                                <Image
+                                    Grid.RowSpan="2"
+                                    Margin="0,0,5,0"
+                                    Source="{Binding AppName,Converter={extensions:AppIconConverter}}"
+                                    Stretch="UniformToFill" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    FontWeight="Bold"
+                                    Text="{Binding AppName, Converter={extensions:EnumToLocalizationConverter}}" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontSize="10"
+                                    Foreground="Gray"
+                                    Text="{Binding LatestVersion}" />
+                                <DockPanel
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    LastChildFill="True">
+                                    <Button
+                                        IsVisible="{Binding !Status}"
+                                        Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).InstallAppCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Content="{x:Static languages:Language.Install}"
+                                        DockPanel.Dock="Left" />
+                                    <StackPanel Orientation="Horizontal"
+                                                IsVisible="{Binding Status ,Converter={extensions:ProgressBar2BoolConverter}}">
+                                        <ProgressBar Value="{Binding DownloadProgress}" ShowProgressText="True" />
+                                        <TextBlock Margin="5,0,5,0" VerticalAlignment="Center" Foreground="Gray"
+                                                   FontSize="8"
+                                                   Text="{Binding Status}" />
+                                    </StackPanel>
+
+                                    <Button
+                                        extensions:IconAttach.Icon="{x:Static rabbit:IconFontProvider.ThreePoint}"
+                                        BorderThickness="0"
+                                        Classes="icon"
+                                        DockPanel.Dock="Right">
+                                        <Button.Flyout>
+                                            <MenuFlyout>
+                                                <MenuItem Header="{x:Static languages:Language.WhatsNew}"
+                                                          Command="{Binding $parent[views:AppListView].((viewModels:AppListViewModel)DataContext).ShowWhatsNewCommand}"
+                                                          CommandParameter="{Binding Path=.}" />
+                                            </MenuFlyout>
+                                        </Button.Flyout>
+                                    </Button>
+                                </DockPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

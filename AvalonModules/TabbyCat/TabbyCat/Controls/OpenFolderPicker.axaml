@@ -1,0 +1,19 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TabbyCat.Controls.OpenFolderPicker">
+    <DockPanel LastChildFill="True">
+        <Button Command="{Binding $parent[controls:OpenFolderPicker].OpenCommand}" Margin="{StaticResource Left2}"
+                Classes="icon" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.OpenFolder}"
+                DockPanel.Dock="Right" />
+        <TextBox
+            Text="{Binding $parent[controls:OpenFolderPicker].SavePath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+            DockPanel.Dock="Left" IsEnabled="False" TextWrapping="NoWrap"
+            Watermark="{Binding $parent[controls:OpenFolderPicker].PlaceHolder,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+    </DockPanel>
+</UserControl>

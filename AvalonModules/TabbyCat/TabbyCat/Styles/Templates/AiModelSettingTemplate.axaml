@@ -1,0 +1,293 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dataTemplateSelector="clr-namespace:TabbyCat.Styles.Templates.DataTemplateSelector"
+    xmlns:models="clr-namespace:TabbyCat.Models"
+    xmlns:parentVm="clr-namespace:TabbyCat.Components.ViewModels"
+    xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared">
+    <dataTemplateSelector:AiModelSettingDataTemplateSelector x:Key="AiModelSettingDataTemplateSelector">
+        
+        <DataTemplate x:Key="OpenAiApiModel" DataType="models:OpenAiApiModel">
+            <StackPanel
+                Name="sp"
+                HorizontalAlignment="Stretch"
+                Orientation="Vertical">
+                <TextBlock Text="{x:Static languages:AppResources.ApiKey}" />
+                <TextBox Text="{Binding ApiKey}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.ApiDomain}" />
+                <TextBox Text="{Binding ApiDomain}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.Model}" />
+                <DockPanel LastChildFill="True">
+                    <Button
+                        Command="{Binding $parent[ContentControl].((parentVm:AiSettingViewModel)DataContext).RefreshModelCommand}"
+                        Content="{x:Static languages:AppResources.Refresh}"
+                        DockPanel.Dock="Right" />
+                    <ComboBox
+                        Margin="{StaticResource Left2}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        DockPanel.Dock="Left"
+                        ItemsSource="{Binding Models}"
+                        SelectedItem="{Binding SelectedModel}" />
+                </DockPanel>
+                <TextBlock Margin="{StaticResource Top2}"
+                           Text="{x:Static languages:AppResources.RigorousAndImaginative}" />
+                <Slider
+                    Margin="{StaticResource Top2}"
+                    Maximum="2"
+                    Minimum="0.1"
+                    Value="{Binding Temperature}" />
+                <ToggleSwitch
+                    Name="contextCountLimitToggleSwitch"
+                    Margin="{StaticResource Top2}"
+                    Content="{x:Static languages:AppResources.ContextHasAnUpperLimit}"
+                    IsChecked="{Binding ContextCountLimit}" />
+                <StackPanel
+                    Margin="{StaticResource Top2}"
+                    IsEnabled="{Binding ElementName=contextCountLimitToggleSwitch, Path=IsChecked}"
+                    Orientation="Vertical">
+                    <TextBlock Text="{x:Static languages:AppResources.MaximumNumberOfContextMessages}" />
+                    <Slider
+                        Maximum="100"
+                        Minimum="1"
+                        Value="{Binding ContextCount}" />
+                </StackPanel>
+                <TextBlock Margin="{StaticResource Top2}" Text="Top P" />
+                <Slider
+                    Maximum="2"
+                    Minimum="0.1"
+                    Value="{Binding TopP}" />
+            </StackPanel>
+        </DataTemplate>
+        <!-- <DataTemplate x:Key="AzureOpenAiApiModel" DataType="models:AzureOpenAiApiModel"> -->
+        <!--     <StackPanel Orientation="Vertical"> -->
+        <!--         <TextBlock Text="{x:Static languages:AppResources.ApiKey}" /> -->
+        <!--         <TextBox Text="{Binding ApiKey}" /> -->
+        <!--         <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.EndPoint}" /> -->
+        <!--         <TextBox Text="{Binding EndPoint}" /> -->
+        <!--         <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.ModelDeplayName}" /> -->
+        <!--         <TextBox Text="{Binding DeployName}" /> -->
+        <!--         <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.Model}" /> -->
+        <!--         <DockPanel LastChildFill="True"> -->
+        <!--             <Button -->
+        <!--                 Command="{Binding $parent[ContentControl].((parentVm:AiSettingViewModel)DataContext).RefreshModelCommand}" -->
+        <!--                 Content="{x:Static languages:AppResources.Refresh}" -->
+        <!--                 DockPanel.Dock="Right" /> -->
+        <!--             <ComboBox -->
+        <!--                 Margin="{StaticResource Left2}" -->
+        <!--                 HorizontalAlignment="Stretch" -->
+        <!--                 HorizontalContentAlignment="Stretch" -->
+        <!--                 DockPanel.Dock="Left" -->
+        <!--                 ItemsSource="{Binding Models}" -->
+        <!--                 SelectedItem="{Binding SelectedModel}" /> -->
+        <!--         </DockPanel> -->
+        <!--         <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.RigorousAndImaginative}" /> -->
+        <!--         <Slider -->
+        <!--             Margin="{StaticResource Top2}" -->
+        <!--             Maximum="2" -->
+        <!--             Minimum="0.1" -->
+        <!--             Value="{Binding Temperature}" /> -->
+        <!-- -->
+        <!--         <ToggleSwitch -->
+        <!--             Name="contextCountLimitToggleSwitch" -->
+        <!--             Margin="{StaticResource Top2}" -->
+        <!--             Content="{x:Static languages:AppResources.ContextHasAnUpperLimit}" -->
+        <!--             IsChecked="{Binding ContextCountLimit}" /> -->
+        <!--         <StackPanel -->
+        <!--             Margin="{StaticResource Top2}" -->
+        <!--             IsEnabled="{Binding ElementName=contextCountLimitToggleSwitch, Path=IsChecked}" -->
+        <!--             Orientation="Vertical"> -->
+        <!--             <TextBlock Text="{x:Static languages:AppResources.MaximumNumberOfContextMessages}" /> -->
+        <!--             <Slider -->
+        <!--                 Maximum="100" -->
+        <!--                 Minimum="1" -->
+        <!--                 Value="{Binding ContextCount}" /> -->
+        <!--         </StackPanel> -->
+        <!-- -->
+        <!--     </StackPanel> -->
+        <!-- </DataTemplate> -->
+        <DataTemplate x:Key="GoogleGeminiModel" DataType="models:GoogleGeminiModel">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{x:Static languages:AppResources.ApiKey}" />
+                <TextBox Text="{Binding ApiKey}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.ApiDomain}" />
+                <TextBox Text="{Binding ApiDomain}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.Model}" />
+                <DockPanel LastChildFill="True">
+                    <Button
+                        Margin="{StaticResource Left2}"
+                        Command="{Binding $parent[ContentControl].((parentVm:AiSettingViewModel)DataContext).RefreshModelCommand}"
+                        Content="{x:Static languages:AppResources.Refresh}"
+                        DockPanel.Dock="Right" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        DockPanel.Dock="Left"
+                        ItemsSource="{Binding Models, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                        SelectedItem="{Binding SelectedModel, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.RigorousAndImaginative}" />
+                <Slider
+                    Margin="{StaticResource Top2}"
+                    Maximum="2"
+                    Minimum="0.1"
+                    Value="{Binding Temperature}" />
+                <ToggleSwitch
+                    Name="contextCountLimitToggleSwitch"
+                    Margin="{StaticResource Top2}"
+                    Content="{x:Static languages:AppResources.ContextHasAnUpperLimit}"
+                    IsChecked="{Binding ContextCountLimit}" />
+                <StackPanel
+                    Margin="{StaticResource Top2}"
+                    IsEnabled="{Binding ElementName=contextCountLimitToggleSwitch, Path=IsChecked}"
+                    Orientation="Vertical">
+                    <TextBlock Text="{x:Static languages:AppResources.MaximumNumberOfContextMessages}" />
+                    <Slider
+                        Maximum="100"
+                        Minimum="1"
+                        Value="{Binding ContextCount}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="DeepSeekModel" DataType="{x:Type models:DeepSeekModel}">
+            <StackPanel
+                Name="sp"
+                HorizontalAlignment="Stretch"
+                Orientation="Vertical">
+                <TextBlock Text="{x:Static languages:AppResources.ApiKey}" />
+                <TextBox Text="{Binding ApiKey}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.ApiDomain}" />
+                <TextBox Text="{Binding ApiDomain}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.Model}" />
+                <DockPanel LastChildFill="True">
+                    <Button
+                        Command="{Binding $parent[ContentControl].((parentVm:AiSettingViewModel)DataContext).RefreshModelCommand}"
+                        Content="{x:Static languages:AppResources.Refresh}"
+                        DockPanel.Dock="Right" />
+                    <ComboBox
+                        Margin="{StaticResource Left2}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        DockPanel.Dock="Left"
+                        ItemsSource="{Binding Models}"
+                        SelectedItem="{Binding SelectedModel}" />
+                </DockPanel>
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.RigorousAndImaginative}" />
+                <Slider
+                    Margin="{StaticResource Top2}"
+                    Maximum="2"
+                    Minimum="0.1"
+                    Value="{Binding Temperature}" />
+                <ToggleSwitch
+                    Name="contextCountLimitToggleSwitch"
+                    Margin="{StaticResource Top2}"
+                    Content="{x:Static languages:AppResources.ContextHasAnUpperLimit}"
+                    IsChecked="{Binding ContextCountLimit}" />
+                <StackPanel
+                    Margin="{StaticResource Top2}"
+                    IsEnabled="{Binding ElementName=contextCountLimitToggleSwitch, Path=IsChecked}"
+                    Orientation="Vertical">
+                    <TextBlock Text="{x:Static languages:AppResources.MaximumNumberOfContextMessages}" />
+                    <Slider
+                        Maximum="100"
+                        Minimum="1"
+                        Value="{Binding ContextCount}" />
+                </StackPanel>
+                <TextBlock Margin="{StaticResource Top2}" Text="Top P" />
+                <Slider
+                    Maximum="2"
+                    Minimum="0.1"
+                    Value="{Binding TopP}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="OllamaModel" DataType="{x:Type models:OllamaModel}">
+            <StackPanel
+                Name="sp"
+                HorizontalAlignment="Stretch"
+                Orientation="Vertical">
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.ApiDomain}" />
+                <TextBox Text="{Binding ApiDomain}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.ApiPath}" />
+                <TextBox Text="{Binding ApiPath}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.Model}" />
+                <DockPanel LastChildFill="True">
+                    <Button
+                        Command="{Binding $parent[ContentControl].((parentVm:AiSettingViewModel)DataContext).RefreshModelCommand}"
+                        Content="{x:Static languages:AppResources.Refresh}"
+                        DockPanel.Dock="Right" />
+                    <ComboBox
+                        Margin="{StaticResource Left2}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        DockPanel.Dock="Left"
+                        ItemsSource="{Binding Models}"
+                        SelectedItem="{Binding SelectedModel}" />
+                </DockPanel>
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.RigorousAndImaginative}" />
+                <Slider
+                    Margin="{StaticResource Top2}"
+                    Maximum="2"
+                    Minimum="0.1"
+                    Value="{Binding Temperature}" />
+                <ToggleSwitch
+                    Name="contextCountLimitToggleSwitch"
+                    Margin="{StaticResource Top2}"
+                    Content="{x:Static languages:AppResources.ContextHasAnUpperLimit}"
+                    IsChecked="{Binding ContextCountLimit}" />
+                <StackPanel
+                    Margin="{StaticResource Top2}"
+                    IsEnabled="{Binding ElementName=contextCountLimitToggleSwitch, Path=IsChecked}"
+                    Orientation="Vertical">
+                    <TextBlock Text="{x:Static languages:AppResources.MaximumNumberOfContextMessages}" />
+                    <Slider
+                        Maximum="100"
+                        Minimum="1"
+                        Value="{Binding ContextCount}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ClaudeModel" DataType="models:ClaudeModel">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{x:Static languages:AppResources.ApiKey}" />
+                <TextBox Text="{Binding ApiKey}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.ApiDomain}" />
+                <TextBox Text="{Binding ApiDomain}" />
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.Model}" />
+                <DockPanel LastChildFill="True">
+                    <Button
+                        Margin="{StaticResource Left2}"
+                        Command="{Binding $parent[ContentControl].((parentVm:AiSettingViewModel)DataContext).RefreshModelCommand}"
+                        Content="{x:Static languages:AppResources.Refresh}"
+                        DockPanel.Dock="Right" />
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        DockPanel.Dock="Left"
+                        ItemsSource="{Binding Models, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                        SelectedItem="{Binding SelectedModel, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <TextBlock Margin="{StaticResource Top2}" Text="{x:Static languages:AppResources.RigorousAndImaginative}" />
+                <Slider
+                    Margin="{StaticResource Top2}"
+                    Maximum="2"
+                    Minimum="0.1"
+                    Value="{Binding Temperature}" />
+                <ToggleSwitch
+                    Name="contextCountLimitToggleSwitch"
+                    Margin="{StaticResource Top2}"
+                    Content="{x:Static languages:AppResources.ContextHasAnUpperLimit}"
+                    IsChecked="{Binding ContextCountLimit}" />
+                <StackPanel
+                    Margin="{StaticResource Top2}"
+                    IsEnabled="{Binding ElementName=contextCountLimitToggleSwitch, Path=IsChecked}"
+                    Orientation="Vertical">
+                    <TextBlock Text="{x:Static languages:AppResources.MaximumNumberOfContextMessages}" />
+                    <Slider
+                        Maximum="100"
+                        Minimum="1"
+                        Value="{Binding ContextCount}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+    </dataTemplateSelector:AiModelSettingDataTemplateSelector>
+</ResourceDictionary>

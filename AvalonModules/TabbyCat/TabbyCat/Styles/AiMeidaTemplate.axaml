@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+                    xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+                    xmlns:controls="clr-namespace:TabbyCat.Controls"
+                    xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+                    xmlns:bases="clr-namespace:TabbyCat.ViewModels.Bases">
+
+
+    <DataTemplate DataType="bases:OnlyOneImageUploadAiGenerateImageBase"
+                  x:Key="OnlyOneImageUploadAiGenerateImageBaseTemplate">
+        <StackPanel Orientation="Vertical" Margin="{StaticResource LeftRight10}" VerticalAlignment="Center">
+            <controls:ImageControl HorizontalAlignment="Left" ShowHeader="True"
+                                    Header="{x:Static languages:AppResources.ChooseImage}"
+                                    Command="{Binding OpenPickImageDialogCommand}"
+                                   ImageSource ="{Binding LocalImage}" />
+            <TextBox Height="200" Margin="{StaticResource Top2}" Watermark="{Binding PromptDescription,Mode=OneWay}"
+                     Text="{Binding Prompt}" TextWrapping="Wrap" />
+            <StackPanel Orientation="Vertical" Margin="{StaticResource Top2}" IsVisible="{Binding ShowStrength}">
+                <TextBlock Text="{x:Static languages:AppResources.Strength}" />
+                <StackPanel Orientation="Horizontal">
+                    <Slider Value="{Binding Strength}" Minimum="0" Maximum="1" />
+                    <TextBlock Text="{Binding Strength}" Margin="{StaticResource Left6}" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="{StaticResource Top2}" IsVisible="{Binding ShowImageCount}">
+                <TextBlock Text="{x:Static languages:AppResources.ImageCount}" />
+                <ComboBox ItemsSource="{Binding Count,Mode=OneWay}" SelectedItem="{Binding SelectedCount}" />
+            </StackPanel>
+            <ContentControl
+                Content="{Binding Path=(extensions:AttachContent.AttachContent),RelativeSource={RelativeSource AncestorType=UserControl }}" />
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

@@ -1,0 +1,59 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:uIs="clr-namespace:TuDog.UIs">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+    <Style Selector="Window.dialog">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="uIs:DialogWindow">
+                    <Grid RowDefinitions="Auto,*,Auto" Background="{DynamicResource SolidBackgroundFillColorBase}">
+                        <Border Padding="24" BorderThickness="0,0,0,1"
+                                BorderBrush="{DynamicResource ContentDialogBorderBrush}">
+                            <StackPanel Orientation="Vertical">
+
+                                <TextBlock FontSize="20" Text="{TemplateBinding Title}"
+                                           FontWeight="DemiBold"
+                                           Foreground="{DynamicResource TextControlForeground}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </Border>
+                        <Grid Grid.Row="1">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Grid>
+
+                        <Border Grid.Row="2" Background="{DynamicResource SolidBackgroundFillColorBase}" VerticalAlignment="Bottom" Padding="24"
+                                HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <StackPanel.Styles>
+                                    <Style Selector="Button">
+                                        <Setter Property="BorderThickness" Value="1" />
+                                        <Setter Property="CornerRadius" Value="4" />
+                                        <Setter Property="Padding" Value="11,5,11,6" />
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
+                                    </Style>
+                                </StackPanel.Styles>
+                                <Button Name="PrimaryButton"
+                                        Command="{Binding $parent[uIs:DialogWindow].ConfirmCommand}"
+                                        Content="{TemplateBinding PrimaryButtonText}" />
+                                <Button Name="SecondaryButton"
+                                        Margin="5,0,0,0"
+                                        Command="{Binding $parent[uIs:DialogWindow].CancelCommand}"
+                                        Content="{TemplateBinding SecondaryButtonText}" />
+                            </StackPanel>
+                        </Border>
+                        <uIs:InfoBox Name="PART_InfoBox" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Right"
+                                     VerticalAlignment="Top"
+                                     Margin="0,5,0,0" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</Styles>

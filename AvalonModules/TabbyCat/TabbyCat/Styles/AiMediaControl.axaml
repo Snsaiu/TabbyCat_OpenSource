@@ -1,0 +1,313 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:extensions="clr-namespace:TuDog.Extensions;assembly=TuDog"
+        xmlns:extensions1="clr-namespace:TabbyCat.Extensions"
+        xmlns:tabbyCat="clr-namespace:TabbyCat"
+        xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+        xmlns:aiMediaEntities="clr-namespace:TabbyCat.Repository.Entities.AiMediaEntities;assembly=TabbyCat.Repository"
+        xmlns:controls1="clr-namespace:TabbyCat.Controls"
+        xmlns:bases="clr-namespace:TabbyCat.ViewModels.Bases"
+        xmlns:enums="clr-namespace:TabbyCat.Shared.Enums;assembly=TabbyCat.Shared"
+        xmlns:converters="clr-namespace:TabbyCat.Converters">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector=":is(UserControl).AiMediaStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="UserControl">
+                    <Grid RowDefinitions="Auto,*,Auto" Name="mainGrid">
+                        <StackPanel Orientation="Vertical">
+                            <ProgressBar IsIndeterminate="True"
+                                         IsVisible="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).IsBackgroundTaskRunning}" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <controls:FontIcon ToolTip.Tip="{x:Static languages:AppResources.RunningTaskCount}"
+                                                   Classes="icon"
+                                                   Glyph="{x:Static tabbyCat:IconFontProvider.DoingTask}"
+                                                   VerticalAlignment="Center" />
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).WorkingTaskCount}" />
+                                <Button Classes="icon"
+                                        extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
+                                        Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ClearTasksCommand}"
+                                        IsVisible="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).IsBackgroundTaskRunning}"
+                                        Margin="{StaticResource LeftRight6}" />
+                                <Button ToolTip.Tip="{x:Static languages:AppResources.Portfolio}"
+                                        Classes="icon"
+                                        extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Portfolio}"
+                                        Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).OpenPortfolioCommand}"
+                                        HorizontalAlignment="Right" />
+                            </StackPanel>
+                        </StackPanel>
+
+
+                        <Grid Grid.Row="1" ColumnDefinitions="*,*">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                            <ScrollViewer VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1">
+                                <ListBox
+                                    SelectionMode="Multiple"
+                                    Name="mediaList"
+                                    SelectedItems="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SelectedMediaFiles,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).LastBuildResultMedia}">
+                                    <ListBox.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuItem
+                                                IsEnabled="{Binding ElementName=mediaList,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='>0'}"
+                                                Header="{x:Static languages:AppResources.Look}"
+                                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).LookCommand}">
+                                            </MenuItem>
+
+                                            <MenuItem Header="{x:Static languages:AppResources.SendTo}">
+                                                <MenuItem
+                                                    IsEnabled="{Binding ElementName=mediaList,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SendToCommand}"
+                                                    CommandParameter="{x:Static enums:AiMediaWorkType.CommandEditImage}"
+                                                    Header="{x:Static languages:AppResources.CommandsEdit}">
+                                                </MenuItem>
+                                                <MenuItem
+                                                    IsEnabled="{Binding ElementName=mediaList,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SendToCommand}"
+                                                    CommandParameter="{x:Static enums:AiMediaWorkType.PartialRepaintImage}"
+                                                    Header="{x:Static languages:AppResources.LocalStylization}">
+                                                </MenuItem>
+                                                <MenuItem
+                                                    IsEnabled="{Binding ElementName=mediaList,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SendToCommand}"
+                                                    CommandParameter="{x:Static enums:AiMediaWorkType.ExpandImage}"
+                                                    Header="{x:Static languages:AppResources.ExpandImage}">
+                                                </MenuItem>
+                                                <MenuItem
+                                                    IsEnabled="{Binding ElementName=mediaList,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SendToCommand}"
+                                                    CommandParameter="{x:Static enums:AiMediaWorkType.RemoveWatermark}"
+                                                    Header="{x:Static languages:AppResources.RemoveWatermark}">
+                                                </MenuItem>
+                                                <MenuItem
+                                                    IsEnabled="{Binding ElementName=mediaList,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SendToCommand}"
+                                                    CommandParameter="{x:Static enums:AiMediaWorkType.ImageSuperResolution}"
+                                                    Header="{x:Static languages:AppResources.ImageSuperResolution}">
+                                                </MenuItem>
+                                                <MenuItem
+                                                    IsEnabled="{Binding ElementName=mediaList,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SendToCommand}"
+                                                    CommandParameter="{x:Static enums:AiMediaWorkType.ImageColorization}"
+                                                    Header="{x:Static languages:AppResources.ImageColorization}">
+                                                </MenuItem>
+                                                <MenuItem
+                                                    IsEnabled="{Binding ElementName=mediaList,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SendToCommand}"
+                                                    CommandParameter="{x:Static enums:AiMediaWorkType.AvatarStylization}"
+                                                    Header="{x:Static languages:AppResources.AvatarStylization}">
+                                                </MenuItem>
+                                            </MenuItem>
+
+                                        </MenuFlyout>
+                                    </ListBox.ContextFlyout>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <ContentControl Content="{Binding .}"
+                                                            Margin="{StaticResource Margin2}"
+                                                            ContentTemplate="{StaticResource AiMediaDisplayTemplateSelector}">
+                                            </ContentControl>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel ItemHeight="200" ItemWidth="200" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </ScrollViewer>
+                        </Grid>
+
+                        <Button Width="100" Grid.Row="2" Content="{x:Static languages:AppResources.Perform}"
+                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ConfirmCommand}"
+                                HorizontalAlignment="Left" Margin="{StaticResource Margin10}" />
+                        <controls:PickerFlyoutPresenter
+                            Grid.Row="0"
+                            Grid.RowSpan="3"
+                            Width="300"
+                            Height="{Binding ElementName=mainGrid, Path=Height}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Stretch"
+                            IsVisible="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ShowPanel}">
+
+                            <TabControl TabStripPlacement="Top">
+                                <TabItem Header="Images">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                                  VerticalScrollBarVisibility="Auto">
+                                        <ListBox
+                                            SelectionMode="Multiple"
+                                            Name="listResult"
+                                            SelectedItems="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SelectedResultMediaEntities,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                            ItemsSource="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ImageCollectionViewSource}">
+                                            <ListBox.ContextFlyout>
+                                                <MenuFlyout>
+                                                    <MenuItem Header="{x:Static languages:AppResources.SendTo}">
+                                                        <MenuItem
+                                                            IsEnabled="{Binding ElementName=listResult,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                            Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ListSendToCommand}"
+                                                            CommandParameter="{x:Static enums:AiMediaWorkType.CommandEditImage}"
+                                                            Header="{x:Static languages:AppResources.CommandsEdit}">
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            IsEnabled="{Binding ElementName=listResult,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                            Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ListSendToCommand}"
+                                                            CommandParameter="{x:Static enums:AiMediaWorkType.PartialRepaintImage}"
+                                                            Header="{x:Static languages:AppResources.LocalStylization}">
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            IsEnabled="{Binding ElementName=listResult,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                            Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ListSendToCommand}"
+                                                            CommandParameter="{x:Static enums:AiMediaWorkType.ExpandImage}"
+                                                            Header="{x:Static languages:AppResources.ExpandImage}">
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            IsEnabled="{Binding ElementName=listResult,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                            Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ListSendToCommand}"
+                                                            CommandParameter="{x:Static enums:AiMediaWorkType.RemoveWatermark}"
+                                                            Header="{x:Static languages:AppResources.RemoveWatermark}">
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            IsEnabled="{Binding ElementName=listResult,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                            Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ListSendToCommand}"
+                                                            CommandParameter="{x:Static enums:AiMediaWorkType.ImageSuperResolution}"
+                                                            Header="{x:Static languages:AppResources.ImageSuperResolution}">
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            IsEnabled="{Binding ElementName=listResult,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                            Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ListSendToCommand}"
+                                                            CommandParameter="{x:Static enums:AiMediaWorkType.ImageColorization}"
+                                                            Header="{x:Static languages:AppResources.ImageColorization}">
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            IsEnabled="{Binding ElementName=listResult,Path=SelectedItems.Count,Converter={converters:Count2BoolConverter},ConverterParameter='==1'}"
+                                                            Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ListSendToCommand}"
+                                                            CommandParameter="{x:Static enums:AiMediaWorkType.AvatarStylization}"
+                                                            Header="{x:Static languages:AppResources.AvatarStylization}">
+                                                        </MenuItem>
+                                                    </MenuItem>
+
+                                                </MenuFlyout>
+                                            </ListBox.ContextFlyout>
+
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate DataType="aiMediaEntities:AiMediaResultEntity">
+                                                    <Grid RowDefinitions="*,Auto">
+                                                        <Image
+                                                            Source="{Binding SavePath, Converter={extensions:ImageConverter}}"
+                                                            Width="80" Height="80"
+                                                            Stretch="UniformToFill" />
+                                                        <Grid Grid.Row="1" ColumnDefinitions="*,*,*"
+                                                              HorizontalAlignment="Stretch">
+                                                            <Button Classes="icon"
+                                                                    CommandParameter="{Binding .}"
+                                                                    ToolTip.Tip="{x:Static languages:AppResources.OpenImage}"
+                                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).OpenImageByDefaultProgramCommand}"
+                                                                    extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Look}" />
+
+                                                            <Button Classes="icon" HorizontalAlignment="Center"
+                                                                    Grid.Column="1"
+                                                                    ToolTip.Tip="{x:Static languages:AppResources.Download}"
+                                                                    extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Download}"
+                                                                    CommandParameter="{Binding .}"
+                                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SaveFileToLocalCommand}" />
+
+                                                            <Button Classes="icon"
+                                                                    Grid.Column="2"
+                                                                    ToolTip.Tip="{x:Static languages:AppResources.Delete}"
+                                                                    Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).DeleteMediaCommand}"
+                                                                    CommandParameter="{Binding .}"
+                                                                    extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Delete}" />
+                                                        </Grid>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Width="300" ItemWidth="100" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                        </ListBox>
+                                    </ScrollViewer>
+                                </TabItem>
+                                <TabItem Header="Video">
+
+                                    <ListBox
+                                        ItemsSource="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).VideoCollectionViewSource}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="aiMediaEntities:AiMediaResultEntity">
+                                                <Grid RowDefinitions="*,Auto">
+                                                    <controls1:VideoControl Grid.Row="0" ButtonSize="8"
+                                                                            Url="{Binding SavePath}"
+                                                                            Width="100" Height="80"
+                                                                            Thumbnail="{Binding ThumbnailPath}" />
+
+                                                    <Grid ColumnDefinitions="*,*,*"
+                                                          Grid.Row="1"
+                                                          HorizontalAlignment="Stretch">
+                                                        <Button Classes="icon"
+                                                                CommandParameter="{Binding .}"
+                                                                ToolTip.Tip="{x:Static languages:AppResources.OpenImage}"
+                                                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).OpenImageByDefaultProgramCommand}"
+                                                                extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Look}" />
+
+                                                        <Button Classes="icon" HorizontalAlignment="Center"
+                                                                Grid.Column="1"
+                                                                ToolTip.Tip="{x:Static languages:AppResources.Download}"
+                                                                extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Download}"
+                                                                CommandParameter="{Binding .}"
+                                                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).SaveFileToLocalCommand}" />
+
+                                                        <Button Classes="icon"
+                                                                Grid.Column="2"
+                                                                ToolTip.Tip="{x:Static languages:AppResources.Delete}"
+                                                                Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).DeleteMediaCommand}"
+                                                                CommandParameter="{Binding .}"
+                                                                extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Delete}" />
+                                                    </Grid>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Width="300" ItemWidth="100" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+                                </TabItem>
+                            </TabControl>
+
+                            <controls:PickerFlyoutPresenter.Styles>
+                                <Style Selector="controls|PickerFlyoutPresenter /template/ Button#DismissButton">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </Style>
+                                <Style Selector="controls|PickerFlyoutPresenter /template/ Button#AcceptButton">
+                                    <Setter Property="(Grid.ColumnSpan)" Value="2" />
+                                </Style>
+                            </controls:PickerFlyoutPresenter.Styles>
+
+                            <Interaction.Behaviors>
+                                <EventTriggerBehavior EventName="Confirmed">
+                                    <InvokeCommandAction
+                                        Command="{Binding $parent[UserControl].((bases:AiMediaViewModelBase)DataContext).ClosePortfolioPanelCommand}" />
+                                </EventTriggerBehavior>
+                                <!-- <EventTriggerBehavior EventName="Dismissed"> -->
+                                <!--     <InvokeCommandAction Command="{Binding SettingDismissCommand}" /> -->
+                                <!-- </EventTriggerBehavior> -->
+                            </Interaction.Behaviors>
+                        </controls:PickerFlyoutPresenter>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</Styles>

@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:viewModels="clr-namespace:TabbyCat.Components.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Classes="dialog"
+             Width="600"
+             Height="600"
+             Background="White"
+             x:DataType="viewModels:DrawMaskViewModel"
+             x:Class="TabbyCat.Components.Views.DrawMaskView">
+  
+  
+        <controls:ImageDrawControl Name="imageDraw" BackgroundImage="{Binding BackgroundImage}"/>
+   
+    
+</UserControl>

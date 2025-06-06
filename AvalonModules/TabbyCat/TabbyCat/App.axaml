@@ -1,0 +1,58 @@
+<Application
+    x:Class="TabbyCat.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TabbyCat"
+    xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
+    xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+    RequestedThemeVariant="Default">
+    <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
+
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Icon="/Assets/trayicon.ico" ToolTipText="{x:Static languages:AppResources.TabbyCat}">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="{x:Static languages:AppResources.Show}" Click="Show" />
+                        <NativeMenuItemSeparator></NativeMenuItemSeparator>
+                        <NativeMenuItem Header="{x:Static languages:AppResources.ExitTheApplication}" Click="Exit" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+
+    <Application.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <MergeResourceInclude Source="Styles/Templates/AiModelSettingTemplate.axaml" />
+                <MergeResourceInclude Source="Styles/Templates/AppendixDataTemplate.axaml"></MergeResourceInclude>
+                <MergeResourceInclude Source="Styles/Templates/AiMediaDisplayTemplate.axaml"></MergeResourceInclude>
+                <MergeResourceInclude Source="Styles/GenericStyle.axaml" />
+                <MergeResourceInclude Source="Styles/NavigationButtonStyle.axaml" />
+                <MergeResourceInclude Source="Styles/ListBoxItemStyle.axaml"></MergeResourceInclude>
+                <MergeResourceInclude Source="Styles/AiMeidaTemplate.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        <FontFamily x:Key="iconFont">avares://TabbyCat/Assets/Font/iconfont.ttf#iconfont</FontFamily>
+    </Application.Resources>
+
+
+
+    <Application.Styles>
+        <styling:FluentAvaloniaTheme PreferSystemTheme="True" />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="Styles/ButtonStyle.axaml" />
+        <StyleInclude Source="Styles/TextBlockStyle.axaml" />
+        <StyleInclude Source="Styles/ToggleButtonStyle.axaml" />
+        <StyleInclude Source="Styles/AiMediaControl.axaml" />
+        <StyleInclude Source="Styles/TitleBarStyle.axaml" />
+        <StyleInclude Source="Styles/BorderStyle.axaml"></StyleInclude>
+        <StyleInclude Source="Styles/TextBoxStyle.axaml"></StyleInclude>
+        <StyleInclude Source="Styles/SwipeControlStyle.axaml"></StyleInclude>
+        <StyleInclude Source="Styles/BoxControlStyle.axaml"></StyleInclude>
+        <StyleInclude Source="Controls/ImageControl.axaml"></StyleInclude>
+        <StyleInclude Source="avares://TuDog/Bootstrap/TuDogStyles.axaml" />
+    </Application.Styles>
+</Application>

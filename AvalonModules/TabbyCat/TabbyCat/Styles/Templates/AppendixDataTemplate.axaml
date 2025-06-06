@@ -1,0 +1,59 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dataTemplateSelector="clr-namespace:TabbyCat.Styles.Templates.DataTemplateSelector"
+                    xmlns:enums="clr-namespace:TabbyCat.Enums"
+                    xmlns:models="clr-namespace:TabbyCat.Models"
+                    xmlns:controls="clr-namespace:TabbyCat.Controls"
+                    xmlns:views="clr-namespace:TabbyCat.Views"
+                    xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+                    xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+                    xmlns:tabbyCat="clr-namespace:TabbyCat"
+                    xmlns:extensions1="clr-namespace:TuDog.Extensions;assembly=TuDog">
+
+    <dataTemplateSelector:AppendixDataTemplateSelector x:Key="AppendixDataTemplateSelector">
+        <DataTemplate x:Key="Image" DataType="models:AppendixModel">
+            <controls:BoxControl>
+                <Image Width="80" Height="80"
+                       extensions:RemoteImageUrl.Url="{Binding Content}"
+                       Stretch="UniformToFill">
+                  <Image.Clip>
+                      <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,80,80"></RectangleGeometry>
+                  </Image.Clip>
+              </Image>
+                <controls:BoxControl.AttachContent>
+                    <Button
+                        Command="{Binding $parent[views:ChatView].((viewModels:ChatViewModel)DataContext).DeleteAppendixCommand}"
+                        FontSize="20"
+                        CommandParameter="{Binding .}"
+                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Delete}" Classes="icon" />
+                </controls:BoxControl.AttachContent>
+            </controls:BoxControl>
+        </DataTemplate>
+        <DataTemplate x:Key="File" DataType="models:AppendixModel">
+            <TextBlock Text="file"></TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="Link" DataType="models:AppendixModel">
+            <TextBlock Text="link"></TextBlock>
+        </DataTemplate>
+    </dataTemplateSelector:AppendixDataTemplateSelector>
+
+    <dataTemplateSelector:AppendixDataTemplateSelector x:Key="AppendixDataTemplateViewSelector">
+        <DataTemplate x:Key="Image" DataType="models:AppendixModel">
+            <controls:BoxControl>
+                <Image Width="80" Height="80" extensions:RemoteImageUrl.Url="{Binding Content}"
+                       Stretch="UniformToFill">
+
+                    <Image.Clip>
+                        <RectangleGeometry RadiusX="10" RadiusY="10" Rect="0,0,80,80" />
+                    </Image.Clip>
+                </Image>
+            </controls:BoxControl>
+        </DataTemplate>
+        <DataTemplate x:Key="File" DataType="models:AppendixModel">
+            <TextBlock Text="file" />
+        </DataTemplate>
+        <DataTemplate x:Key="Link" DataType="models:AppendixModel">
+            <TextBlock Text="link" />
+        </DataTemplate>
+    </dataTemplateSelector:AppendixDataTemplateSelector>
+</ResourceDictionary>

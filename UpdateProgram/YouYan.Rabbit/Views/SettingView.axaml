@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:rabbit="clr-namespace:YouYan.Rabbit"
+             xmlns:extensions="clr-namespace:YouYan.Rabbit.Extensions"
+             xmlns:viewModels="clr-namespace:YouYan.Rabbit.ViewModels"
+             xmlns:languages="clr-namespace:YouYan.Rabbit.Languages"
+             mc:Ignorable="d"
+             x:DataType="viewModels:SettingViewModel"
+             x:Class="YouYan.Rabbit.Views.SettingView">
+    <Grid RowDefinitions="Auto,*">
+        <Button Command="{Binding ReturnHomeCommand}" Classes="icon"
+                extensions:IconAttach.Icon="{x:Static rabbit:IconFontProvider.LeftArrow}" Margin="10,5"
+                HorizontalAlignment="Left" />
+        <StackPanel Grid.Row="1">
+            <Expander Header="{x:Static languages:Language.General}">
+                <ToggleButton Content="{x:Static languages:Language.AutomaticStartup}"
+                              IsChecked="{Binding AutoStart,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+            </Expander>
+            <Expander Header="{x:Static languages:Language.Personalization}">
+                <StackPanel>
+                    <TextBlock Text="{x:Static languages:Language.SelectLanguage}" />
+                    <ComboBox
+                        Margin="{StaticResource Top2}"
+                        HorizontalAlignment="Stretch"
+                        DisplayMemberBinding="{Binding Key}"
+                        ItemsSource="{Binding Languages}"
+                        SelectedValue="{Binding SelectedLanguage}"
+                        SelectedValueBinding="{Binding Value}" />
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+    </Grid>
+</UserControl>

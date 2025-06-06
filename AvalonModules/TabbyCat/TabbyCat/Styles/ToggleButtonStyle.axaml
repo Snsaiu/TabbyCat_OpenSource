@@ -1,0 +1,34 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:extensions="clr-namespace:TabbyCat.Extensions">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ToggleButton.icon">
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="PART_BorderElement" Margin="5">
+                        <controls:FontIcon
+                            Name="Icon"
+                            FontSize="{TemplateBinding FontSize}"
+                            Foreground="{TemplateBinding Foreground}"
+                            FontFamily="{StaticResource iconFont}"
+                            Glyph="{Binding Path=(extensions:IconAttach.Icon), RelativeSource={RelativeSource Self}}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style Selector="ToggleButton:pointerover /template/ Border controls|FontIcon#Icon">
+        <Setter Property="Opacity" Value="0.8" />
+    </Style>
+    <Style Selector="ToggleButton:checked /template/ Border controls|FontIcon#Icon">
+        <Setter Property="Foreground" Value="{DynamicResource ToggleButtonBackgroundChecked}" />
+    </Style>
+</Styles>

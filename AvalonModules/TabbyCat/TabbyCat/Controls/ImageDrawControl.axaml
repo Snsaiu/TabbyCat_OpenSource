@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             xmlns:extensions="clr-namespace:TuDog.Extensions;assembly=TuDog"
+             xmlns:extensions1="clr-namespace:TabbyCat.Extensions"
+             xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="controls:ImageDrawControl"
+             Width="600"
+             Height="600"
+             x:Class="TabbyCat.Controls.ImageDrawControl">
+    <Grid Margin="10">
+        
+        <Grid Name="imageContainer">
+                <Image  x:Name="Background" Width="600" Height="600" Stretch="Uniform">
+                </Image>
+                <Image x:Name="CanvasImage"
+                       Width="600"
+                       Height="600"
+                       Stretch="Uniform"
+                       PointerPressed="CanvasImage_OnPointerPressed"
+                       PointerReleased="CanvasImage_OnPointerReleased"
+                       PointerMoved="CanvasImage_OnPointerMoved" >
+
+                </Image>
+            </Grid>
+      
+        <StackPanel  Background="#7691CC" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 0 0 10" Spacing="10">
+            <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.Pen}" Icon="{x:Static tabbyCat:IconFontProvider.Pen}" IsChecked="True" GroupName="pen" Click="SetPen"></controls:NavigationButton>
+            <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.Eraser}" Icon="{x:Static tabbyCat:IconFontProvider.Eraser}" Click="SetEraser" GroupName="pen"></controls:NavigationButton>
+            <controls:NavigationButton SelectedIcon="{x:Static tabbyCat:IconFontProvider.Move}" Icon="{x:Static tabbyCat:IconFontProvider.Move}" GroupName="pen" Click="SetMove"></controls:NavigationButton>
+            <Button Classes="icon" extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Clear}" Click="ClearCanvasClick" />
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="{StaticResource Left6}">
+                <controls1:FontIcon Glyph="{x:Static tabbyCat:IconFontProvider.PenSize}" Classes="icon"/>
+                <Slider Minimum="5" Maximum="100" Width="100" Value="10" Name="penSizeSlider"></Slider>
+            </StackPanel>
+            <Button Classes="icon" Click="Enlarge" extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Enlarge}" Margin="{StaticResource Left6}"></Button>
+            <Button Classes="icon" Click="ZoomOut" extensions1:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.ZoomOut}" ></Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

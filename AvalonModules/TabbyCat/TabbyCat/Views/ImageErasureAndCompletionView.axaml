@@ -1,0 +1,36 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Classes="AiMediaStyle"
+             x:DataType="viewModels:ImageErasureAndCompletionViewModel"
+             x:Class="TabbyCat.Views.ImageErasureAndCompletionView">
+
+    <StackPanel Orientation="Vertical" Margin="{StaticResource LeftRight10}" VerticalAlignment="Center">
+        <controls:ImageControl HorizontalAlignment="Left" ShowHeader="True"
+                               Header="{x:Static languages:AppResources.ChooseImage}"
+                               Command="{Binding OpenPickImageDialogCommand}"
+                               ImageSource="{Binding LocalImage}" />
+
+        <StackPanel Orientation="Horizontal" Margin="{StaticResource Top6}">
+            <controls:ImageControl HorizontalAlignment="Left" ShowHeader="True"
+                                   Header="{x:Static languages:AppResources.DrawTheEraseArea}"
+                                   Command="{Binding OpenMaskDialogCommand}"
+                                   ImageSource="{Binding MaskImage}" />
+
+            <controls:ImageControl HorizontalAlignment="Left" ShowHeader="True"
+                                   Margin="{StaticResource Left6}"
+                                   Header="{x:Static languages:AppResources.DrawReservedArea}"
+                                   Command="{Binding OpenForegroundImageDialogCommand}"
+                                   ImageSource="{Binding ForegroundImage}" />
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="{StaticResource Top6}">
+            <ToggleButton Content="{x:Static languages:AppResources.FastMode}" IsChecked="{Binding FastModel}" />
+        </StackPanel>
+
+    </StackPanel>
+</UserControl>

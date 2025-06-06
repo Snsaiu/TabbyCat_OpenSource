@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="TabbyCat" xml:space="preserve">
+        <value>Tabby Cat</value>
+    </data>
+    <data name="CowCat" xml:space="preserve">
+        <value>Cow Cat</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+        <value>Available</value>
+    </data>
+    <data name="Install" xml:space="preserve">
+        <value>Install</value>
+    </data>
+    <data name="Rabbit" xml:space="preserve">
+        <value>Rabbit</value>
+    </data>
+    <data name="Uninstall" xml:space="preserve">
+        <value>Uninstall</value>
+    </data>
+    <data name="WhatsNew" xml:space="preserve">
+        <value>What`s new</value>
+    </data>
+    <data name="Launch" xml:space="preserve">
+        <value>Launch</value>
+    </data>
+    <data name="Installed" xml:space="preserve">
+        <value>Installed</value>
+    </data>
+    <data name="Update" xml:space="preserve">
+        <value>Update</value>
+    </data>
+    <data name="NewVersionPublish" xml:space="preserve">
+        <value>A new version of Rabbit has been released! Click to install!</value>
+    </data>
+    <data name="AutomaticStartup" xml:space="preserve">
+        <value>Automatic startup</value>
+    </data>
+    <data name="General" xml:space="preserve">
+        <value>General</value>
+    </data>
+    <data name="Personalization" xml:space="preserve">
+        <value>Personalization</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="Message" xml:space="preserve">
+        <value>Message</value>
+    </data>
+    <data name="Warning" xml:space="preserve">
+        <value>Warning</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="SetAutomatically" xml:space="preserve">
+        <value>Set to start automatically at boot</value>
+    </data>
+    <data name="CancelAutomaticStart" xml:space="preserve">
+        <value>Cancel automatic start</value>
+    </data>
+    <data name="TakeEffectAfterRestart" xml:space="preserve">
+        <value>Take effect after restart</value>
+    </data>
+    <data name="Ok" xml:space="preserve">
+        <value>Ok</value>
+    </data>
+    <data name="SelectLanguage" xml:space="preserve">
+        <value>Select Language</value>
+    </data>
+    <data name="HasTaskNoExit" xml:space="preserve">
+        <value>There is a task in progress and cannot exit</value>
+    </data>
+    <data name="Display" xml:space="preserve">
+        <value>Display</value>
+    </data>
+    <data name="Exit" xml:space="preserve">
+        <value>Exit</value>
+    </data>
+    <data name="AreYouUninstall" xml:space="preserve">
+        <value>Are you sure you want to uninstall?</value>
+    </data>
+    <data name="IsRunningNotUninstall" xml:space="preserve">
+        <value>'{0}' is running and cannot be uninstalled!</value>
+    </data>
+    <data name="DoYouDeleteCacheFile" xml:space="preserve">
+        <value>Do you want to delete cache files?</value>
+    </data>
+    <data name="UninstallSuccessfully" xml:space="preserve">
+        <value>Uninstall successfully</value>
+    </data>
+    <data name="UninstallationFailed" xml:space="preserve">
+        <value>Uninstallation failed</value>
+    </data>
+    <data name="DownloadFailed" xml:space="preserve">
+        <value>Download failed</value>
+    </data>
+    <data name="AppFailPermission" xml:space="preserve">
+        <value>Failed to set application execution permission!</value>
+    </data>
+    <data name="RunningNotUpdate" xml:space="preserve">
+        <value>'{0}' is running and cannot be updated</value>
+    </data>
+</root>

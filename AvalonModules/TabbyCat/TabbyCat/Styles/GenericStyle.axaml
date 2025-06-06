@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness x:Key="Top2">0,2,0,0</Thickness>
+    <Thickness x:Key="Top4">0,4,0,0</Thickness>
+    <Thickness x:Key="Top6">0,6,0,0</Thickness>
+    <Thickness x:Key="Top8">0,8,0,0</Thickness>
+    <Thickness x:Key="Top10">0,10,0,0</Thickness>
+
+    <Thickness x:Key="TopBottom2">0,2,0,2</Thickness>
+    <Thickness x:Key="TopBottom4">0,4,0,4</Thickness>
+    <Thickness x:Key="TopBottom6">0,6,0,6</Thickness>
+
+    <Thickness x:Key="Left2">2,0,0,0</Thickness>
+    <Thickness x:Key="Left4">4,0,0,0</Thickness>
+    <Thickness x:Key="Left6">6,0,0,0</Thickness>
+    <Thickness x:Key="Left8">8,0,0,0</Thickness>
+    <Thickness x:Key="Left10">10,0,0,0</Thickness>
+
+    <Thickness x:Key="Right2">0,0,2,0</Thickness>
+    <Thickness x:Key="Right4">0,0,4,0</Thickness>
+    <Thickness x:Key="Right6">0,0,6,0</Thickness>
+    <Thickness x:Key="Right8">0,0,8,0</Thickness>
+    <Thickness x:Key="Right10">0,0,10,0</Thickness>
+
+    <Thickness x:Key="Bottom2">0,0,0,2</Thickness>
+    <Thickness x:Key="Bottom4">0,0,0,4</Thickness>
+    <Thickness x:Key="Bottom6">0,0,0,6</Thickness>
+    <Thickness x:Key="Bottom8">0,0,0,8</Thickness>
+    <Thickness x:Key="Bottom10">0,0,0,10</Thickness>
+
+
+    <Thickness x:Key="LeftRight2">2,0,2,0</Thickness>
+    <Thickness x:Key="LeftRight4">4,0,4,0</Thickness>
+    <Thickness x:Key="LeftRight6">6,0,6,0</Thickness>
+    <Thickness x:Key="LeftRight8">8,0,8,0</Thickness>
+    <Thickness x:Key="LeftRight10">10,0,10,0</Thickness>
+
+    <Thickness x:Key="Margin2">2</Thickness>
+    <Thickness x:Key="Margin4">4</Thickness>
+    <Thickness x:Key="Margin6">6</Thickness>
+    <Thickness x:Key="Margin8">8</Thickness>
+    <Thickness x:Key="Margin10">10</Thickness>
+
+</ResourceDictionary>

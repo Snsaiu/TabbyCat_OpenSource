@@ -1,0 +1,90 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:models="clr-namespace:TabbyCat.Models"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:converters="clr-namespace:TabbyCat.Converters"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             xmlns:enums="clr-namespace:TabbyCat.Shared.Enums;assembly=TabbyCat.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:ContactViewModel"
+             x:Class="TabbyCat.Views.ContactView">
+
+    <Grid ColumnDefinitions="*,3*">
+        <DockPanel LastChildFill="True">
+            <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                <Button Classes="icon" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Add}"
+                        DockPanel.Dock="Right" Command="{Binding AddNewOccupationCommand}" />
+                <TextBox Watermark="Search..." Text="{Binding SearchText}" DockPanel.Dock="Left" />
+            </DockPanel>
+
+            <ListBox DockPanel.Dock="Bottom" MinWidth="250"
+                     ItemsSource="{Binding Source}" SelectedItem="{Binding SelectedOccupation}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="models:OccupationType">
+                        <controls:SwipeControl>
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Border Width="50"
+                                        Background="{Binding OccupationName,Converter={converters:String2ColorConverter}}"
+                                        Height="50" CornerRadius="5">
+                                    <TextBlock Foreground="White" HorizontalAlignment="Center"
+                                               Text="{Binding OccupationName,Converter={converters:String2FirstCharConverter}}"
+                                               VerticalAlignment="Center" />
+                                </Border>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding OccupationName}"
+                                           HorizontalAlignment="Left" Grid.Column="1" Margin="10,0,0,0"
+                                           TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
+                            </Grid>
+                        </controls:SwipeControl>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+        </DockPanel>
+
+        <Grid RowDefinitions="*,Auto,*" IsVisible="{Binding SelectedOccupation}"
+              Grid.Column="1">
+            <Grid Margin="0,0,0,30" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                  ColumnDefinitions="Auto,*,Auto">
+                <Border Width="50"
+                        Background="{Binding SelectedOccupation.OccupationName,Converter={converters:String2ColorConverter}}"
+                        Height="50" CornerRadius="5">
+                    <TextBlock Foreground="White" HorizontalAlignment="Center"
+                               Text="{Binding SelectedOccupation.OccupationName,Converter={converters:String2FirstCharConverter}}"
+                               VerticalAlignment="Center" />
+                </Border>
+                <TextBlock VerticalAlignment="Center" Text="{Binding SelectedOccupation.OccupationName}"
+                           HorizontalAlignment="Left" Grid.Column="1" Margin="10,0,0,0"
+                           TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
+                <Button Classes="icon" Grid.Column="2"
+                        IsVisible="{Binding SelectedOccupation.Occupation,Converter={converters:Enum2BoolConverter}, ConverterParameter={x:Static enums:AssistantOccupation.Custom}}"
+                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.More}">
+                    <Button.Flyout>
+                        <MenuFlyout Placement="Right">
+                            <MenuItem Header="{x:Static languages:AppResources.DeleteContact}"
+                                      Command="{Binding DeleteContactCommand}" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1" Grid.ColumnDefinitions="*,2*">
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Right" Text="{x:Static languages:AppResources.ContactDescription}" />
+                <TextBox Margin="5,0,50,0" IsReadOnly="True" Height="150" MinLines="10" HorizontalAlignment="Stretch"
+                         MaxLines="10"
+                         Text="{Binding OccupationDescription}"
+                         TextWrapping="Wrap"
+                         Grid.Column="1" />
+            </Grid>
+            <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+                <Button Classes="icon" Foreground="DodgerBlue" Content="{x:Static languages:AppResources.SendMessage}" FontSize="12"
+                        Command="{Binding GoChatCommand}"
+                        extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.TxtChat}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

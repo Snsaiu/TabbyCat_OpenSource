@@ -1,0 +1,44 @@
+﻿<UserControl
+    x:Class="TabbyCat.Components.Views.PersonalizationView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:languages="using:TabbyCat.Shared.Languages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:TabbyCat.Components.ViewModels"
+    xmlns:converters="clr-namespace:TabbyCat.Converters"
+    xmlns:enums="clr-namespace:TabbyCat.Enums"
+    xmlns:controls="clr-namespace:TabbyCat.Controls"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:PersonalizationViewModel"
+    mc:Ignorable="d">
+
+    <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
+        <TextBlock Text="{x:Static languages:AppResources.SelectLanguage}" />
+        <ComboBox
+            Margin="{StaticResource Top2}"
+            HorizontalAlignment="Stretch"
+            DisplayMemberBinding="{Binding Key}"
+            ItemsSource="{Binding Languages}"
+            SelectedValue="{Binding SelectedLanguage}"
+            SelectedValueBinding="{Binding Value}" />
+
+        <TextBlock Text="{x:Static languages:AppResources.BackgroundImageSettings}" />
+        <StackPanel Orientation="Horizontal" Margin="{StaticResource Top2}">
+            <RadioButton Content="{x:Static languages:AppResources.Disable}" GroupName="bg"
+                         IsChecked="{Binding BackgroundImageStatus,Mode=TwoWay, Converter={converters:Enum2BoolConverter},ConverterParameter={x:Static enums:BackgroundImageStatus.Disabled}}" />
+            <!-- <RadioButton Content="{x:Static languages:AppResources.DefaultBackground}" GroupName="bg" -->
+            <!--              IsChecked="{Binding BackgroundImageStatus, Mode=TwoWay,Converter={converters:Enum2BoolConverter},ConverterParameter={x:Static enums:BackgroundImageStatus.Default}}" /> -->
+            <RadioButton Content="{x:Static languages:AppResources.CustomBackground}" GroupName="bg"
+                         IsChecked="{Binding BackgroundImageStatus,Mode=TwoWay, Converter={converters:Enum2BoolConverter},ConverterParameter={x:Static enums:BackgroundImageStatus.Custom}}" />
+        </StackPanel>
+        <TextBlock Text="{x:Static languages:AppResources.Opacity}" />
+        <Slider Minimum="0" Maximum="1" Margin="10,0" Value="{Binding Opacity}" />
+        <controls:ImageSelector ShowHeader="True" Header="{x:Static languages:AppResources.SelectBackgroundImage}"
+                                HorizontalAlignment="Left"
+                                ImagePath="{Binding SelectedCustomImage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                IsVisible="{Binding BackgroundImageStatus,Converter={converters:Enum2BoolConverter}, ConverterParameter={x:Static enums:BackgroundImageStatus.Custom}}" />
+
+    </StackPanel>
+</UserControl>

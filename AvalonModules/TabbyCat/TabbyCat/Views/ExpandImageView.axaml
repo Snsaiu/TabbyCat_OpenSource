@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:ExpandImageViewModel"
+             Classes="AiMediaStyle"
+             x:Class="TabbyCat.Views.ExpandImageView">
+    <StackPanel Orientation="Vertical" Margin="{StaticResource LeftRight10}" VerticalAlignment="Center">
+        <StackPanel Orientation="Vertical"  Margin="{StaticResource Bottom6}">
+            <TextBlock Text="{x:Static languages:AppResources.ChooseImage}" FontSize="14"></TextBlock>
+            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto">
+                <Grid.Styles>
+                    <Style Selector="NumericUpDown">
+                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                        <Setter Property="Increment" Value="0.1"></Setter>
+                        <Setter Property="Minimum" Value="1"></Setter>
+                        <Setter Property="Maximum" Value="2"></Setter>
+                    </Style>
+                </Grid.Styles>
+                <NumericUpDown ButtonSpinnerLocation="Right" Value="{Binding Top}" Grid.Column="1"></NumericUpDown>
+                
+                <controls:ImageControl HorizontalAlignment="Left" ShowHeader="False"
+                                       Grid.Row="1" Grid.Column="1" 
+                                      
+                                       Command="{Binding OpenPickImageDialogCommand}"
+                                       ImageSource="{Binding LocalImage}" />
+                <NumericUpDown ButtonSpinnerLocation="Right" Value="{Binding Left}" Grid.Column="0" Grid.Row="1"></NumericUpDown>
+                <NumericUpDown ButtonSpinnerLocation="Right" Value="{Binding Right}" Grid.Column="2" Grid.Row="1"></NumericUpDown>
+                <NumericUpDown ButtonSpinnerLocation="Right" Value="{Binding Bottom}" Grid.Column="1" Grid.Row="2"></NumericUpDown>
+
+                
+
+            </Grid>
+           
+        </StackPanel>
+        <TextBox Height="200" Margin="{StaticResource Top2}" Watermark="{Binding PromptDescription,Mode=OneWay}"
+                 Text="{Binding Prompt}" TextWrapping="Wrap" />
+        <StackPanel Orientation="Vertical" Margin="{StaticResource Top2}" IsVisible="{Binding ShowStrength}">
+            <TextBlock Text="{x:Static languages:AppResources.ImageCount}" />
+            <StackPanel Orientation="Horizontal">
+                <Slider Value="{Binding Strength}" Minimum="0" Maximum="1" />
+                <TextBlock Text="{Binding Strength}" Margin="{StaticResource Left6}" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="{StaticResource Top2}">
+            <TextBlock Text="{x:Static languages:AppResources.ImageCount}" />
+            <ComboBox ItemsSource="{Binding Count,Mode=OneWay}" SelectedItem="{Binding SelectedCount}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

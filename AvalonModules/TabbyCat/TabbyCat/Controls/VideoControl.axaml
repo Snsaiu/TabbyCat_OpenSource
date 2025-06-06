@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="controls:VideoControl"
+             x:Class="TabbyCat.Controls.VideoControl">
+
+    <Grid RowDefinitions="*,Auto">
+        <avalonia:VideoView
+            HorizontalAlignment="Stretch"
+            Name="videoView"
+            IsVisible="False"
+            VerticalAlignment="Stretch" />
+        <Grid Name="controlsPanel" Grid.Row="1" ColumnDefinitions="*,*">
+            <Button Click="Play" Classes="icon"
+                    Name="playButton"
+                    HorizontalAlignment="Center"
+                    extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Play}" />
+            <Button Click="Stop" Classes="icon"
+                    Name="stopButton"
+                    HorizontalAlignment="Center"
+                    extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop2}"
+                    Grid.Column="1" />
+        </Grid>
+
+        <Image Grid.Row="0" Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+               IsVisible="True"
+               Name="thumbnail" />
+
+    </Grid>
+
+</UserControl>

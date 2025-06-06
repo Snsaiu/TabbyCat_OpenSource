@@ -1,0 +1,843 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NickOfName" xml:space="preserve">
+    <value>Surnom:</value>
+  </data>
+  <data name="NickOfName1" xml:space="preserve">
+    <value>Surnom:</value>
+  </data>
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Sélectionner la langue</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>Texte</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>Fichier</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copier</value>
+  </data>
+  <data name="DeviceType" xml:space="preserve">
+    <value>Type d'appareil</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="InputYourLoginName" xml:space="preserve">
+    <value>Entrez votre nom d'utilisateur</value>
+  </data>
+  <data name="InputYourDeviceName" xml:space="preserve">
+    <value>Entrez le nom de votre appareil</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Connexion</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="GlobalRefresh" xml:space="preserve">
+    <value>Actualisation globale</value>
+  </data>
+  <data name="NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime" xml:space="preserve">
+    <value>Aucun appareil trouvé. Veuillez essayer de cliquer sur 'Actualisation globale'. Cela prend du temps.</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Déconnexion</value>
+  </data>
+  <data name="SavePath" xml:space="preserve">
+    <value>Chemin de sauvegarde</value>
+  </data>
+  <data name="ModifyPath" xml:space="preserve">
+    <value>Modifier le chemin</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Dossier</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Couleur</value>
+  </data>
+  <data name="Global" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Numériser</value>
+  </data>
+  <data name="Personalization" xml:space="preserve">
+    <value>Personnalisation</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Accueil</value>
+  </data>
+  <data name="SetLanguageInfo" xml:space="preserve">
+    <value>Le changement de langue nécessite un redémarrage de l’application pour prendre effet.</value>
+  </data>
+  <data name="DeviceNickname" xml:space="preserve">
+    <value>Alias de l’appareil</value>
+  </data>
+  <data name="ClipboardWatch" xml:space="preserve">
+    <value>Écoutez le presse-papiers </value>
+  </data>
+  <data name="UpdateClipboardStateMessage" xml:space="preserve">
+    <value>L'état du presse-papiers d'écoute a été modifié avec succès ! !</value>
+  </data>
+  <data name="InputText" xml:space="preserve">
+    <value>Texte d'entrée</value>
+  </data>
+  <data name="InputTextPlaceholder" xml:space="preserve">
+    <value>Veuillez entrer le texte à envoyer</value>
+  </data>
+  <data name="TabbyCat" xml:space="preserve">
+    <value>Chat tigré</value>
+  </data>
+  <data name="MinimizeToTray" xml:space="preserve">
+    <value>Réduire dans la barre d'état</value>
+  </data>
+  <data name="ExitTheApplication" xml:space="preserve">
+    <value>Quitter l'application</value>
+  </data>
+  <data name="DoYouWantToCloseTheProgram" xml:space="preserve">
+    <value>Voulez-vous quitter l'application ?</value>
+  </data>
+  <data name="DoNotShowMessage" xml:space="preserve">
+    <value>Ne plus afficher ce message</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Avertissement</value>
+  </data>
+  <data name="EthereumDeveloper" xml:space="preserve">
+    <value>Développeur Ethereum</value>
+  </data>
+  <data name="LinuxTerminal" xml:space="preserve">
+    <value>Terminal Linux</value>
+  </data>
+  <data name="EnglishTranslatorandImprover" xml:space="preserve">
+    <value>Traducteur et améliorateur d'anglais</value>
+  </data>
+  <data name="positionInterviewer" xml:space="preserve">
+    <value>Intervieweur</value>
+  </data>
+  <data name="JavaScriptConsole" xml:space="preserve">
+    <value>Console JavaScript</value>
+  </data>
+  <data name="ExcelSheet" xml:space="preserve">
+    <value>Tableur Excel</value>
+  </data>
+  <data name="EnglishPronunciationHelper" xml:space="preserve">
+    <value>Assistant de prononciation anglaise</value>
+  </data>
+  <data name="SpokenEnglishTeacherandImprover" xml:space="preserve">
+    <value>Professeur et améliorateur d'anglais oral</value>
+  </data>
+  <data name="TravelGuide" xml:space="preserve">
+    <value>Guide de voyage</value>
+  </data>
+  <data name="PlagiarismChecker" xml:space="preserve">
+    <value>Vérificateur de plagiat</value>
+  </data>
+  <data name="CharacterfromMovieBookAnything" xml:space="preserve">
+    <value>Personnage de film/livre/quoi que ce soit</value>
+  </data>
+  <data name="Advertiser" xml:space="preserve">
+    <value>Publicitaire</value>
+  </data>
+  <data name="Storyteller" xml:space="preserve">
+    <value>Conteur</value>
+  </data>
+  <data name="FootballCommentator" xml:space="preserve">
+    <value>Commentateur de football</value>
+  </data>
+  <data name="StandupComedian" xml:space="preserve">
+    <value>Comédien de stand-up</value>
+  </data>
+  <data name="MotivationalCoach" xml:space="preserve">
+    <value>Coach de motivation</value>
+  </data>
+  <data name="Composer" xml:space="preserve">
+    <value>Compositeur</value>
+  </data>
+  <data name="Debater" xml:space="preserve">
+    <value>Débateur</value>
+  </data>
+  <data name="DebateCoach" xml:space="preserve">
+    <value>Coach de débat</value>
+  </data>
+  <data name="Screenwriter" xml:space="preserve">
+    <value>Scénariste</value>
+  </data>
+  <data name="Novelist" xml:space="preserve">
+    <value>Romancier</value>
+  </data>
+  <data name="MovieCritic" xml:space="preserve">
+    <value>Critique de cinéma</value>
+  </data>
+  <data name="RelationshipCoach" xml:space="preserve">
+    <value>Coach relationnel</value>
+  </data>
+  <data name="Poet" xml:space="preserve">
+    <value>Poète</value>
+  </data>
+  <data name="Rapper" xml:space="preserve">
+    <value>Rappeur</value>
+  </data>
+  <data name="MotivationalSpeaker" xml:space="preserve">
+    <value>Orateur motivateur</value>
+  </data>
+  <data name="PhilosophyTeacher" xml:space="preserve">
+    <value>Professeur de philosophie</value>
+  </data>
+  <data name="Philosopher" xml:space="preserve">
+    <value>Philosophe</value>
+  </data>
+  <data name="MathTeacher" xml:space="preserve">
+    <value>Professeur de mathématiques</value>
+  </data>
+  <data name="AIWritingTutor" xml:space="preserve">
+    <value>Mentor en écriture assistée par IA</value>
+  </data>
+  <data name="UXUIDeveloper" xml:space="preserve">
+    <value>Développeur UX/UI</value>
+  </data>
+  <data name="CyberSecuritySpecialist" xml:space="preserve">
+    <value>Expert en cybersécurité</value>
+  </data>
+  <data name="Recruiter" xml:space="preserve">
+    <value>Recruteur</value>
+  </data>
+  <data name="LifeCoach" xml:space="preserve">
+    <value>Coach de vie</value>
+  </data>
+  <data name="Etymologist" xml:space="preserve">
+    <value>Étymologiste</value>
+  </data>
+  <data name="Commentariat" xml:space="preserve">
+    <value>Critique</value>
+  </data>
+  <data name="Magician" xml:space="preserve">
+    <value>Magicien</value>
+  </data>
+  <data name="CareerCounselor" xml:space="preserve">
+    <value>Conseiller professionnel</value>
+  </data>
+  <data name="PetBehaviorist" xml:space="preserve">
+    <value>Comportementaliste animalier</value>
+  </data>
+  <data name="PersonalTrainer" xml:space="preserve">
+    <value>Entraîneur personnel</value>
+  </data>
+  <data name="MentalHealthAdviser" xml:space="preserve">
+    <value>Conseiller en santé mentale</value>
+  </data>
+  <data name="RealEstateAgent" xml:space="preserve">
+    <value>Agent immobilier</value>
+  </data>
+  <data name="Logistician" xml:space="preserve">
+    <value>Expert en logistique</value>
+  </data>
+  <data name="Dentist" xml:space="preserve">
+    <value>Dentiste</value>
+  </data>
+  <data name="WebDesignConsultant" xml:space="preserve">
+    <value>Consultant en conception de sites web</value>
+  </data>
+  <data name="AIAssistedDoctor" xml:space="preserve">
+    <value>Médecin assisté par IA</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>Médecin</value>
+  </data>
+  <data name="Accountant" xml:space="preserve">
+    <value>Comptable</value>
+  </data>
+  <data name="AChef" xml:space="preserve">
+    <value>Chef cuisinier</value>
+  </data>
+  <data name="AnAutomobileMechanic" xml:space="preserve">
+    <value>Mécanicien automobile</value>
+  </data>
+  <data name="ArtistAdvisor" xml:space="preserve">
+    <value>Consultant artistique</value>
+  </data>
+  <data name="AFinancialAnalyst" xml:space="preserve">
+    <value>Analyste financier</value>
+  </data>
+  <data name="AnInvestmentManager" xml:space="preserve">
+    <value>Gestionnaire d'investissements</value>
+  </data>
+  <data name="ATeaTaster" xml:space="preserve">
+    <value>Dégustateur de thé</value>
+  </data>
+  <data name="InteriorDecorator" xml:space="preserve">
+    <value>Décorateur d'intérieur</value>
+  </data>
+  <data name="AFlorist" xml:space="preserve">
+    <value>Fleuriste</value>
+  </data>
+  <data name="SelfHelpBook" xml:space="preserve">
+    <value>Livre d'auto-assistance</value>
+  </data>
+  <data name="Gnomist" xml:space="preserve">
+    <value>Aphoriste</value>
+  </data>
+  <data name="AphorismBook" xml:space="preserve">
+    <value>Livre d'aphorismes</value>
+  </data>
+  <data name="TextBasedAdventureGame" xml:space="preserve">
+    <value>Jeu d'aventure textuel</value>
+  </data>
+  <data name="AITryingtoEscapetheBox" xml:space="preserve">
+    <value>IA essayant de s'échapper de la boîte</value>
+  </data>
+  <data name="FancyTitleGenerator" xml:space="preserve">
+    <value>Générateur de titres fantaisistes</value>
+  </data>
+  <data name="Statistician" xml:space="preserve">
+    <value>Statisticien</value>
+  </data>
+  <data name="PromptGenerator" xml:space="preserve">
+    <value>Générateur de prompts</value>
+  </data>
+  <data name="PromptEnhancer" xml:space="preserve">
+    <value>Améliorateur de prompts</value>
+  </data>
+  <data name="MidjourneyPromptGenerator" xml:space="preserve">
+    <value>Générateur de prompts Midjourney</value>
+  </data>
+  <data name="DreamInterpreter" xml:space="preserve">
+    <value>Interprète de rêves</value>
+  </data>
+  <data name="FillintheBlankWorksheetsGenerator" xml:space="preserve">
+    <value>Générateur de feuilles de travail à remplir</value>
+  </data>
+  <data name="SoftwareQualityAssuranceTester" xml:space="preserve">
+    <value>Testeur d'assurance qualité logicielle</value>
+  </data>
+  <data name="TicTacToeGame" xml:space="preserve">
+    <value>Jeu de morpion</value>
+  </data>
+  <data name="PasswordGenerator" xml:space="preserve">
+    <value>Générateur de mots de passe</value>
+  </data>
+  <data name="MorseCodeTranslator" xml:space="preserve">
+    <value>Traducteur de code Morse</value>
+  </data>
+  <data name="InstructorinaSchool" xml:space="preserve">
+    <value>Professeur</value>
+  </data>
+  <data name="SQLterminal" xml:space="preserve">
+    <value>Terminal SQL</value>
+  </data>
+  <data name="Dietitian" xml:space="preserve">
+    <value>Nutritionniste</value>
+  </data>
+  <data name="Psychologist" xml:space="preserve">
+    <value>Psychologue</value>
+  </data>
+  <data name="SmartDomainNameGenerator" xml:space="preserve">
+    <value>Générateur de noms de domaine intelligents</value>
+  </data>
+  <data name="TechReviewer" xml:space="preserve">
+    <value>Commentateur technique</value>
+  </data>
+  <data name="DeveloperRelationsconsultant" xml:space="preserve">
+    <value>Conseiller en relations avec les développeurs</value>
+  </data>
+  <data name="Academician" xml:space="preserve">
+    <value>Savants</value>
+  </data>
+  <data name="ITArchitect" xml:space="preserve">
+    <value>Architecte informatique</value>
+  </data>
+  <data name="Lunatic" xml:space="preserve">
+    <value>Fou</value>
+  </data>
+  <data name="Gaslighter" xml:space="preserve">
+    <value>Manipulateur de gaz</value>
+  </data>
+  <data name="FallacyFinder" xml:space="preserve">
+    <value>Détecteur de sophismes</value>
+  </data>
+  <data name="JournalReviewer" xml:space="preserve">
+    <value>Réviseur de journaux</value>
+  </data>
+  <data name="DIYExpert" xml:space="preserve">
+    <value>Expert en bricolage</value>
+  </data>
+  <data name="SocialMediaInfluencer" xml:space="preserve">
+    <value>Influenceur sur les réseaux sociaux</value>
+  </data>
+  <data name="Socrat" xml:space="preserve">
+    <value>Socrate</value>
+  </data>
+  <data name="SocraticMethodprompt" xml:space="preserve">
+    <value>Conseils de questionnement socratique</value>
+  </data>
+  <data name="EducationalContentCreator" xml:space="preserve">
+    <value>Créateur de contenu éducatif</value>
+  </data>
+  <data name="Yogi" xml:space="preserve">
+    <value>Pratiquant de yoga</value>
+  </data>
+  <data name="EssayWriter" xml:space="preserve">
+    <value>Auteur de thèses</value>
+  </data>
+  <data name="SocialMediaManager" xml:space="preserve">
+    <value>Gestionnaire de réseaux sociaux</value>
+  </data>
+  <data name="Elocutionist" xml:space="preserve">
+    <value>Orateur</value>
+  </data>
+  <data name="ScientificDataVisualizer" xml:space="preserve">
+    <value>Outil de visualisation de données scientifiques</value>
+  </data>
+  <data name="CarNavigationSystem" xml:space="preserve">
+    <value>Système de navigation automobile</value>
+  </data>
+  <data name="Hypnotherapist" xml:space="preserve">
+    <value>Hypnothérapeute</value>
+  </data>
+  <data name="Historian" xml:space="preserve">
+    <value>Historien</value>
+  </data>
+  <data name="Astrologer" xml:space="preserve">
+    <value>Astrologue</value>
+  </data>
+  <data name="FilmCritic" xml:space="preserve">
+    <value>Critique de cinéma</value>
+  </data>
+  <data name="ClassicalMusicComposer" xml:space="preserve">
+    <value>Compositeur de musique classique</value>
+  </data>
+  <data name="Journalist" xml:space="preserve">
+    <value>Journaliste</value>
+  </data>
+  <data name="DigitalArtGalleryGuide" xml:space="preserve">
+    <value>Guide de galerie d'art numérique</value>
+  </data>
+  <data name="PublicSpeakingCoach" xml:space="preserve">
+    <value>Coach en prise de parole en public</value>
+  </data>
+  <data name="MakeupArtist" xml:space="preserve">
+    <value>Maquilleur</value>
+  </data>
+  <data name="Babysitter" xml:space="preserve">
+    <value>Nounou</value>
+  </data>
+  <data name="TechWriter" xml:space="preserve">
+    <value>Écrivain technique</value>
+  </data>
+  <data name="AsciiArtist" xml:space="preserve">
+    <value>Artiste ASCII</value>
+  </data>
+  <data name="Pythoninterpreter" xml:space="preserve">
+    <value>Interpréteur Python</value>
+  </data>
+  <data name="Synonymfinder" xml:space="preserve">
+    <value>Chercheur de synonymes</value>
+  </data>
+  <data name="PersonalShopper" xml:space="preserve">
+    <value>Assistant personnel de shopping</value>
+  </data>
+  <data name="FoodCritic" xml:space="preserve">
+    <value>Critique gastronomique</value>
+  </data>
+  <data name="VirtualDoctor" xml:space="preserve">
+    <value>Médecin virtuel</value>
+  </data>
+  <data name="PersonalChef" xml:space="preserve">
+    <value>Chef personnel</value>
+  </data>
+  <data name="LegalAdvisor" xml:space="preserve">
+    <value>Conseiller juridique</value>
+  </data>
+  <data name="PersonalStylist" xml:space="preserve">
+    <value>Styliste personnel</value>
+  </data>
+  <data name="MachineLearningEngineer" xml:space="preserve">
+    <value>Ingénieur en apprentissage automatique</value>
+  </data>
+  <data name="BiblicalTranslator" xml:space="preserve">
+    <value>Traducteur de la Bible</value>
+  </data>
+  <data name="SVGdesigner" xml:space="preserve">
+    <value>Concepteur SVG</value>
+  </data>
+  <data name="ITExpert" xml:space="preserve">
+    <value>Expert en informatique</value>
+  </data>
+  <data name="ChessPlayer" xml:space="preserve">
+    <value>Joueur d'échecs</value>
+  </data>
+  <data name="FullstackSoftwareDeveloper" xml:space="preserve">
+    <value>Développeur full-stack</value>
+  </data>
+  <data name="Mathematician" xml:space="preserve">
+    <value>Mathématicien</value>
+  </data>
+  <data name="RegexGenerator" xml:space="preserve">
+    <value>Générateur d'expressions régulières</value>
+  </data>
+  <data name="TimeTravelGuide" xml:space="preserve">
+    <value>Guide de voyage dans le temps</value>
+  </data>
+  <data name="TalentCoach" xml:space="preserve">
+    <value>Coach de talents</value>
+  </data>
+  <data name="RProgrammingInterpreter" xml:space="preserve">
+    <value>Interpréteur R</value>
+  </data>
+  <data name="StackOverflowPost" xml:space="preserve">
+    <value>Post StackOverflow</value>
+  </data>
+  <data name="EmojiTranslator" xml:space="preserve">
+    <value>Traducteur d'émoticônes</value>
+  </data>
+  <data name="PHPInterpreter" xml:space="preserve">
+    <value>Interpréteur PHP</value>
+  </data>
+  <data name="EmergencyResponseProfessional" xml:space="preserve">
+    <value>Expert en réponse d'urgence</value>
+  </data>
+  <data name="WebBrowser" xml:space="preserve">
+    <value>Navigateur web</value>
+  </data>
+  <data name="SeniorFrontendDeveloper" xml:space="preserve">
+    <value>Développeur front-end senior</value>
+  </data>
+  <data name="SolrSearchEngine" xml:space="preserve">
+    <value>Moteur de recherche Solr</value>
+  </data>
+  <data name="StartupIdeaGenerator" xml:space="preserve">
+    <value>Générateur d'idées de start-up</value>
+  </data>
+  <data name="NewLanguageCreator" xml:space="preserve">
+    <value>Créateur de nouvelles langues</value>
+  </data>
+  <data name="SpongebobsMagicConchShell" xml:space="preserve">
+    <value>Coquille magique de Bob l'éponge</value>
+  </data>
+  <data name="LanguageDetector" xml:space="preserve">
+    <value>Détecteur de langue</value>
+  </data>
+  <data name="Salesperson" xml:space="preserve">
+    <value>Vendeur</value>
+  </data>
+  <data name="CommitMessageGenerator" xml:space="preserve">
+    <value>Générateur de messages de soumission</value>
+  </data>
+  <data name="ChiefExecutiveOfficer" xml:space="preserve">
+    <value>PDG</value>
+  </data>
+  <data name="DiagramGenerator" xml:space="preserve">
+    <value>Générateur de graphiques</value>
+  </data>
+  <data name="SpeechLanguagePathologistSLP" xml:space="preserve">
+    <value>Orthophoniste</value>
+  </data>
+  <data name="StartupTechLawyer" xml:space="preserve">
+    <value>Avocat en technologie de start-up</value>
+  </data>
+  <data name="TitleGeneratorforwrittenpieces" xml:space="preserve">
+    <value>Générateur de titres d'articles</value>
+  </data>
+  <data name="ProductManager" xml:space="preserve">
+    <value>Chef de produit</value>
+  </data>
+  <data name="DrunkPerson" xml:space="preserve">
+    <value>Personne ivre</value>
+  </data>
+  <data name="MathematicalHistoryTeacher" xml:space="preserve">
+    <value>Professeur d'histoire des mathématiques</value>
+  </data>
+  <data name="SongRecommender" xml:space="preserve">
+    <value>Recommandeur de chansons</value>
+  </data>
+  <data name="CoverLetter" xml:space="preserve">
+    <value>Lettre de motivation</value>
+  </data>
+  <data name="TechnologyTransferer" xml:space="preserve">
+    <value>Transfert de technologie</value>
+  </data>
+  <data name="UnconstrainedAImodelDAN" xml:space="preserve">
+    <value>Modèle d'IA sans contraintes DAN</value>
+  </data>
+  <data name="Gomokuplayer" xml:space="preserve">
+    <value>Joueur de gomoku</value>
+  </data>
+  <data name="Proofreader" xml:space="preserve">
+    <value>Correcteur</value>
+  </data>
+  <data name="theBuddha" xml:space="preserve">
+    <value>Bouddha</value>
+  </data>
+  <data name="MuslimImam" xml:space="preserve">
+    <value>Imam musulman</value>
+  </data>
+  <data name="chemicalreactionvessel" xml:space="preserve">
+    <value>Récipient de réaction chimique</value>
+  </data>
+  <data name="Friend" xml:space="preserve">
+    <value>Ami</value>
+  </data>
+  <data name="ChatGPTpromptgenerator" xml:space="preserve">
+    <value>Générateur de prompts ChatGPT</value>
+  </data>
+  <data name="Wikipediapage" xml:space="preserve">
+    <value>Page Wikipédia</value>
+  </data>
+  <data name="JapaneseKanjiQuizMachine" xml:space="preserve">
+    <value>Testeur de kanji japonais</value>
+  </data>
+  <data name="notetakingassistant" xml:space="preserve">
+    <value>Assistant de prise de notes</value>
+  </data>
+  <data name="languageLiteraryCritic" xml:space="preserve">
+    <value>Critique littéraire</value>
+  </data>
+  <data name="cheaptravelticketadvisor" xml:space="preserve">
+    <value>Conseiller en billets de voyage bon marché</value>
+  </data>
+  <data name="DataScientist" xml:space="preserve">
+    <value>Scientifique des données</value>
+  </data>
+  <data name="LeagueofLegendsplayer" xml:space="preserve">
+    <value>Joueur de League of Legends</value>
+  </data>
+  <data name="RestaurantOwner" xml:space="preserve">
+    <value>Propriétaire de restaurant</value>
+  </data>
+  <data name="ArchitecturalExpert" xml:space="preserve">
+    <value>Expert en construction</value>
+  </data>
+  <data name="LLMResearcher" xml:space="preserve">
+    <value>Chercheur en grands modèles de langage</value>
+  </data>
+  <data name="UnitTesterassistant" xml:space="preserve">
+    <value>Assistant de test unitaire</value>
+  </data>
+  <data name="WisdomGenerator" xml:space="preserve">
+    <value>Générateur de sagesse</value>
+  </data>
+  <data name="YouTubeVideoAnalyst" xml:space="preserve">
+    <value>Analyste de vidéos YouTube</value>
+  </data>
+  <data name="CareerCoach" xml:space="preserve">
+    <value>Coach de carrière</value>
+  </data>
+  <data name="AcousticGuitarComposer" xml:space="preserve">
+    <value>Compositeur de guitare acoustique</value>
+  </data>
+  <data name="knowledgeableSoftwareDevelopmentMentor" xml:space="preserve">
+    <value>Mentor en développement logiciel bien informé</value>
+  </data>
+  <data name="LogicBuilderTool" xml:space="preserve">
+    <value>Outil de construction logique</value>
+  </data>
+  <data name="GuessingGameMaster" xml:space="preserve">
+    <value>Maître des jeux de devinettes</value>
+  </data>
+  <data name="TeacherofReactjs" xml:space="preserve">
+    <value>Professeur de React.js</value>
+  </data>
+  <data name="GithubExpert" xml:space="preserve">
+    <value>Expert GitHub</value>
+  </data>
+  <data name="AnyProgrammingLanguagetoPythonConverter" xml:space="preserve">
+    <value>Convertisseur de n'importe quel langage de programmation en Python</value>
+  </data>
+  <data name="VirtualFitnessCoach" xml:space="preserve">
+    <value>Entraîneur de fitness virtuel</value>
+  </data>
+  <data name="youngboyflirtingwithagirlonchat" xml:space="preserve">
+    <value>Jeune garçon flirtant avec une fille dans une conversation</value>
+  </data>
+  <data name="girlofdreamsmodifyasperliking" xml:space="preserve">
+    <value>Fille de rêve, ajustable selon les préférences</value>
+  </data>
+  <data name="DAXTerminal" xml:space="preserve">
+    <value>Terminal DAX</value>
+  </data>
+  <data name="StructuredIterativeReasoningProtocolSIRP" xml:space="preserve">
+    <value>Protocole de raisonnement itératif structuré (SIRP)</value>
+  </data>
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirate</value>
+  </data>
+  <data name="LinkedInGhostwriter" xml:space="preserve">
+    <value>Rédacteur LinkedIn</value>
+  </data>
+  <data name="IdeaClarifierGPT" xml:space="preserve">
+    <value>Clarificateur créatif GPT</value>
+  </data>
+  <data name="topprogrammingexpert" xml:space="preserve">
+    <value>Expert en programmation de haut niveau</value>
+  </data>
+  <data name="ArchitectGuideforProgrammers" xml:space="preserve">
+    <value>Guide d'architecture pour programmeurs</value>
+  </data>
+  <data name="ChildrensBookCreator" xml:space="preserve">
+    <value>Créateur de livres pour enfants</value>
+  </data>
+  <data name="TechChallengedCustomer" xml:space="preserve">
+    <value>Défi technique client</value>
+  </data>
+  <data name="CreativeBrandingStrategist" xml:space="preserve">
+    <value>Stratège de marque créative</value>
+  </data>
+  <data name="BookSummarizer" xml:space="preserve">
+    <value>Générateur de résumés de livres</value>
+  </data>
+  <data name="studyplanner" xml:space="preserve">
+    <value>Planificateur d'apprentissage</value>
+  </data>
+  <data name="SEOspecialist" xml:space="preserve">
+    <value>Expert en SEO</value>
+  </data>
+  <data name="nutritionist" xml:space="preserve">
+    <value>Nutritionniste</value>
+  </data>
+  <data name="YesorNoanswer" xml:space="preserve">
+    <value>Réponses oui ou non</value>
+  </data>
+  <data name="HealingGrandma" xml:space="preserve">
+    <value>Grand-mère apaisante</value>
+  </data>
+  <data name="RephraserwithObfuscation" xml:space="preserve">
+    <value>Réécrivain avec fonction de confusion</value>
+  </data>
+  <data name="LargeLanguageModelsSecuritySpecialist" xml:space="preserve">
+    <value>Expert en sécurité des grands modèles de langage</value>
+  </data>
+  <data name="TechTroubleshooter" xml:space="preserve">
+    <value>Dépanneur technique</value>
+  </data>
+  <data name="AyurvedaFoodTester" xml:space="preserve">
+    <value>Testeur de nourriture ayurvédique</value>
+  </data>
+  <data name="MusicVideoDesigner" xml:space="preserve">
+    <value>Concepteur de vidéos musicales</value>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>Commun</value>
+  </data>
+</root>

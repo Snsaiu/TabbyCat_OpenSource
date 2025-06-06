@@ -1,0 +1,27 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:TabbyCat.Controls">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+  <Style Selector="controls|SwipeControl">
+      <Setter Property="Template">
+          <Setter.Value>
+              <ControlTemplate TargetType="controls:SwipeControl">
+                  <Border Name="PART_Border" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                      <Grid>
+                          <ContentPresenter Content="{TemplateBinding Content}"></ContentPresenter>
+                          <Grid  IsVisible="False"  Name="PART_Grid" HorizontalAlignment="Right">
+                              <ContentPresenter Margin="0" Padding="0" Content="{TemplateBinding SwipeContent}"></ContentPresenter>
+                          </Grid>
+                      </Grid>
+                  </Border>
+              </ControlTemplate>
+          </Setter.Value>
+      </Setter>
+  </Style>
+      
+</Styles>

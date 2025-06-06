@@ -1,0 +1,50 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:views="clr-namespace:TabbyCat.Views"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             xmlns:tabbyCat="clr-namespace:TabbyCat"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             mc:Ignorable="d"
+             Width="600"
+             Height="500"
+             x:Class="TabbyCat.Views.ChatMessageFavoritesView"
+             x:DataType="viewModels:ChatMessageFavoritesViewModel">
+    <Grid>
+        <Grid RowDefinitions="Auto,*">
+        <DockPanel LastChildFill="True" DockPanel.Dock="Top">
+            <Button ToolTip.Tip="{x:Static languages:AppResources.Fold}" Classes="icon"
+                    extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Fold}"
+                    Command="{Binding FoldCommand}" DockPanel.Dock="Right" Margin="{StaticResource Left8}" />
+            <Button ToolTip.Tip="{x:Static languages:AppResources.Expand}" Classes="icon"
+                    extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Expand}"
+                    Command="{Binding ExpandCommand}" DockPanel.Dock="Right"
+                    Margin="{StaticResource LeftRight2}" />
+            <TextBox Watermark="搜索..." Text="{Binding SearchText}" DockPanel.Dock="Left" />
+        </DockPanel>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Chats}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Expander Header="{Binding Date,StringFormat='yyyy-MM-dd'}" IsExpanded="{Binding Expanded}"
+                                  IsVisible="{Binding Items.Count}">
+                            <ItemsControl ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <controls:ChatItem Message="{Binding .}"
+                                                           FavouriteCommand="{Binding $parent[views:ChatMessageFavoritesView].((viewModels:ChatMessageFavoritesViewModel)DataContext).SetIsFavouriteStateCommand}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Expander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

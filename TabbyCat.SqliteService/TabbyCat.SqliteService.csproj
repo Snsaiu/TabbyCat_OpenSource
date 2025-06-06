@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+<ItemGroup>
+  <PackageReference Include="TuDog.IocAttribute" />
+</ItemGroup>
+<ItemGroup>
+  <ProjectReference Include="..\TabbyCat.Repository\TabbyCat.Repository.csproj" />
+  <ProjectReference Include="..\TabbyCat.Service\TabbyCat.Service.csproj" />
+</ItemGroup>
+</Project>

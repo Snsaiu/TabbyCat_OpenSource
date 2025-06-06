@@ -1,0 +1,61 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:TabbyCat.Controls"
+                    xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                    xmlns:tabbyCat="clr-namespace:TabbyCat">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <UniformGrid Columns="4">
+                <controls:NavigationButton Content="聊天"  Icon="{x:Static tabbyCat:IconFontProvider.Pen}"/>
+                <controls:NavigationButton Content="抠图" />
+                <controls:NavigationButton Content="文生图" />
+                <controls:NavigationButton Content="我的" />
+            </UniformGrid>
+        </Border>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="{x:Type controls:NavigationButton}" TargetType="controls:NavigationButton">
+        <Setter Property="Foreground" Value="{StaticResource TextFillColorSecondary}" />
+       
+        <Setter Property="FontSize" Value="12"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:NavigationButton">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <controls1:FontIcon Foreground="{TemplateBinding Foreground}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                            Glyph="{TemplateBinding Icon}"
+                                            Name="Icon"
+                                            FontSize="20"
+                                            FontFamily="{StaticResource iconFont}" Margin="0,0,2,0" />
+                        <ContentPresenter Foreground="{TemplateBinding Foreground}"
+                                          Name="Presenter"
+                                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                          Content="{TemplateBinding Content}" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style Selector="^:checked">
+            <Setter Property="IsChecked" Value="True" />
+        </Style>
+        <Style Selector="^:unchecked">
+            <Setter Property="IsChecked" Value="False" />
+        </Style>
+        <Style Selector="^:checked /template/ controls1|FontIcon#Icon">
+            <Setter Property="Glyph" Value="{TemplateBinding SelectedIcon}"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource TextFillColorInverse}" />
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
+
+        <Style Selector="^:checked /template/ ContentPresenter#Presenter">
+            <Setter Property="Foreground" Value="{StaticResource TextFillColorInverse}" />
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
+        
+    </ControlTheme>
+
+</ResourceDictionary>

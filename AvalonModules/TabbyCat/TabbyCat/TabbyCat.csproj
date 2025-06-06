@@ -1,0 +1,104 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia"/>
+        <PackageReference Include="Avalonia.AvaloniaEdit"/>
+        <PackageReference Include="Avalonia.Fonts.Inter"/>
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Diagnostics">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Avalonia.Xaml.Behaviors"/>
+        <PackageReference Include="CommunityToolkit.Mvvm"/>
+        <PackageReference Include="Duende.IdentityModel.OidcClient"/>
+        <PackageReference Include="Duende.IdentityModel.OidcClient.Extensions"/>
+        <PackageReference Include="DynamicData"/>
+        <PackageReference Include="FantasyResultModel"/>
+        <PackageReference Include="FluentAvaloniaUI"/>
+        <PackageReference Include="LibVLCSharp"/>
+        <PackageReference Include="LibVLCSharp.Avalonia"/>
+        <PackageReference Include="Markdig"/>
+        <PackageReference Include="Markdown.Avalonia.YouYan"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting"/>
+        <PackageReference Include="Microsoft.Extensions.Http"/>
+        <PackageReference Include="NCalcSync"/>
+        <PackageReference Include="Newtonsoft.Json"/>
+        <PackageReference Include="OpenTelemetry"/>
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting"/>
+        <PackageReference Include="Serilog.Sinks.Grafana.Loki"/>
+        <!--<PackageReference Include="Serilog.Sinks.Loki" />-->
+        <PackageReference Include="SharpHook"/>
+        <PackageReference Include="Avalonia.Themes.Fluent"/>
+
+        <PackageReference Include="sqlite-net-pcl"/>
+        <!--<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" />-->
+        <PackageReference Include="SQLitePCLRaw.bundle_green"/>
+        <PackageReference Include="TuDog"/>
+        <PackageReference Include="TuDog.IocAttribute" />
+        <PackageReference Include="TuDog.IocAutoRegisterSourceGenerator" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <PackageReference Include="TuDog.LoggerMetrics"/>
+        <!--    <PackageReference Include="VideoLAN.LibVLC.Mac"/>-->
+        <PackageReference Include="VideoLAN.LibVLC.Windows"/>
+        <PackageReference Include="Xabe.FFmpeg"/>
+        <PackageReference Include="Xabe.FFmpeg.Downloader"/>
+        <PackageReference Include="Xamarin.Essentials"/>
+        <PackageReference Include="YouYan.Hamster"/>
+        <!--<PackageReference Include="SQLitePCLRaw.core" />
+          <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3"  />
+          <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3"  />-->
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="Avalonia.Markup.Xaml.Loader"/>
+        <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="HotAvalonia"/>
+        <PackageReference Include="HotAvalonia.Extensions" PrivateAssets="All"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\logo.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </AvaloniaResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\TabbyCat.Repository\TabbyCat.Repository.csproj"/>
+        <ProjectReference Include="..\..\..\TabbyCat.Service\TabbyCat.Service.csproj"/>
+        <ProjectReference Include="..\..\..\TabbyCat.Shared\TabbyCat.Shared.csproj"/>
+        <ProjectReference Include="..\..\..\TabbyCat.SqliteService\TabbyCat.SqliteService.csproj"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <ScanAssemblyRule>^TabbyCat</ScanAssemblyRule>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="$(MSBuildProjectFile)"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="Assets\trayicon.ico">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <Folder Include="Bases\"/>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TabbyCat.Components.ViewModels"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TabbyCat.Components.Views.ExperimentalFeaturesSettingView"
+             x:DataType="viewModels:ExperimentalFeaturesSettingViewModel">
+    <StackPanel HorizontalAlignment="Stretch">
+        <ToggleSwitch Content="{x:Static languages:AppResources.DefaultMarkdown}" IsChecked="{Binding UseMarkdown}" />
+        <ToggleSwitch Content="{x:Static languages:AppResources.HotkeyToStartProgram}" IsChecked="{Binding UseHotkey}"
+                      IsVisible="{OnPlatform Default=true,Android=false,iOS=false}" />
+        <ToggleSwitch Content="{x:Static languages:AppResources.UseCpShowQuickMenu}"
+                      IsChecked="{Binding UseCpShowQuickMenu,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                      IsVisible="{OnPlatform Default=true,Android=false,iOS=false}">
+        </ToggleSwitch>
+
+    </StackPanel>
+</UserControl>

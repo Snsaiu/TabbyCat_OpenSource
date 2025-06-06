@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:attachs="clr-namespace:TuDog.Attachs;assembly=TuDog"
+             xmlns:shared="clr-namespace:TabbyCat.Shared;assembly=TabbyCat.Shared"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+             xmlns:tabbyCat1="clr-namespace:TabbyCat"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TabbyCat.Views.SettingView"
+             x:DataType="viewModels:SettingViewModel">
+    <Design.DataContext>
+        <viewModels:SettingViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*">
+        <controls:MobileTitleBar
+            IsVisible="{OnPlatform Default=false,Android=true,iOS=true}"
+            LeftArrowCommand="{Binding  ReturnPageCommand}" ShowLeftArrow="True" Title="{x:Static languages:AppResources.Setting}" />
+
+        <DockPanel LastChildFill="True" Grid.Row="1">
+            <!-- <Button DockPanel.Dock="Bottom" Content="退出" HorizontalAlignment="Stretch" /> -->
+            <Grid DockPanel.Dock="Top">
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical">
+                        <Expander Header="{x:Static languages:AppResources.General}">
+                            <ContentControl attachs:RegionBehavior.Region="commonContainer" />
+                        </Expander>
+                        <Expander Header="{x:Static languages:AppResources.Personalization}">
+                            <ContentControl attachs:RegionBehavior.Region="personalizationContainer" />
+                        </Expander>
+                        <Expander Header="AI">
+                            <ContentControl attachs:RegionBehavior.Region="aiContainer" />
+                        </Expander>
+                        <Expander Header="{x:Static languages:AppResources.ResourceSettings}">
+                            <ContentControl attachs:RegionBehavior.Region="mediaSettingContainer" />
+                        </Expander>
+                        <Expander Header="{x:Static languages:AppResources.ExperimentalFeatures}">
+                            <ContentControl attachs:RegionBehavior.Region="experimentalFeaturesContainer" />
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </DockPanel>
+    </Grid>
+
+
+
+</UserControl>

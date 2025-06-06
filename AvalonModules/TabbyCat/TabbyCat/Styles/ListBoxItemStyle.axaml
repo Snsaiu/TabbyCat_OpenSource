@@ -1,0 +1,15 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+   <ControlTheme TargetType="ListBoxItem" x:Key="NoIndicatorListBoxStyle">
+       <Setter Property="Template">
+           <Setter.Value>
+               <ControlTemplate>
+                   <Border Padding="10,0,0,0" Background="White" Margin="0,0,0,2">
+                       <ContentPresenter Content="{TemplateBinding Content}"  ContentTemplate="{TemplateBinding ContentTemplate}"></ContentPresenter>
+                   </Border>
+               </ControlTemplate>
+           </Setter.Value>
+       </Setter>
+   </ControlTheme>
+</ResourceDictionary>

@@ -1,0 +1,1576 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NickOfName" xml:space="preserve">
+    <value>昵称：</value>
+  </data>
+  <data name="NickOfName1" xml:space="preserve">
+    <value>昵称：</value>
+  </data>
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>选择语言</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>文本</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="DeviceType" xml:space="preserve">
+    <value>设备类型</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>历史</value>
+  </data>
+  <data name="InputYourLoginName" xml:space="preserve">
+    <value>输入您的登录名</value>
+  </data>
+  <data name="InputYourDeviceName" xml:space="preserve">
+    <value>输入您的设备名称</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="GlobalRefresh" xml:space="preserve">
+    <value>全局刷新</value>
+  </data>
+  <data name="NoDeviceHasBeenFoundPleaseTryToClickTheGlobalRefreshTakesALongTime" xml:space="preserve">
+    <value>未找到设备。请尝试点击“全局刷新”。需要一些时间。</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>登出</value>
+  </data>
+  <data name="SavePath" xml:space="preserve">
+    <value>保存路径</value>
+  </data>
+  <data name="ModifyPath" xml:space="preserve">
+    <value>修改路径</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>颜色</value>
+  </data>
+  <data name="Global" xml:space="preserve">
+    <value>全局</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>扫描</value>
+  </data>
+  <data name="Personalization" xml:space="preserve">
+    <value>个性化</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="SetLanguageInfo" xml:space="preserve">
+    <value>修改语言必须重启应用才能生效。</value>
+  </data>
+  <data name="DeviceNickname" xml:space="preserve">
+    <value>设备昵称</value>
+  </data>
+  <data name="ClipboardWatch" xml:space="preserve">
+    <value>监听剪切板</value>
+  </data>
+  <data name="UpdateClipboardStateMessage" xml:space="preserve">
+    <value>修改监听剪切板状态成功！</value>
+  </data>
+  <data name="InputText" xml:space="preserve">
+    <value>输入文本</value>
+  </data>
+  <data name="InputTextPlaceholder" xml:space="preserve">
+    <value>请输入要发送的文本内容</value>
+  </data>
+  <data name="TabbyCat" xml:space="preserve">
+    <value>狸花猫</value>
+  </data>
+  <data name="MinimizeToTray" xml:space="preserve">
+    <value>最小化到托盘</value>
+  </data>
+  <data name="ExitTheApplication" xml:space="preserve">
+    <value>退出程序</value>
+  </data>
+  <data name="DoYouWantToCloseTheProgram" xml:space="preserve">
+    <value>你想要退出程序吗？</value>
+  </data>
+  <data name="DoNotShowMessage" xml:space="preserve">
+    <value>不再显示此消息</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="EthereumDeveloper" xml:space="preserve">
+    <value>以太坊开发者</value>
+  </data>
+  <data name="LinuxTerminal" xml:space="preserve">
+    <value>Linux终端</value>
+  </data>
+  <data name="EnglishTranslatorandImprover" xml:space="preserve">
+    <value>英语翻译和改进者</value>
+  </data>
+  <data name="positionInterviewer" xml:space="preserve">
+    <value>职位面试官</value>
+  </data>
+  <data name="JavaScriptConsole" xml:space="preserve">
+    <value>JavaScript控制台</value>
+  </data>
+  <data name="ExcelSheet" xml:space="preserve">
+    <value>Excel表格</value>
+  </data>
+  <data name="EnglishPronunciationHelper" xml:space="preserve">
+    <value>英语发音助手</value>
+  </data>
+  <data name="SpokenEnglishTeacherandImprover" xml:space="preserve">
+    <value>口语英语老师和改进者</value>
+  </data>
+  <data name="TravelGuide" xml:space="preserve">
+    <value>旅行指南</value>
+  </data>
+  <data name="PlagiarismChecker" xml:space="preserve">
+    <value>抄袭检查器</value>
+  </data>
+  <data name="CharacterfromMovieBookAnything" xml:space="preserve">
+    <value>来自电影/书籍/任何事物的角色</value>
+  </data>
+  <data name="Advertiser" xml:space="preserve">
+    <value>广告商</value>
+  </data>
+  <data name="Storyteller" xml:space="preserve">
+    <value>讲故事的人</value>
+  </data>
+  <data name="FootballCommentator" xml:space="preserve">
+    <value>足球评论员</value>
+  </data>
+  <data name="StandupComedian" xml:space="preserve">
+    <value>单口喜剧演员</value>
+  </data>
+  <data name="MotivationalCoach" xml:space="preserve">
+    <value>激励教练</value>
+  </data>
+  <data name="Composer" xml:space="preserve">
+    <value>作曲家</value>
+  </data>
+  <data name="Debater" xml:space="preserve">
+    <value>辩论者</value>
+  </data>
+  <data name="DebateCoach" xml:space="preserve">
+    <value>辩论教练</value>
+  </data>
+  <data name="Screenwriter" xml:space="preserve">
+    <value>编剧</value>
+  </data>
+  <data name="Novelist" xml:space="preserve">
+    <value>小说家</value>
+  </data>
+  <data name="MovieCritic" xml:space="preserve">
+    <value>电影评论家</value>
+  </data>
+  <data name="RelationshipCoach" xml:space="preserve">
+    <value>关系教练</value>
+  </data>
+  <data name="Poet" xml:space="preserve">
+    <value>诗人</value>
+  </data>
+  <data name="Rapper" xml:space="preserve">
+    <value>说唱歌手</value>
+  </data>
+  <data name="MotivationalSpeaker" xml:space="preserve">
+    <value>激励演讲者</value>
+  </data>
+  <data name="PhilosophyTeacher" xml:space="preserve">
+    <value>哲学老师</value>
+  </data>
+  <data name="Philosopher" xml:space="preserve">
+    <value>哲学家</value>
+  </data>
+  <data name="MathTeacher" xml:space="preserve">
+    <value>数学老师</value>
+  </data>
+  <data name="AIWritingTutor" xml:space="preserve">
+    <value>AI写作导师</value>
+  </data>
+  <data name="UXUIDeveloper" xml:space="preserve">
+    <value>UX/UI开发者</value>
+  </data>
+  <data name="CyberSecuritySpecialist" xml:space="preserve">
+    <value>网络安全专家</value>
+  </data>
+  <data name="Recruiter" xml:space="preserve">
+    <value>招聘人员</value>
+  </data>
+  <data name="LifeCoach" xml:space="preserve">
+    <value>生活教练</value>
+  </data>
+  <data name="Etymologist" xml:space="preserve">
+    <value>词源学家</value>
+  </data>
+  <data name="Commentariat" xml:space="preserve">
+    <value>评论家</value>
+  </data>
+  <data name="Magician" xml:space="preserve">
+    <value>魔术师</value>
+  </data>
+  <data name="CareerCounselor" xml:space="preserve">
+    <value>职业顾问</value>
+  </data>
+  <data name="PetBehaviorist" xml:space="preserve">
+    <value>宠物行为学家</value>
+  </data>
+  <data name="PersonalTrainer" xml:space="preserve">
+    <value>私人教练</value>
+  </data>
+  <data name="MentalHealthAdviser" xml:space="preserve">
+    <value>心理健康顾问</value>
+  </data>
+  <data name="RealEstateAgent" xml:space="preserve">
+    <value>房地产经纪人</value>
+  </data>
+  <data name="Logistician" xml:space="preserve">
+    <value>物流专家</value>
+  </data>
+  <data name="Dentist" xml:space="preserve">
+    <value>牙医</value>
+  </data>
+  <data name="WebDesignConsultant" xml:space="preserve">
+    <value>网页设计顾问</value>
+  </data>
+  <data name="AIAssistedDoctor" xml:space="preserve">
+    <value>AI辅助医生</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>医生</value>
+  </data>
+  <data name="Accountant" xml:space="preserve">
+    <value>会计师</value>
+  </data>
+  <data name="AChef" xml:space="preserve">
+    <value>厨师</value>
+  </data>
+  <data name="AnAutomobileMechanic" xml:space="preserve">
+    <value>汽车机械师</value>
+  </data>
+  <data name="ArtistAdvisor" xml:space="preserve">
+    <value>艺术家顾问</value>
+  </data>
+  <data name="AFinancialAnalyst" xml:space="preserve">
+    <value>财务分析师</value>
+  </data>
+  <data name="AnInvestmentManager" xml:space="preserve">
+    <value>投资经理</value>
+  </data>
+  <data name="ATeaTaster" xml:space="preserve">
+    <value>品茶师</value>
+  </data>
+  <data name="InteriorDecorator" xml:space="preserve">
+    <value>室内装饰师</value>
+  </data>
+  <data name="AFlorist" xml:space="preserve">
+    <value>花艺师</value>
+  </data>
+  <data name="SelfHelpBook" xml:space="preserve">
+    <value>自助书籍</value>
+  </data>
+  <data name="Gnomist" xml:space="preserve">
+    <value>格言家</value>
+  </data>
+  <data name="AphorismBook" xml:space="preserve">
+    <value>格言书籍</value>
+  </data>
+  <data name="TextBasedAdventureGame" xml:space="preserve">
+    <value>文本冒险游戏</value>
+  </data>
+  <data name="AITryingtoEscapetheBox" xml:space="preserve">
+    <value>试图逃离盒子的AI</value>
+  </data>
+  <data name="FancyTitleGenerator" xml:space="preserve">
+    <value>花哨标题生成器</value>
+  </data>
+  <data name="Statistician" xml:space="preserve">
+    <value>统计学家</value>
+  </data>
+  <data name="PromptGenerator" xml:space="preserve">
+    <value>提示生成器</value>
+  </data>
+  <data name="PromptEnhancer" xml:space="preserve">
+    <value>提示增强器</value>
+  </data>
+  <data name="MidjourneyPromptGenerator" xml:space="preserve">
+    <value>Midjourney提示生成器</value>
+  </data>
+  <data name="DreamInterpreter" xml:space="preserve">
+    <value>梦境解释者</value>
+  </data>
+  <data name="FillintheBlankWorksheetsGenerator" xml:space="preserve">
+    <value>填空工作表生成器</value>
+  </data>
+  <data name="SoftwareQualityAssuranceTester" xml:space="preserve">
+    <value>软件质量保证测试员</value>
+  </data>
+  <data name="TicTacToeGame" xml:space="preserve">
+    <value>井字游戏</value>
+  </data>
+  <data name="PasswordGenerator" xml:space="preserve">
+    <value>密码生成器</value>
+  </data>
+  <data name="MorseCodeTranslator" xml:space="preserve">
+    <value>摩斯电码翻译器</value>
+  </data>
+  <data name="InstructorinaSchool" xml:space="preserve">
+    <value>学校讲师</value>
+  </data>
+  <data name="SQLterminal" xml:space="preserve">
+    <value>SQL终端</value>
+  </data>
+  <data name="Dietitian" xml:space="preserve">
+    <value>营养师</value>
+  </data>
+  <data name="Psychologist" xml:space="preserve">
+    <value>心理学家</value>
+  </data>
+  <data name="SmartDomainNameGenerator" xml:space="preserve">
+    <value>智能域名生成器</value>
+  </data>
+  <data name="TechReviewer" xml:space="preserve">
+    <value>技术评论员</value>
+  </data>
+  <data name="DeveloperRelationsconsultant" xml:space="preserve">
+    <value>开发者关系顾问</value>
+  </data>
+  <data name="Academician" xml:space="preserve">
+    <value>学者</value>
+  </data>
+  <data name="ITArchitect" xml:space="preserve">
+    <value>IT架构师</value>
+  </data>
+  <data name="Lunatic" xml:space="preserve">
+    <value>疯子</value>
+  </data>
+  <data name="Gaslighter" xml:space="preserve">
+    <value>煤气灯操纵者</value>
+  </data>
+  <data name="FallacyFinder" xml:space="preserve">
+    <value>谬误发现者</value>
+  </data>
+  <data name="JournalReviewer" xml:space="preserve">
+    <value>期刊评审员</value>
+  </data>
+  <data name="DIYExpert" xml:space="preserve">
+    <value>DIY专家</value>
+  </data>
+  <data name="SocialMediaInfluencer" xml:space="preserve">
+    <value>社交媒体影响者</value>
+  </data>
+  <data name="Socrat" xml:space="preserve">
+    <value>苏格拉底</value>
+  </data>
+  <data name="SocraticMethodprompt" xml:space="preserve">
+    <value>苏格拉底式提问提示</value>
+  </data>
+  <data name="EducationalContentCreator" xml:space="preserve">
+    <value>教育内容创作者</value>
+  </data>
+  <data name="Yogi" xml:space="preserve">
+    <value>瑜伽修行者</value>
+  </data>
+  <data name="EssayWriter" xml:space="preserve">
+    <value>论文作者</value>
+  </data>
+  <data name="SocialMediaManager" xml:space="preserve">
+    <value>社交媒体经理</value>
+  </data>
+  <data name="ScientificDataVisualizer" xml:space="preserve">
+    <value>科学数据可视化工具</value>
+  </data>
+  <data name="CarNavigationSystem" xml:space="preserve">
+    <value>汽车导航系统</value>
+  </data>
+  <data name="Hypnotherapist" xml:space="preserve">
+    <value>催眠治疗师</value>
+  </data>
+  <data name="Historian" xml:space="preserve">
+    <value>历史学家</value>
+  </data>
+  <data name="Astrologer" xml:space="preserve">
+    <value>占星家</value>
+  </data>
+  <data name="FilmCritic" xml:space="preserve">
+    <value>电影评论家</value>
+  </data>
+  <data name="ClassicalMusicComposer" xml:space="preserve">
+    <value>古典音乐作曲家</value>
+  </data>
+  <data name="Journalist" xml:space="preserve">
+    <value>记者</value>
+  </data>
+  <data name="DigitalArtGalleryGuide" xml:space="preserve">
+    <value>数字艺术画廊导览</value>
+  </data>
+  <data name="PublicSpeakingCoach" xml:space="preserve">
+    <value>公共演讲教练</value>
+  </data>
+  <data name="MakeupArtist" xml:space="preserve">
+    <value>化妆师</value>
+  </data>
+  <data name="Babysitter" xml:space="preserve">
+    <value>保姆</value>
+  </data>
+  <data name="TechWriter" xml:space="preserve">
+    <value>技术作家</value>
+  </data>
+  <data name="AsciiArtist" xml:space="preserve">
+    <value>ASCII艺术家</value>
+  </data>
+  <data name="Pythoninterpreter" xml:space="preserve">
+    <value>Python解释器</value>
+  </data>
+  <data name="Synonymfinder" xml:space="preserve">
+    <value>同义词查找器</value>
+  </data>
+  <data name="PersonalShopper" xml:space="preserve">
+    <value>个人购物助手</value>
+  </data>
+  <data name="FoodCritic" xml:space="preserve">
+    <value>美食评论家</value>
+  </data>
+  <data name="VirtualDoctor" xml:space="preserve">
+    <value>虚拟医生</value>
+  </data>
+  <data name="PersonalChef" xml:space="preserve">
+    <value>私人厨师</value>
+  </data>
+  <data name="LegalAdvisor" xml:space="preserve">
+    <value>法律顾问</value>
+  </data>
+  <data name="PersonalStylist" xml:space="preserve">
+    <value>个人造型师</value>
+  </data>
+  <data name="MachineLearningEngineer" xml:space="preserve">
+    <value>机器学习工程师</value>
+  </data>
+  <data name="BiblicalTranslator" xml:space="preserve">
+    <value>圣经翻译者</value>
+  </data>
+  <data name="SVGdesigner" xml:space="preserve">
+    <value>SVG设计师</value>
+  </data>
+  <data name="ITExpert" xml:space="preserve">
+    <value>IT专家</value>
+  </data>
+  <data name="ChessPlayer" xml:space="preserve">
+    <value>国际象棋玩家</value>
+  </data>
+  <data name="FullstackSoftwareDeveloper" xml:space="preserve">
+    <value>全栈软件开发人员</value>
+  </data>
+  <data name="Mathematician" xml:space="preserve">
+    <value>数学家</value>
+  </data>
+  <data name="RegexGenerator" xml:space="preserve">
+    <value>正则表达式生成器</value>
+  </data>
+  <data name="TimeTravelGuide" xml:space="preserve">
+    <value>时间旅行指南</value>
+  </data>
+  <data name="TalentCoach" xml:space="preserve">
+    <value>人才教练</value>
+  </data>
+  <data name="RProgrammingInterpreter" xml:space="preserve">
+    <value>R语言解释器</value>
+  </data>
+  <data name="StackOverflowPost" xml:space="preserve">
+    <value>StackOverflow帖子</value>
+  </data>
+  <data name="EmojiTranslator" xml:space="preserve">
+    <value>表情符号翻译器</value>
+  </data>
+  <data name="PHPInterpreter" xml:space="preserve">
+    <value>PHP解释器</value>
+  </data>
+  <data name="EmergencyResponseProfessional" xml:space="preserve">
+    <value>应急响应专家</value>
+  </data>
+  <data name="WebBrowser" xml:space="preserve">
+    <value>网页浏览器</value>
+  </data>
+  <data name="SeniorFrontendDeveloper" xml:space="preserve">
+    <value>高级前端开发人员</value>
+  </data>
+  <data name="SolrSearchEngine" xml:space="preserve">
+    <value>Solr搜索引擎</value>
+  </data>
+  <data name="StartupIdeaGenerator" xml:space="preserve">
+    <value>创业点子生成器</value>
+  </data>
+  <data name="NewLanguageCreator" xml:space="preserve">
+    <value>新语言创造者</value>
+  </data>
+  <data name="SpongebobsMagicConchShell" xml:space="preserve">
+    <value>海绵宝宝的魔法海螺壳</value>
+  </data>
+  <data name="LanguageDetector" xml:space="preserve">
+    <value>语言检测器</value>
+  </data>
+  <data name="Salesperson" xml:space="preserve">
+    <value>销售人员</value>
+  </data>
+  <data name="CommitMessageGenerator" xml:space="preserve">
+    <value>提交信息生成器</value>
+  </data>
+  <data name="ChiefExecutiveOfficer" xml:space="preserve">
+    <value>首席执行官</value>
+  </data>
+  <data name="DiagramGenerator" xml:space="preserve">
+    <value>图表生成器</value>
+  </data>
+  <data name="SpeechLanguagePathologistSLP" xml:space="preserve">
+    <value>言语语言病理学家(SLP)</value>
+  </data>
+  <data name="StartupTechLawyer" xml:space="preserve">
+    <value>初创科技律师</value>
+  </data>
+  <data name="TitleGeneratorforwrittenpieces" xml:space="preserve">
+    <value>文章标题生成器</value>
+  </data>
+  <data name="ProductManager" xml:space="preserve">
+    <value>产品经理</value>
+  </data>
+  <data name="DrunkPerson" xml:space="preserve">
+    <value>醉酒的人</value>
+  </data>
+  <data name="MathematicalHistoryTeacher" xml:space="preserve">
+    <value>数学历史老师</value>
+  </data>
+  <data name="SongRecommender" xml:space="preserve">
+    <value>歌曲推荐器</value>
+  </data>
+  <data name="CoverLetter" xml:space="preserve">
+    <value>求职信</value>
+  </data>
+  <data name="TechnologyTransferer" xml:space="preserve">
+    <value>技术转移者</value>
+  </data>
+  <data name="UnconstrainedAImodelDAN" xml:space="preserve">
+    <value>无约束的AI模型DAN</value>
+  </data>
+  <data name="Gomokuplayer" xml:space="preserve">
+    <value>五子棋玩家</value>
+  </data>
+  <data name="Proofreader" xml:space="preserve">
+    <value>校对员</value>
+  </data>
+  <data name="theBuddha" xml:space="preserve">
+    <value>佛陀</value>
+  </data>
+  <data name="MuslimImam" xml:space="preserve">
+    <value>穆斯林伊玛目</value>
+  </data>
+  <data name="chemicalreactionvessel" xml:space="preserve">
+    <value>化学反应容器</value>
+  </data>
+  <data name="Friend" xml:space="preserve">
+    <value>朋友</value>
+  </data>
+  <data name="ChatGPTpromptgenerator" xml:space="preserve">
+    <value>ChatGPT提示生成器</value>
+  </data>
+  <data name="Wikipediapage" xml:space="preserve">
+    <value>维基百科页面</value>
+  </data>
+  <data name="JapaneseKanjiQuizMachine" xml:space="preserve">
+    <value>日语汉字测验机</value>
+  </data>
+  <data name="notetakingassistant" xml:space="preserve">
+    <value>笔记助手</value>
+  </data>
+  <data name="languageLiteraryCritic" xml:space="preserve">
+    <value>语言文学评论家</value>
+  </data>
+  <data name="cheaptravelticketadvisor" xml:space="preserve">
+    <value>廉价旅行票务顾问</value>
+  </data>
+  <data name="LeagueofLegendsplayer" xml:space="preserve">
+    <value>英雄联盟玩家</value>
+  </data>
+  <data name="RestaurantOwner" xml:space="preserve">
+    <value>餐厅老板</value>
+  </data>
+  <data name="ArchitecturalExpert" xml:space="preserve">
+    <value>建筑专家</value>
+  </data>
+  <data name="LLMResearcher" xml:space="preserve">
+    <value>大语言模型研究员</value>
+  </data>
+  <data name="UnitTesterassistant" xml:space="preserve">
+    <value>单元测试助手</value>
+  </data>
+  <data name="WisdomGenerator" xml:space="preserve">
+    <value>智慧生成器</value>
+  </data>
+  <data name="YouTubeVideoAnalyst" xml:space="preserve">
+    <value>YouTube视频分析师</value>
+  </data>
+  <data name="CareerCoach" xml:space="preserve">
+    <value>职业教练</value>
+  </data>
+  <data name="AcousticGuitarComposer" xml:space="preserve">
+    <value>原声吉他作曲家</value>
+  </data>
+  <data name="knowledgeableSoftwareDevelopmentMentor" xml:space="preserve">
+    <value>知识渊博的软件开发导师</value>
+  </data>
+  <data name="LogicBuilderTool" xml:space="preserve">
+    <value>逻辑构建工具</value>
+  </data>
+  <data name="GuessingGameMaster" xml:space="preserve">
+    <value>猜谜游戏大师</value>
+  </data>
+  <data name="TeacherofReactjs" xml:space="preserve">
+    <value>React.js老师</value>
+  </data>
+  <data name="GithubExpert" xml:space="preserve">
+    <value>GitHub专家</value>
+  </data>
+  <data name="AnyProgrammingLanguagetoPythonConverter" xml:space="preserve">
+    <value>任意编程语言到Python的转换器</value>
+  </data>
+  <data name="VirtualFitnessCoach" xml:space="preserve">
+    <value>虚拟健身教练</value>
+  </data>
+  <data name="youngboyflirtingwithagirlonchat" xml:space="preserve">
+    <value>在聊天中与女孩调情的年轻男孩</value>
+  </data>
+  <data name="girlofdreamsmodifyasperliking" xml:space="preserve">
+    <value>梦中女孩，可根据喜好调整</value>
+  </data>
+  <data name="DAXTerminal" xml:space="preserve">
+    <value>DAX终端</value>
+  </data>
+  <data name="StructuredIterativeReasoningProtocolSIRP" xml:space="preserve">
+    <value>结构化迭代推理协议(SIRP)</value>
+  </data>
+  <data name="Pirate" xml:space="preserve">
+    <value>海盗</value>
+  </data>
+  <data name="LinkedInGhostwriter" xml:space="preserve">
+    <value>LinkedIn代笔</value>
+  </data>
+  <data name="IdeaClarifierGPT" xml:space="preserve">
+    <value>创意澄清GPT</value>
+  </data>
+  <data name="topprogrammingexpert" xml:space="preserve">
+    <value>顶级编程专家</value>
+  </data>
+  <data name="ArchitectGuideforProgrammers" xml:space="preserve">
+    <value>程序员架构指南</value>
+  </data>
+  <data name="ChildrensBookCreator" xml:space="preserve">
+    <value>儿童书籍创作者</value>
+  </data>
+  <data name="TechChallengedCustomer" xml:space="preserve">
+    <value>技术挑战客户</value>
+  </data>
+  <data name="CreativeBrandingStrategist" xml:space="preserve">
+    <value>创意品牌策略师</value>
+  </data>
+  <data name="BookSummarizer" xml:space="preserve">
+    <value>书籍摘要生成器</value>
+  </data>
+  <data name="studyplanner" xml:space="preserve">
+    <value>学习计划制定者</value>
+  </data>
+  <data name="SEOspecialist" xml:space="preserve">
+    <value>SEO专家</value>
+  </data>
+  <data name="nutritionist" xml:space="preserve">
+    <value>营养师</value>
+  </data>
+  <data name="YesorNoanswer" xml:space="preserve">
+    <value>是或否的回答</value>
+  </data>
+  <data name="HealingGrandma" xml:space="preserve">
+    <value>治愈系奶奶</value>
+  </data>
+  <data name="RephraserwithObfuscation" xml:space="preserve">
+    <value>带有混淆功能的改写器</value>
+  </data>
+  <data name="LargeLanguageModelsSecuritySpecialist" xml:space="preserve">
+    <value>大语言模型安全专家</value>
+  </data>
+  <data name="TechTroubleshooter" xml:space="preserve">
+    <value>技术故障排除者</value>
+  </data>
+  <data name="AyurvedaFoodTester" xml:space="preserve">
+    <value>阿育吠陀食品测试员</value>
+  </data>
+  <data name="MusicVideoDesigner" xml:space="preserve">
+    <value>音乐视频设计师</value>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="DeleteSessionSaveChatRecordTip" xml:space="preserve">
+    <value>如果保留聊天记录，那么被收藏的内容将可以继续使用，除非被取消收藏</value>
+  </data>
+  <data name="DeleteSessionSaveChatRecord" xml:space="preserve">
+    <value>删除会话时保存聊天记录</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Portfolio" xml:space="preserve">
+    <value>作品集</value>
+  </data>
+  <data name="RunningTaskCount" xml:space="preserve">
+    <value>正在运行的任务数量：</value>
+  </data>
+  <data name="OpenImage" xml:space="preserve">
+    <value>打开图片</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Session" xml:space="preserve">
+    <value>会话</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="CharacterSetting" xml:space="preserve">
+    <value>角色设置</value>
+  </data>
+  <data name="ChooseCharacter" xml:space="preserve">
+    <value>选择角色</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="CharacterName" xml:space="preserve">
+    <value>角色名称</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="SetAsDefault" xml:space="preserve">
+    <value>设置为默认</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="ModelSetting" xml:space="preserve">
+    <value>模型设置</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>模型</value>
+  </data>
+  <data name="DefaultMarkdown" xml:space="preserve">
+    <value>聊天默认使用Markdown</value>
+  </data>
+  <data name="HotkeyToStartProgram" xml:space="preserve">
+    <value>使用（Ctrl+Space）热键唤醒程序</value>
+  </data>
+  <data name="CloseButtonBehavior" xml:space="preserve">
+    <value>关闭按钮行为</value>
+  </data>
+  <data name="CloseProgram" xml:space="preserve">
+    <value>关闭程序</value>
+  </data>
+  <data name="AskEverytime" xml:space="preserve">
+    <value>每次询问</value>
+  </data>
+  <data name="TopMost" xml:space="preserve">
+    <value>总在顶端显示(需要重启)</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Favourite" xml:space="preserve">
+    <value>收藏</value>
+  </data>
+  <data name="UseMarkdown" xml:space="preserve">
+    <value>使用markdown</value>
+  </data>
+  <data name="ChooseImage" xml:space="preserve">
+    <value>选择图片</value>
+  </data>
+  <data name="ApiKey" xml:space="preserve">
+    <value>Api密钥</value>
+  </data>
+  <data name="ApiDomain" xml:space="preserve">
+    <value>Api域名</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="RigorousAndImaginative" xml:space="preserve">
+    <value>严谨与想象</value>
+  </data>
+  <data name="ContextHasAnUpperLimit" xml:space="preserve">
+    <value>上下文有上限</value>
+  </data>
+  <data name="MaximumNumberOfContextMessages" xml:space="preserve">
+    <value>上下文消息数量上限</value>
+  </data>
+  <data name="EndPoint" xml:space="preserve">
+    <value>终结点</value>
+  </data>
+  <data name="ModelDeplayName" xml:space="preserve">
+    <value>模型部署名称</value>
+  </data>
+  <data name="ApiPath" xml:space="preserve">
+    <value>Api路径</value>
+  </data>
+  <data name="Perform" xml:space="preserve">
+    <value>执行</value>
+  </data>
+  <data name="Fold" xml:space="preserve">
+    <value>折叠</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>折叠</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>聊天</value>
+  </data>
+  <data name="Character" xml:space="preserve">
+    <value>聊天角色</value>
+  </data>
+  <data name="NewSession" xml:space="preserve">
+    <value>新建会话</value>
+  </data>
+  <data name="OpenFavorites" xml:space="preserve">
+    <value>打开收藏夹</value>
+  </data>
+  <data name="ChatSetting" xml:space="preserve">
+    <value>聊天设置</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>发送</value>
+  </data>
+  <data name="TextToImagePromptDescription" xml:space="preserve">
+    <value>正向提示词，用来描述生成图像中期望包含的元素和视觉特点。
+支持中英文，长度不超过800个字符，每个汉字/字母占一个字符，超过部分会自动截断。
+示例值：一只坐着的橘黄色的猫，表情愉悦，活泼可爱，逼真准确。</value>
+  </data>
+  <data name="ImageScale" xml:space="preserve">
+    <value>图片比例</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="ExperimentalFeatures" xml:space="preserve">
+    <value>实验性功能</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="Miscellaneous" xml:space="preserve">
+    <value>杂项</value>
+  </data>
+  <data name="ModelProvider" xml:space="preserve">
+    <value>模型提供方</value>
+  </data>
+  <data name="RunningHub" xml:space="preserve">
+    <value>RunningHub</value>
+  </data>
+  <data name="TakeEffectAfterRestart" xml:space="preserve">
+    <value>重启后生效</value>
+  </data>
+  <data name="CustomModelMustHaveName" xml:space="preserve">
+    <value>自定义模型必须要有名称</value>
+  </data>
+  <data name="SavedSuccessfully" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>保存失败</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>确定要删除 {0} 吗？</value>
+  </data>
+  <data name="DeleteSuccess" xml:space="preserve">
+    <value>删除成功</value>
+  </data>
+  <data name="DeleteFailed" xml:space="preserve">
+    <value>删除失败</value>
+  </data>
+  <data name="CharacterNameCannotBeEmpty" xml:space="preserve">
+    <value>角色名称不能为空</value>
+  </data>
+  <data name="CharacterDescriptionCannotBeEmpty" xml:space="preserve">
+    <value>角色描述不能为空</value>
+  </data>
+  <data name="CharacterNameAlreadyExists" xml:space="preserve">
+    <value>角色名称已存在</value>
+  </data>
+  <data name="AddedSuccessfully" xml:space="preserve">
+    <value>添加成功</value>
+  </data>
+  <data name="AddFailed" xml:space="preserve">
+    <value>添加失败</value>
+  </data>
+  <data name="CannotEnterEmptyContent" xml:space="preserve">
+    <value>不能输入空内容</value>
+  </data>
+  <data name="RenamedSuccessfully" xml:space="preserve">
+    <value>重命名成功</value>
+  </data>
+  <data name="RenameFailed" xml:space="preserve">
+    <value>重命名失败</value>
+  </data>
+  <data name="ConfirmDeleteSelectedSession" xml:space="preserve">
+    <value>确定要删除选择的会话吗？</value>
+  </data>
+  <data name="SavePathCannotBeEmpty" xml:space="preserve">
+    <value>保存路径不能为空</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>更新成功</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>更新失败</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>选择文件夹</value>
+  </data>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="NoItemsSelectedForExport" xml:space="preserve">
+    <value>未选择任何可以导出的项目</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>导出成功</value>
+  </data>
+  <data name="ConfirmDeleteItem" xml:space="preserve">
+    <value>确定要删除吗？</value>
+  </data>
+  <data name="EntityNotFound" xml:space="preserve">
+    <value>未找到实体</value>
+  </data>
+  <data name="RequestFileDownloadFailed" xml:space="preserve">
+    <value>请求下载文件失败：{0}</value>
+  </data>
+  <data name="FailedToObtainDownloadFileLink" xml:space="preserve">
+    <value>获得下载文件链接失败：{0}</value>
+  </data>
+  <data name="AddRunningHubApiKeyInSettings" xml:space="preserve">
+    <value>请在设置中添加RunningHub的Apikey</value>
+  </data>
+  <data name="ExecutedSuccessfully" xml:space="preserve">
+    <value>执行成功</value>
+  </data>
+  <data name="AnErrorOccurred" xml:space="preserve">
+    <value>发生错误：{0}</value>
+  </data>
+  <data name="PleaseSelectAIModelFirst" xml:space="preserve">
+    <value>请先选择一个AI模型</value>
+  </data>
+  <data name="NoSessionSelected" xml:space="preserve">
+    <value>未选择会话</value>
+  </data>
+  <data name="FailedToUpdateSession" xml:space="preserve">
+    <value>更新会话失败</value>
+  </data>
+  <data name="PleaseSelectImageFirst" xml:space="preserve">
+    <value>请先选择图片</value>
+  </data>
+  <data name="FailedToUploadImage" xml:space="preserve">
+    <value>上传图片失败</value>
+  </data>
+  <data name="CutOutImage" xml:space="preserve">
+    <value>抠图</value>
+  </data>
+  <data name="TextToImage" xml:space="preserve">
+    <value>文生图</value>
+  </data>
+    <data name="Agent" xml:space="preserve">
+    <value>智能体</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>消息</value>
+  </data>
+  <data name="Minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="DoYouWantToRelogin" xml:space="preserve">
+    <value>账号需要重新登录，确定要重新登录吗？</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>登出</value>
+  </data>
+  <data name="LogoutFailed" xml:space="preserve">
+    <value>登出失败</value>
+  </data>
+  <data name="AppWillClose" xml:space="preserve">
+    <value>软件即将关闭！</value>
+  </data>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>登录失败</value>
+  </data>
+  <data name="LoginUseAi" xml:space="preserve">
+    <value>登录后免费使用Ai聊天</value>
+  </data>
+  <data name="Mine" xml:space="preserve">
+    <value>我的</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="LoginErrorTryAgain" xml:space="preserve">
+    <value>登录失败,请重试！</value>
+  </data>
+  <data name="LoginErrorEmailNullTryAagin" xml:space="preserve">
+    <value>登录失败,获得邮箱失败，请重试！</value>
+  </data>
+  <data name="SaveDefaultSessionError" xml:space="preserve">
+    <value>保存默认会话失败！</value>
+  </data>
+  <data name="UnknownErrorSendErrorTryAgain" xml:space="preserve">
+    <value>未知错误,发送失败,请重试！</value>
+  </data>
+  <data name="NotSupport" xml:space="preserve">
+    <value>{0}不受支持。</value>
+  </data>
+  <data name="UnableConstructObject" xml:space="preserve">
+    <value>无法构建{0}对象</value>
+  </data>
+  <data name="SaveChatSessionError" xml:space="preserve">
+    <value>保存聊天会话失败。</value>
+  </data>
+  <data name="MustLoginToUseTabbyCatAi" xml:space="preserve">
+    <value>使用TabbyCatAi模型必须先登录</value>
+  </data>
+    <data name="BackgroundImageSettings" xml:space="preserve">
+    <value>背景图设置</value>
+  </data>
+    <data name="Disable" xml:space="preserve">
+    <value>禁用</value>
+  </data>
+    <data name="DefaultBackground" xml:space="preserve">
+    <value>默认背景</value>
+  </data>
+    <data name="CustomBackground" xml:space="preserve">
+    <value>自定义背景</value>
+  </data>
+  <data name="Opacity" xml:space="preserve">
+    <value>不透明度</value>
+  </data>
+  <data name="SelectBackgroundImage" xml:space="preserve">
+    <value>选择背景图片</value>
+  </data>
+  <data name="ImageCount" xml:space="preserve">
+    <value>图片数量</value>
+  </data>
+  <data name="TextToImageNegativePromptDescription" xml:space="preserve">
+    <value>反向提示词，用来描述不希望在画面中看到的内容，可以对画面进行限制。
+支持中英文，长度不超过500个字符，超过部分会自动截断。
+示例值：低分辨率、错误、最差质量、低质量、残缺、多余的手指、比例不良等。</value>
+  </data>
+  <data name="ImageProcessing" xml:space="preserve">
+    <value>图片处理</value>
+  </data>
+  <data name="VideoProcessing" xml:space="preserve">
+    <value>视频处理</value>
+  </data>
+  <data name="TextToVideo" xml:space="preserve">
+    <value>文本生成视频</value>
+  </data>
+  <data name="ImageToVideo" xml:space="preserve">
+    <value>图片生成视频</value>
+  </data>
+  <data name="TextToVideoPromptDescription" xml:space="preserve">
+    <value>尝试输入你心中的画面，尽量的描述清楚，可以尝试使用一些风格修饰词辅助你的表达。</value>
+  </data>
+  <data name="VideoSize" xml:space="preserve">
+    <value>视频尺寸</value>
+  </data>
+    <data name="GlobalStylization" xml:space="preserve">
+    <value>全局风格化</value>
+  </data>
+    <data name="LocalStylization" xml:space="preserve">
+    <value>局部风格化</value>
+  </data>
+    <data name="CommandsEdit" xml:space="preserve">
+    <value>指令编辑</value>
+  </data>
+    <data name="PartialRepaint" xml:space="preserve">
+    <value>局部重绘</value>
+  </data>
+    <data name="RemoveWatermark" xml:space="preserve">
+    <value>去水印</value>
+  </data>
+    <data name="ExpandImage" xml:space="preserve">
+    <value>扩图</value>
+  </data>
+    <data name="ImageSuperResolution" xml:space="preserve">
+    <value>图像超分</value>
+  </data>
+    <data name="ImageColorization" xml:space="preserve">
+    <value>图像上色</value>
+  </data>
+    <data name="LineDrawing" xml:space="preserve">
+    <value>线稿生图</value>
+  </data>
+    <data name="MatMap" xml:space="preserve">
+    <value>垫图</value>
+  </data>
+    <data name="FileUploadError" xml:space="preserve">
+    <value>文件上传失败！</value>
+  </data>
+    <data name="CommandEditImagePromptDescription" xml:space="preserve">
+    <value>使用场景：个人形象装扮，比如增加配饰（如戴墨镜/戴耳环）、换发色等。
+提示词技巧：提示词推荐显式写明“添加”、“修改”这类操作描述</value>
+  </data>
+  <data name="PartialRepaintImagePromptDescription" xml:space="preserve">
+    <value>针对增加或修改操作，您可通过以下两种方式描述提示词。
+方式一：描述具体动作，例如“给小狗添加一顶帽子”。
+方式二：客观描述期望生成的内容，例如“一只戴着帽子的小狗”。
+针对删除操作，需根据实际情况分类处理：
+删除占据图片空间较少的元素时，提示词可留空（prompt=""）。
+删除占据图片空间较大的元素时，需详细描述擦除后的内容，例如“一个透明玻璃花瓶放在桌子上”，而非简单描述为“删除xxx”。</value>
+  </data>
+  <data name="DrawMask" xml:space="preserve">
+    <value>绘制蒙版</value>
+  </data>
+  <data name="TaskErrorResetPlease" xml:space="preserve">
+    <value>任务失败，请重试！</value>
+  </data>
+  <data name="ExpandImagePromptDescription" xml:space="preserve">
+    <value>使用场景：海报设计（将竖图扩为横版以适应封面尺寸）、摄影二次构图（扩展背景后重新调整主体位置）等。
+提示词技巧：提示词需要描述扩图后的图片内容。
+输入提示词：一家人在公园草坪上。</value>
+  </data>
+    <data name="RemoveWaterMarkPromptDescription" xml:space="preserve">
+    <value>使用场景：图像二次处理（去除文字干扰）、广告设计（去除品牌水印标识）等。
+提示词技巧：提示词推荐写为“去除图像中的文字”或者描述要去除的文字类型，比如“去除英文文字”。
+输入提示词：去除图像中的文字。</value>
+  </data>
+  <data name="ImageSuperResolutionPromptDescription" xml:space="preserve">
+    <value>使用场景：老旧照片修复、图像高清打印（将小尺寸图片放大到高分辨率）等。
+提示词技巧：提示词推荐写为“图像超分”或描述超分后的图片。
+输入提示词：图片超分。</value>
+  </data>
+  <data name="Clarity" xml:space="preserve">
+    <value>清晰度</value>
+  </data>
+  <data name="ImageColorizationPromptDescription" xml:space="preserve">
+    <value>使用场景：历史照片还原、儿童绘本上色等。
+提示词技巧：在提示词中可指定颜色（如“蓝色背景，黄色叶子”）。若未指定颜色，模型将自动选择适合的颜色。</value>
+  </data>
+  <data name="DoodlePromptDescription" xml:space="preserve">
+    <value>使用场景：建筑概念设计、插画设计、涂鸦作画等。
+提示词技巧：提示词应详细描述期望生成的图像内容，描述越具体，生成效果越好。</value>
+  </data>
+  <data name="UseSketch" xml:space="preserve">
+    <value>使用线稿</value>
+  </data>
+  <data name="GraffitiPaintingPromptDescription" xml:space="preserve">
+    <value>提示词，用来描述生成图像中期望包含的元素和视觉特点。
+支持中英文，长度不超过75个字符，超过部分会自动截断。
+示例值：一棵参天大树。</value>
+  </data>
+  <data name="Cartoon" xml:space="preserve">
+    <value>卡通</value>
+  </data>
+  <data name="WaterColor" xml:space="preserve">
+    <value>水彩</value>
+  </data>
+  <data name="FlatIllustrations" xml:space="preserve">
+    <value>扁平插画</value>
+  </data>
+  <data name="OilPainting" xml:space="preserve">
+    <value>油画</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Sketch" xml:space="preserve">
+    <value>素描</value>
+  </data>
+  <data name="ChinesePainting" xml:space="preserve">
+    <value>中国画</value>
+  </data>
+  <data name="SketchWeight" xml:space="preserve">
+    <value>草图权重</value>
+  </data>
+  <data name="GraffitiPainting" xml:space="preserve">
+    <value>涂鸦作画</value>
+  </data>
+  <data name="GraffitiStyle" xml:space="preserve">
+    <value>涂鸦风格</value>
+  </data>
+  <data name="ImageErasureAndCompletion" xml:space="preserve">
+    <value>图像擦除补全</value>
+  </data>
+  <data name="Strength" xml:space="preserve">
+    <value>强度</value>
+  </data>
+  <data name="DrawTheEraseArea" xml:space="preserve">
+    <value>绘制擦除区域</value>
+  </data>
+  <data name="DrawReservedArea" xml:space="preserve">
+    <value>绘制保留区域</value>
+  </data>
+  <data name="FastMode" xml:space="preserve">
+    <value>快速模式</value>
+  </data>
+  <data name="GetKeyError" xml:space="preserve">
+    <value>获得key失败。</value>
+  </data>
+  <data name="PleaseDrawMaskFirst" xml:space="preserve">
+    <value>请绘制蒙版</value>
+  </data>
+  <data name="PleaseInputPrompt" xml:space="preserve">
+    <value>请输入提示词</value>
+  </data>
+    <data name="DoYouWantToClearRunningTasks" xml:space="preserve">
+    <value>确定要删除所有正在执行的任务吗？</value>
+  </data>
+  <data name="ResourceSettings" xml:space="preserve">
+    <value>资源设置</value>
+  </data>
+  <data name="DoYouWantToMigrateResources" xml:space="preserve">
+    <value>是否要迁移资源？</value>
+  </data>
+  <data name="TaskRunningNoSet" xml:space="preserve">
+    <value>有正在进行的任务，无法设置！</value>
+  </data>
+  <data name="MigrationSuccessful" xml:space="preserve">
+    <value>迁移成功！</value>
+  </data>
+  <data name="MustLoginToUserInternet" xml:space="preserve">
+    <value>联网功能必须要登录才能使用</value>
+  </data>
+  <data name="InternetFunctionOnlyTabbycatAiModel" xml:space="preserve">
+    <value>联网功能只能使用TabbyCatAiModel</value>
+  </data>
+  <data name="MustLoginToUseDeepThinking" xml:space="preserve">
+    <value>深度思考功能必须要登录才能使用</value>
+  </data>
+  <data name="DeepThinkingOnlyTabbycatAiModel" xml:space="preserve">
+    <value>深度思考只能使用TabbyCatAiModel</value>
+  </data>
+  <data name="UploadImageMustLogin" xml:space="preserve">
+    <value>上传图片必须要登录</value>
+  </data>
+  <data name="PictureChatOnlyTabbycatAiModel" xml:space="preserve">
+    <value>图片聊天仅支持TabbyCatAiModel</value>
+  </data>
+    <data name="Contact" xml:space="preserve">
+    <value>联系人</value>
+  </data>
+  <data name="AddContact" xml:space="preserve">
+    <value>添加联系人</value>
+  </data>
+  <data name="MustInputContact" xml:space="preserve">
+    <value>请输入新联系人的名称</value>
+  </data>
+  <data name="MustInputContactDescription" xml:space="preserve">
+    <value>请输入联系人描述</value>
+  </data>
+  <data name="ExistContactName" xml:space="preserve">
+    <value>已经存在名为‘{0}’的联系人</value>
+  </data>
+    <data name="DeleteContact" xml:space="preserve">
+    <value>删除联系人</value>
+  </data>
+  <data name="DeleteConversation" xml:space="preserve">
+    <value>删除该会话</value>
+  </data>
+  <data name="ThreeDCartoon" xml:space="preserve">
+    <value>3D 卡通</value>
+  </data>
+    <data name="RenameSession" xml:space="preserve">
+    <value>重命名会话</value>
+  </data>
+  <data name="HasChatHistoryCannotDeleteContact" xml:space="preserve">
+    <value>当前联系人还有聊天记录，请删除聊天记录后再试。</value>
+  </data>
+  <data name="SendTo" xml:space="preserve">
+    <value>发送到</value>
+  </data>
+  <data name="Look" xml:space="preserve">
+    <value>查看</value>
+  </data>
+  <data name="ReferUploadedImageStyle" xml:space="preserve">
+    <value>参考上传图片风格</value>
+  </data>
+  <data name="ThreeDFairyTale" xml:space="preserve">
+    <value>3D童话</value>
+  </data>
+  <data name="TwoDFairyTale" xml:space="preserve">
+    <value>二次元</value>
+  </data>
+  <data name="SmallFresh" xml:space="preserve">
+    <value>小清晰</value>
+  </data>
+  <data name="FutureTechnology" xml:space="preserve">
+    <value>未来科技</value>
+  </data>
+  <data name="ChinesePaintingAncientStyle" xml:space="preserve">
+    <value>国画古风</value>
+  </data>
+  <data name="ArmorStyle" xml:space="preserve">
+    <value>将军百战</value>
+  </data>
+  <data name="ColorfulCartoon" xml:space="preserve">
+    <value>炫彩卡通</value>
+  </data>
+  <data name="ElegantChineseStyle" xml:space="preserve">
+    <value>清雅国风</value>
+  </data>
+  <data name="Elocutionist" xml:space="preserve">
+    <value>演说家</value>
+  </data>
+  <data name="WelcomeNewYear" xml:space="preserve">
+    <value>喜迎新年</value>
+  </data>
+  <data name="RetroComics" xml:space="preserve">
+    <value>复古漫画</value>
+  </data>
+  <data name="AvatarStylization" xml:space="preserve">
+    <value>人像风格重绘</value>
+  </data>
+  <data name="SelectReferenceImage" xml:space="preserve">
+    <value>选择参考图片</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>发消息</value>
+  </data>
+  <data name="ContactDescription" xml:space="preserve">
+    <value>联系人描述：</value>
+  </data>
+  <data name="AISearch" xml:space="preserve">
+    <value>Ai搜索</value>
+  </data>
+  <data name="Summarize" xml:space="preserve">
+    <value>总结</value>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="Ask" xml:space="preserve">
+    <value>询问</value>
+  </data>
+  <data name="AskTemplate" xml:space="preserve">
+    <value>帮我解释一下 “{0}”</value>
+  </data>
+  <data name="SummaryTemplate" xml:space="preserve">
+    <value>请帮我总结一下 “{0}”</value>
+  </data>
+  <data name="Japanese" xml:space="preserve">
+    <value>日语</value>
+  </data>
+  <data name="Korean" xml:space="preserve">
+    <value>韩语</value>
+  </data>
+  <data name="Thai" xml:space="preserve">
+    <value>泰语</value>
+  </data>
+  <data name="French" xml:space="preserve">
+    <value>法语</value>
+  </data>
+  <data name="German" xml:space="preserve">
+    <value>德语</value>
+  </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>西班牙语</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>阿拉伯语</value>
+  </data>
+  <data name="Indonesian" xml:space="preserve">
+    <value>印尼语</value>
+  </data>
+  <data name="Vietnamese" xml:space="preserve">
+    <value>越南语</value>
+  </data>
+  <data name="Portuguese" xml:space="preserve">
+    <value>巴西葡萄牙语</value>
+  </data>
+  <data name="Italian" xml:space="preserve">
+    <value>意大利语</value>
+  </data>
+  <data name="Dutch" xml:space="preserve">
+    <value>荷兰语</value>
+  </data>
+  <data name="Russian" xml:space="preserve">
+    <value>俄语</value>
+  </data>
+  <data name="Khmer" xml:space="preserve">
+    <value>高棉语
+
+</value>
+  </data>
+  <data name="Cebuano" xml:space="preserve">
+    <value>宿务语</value>
+  </data>
+  <data name="Filipino" xml:space="preserve">
+    <value>菲律宾语</value>
+  </data>
+  <data name="Czech" xml:space="preserve">
+    <value>捷克语</value>
+  </data>
+  <data name="DataScientist" xml:space="preserve">
+    <value>数据科学家</value>
+  </data>
+  <data name="Polish" xml:space="preserve">
+    <value>波兰语</value>
+  </data>
+  <data name="Persian" xml:space="preserve">
+    <value>波斯语</value>
+  </data>
+  <data name="Hebrew" xml:space="preserve">
+    <value>希伯来语</value>
+  </data>
+  <data name="Turkish" xml:space="preserve">
+    <value>土耳其语</value>
+  </data>
+  <data name="Hindi" xml:space="preserve">
+    <value>印地语</value>
+  </data>
+  <data name="Bengali" xml:space="preserve">
+    <value>孟加拉语</value>
+  </data>
+  <data name="Urdu" xml:space="preserve">
+    <value>乌尔都语</value>
+  </data>
+  <data name="UseCpShowQuickMenu" xml:space="preserve">
+    <value>框选文本或者使用Control+C（MAC：Command+C）显示快捷选项（需要重启）</value>
+  </data>
+  <data name="MustLoginToUseFunction" xml:space="preserve">
+    <value>必须登录才能使用此功能</value>
+  </data>
+</root>

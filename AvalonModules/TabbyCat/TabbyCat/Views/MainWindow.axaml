@@ -1,0 +1,74 @@
+<windowing:AppWindow xmlns="https://github.com/avaloniaui"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:vm="using:TabbyCat.ViewModels"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                     x:Class="TabbyCat.Views.MainWindow"
+                     xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+                     xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+                     xmlns:attachs="clr-namespace:TuDog.Attachs;assembly=TuDog"
+                     xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+                     xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
+                     xmlns:extensions="clr-namespace:TabbyCat.Extensions"
+                     xmlns:tabbyCat="clr-namespace:TabbyCat"
+                     xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                     xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+                     xmlns:extensions1="clr-namespace:TuDog.Extensions;assembly=TuDog"
+                     xmlns:converters="clr-namespace:TabbyCat.Converters"
+                     xmlns:enums="clr-namespace:TabbyCat.Enums"
+                     xmlns:uIs="clr-namespace:TuDog.UIs;assembly=TuDog"
+                     ExtendClientAreaChromeHints="NoChrome"
+                     ExtendClientAreaToDecorationsHint="True"
+                     x:DataType="viewModels:MainWindowViewModel">
+    <Window.DataContext>
+        <vm:MainWindowViewModel></vm:MainWindowViewModel>
+    </Window.DataContext>
+    <Grid RowDefinitions="Auto,Auto,*">
+        <Border Grid.Row="0" Padding="0,5">
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <!-- 左上角的按钮组 -->
+                    <StackPanel Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center"
+                                IsVisible="{OnPlatform Default=false, macOS=true}">
+                        <StackPanel.Styles>
+                            <Style
+                                Selector="StackPanel:pointerover Button.MacosTitleBarButton /template/ Border controls|FontIcon#Icon">
+                                <Setter Property="Foreground" Value="Black" />
+                            </Style>
+                        </StackPanel.Styles>
+                        <Button Classes="MacosTitleBarButton" Click="OnClose"
+                                extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.MacosClose}"
+                                Foreground="#FF605C" Background="#FF605C" />
+                        <Button Classes="MacosTitleBarButton" Click="OnMin"
+                                extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.MacosMinimize}"
+                                Background="#FFBD44" Foreground="#FFBD44" Margin="6,0,0,0" />
+                        <!-- <Button Classes="MacosTitleBarButton" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.MacosMaximize}" Background="#00CA4E" Foreground="#00CA4E" Margin="6,0,0,0" /> -->
+                    </StackPanel>
+                </StackPanel>
+                <!-- 标题文本 -->
+                <TextBlock Text="{x:Static languages:AppResources.TabbyCat}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontWeight="Bold" />
+
+            </Grid>
+        </Border>
+        <Grid Grid.Row="2">
+            <Image Source="{Binding BackgroundImageConfig.CustomImage,Converter={extensions1:ImageConverter}}"
+                   Stretch="UniformToFill"
+                   IsVisible="{Binding BackgroundImageConfig.Status,Converter={converters:Enum2BoolConverter} ,ConverterParameter={x:Static enums:BackgroundImageStatus.Custom}}"
+                   Opacity="{Binding BackgroundImageConfig.Opacity,UpdateSourceTrigger=PropertyChanged}">
+            </Image>
+            <ContentControl attachs:RegionBehavior.Region="mainContainer">
+            </ContentControl>
+
+        </Grid>
+        <uIs:InfoBox Grid.RowSpan="3" HorizontalAlignment="Right" Margin="0,20,5,0" VerticalAlignment="Top"/>
+    </Grid>
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="Loaded">
+            <ia:InvokeCommandAction Command="{Binding LoadedCommand}"></ia:InvokeCommandAction>
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+</windowing:AppWindow>

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm"  />
+      <PackageReference Include="Newtonsoft.Json"/>
+      <PackageReference Include="sqlite-net-pcl" />
+      <!--<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" />-->
+      <PackageReference Include="SQLitePCLRaw.bundle_green" />
+      <!--<PackageReference Include="SQLitePCLRaw.core"  />
+      <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3"  />
+      <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" />-->
+      <PackageReference Include="Xamarin.Essentials"  />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\TabbyCat.Shared\TabbyCat.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

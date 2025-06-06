@@ -1,0 +1,16 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dataTemplateSelector="clr-namespace:TabbyCat.Styles.Templates.DataTemplateSelector"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:extensions="clr-namespace:TuDog.Extensions;assembly=TuDog"
+                    xmlns:controls="clr-namespace:TabbyCat.Controls">
+    <dataTemplateSelector:AiMediaDisplayTemplateSelector x:Key="AiMediaDisplayTemplateSelector">
+        <DataTemplate x:Key=".png" DataType="system:String">
+            <Image Source="{Binding . , Converter={extensions:ImageConverter}}" Width="200"
+                   Height="200" />
+        </DataTemplate>
+        <DataTemplate x:Key=".mp4" DataType="system:String">
+            <controls:VideoControl Url="{Binding .}" AutoPlay="True" Width="200" Height="200" />
+        </DataTemplate>
+    </dataTemplateSelector:AiMediaDisplayTemplateSelector>
+</ResourceDictionary>

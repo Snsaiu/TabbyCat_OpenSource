@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+			<GenerateResourceAccessModifier>Public</GenerateResourceAccessModifier>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FantasyResultModel" />
+      <PackageReference Include="Newtonsoft.Json"  />
+      <PackageReference Include="sqlite-net-pcl" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Languages\AppResources.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Languages\AppResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AppResources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Impls\" />
+    </ItemGroup>
+
+</Project>
