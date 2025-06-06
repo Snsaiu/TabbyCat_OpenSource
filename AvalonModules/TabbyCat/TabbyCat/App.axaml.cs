@@ -139,8 +139,7 @@ public partial class App : TuDogApplication
 
     protected override void Register(IServiceCollection collection)
     {
-        collection.AddHttpClient(ConstParameter.Auth,
-            client => { client.BaseAddress = new Uri(""); });
+        collection.AddHttpClient();
 
         var exeName = Path.GetFileName(Environment.ProcessPath)?.Split(".").FirstOrDefault();
         if (string.IsNullOrEmpty(exeName))
