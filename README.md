@@ -143,6 +143,6 @@ Avalonia Window                               avalonia.window             [C#],F
 
 snsaiu@outlook.com
 
-项目链接: [狸花猫](https://github.com/your_username/repo_name)
+项目链接: [狸花猫](https://github.com/Snsaiu/TabbyCat_OpenSource)
 
 
