@@ -3,9 +3,14 @@
 namespace TabbyCat;
 
 [IconBuild(
-    @"https://at.alicdn.com/t/c/font_4833862_vuuxlldqc5n.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81TBRq7h&file=font_4833862_vuuxlldqc5n.json")]
+    @"https://at.alicdn.com/t/c/font_4833862_ay178o15mt5.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81ZRDVTh&file=font_4833862_ay178o15mt5.json")]
 public static partial class IconFontProvider
 {
+    ///<summary>
+    ///眼睛
+    ///</summary>
+    public const string Eye = "\ueb46";
+
     ///<summary>
     ///右箭头
     ///</summary>
