@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Net;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -162,7 +163,9 @@ public partial class App : TuDogApplication
         collection.AddHttpClient(ConstParameter.Auth,
                 client => { client.BaseAddress = new Uri("https://api.yyan.cc/api"); })
             .AddHttpMessageHandler<TokenHandler>();
+        
+        var logPath = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments),"TabbyCat","Log");
 
-        collection.AddLoggerBuilder("http://24.233.2.12:3100", LogLabelProvider.GetLabels(), "TabbyCat");
+        collection.AddLoggerBuilder("http://24.233.2.12:3100", LogLabelProvider.GetLabels(), logPath);
     }
 }
