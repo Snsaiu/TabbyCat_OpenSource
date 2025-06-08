@@ -3,14 +3,11 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:aiChatRequests="clr-namespace:TabbyCat.Models.AiReqRes.AiChatRequests"
-    xmlns:attachs="clr-namespace:TuDog.Attachs;assembly=TuDog"
     xmlns:controls="clr-namespace:TabbyCat.Controls"
     xmlns:converters="clr-namespace:TabbyCat.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:extensions="clr-namespace:TabbyCat.Extensions"
     xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-    xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tabbyCat="clr-namespace:TabbyCat"
     xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
@@ -30,13 +27,13 @@
         <Border IsVisible="{OnPlatform Default=true, Android=false,iOS=false}"
                 Background="{DynamicResource SolidBackgroundFillColorTransparent}">
             <Grid Margin="5">
-
+                <ToggleButton IsChecked="True" Classes="icon" Name="chatListToggleBtn" HorizontalAlignment="Left"
+                              extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Eye}" />
                 <TextBlock
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontWeight="Bold"
                     Foreground="{DynamicResource TextFillColorPrimary}"
-
                     Text="{OnPlatform Default={x:Static languages:AppResources.Chat} ,
                     iOS={Binding AiChatSession,Converter={converters:OccupationNameConverter}},
                     Android={Binding AiChatSession,Converter={converters:OccupationNameConverter}}
@@ -82,7 +79,8 @@
                             <MenuFlyout>
                                 <MenuItem Header="{x:Static languages:AppResources.RenameSession}"
                                           Command="{Binding OpenRenameSessionDialogCommand}" />
-                                <MenuItem Header="{x:Static languages:AppResources.DeleteConversation}" Command="{Binding DeleteConversationCommand}"></MenuItem>
+                                <MenuItem Header="{x:Static languages:AppResources.DeleteConversation}"
+                                          Command="{Binding DeleteConversationCommand}" />
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>
@@ -94,8 +92,7 @@
         <controls:MobileTitleBar IsVisible="{OnPlatform Default=true,Windows=false,macOS=false,Linux=false}"
                                  Title="{Binding AiChatSession, Converter={converters:OccupationNameConverter}}"
                                  ShowLeftArrow="True"
-                                 LeftArrowCommand="{Binding ReturnPageCommand}">
-        </controls:MobileTitleBar>
+                                 LeftArrowCommand="{Binding ReturnPageCommand}" />
 
         <!--  主要内容  -->
 
@@ -103,7 +100,7 @@
 
             <!-- 列表 -->
             <Grid Width="250" DockPanel.Dock="Left"
-                  IsVisible="{OnPlatform Windows=true,macOS=true,Linux=true,Default=false}">
+                  IsVisible="{Binding ElementName=chatListToggleBtn ,Path=IsChecked}">
 
                 <Border BorderThickness="0,0,1,0">
                     <ScrollViewer>
@@ -153,79 +150,81 @@
 
             <Grid DockPanel.Dock="Right" RowDefinitions="*,Auto,Auto">
                 <ScrollViewer Grid.Row="0" Name="sv" IsScrollChainingEnabled="False">
-            <ItemsControl ItemsSource="{Binding ChatModels}" Name="itemsControl"
-                          ScrollViewer.IsScrollChainingEnabled="False">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="aiChatRequests:MessagesItem">
-                        <controls:ChatItem Message="{Binding .}"
-                                           FavouriteCommand="{Binding $parent[views:ChatView].((viewModels:ChatViewModel)DataContext).SetFavouriteStateCommand}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding ChatModels}" Name="itemsControl"
+                                  ScrollViewer.IsScrollChainingEnabled="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="aiChatRequests:MessagesItem">
+                                <controls:ChatItem Message="{Binding .}"
+                                                   FavouriteCommand="{Binding $parent[views:ChatView].((viewModels:ChatViewModel)DataContext).SetFavouriteStateCommand}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
 
                 <Button Grid.Row="1" HorizontalAlignment="Center" Classes="icon" IsVisible="{Binding IsBusy}"
                         extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Stop}"
                         Command="{Binding CancelRequestChatCommand}" />
 
                 <Grid Grid.Row="2" Grid.RowDefinitions="Auto,*">
-            <!--  第一行是类似上传图片的功能按键，第二行是文本输入框，第三行是发送按钮  -->
-            <StackPanel Orientation="Vertical">
-                <!-- 放悬浮的图片 -->
-                <StackPanel Orientation="Horizontal">
-                    <ItemsControl ItemsSource="{Binding AppendixModels}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="models:AppendixModel">
-                                <Border>
-                                  <ContentControl ContentTemplate="{StaticResource AppendixDataTemplateSelector}" Content="{Binding .}"></ContentControl>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <!--  功能按钮  -->
-                 
-                </StackPanel>
-            </StackPanel>
-            <DockPanel Grid.Row="1" LastChildFill="True">
-                <Button
-                    Width="80"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Stretch"
-                    Command="{Binding SendCommand}"
-                    Content="{x:Static languages:AppResources.Send}"
-                    CornerRadius="0"
-                    IsEnabled="{Binding CanSend}"
-                    DockPanel.Dock="Right" />
+                    <!--  第一行是类似上传图片的功能按键，第二行是文本输入框，第三行是发送按钮  -->
+                    <StackPanel Orientation="Vertical">
+                        <!-- 放悬浮的图片 -->
+                        <StackPanel Orientation="Horizontal">
+                            <ItemsControl ItemsSource="{Binding AppendixModels}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="models:AppendixModel">
+                                        <Border>
+                                            <ContentControl
+                                                ContentTemplate="{StaticResource AppendixDataTemplateSelector}"
+                                                Content="{Binding .}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <!--  功能按钮  -->
 
-                <TextBox
-                    Height="80"
-                    BorderThickness="0,0,0,0"
-                    CornerRadius="0"
-                    DockPanel.Dock="Left"
-                    AcceptsReturn="True"
-                    Text="{Binding InputTextContent}"
-                    TextWrapping="Wrap">
-                    <TextBox.Styles>
-                        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-                            <Setter Property="BorderThickness" Value="0,0,0,0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
-                        </Style>
-                    </TextBox.Styles>
-                    <TextBox.KeyBindings>
-                        <KeyBinding Command="{Binding SendCommand}" Gesture="Enter" />
-                    </TextBox.KeyBindings>
-                    <!-- <i:Interaction.Behaviors> -->
-                    <!--     <ia:EventTriggerBehavior EventName="PointerEntered"> -->
-                    <!--         <ia:InvokeCommandAction Command="{Binding SendCommand}" /> -->
-                    <!--     </ia:EventTriggerBehavior> -->
-                    <!-- </i:Interaction.Behaviors> -->
-                </TextBox>
-            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    <DockPanel Grid.Row="1" LastChildFill="True">
+                        <Button
+                            Width="80"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Stretch"
+                            Command="{Binding SendCommand}"
+                            Content="{x:Static languages:AppResources.Send}"
+                            CornerRadius="0"
+                            IsEnabled="{Binding CanSend}"
+                            DockPanel.Dock="Right" />
+
+                        <TextBox
+                            Height="80"
+                            BorderThickness="0,0,0,0"
+                            CornerRadius="0"
+                            DockPanel.Dock="Left"
+                            AcceptsReturn="True"
+                            Text="{Binding InputTextContent}"
+                            TextWrapping="Wrap">
+                            <TextBox.Styles>
+                                <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+                                    <Setter Property="BorderThickness" Value="0,0,0,0" />
+                                    <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
+                                </Style>
+                            </TextBox.Styles>
+                            <TextBox.KeyBindings>
+                                <KeyBinding Command="{Binding SendCommand}" Gesture="Enter" />
+                            </TextBox.KeyBindings>
+                            <!-- <i:Interaction.Behaviors> -->
+                            <!--     <ia:EventTriggerBehavior EventName="PointerEntered"> -->
+                            <!--         <ia:InvokeCommandAction Command="{Binding SendCommand}" /> -->
+                            <!--     </ia:EventTriggerBehavior> -->
+                            <!-- </i:Interaction.Behaviors> -->
+                        </TextBox>
+                    </DockPanel>
 
 
-        </Grid>
+                </Grid>
             </Grid>
         </DockPanel>
 
