@@ -44,12 +44,12 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Http" />
       <PackageReference Include="SharpHook" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\TuDog.SourceGenerator\TuDog.IocAttribute\TuDog.IocAttribute.csproj" />
-    <ProjectReference Include="..\..\TuDog.SourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator\TuDog.IocAutoRegisterSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\..\TuDog\TuDog.csproj" />
+    <PackageReference Include="TuDog" />
+    <PackageReference Include="TuDog.IocAttribute" />
+    <PackageReference Include="TuDog.IocAutoRegisterSourceGenerator"  OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    <PackageReference Include="TuDog.LoggerMetrics" />
+    
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

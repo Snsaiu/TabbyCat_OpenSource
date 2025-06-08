@@ -42,6 +42,10 @@
     <PackageVersion Include="Serilog.Sinks.Grafana.Loki" Version="8.3.0" />
     <PackageVersion Include="Serilog.Sinks.Prometheus" Version="1.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.3" />
+    <PackageVersion Include="TuDog" Version="1.0.1" />
+    <PackageVersion Include="TuDog.IocAttribute" Version="1.0.0" />
+    <PackageVersion Include="TuDog.IocAutoRegisterSourceGenerator" Version="1.0.0" />
+    <PackageVersion Include="TuDog.LoggerMetrics" Version="1.0.1" />
     <PackageVersion Include="VideoLAN.LibVLC.Mac" Version="3.1.3.1" />
     <PackageVersion Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
     <PackageVersion Include="Xabe.FFmpeg" Version="6.0.1" />
@@ -66,5 +70,6 @@
     <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="11.2.6" />
     <PackageVersion Include="HotAvalonia" Version="3.0.0" />
     <PackageVersion Include="HotAvalonia.Extensions" Version="3.0.0" PrivateAssets="All" />
+    <PackageVersion Include="YouYan.Hamster" Version="1.0.0" />
   </ItemGroup>
 </Project>

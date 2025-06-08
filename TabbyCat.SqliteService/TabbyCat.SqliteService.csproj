@@ -6,11 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 <ItemGroup>
-   
+  <PackageReference Include="TuDog.IocAttribute" />
 </ItemGroup>
 <ItemGroup>
   <ProjectReference Include="..\TabbyCat.Repository\TabbyCat.Repository.csproj" />
   <ProjectReference Include="..\TabbyCat.Service\TabbyCat.Service.csproj" />
-  <ProjectReference Include="..\TuDog.SourceGenerator\TuDog.IocAttribute\TuDog.IocAttribute.csproj" />
 </ItemGroup>
 </Project>

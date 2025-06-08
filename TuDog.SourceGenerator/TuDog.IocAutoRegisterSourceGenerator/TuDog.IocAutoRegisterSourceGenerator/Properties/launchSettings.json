@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "DebugRoslynSourceGenerator": {
-      "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\..\\..\\UpdateProgram\\YouYan.Rabbit\\YouYan.Rabbit.csproj"
-    }
-  },
-  "$schema": "https://json.schemastore.org/launchsettings.json"
-}
