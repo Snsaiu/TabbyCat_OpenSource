@@ -42,7 +42,7 @@
     <PackageVersion Include="Serilog.Sinks.Grafana.Loki" Version="8.3.0" />
     <PackageVersion Include="Serilog.Sinks.Prometheus" Version="1.0.0" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.3" />
-    <PackageVersion Include="TuDog" Version="1.0.0" />
+    <PackageVersion Include="TuDog" Version="1.0.1" />
     <PackageVersion Include="TuDog.IocAttribute" Version="1.0.0" />
     <PackageVersion Include="TuDog.IocAutoRegisterSourceGenerator" Version="1.0.0" />
     <PackageVersion Include="TuDog.LoggerMetrics" Version="1.0.1" />
