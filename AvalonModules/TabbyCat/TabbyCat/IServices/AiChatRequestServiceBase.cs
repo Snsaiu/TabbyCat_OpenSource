@@ -6,6 +6,7 @@ using FantasyResultModel.Impls;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TabbyCat.Models;
+using TabbyCat.Models.AiReqRes;
 using TabbyCat.Models.AiReqRes.AiChatRequests;
 using TabbyCat.Models.AiReqRes.AiChatResponses;
 using TabbyCat.Shared.Interfaces;
@@ -28,6 +29,7 @@ public abstract class
     protected ILogger Logger { get; private set; }
 
     private HttpClient _httpClient;
+
     protected AiChatRequestServiceBase(TRequestModel requestModel, TAiModel aiModel)
     {
         var factory = TuDogApplication.ServiceProvider.GetRequiredService<IHttpClientFactory>();
@@ -54,12 +56,12 @@ public abstract class
             if (apiDomain is IApiKey apiKey)
                 request.Headers.Add("Authorization", $"Bearer {apiKey.ApiKey}");
 
-            return new SuccessResultModel<HttpRequestMessage>( request);
+            return new SuccessResultModel<HttpRequestMessage>(request);
         }
 
-        this.Logger.LogError("暂不支持提供者{0}不是{1}类型的AiModel。",aiModel.Provider.ToString(),typeof(IApiDomain));
+        Logger.LogError("暂不支持提供者{0}不是{1}类型的AiModel。", aiModel.Provider.ToString(), typeof(IApiDomain));
 
-        return new ErrorResultModel<HttpRequestMessage>(string.Format(AppResources.NotSupport,aiModel.Provider));
+        return new ErrorResultModel<HttpRequestMessage>(string.Format(AppResources.NotSupport, aiModel.Provider));
     }
 
     protected virtual Task<string> RequestModelToJsonString(TRequestModel requestModel)
@@ -70,8 +72,10 @@ public abstract class
     private async Task<ResultBase<HttpRequestMessage>> FillHttpRequestMessage()
     {
         var requestMessageResult = BuildHttpRequestMessage(_aiModel);
-        if(!requestMessageResult.Ok)
-            return new ErrorResultModel<HttpRequestMessage>(requestMessageResult.ErrorMsg??string.Format(AppResources.UnableConstructObject,typeof(HttpRequestMessage)));
+        if (!requestMessageResult.Ok)
+            return new ErrorResultModel<HttpRequestMessage>(requestMessageResult.ErrorMsg ??
+                                                            string.Format(AppResources.UnableConstructObject,
+                                                                typeof(HttpRequestMessage)));
 
         var json = await RequestModelToJsonString(_requestModel);
 
@@ -92,8 +96,8 @@ public abstract class
         try
         {
             var requestMessage = await FillHttpRequestMessage();
-            if(!requestMessage.Ok)
-                return UnityResponseModel.Error(requestMessage.ErrorMsg??string.Empty);
+            if (!requestMessage.Ok)
+                return UnityResponseModel.Error(requestMessage.ErrorMsg ?? string.Empty);
 
             using var client = new HttpClient();
             using var response = await client.SendAsync(requestMessage.Data);
@@ -104,7 +108,7 @@ public abstract class
             response.EnsureSuccessStatusCode();
 
             var responseString = PreProcessResponse(await response.Content.ReadAsStringAsync());
-            if(string.IsNullOrEmpty(responseString))
+            if (string.IsNullOrEmpty(responseString))
                 return UnityResponseModel.Success();
             var responseModel = JsonConvert.DeserializeObject<TResponseModel>(responseString);
 
@@ -131,25 +135,22 @@ public abstract class
             var requestMessage = await FillHttpRequestMessage();
             if (!requestMessage.Ok)
             {
-                await action.Invoke(UnityResponseModel.Error(requestMessage.ErrorMsg??string.Empty));
+                await action.Invoke(UnityResponseModel.Error(requestMessage.ErrorMsg ?? string.Empty));
                 return;
             }
 
 
-            using var response = await _httpClient.SendAsync(requestMessage.Data, HttpCompletionOption.ResponseHeadersRead,
+            using var response = await _httpClient.SendAsync(requestMessage.Data,
+                HttpCompletionOption.ResponseHeadersRead,
                 cancellationToken);
 
             if (response.IsSuccessStatusCode == false)
             {
-                Logger.LogError("数据解析错误:{0}",response.ReasonPhrase);
+                Logger.LogError("数据解析错误:{0}", response.ReasonPhrase);
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                {
                     await action.Invoke(UnityResponseModel.Error(AppResources.MustLoginToUseTabbyCatAi));
-                }
                 else
-                {
                     await action.Invoke(UnityResponseModel.Error(response.ReasonPhrase ?? string.Empty));
-                }
 
                 return;
             }
@@ -161,7 +162,6 @@ public abstract class
                 await Task.Run(async () =>
                 {
                     while (!reader.EndOfStream)
-                    {
                         try
                         {
                             cancellationToken.ThrowIfCancellationRequested();
@@ -171,41 +171,42 @@ public abstract class
 
                             Logger.LogDebug("聊天返回数据:{0}", line);
 
-                        if (!string.IsNullOrWhiteSpace(line))
-                            try
-                            {
-                                var responseString = PreProcessResponse(line);
-                                if(string.IsNullOrEmpty(responseString))
-                                    return;
-                                var responseModel = JsonConvert.DeserializeObject<TResponseModel>(responseString);
-                                if (responseModel is null)
+                            if (!string.IsNullOrWhiteSpace(line))
+                                try
                                 {
-                                    await action.Invoke(UnityResponseModel.Error($"数据解析错误:{line}"));
-                                    return;
-                                }
-                                else
-                                {
-                                    var resultModel = await ConvertResponseToUnityResponseModel(responseModel);
-                                    if (string.IsNullOrEmpty(resultModel.Content))
-                                        continue;
-
-                                    var cancel = await action.Invoke(resultModel);
-                                    if (cancel)
+                                    var responseString = PreProcessResponse(line);
+                                    if (string.IsNullOrEmpty(responseString))
+                                    {
+                                        await action.Invoke(UnityResponseModel.Success());
                                         return;
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Logger.LogError(e,e.Message);
+                                    }
 
-                            }
+                                    var responseModel = JsonConvert.DeserializeObject<TResponseModel>(responseString);
+                                    if (responseModel is null)
+                                    {
+                                        await action.Invoke(UnityResponseModel.Error($"数据解析错误:{line}"));
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        var resultModel = await ConvertResponseToUnityResponseModel(responseModel);
+                                        if (string.IsNullOrEmpty(resultModel.Content))
+                                            continue;
+                                        var cancel = await action.Invoke(resultModel);
+                                        if (cancel)
+                                            return;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Logger.LogError(e, e.Message);
+                                }
                         }
                         catch (OperationCanceledException)
                         {
                             await action.Invoke(UnityResponseModel.Error("已取消聊天"));
                             return;
                         }
-                    }
 
                     await action.Invoke(UnityResponseModel.Success());
                 }, cancellationToken);
@@ -213,12 +214,11 @@ public abstract class
         }
         catch (OperationCanceledException taskCanceledException)
         {
-            Logger.LogWarning(taskCanceledException,"接收聊天内容取消。");
-
+            Logger.LogWarning(taskCanceledException, "接收聊天内容取消。");
         }
         catch (Exception e)
         {
-            Logger.LogError(e,e.Message);
+            Logger.LogError(e, e.Message);
             await action.Invoke(UnityResponseModel.Error(e.Message));
         }
     }

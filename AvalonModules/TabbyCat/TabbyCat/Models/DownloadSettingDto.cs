@@ -1,8 +1,8 @@
 namespace TabbyCat.Models;
 
-public class DownloadSettingDto
+public class DownloadSettingDto<T>
 {
-    public string Email { get; set; } = String.Empty;
+    public string Email { get; set; } = string.Empty;
 
-    public int Version { get; set; }
+    public T Version { get; set; }
 }

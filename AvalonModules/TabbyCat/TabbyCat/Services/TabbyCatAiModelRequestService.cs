@@ -16,7 +16,6 @@ namespace TabbyCat.Services;
 public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel requestModel, TabbyCatAiModel aiModel)
     : AiChatRequestServiceBase<TabbyCatAiRequestModel, TabbyCatAiModel, TabbyCatAiResponseModel>(requestModel, aiModel)
 {
-
     protected override Task<string> RequestModelToJsonString(TabbyCatAiRequestModel requestModel)
     {
         // 用新的模型，不要修改入参的模型
@@ -33,17 +32,17 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
                 // 如果有附件，那么qwq-plus 不可用，需要切换成qwen-vl-max
                 newsModel.Model = "qwen-vl-max";
                 newsModel.EnableUseInternet = false;
-                Logger.LogDebug("用户输入的消息中带有附件，使用模型{Model},并且关闭联网搜索功能。",newsModel.Model);
+                Logger.LogDebug("用户输入的消息中带有附件，使用模型{Model},并且关闭联网搜索功能。", newsModel.Model);
                 // 删除system角色
                 requestModel.Messages.RemoveAll(x => x.Role == Role.System);
-
             }
             else
             {
                 if (newsModel.EnableUseInternet || newsModel.EnableDeepThinking)
                 {
                     newsModel.Model = "qwq-plus";
-                    Logger.LogDebug("用户输入的消息中没有附件，使用联网状态为:{EnableInternet};使用深度搜索状态为:{DeepThinking}；使用的模型为:{Model}",newsModel.EnableUseInternet,newsModel.EnableDeepThinking,newsModel.Model);
+                    Logger.LogDebug("用户输入的消息中没有附件，使用联网状态为:{EnableInternet};使用深度搜索状态为:{DeepThinking}；使用的模型为:{Model}",
+                        newsModel.EnableUseInternet, newsModel.EnableDeepThinking, newsModel.Model);
                 }
                 else if (requestModel.IsTranslate) //处理翻译
                 {
@@ -53,28 +52,23 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
                     var last = requestModel.Messages.LastOrDefault();
                     if (last is null)
                         throw new NullReferenceException("没有任何对话");
-                    
+
                     requestModel.Messages.Clear();
                     requestModel.Messages.Add(last);
-                    Logger.LogDebug("用户使用翻译，使用模型为:{Model}",newsModel.Model);
+                    Logger.LogDebug("用户使用翻译，使用模型为:{Model}", newsModel.Model);
                 }
                 else
                 {
-
                     if (requestModel.Occupation is AssistantOccupation.DeveloperRelationsconsultant
                         or AssistantOccupation.EthereumDeveloper or AssistantOccupation.FullstackSoftwareDeveloper
                         or AssistantOccupation.knowledgeableSoftwareDevelopmentMentor
                         or AssistantOccupation.SeniorFrontendDeveloper or AssistantOccupation.SeniorFrontendDeveloper
                         or AssistantOccupation.UXUIDeveloper)
-                    {
                         newsModel.Model = "qwen-coder-plus";
-                    }
                     else
-                    {
                         newsModel.Model = "qwen-plus";
-                    }
-                 
-                    Logger.LogDebug("用户没有使用联网功能和深度思考功能，使用的模型为{Model}。",newsModel.Model);
+
+                    Logger.LogDebug("用户没有使用联网功能和深度思考功能，使用的模型为{Model}。", newsModel.Model);
                 }
             }
         }
@@ -88,21 +82,21 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
 
             if (message.Appendixes.Any() && newsModel is { EnableUseInternet: false, EnableDeepThinking: false })
             {
-
                 // 修改message中content属性的内容
                 List<IAiAppendixModel> appendixModels = [];
                 foreach (var item in message.Appendixes)
                     switch (item.AppendixType)
                     {
                         case AppendixType.Image:
-                            appendixModels.Add(new ImageUrlAiAppendixModel()
-                                { Data = new() { Url = item.Content } });
+                            appendixModels.Add(new ImageUrlAiAppendixModel
+                                { Data = new ImageUrlDataModel { Url = item.Content } });
                             break;
                         case AppendixType.File:
                             throw new NotImplementedException();
                             break;
                         case AppendixType.Audio:
-                            appendixModels.Add(new AudioAppendixModel() { Data = new() { Data = item.Content } });
+                            appendixModels.Add(new AudioAppendixModel
+                                { Data = new AudioDataModel { Data = item.Content } });
                             break;
                         case AppendixType.Video:
                             throw new NotImplementedException();
@@ -114,7 +108,7 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
                             throw new ArgumentOutOfRangeException();
                     }
 
-                appendixModels.Add(new TextAppendixModel() { Data = message.Content });
+                appendixModels.Add(new TextAppendixModel { Data = message.Content });
                 newMessage.Content = appendixModels;
             }
             else
@@ -126,13 +120,12 @@ public sealed class TabbyCatAiModelRequestService(TabbyCatAiRequestModel request
         }
 
         return Task.FromResult<string>(JsonConvert.SerializeObject(newsModel));
-
     }
 
     protected override string PreProcessResponse(string responseString)
     {
         if (responseString == "data: [DONE]")
-            return string.Empty;
+            return "";
         return responseString.Replace("data: ", "");
     }
 

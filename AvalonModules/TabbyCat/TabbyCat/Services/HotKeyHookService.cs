@@ -1,19 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Threading;
-
 using AvaloniaEdit;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 using SharpHook;
 using SharpHook.Native;
-
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Timers;
-
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
 using TuDog.Bootstrap;
@@ -24,27 +19,29 @@ using TuDog.IocAttribute;
 namespace TabbyCat.Services;
 
 [Register<IHotKeyHookService>(ServiceLifetime.Singleton)]
-public class HotKeyHookService(ILogger<HotKeyHookService> logger,IShowQuickMenuItemWindowService showQuickMenuItemWindowService,IShowQuickMenuService showQuickMenuService) : IHotKeyHookService
+public class HotKeyHookService(
+    ILogger<HotKeyHookService> logger,
+    IShowQuickMenuItemWindowService showQuickMenuItemWindowService,
+    IShowQuickMenuService showQuickMenuService) : IHotKeyHookService
 {
     private TaskPoolGlobalHook? hook;
     private readonly HashSet<KeyCode> keyCodes = [];
-    private readonly Timer timer =new (200);
+    private readonly Timer timer = new(200);
     private Point? _lastMousePosition;
+
     public void InitService()
     {
         var showQuickMenu = showQuickMenuService.Get();
-        
+
         timer.Elapsed += (s, e) =>
         {
             if (keyCodes.Any())
-            {
-               // logger.LogDebug("定时器启动并清空");
+                // logger.LogDebug("定时器启动并清空");
                 keyCodes.Clear();
-            }
-            
+
             timer.Stop();
         };
-        hook = new(1, GlobalHookType.All, runAsyncOnBackgroundThread: true);
+        hook = new TaskPoolGlobalHook(1, GlobalHookType.All, runAsyncOnBackgroundThread: true);
         hook.KeyPressed += (sender, e) =>
         {
             keyCodes.Add(e.Data.KeyCode);
@@ -55,7 +52,6 @@ public class HotKeyHookService(ILogger<HotKeyHookService> logger,IShowQuickMenuI
                     if (OperatingSystem.IsMacOS())
                     {
                         if (keyCodes.First() == KeyCode.VcLeftMeta && keyCodes.Last() == KeyCode.VcC)
-                        {
                             Task.Run(async () =>
                             {
                                 var clipboard = TuDogApplication.TopLevel.Clipboard;
@@ -64,26 +60,18 @@ public class HotKeyHookService(ILogger<HotKeyHookService> logger,IShowQuickMenuI
                                 if (string.IsNullOrEmpty(text))
                                     return;
                                 if (!string.IsNullOrEmpty(text) && _lastMousePosition.HasValue)
-                                {
                                     Dispatcher.UIThread.Invoke(() =>
                                     {
                                         showQuickMenuItemWindowService.ShowWindowAsync(text,
                                             _lastMousePosition.Value);
                                     });
 
-                                }
-
                                 keyCodes.Clear();
                             });
-
-
-                        }
-
                     }
                     else if (OperatingSystem.IsWindows())
                     {
                         if (keyCodes.First() == KeyCode.VcLeftControl && keyCodes.Last() == KeyCode.VcC)
-                        {
                             Task.Run(async () =>
                             {
                                 var clipboard = TuDogApplication.TopLevel.Clipboard;
@@ -92,25 +80,22 @@ public class HotKeyHookService(ILogger<HotKeyHookService> logger,IShowQuickMenuI
                                 if (string.IsNullOrEmpty(text))
                                     return;
                                 if (!string.IsNullOrEmpty(text) && _lastMousePosition.HasValue)
-                                {
                                     Dispatcher.UIThread.Invoke(() =>
                                     {
                                         showQuickMenuItemWindowService.ShowWindowAsync(text,
                                             _lastMousePosition.Value);
                                     });
 
-                                }
-
                                 keyCodes.Clear();
                             });
-                        }
                     }
                 }
+
                 Action?.Invoke(new List<KeyCode>(keyCodes));
             }
             else
             {
-                if(showQuickMenu)
+                if (showQuickMenu)
                     showQuickMenuItemWindowService.HideWindowAsync();
             }
         };
@@ -124,7 +109,6 @@ public class HotKeyHookService(ILogger<HotKeyHookService> logger,IShowQuickMenuI
                 {
                     if (OperatingSystem.IsMacOS())
                     {
-
                         var ptr = IntPtr.Zero;
                         try
                         {
@@ -159,7 +143,6 @@ public class HotKeyHookService(ILogger<HotKeyHookService> logger,IShowQuickMenuI
                     {
                         showQuickMenuItemWindowService.HideWindowAsync(new Point(e.Data.X, e.Data.Y));
                     }
-
                 });
             }
         };
@@ -170,19 +153,22 @@ public class HotKeyHookService(ILogger<HotKeyHookService> logger,IShowQuickMenuI
             if (!timer.Enabled)
                 timer.Start();
         };
+#if !DEBUG
         hook.RunAsync();
 
+#endif
     }
 
     public required Action<IEnumerable<KeyCode>> Action { get; set; }
+
     public void Dispose()
     {
         hook?.Dispose();
     }
-    
+
     [DllImport("libTabbyCatBridge.dylib", CallingConvention = CallingConvention.Cdecl)]
     public static extern IntPtr get_selected_text();
-    
+
     [DllImport("libSystem.B.dylib", EntryPoint = "free", CallingConvention = CallingConvention.Cdecl)]
     public static extern void free(IntPtr ptr);
 }

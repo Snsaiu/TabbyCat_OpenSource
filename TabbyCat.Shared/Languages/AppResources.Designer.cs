@@ -4148,5 +4148,47 @@ namespace TabbyCat.Shared.Languages {
                 return ResourceManager.GetString("MustLoginToUseFunction", resourceCulture);
             }
         }
+        
+        public static string RebootToCompleteLogin {
+            get {
+                return ResourceManager.GetString("RebootToCompleteLogin", resourceCulture);
+            }
+        }
+        
+        public static string DataSynchronization {
+            get {
+                return ResourceManager.GetString("DataSynchronization", resourceCulture);
+            }
+        }
+        
+        public static string Preparing {
+            get {
+                return ResourceManager.GetString("Preparing", resourceCulture);
+            }
+        }
+        
+        public static string SynchronizeAIConfigurationInformation {
+            get {
+                return ResourceManager.GetString("SynchronizeAIConfigurationInformation", resourceCulture);
+            }
+        }
+        
+        public static string SyncContacts {
+            get {
+                return ResourceManager.GetString("SyncContacts", resourceCulture);
+            }
+        }
+        
+        public static string SynchronousChatSession {
+            get {
+                return ResourceManager.GetString("SynchronousChatSession", resourceCulture);
+            }
+        }
+        
+        public static string SynchronizeChatHistory {
+            get {
+                return ResourceManager.GetString("SynchronizeChatHistory", resourceCulture);
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace TabbyCat.Components.ViewModels;
 public partial class AiSettingViewModel(
     IAiTemplateSettingService aiTemplateSettingService,
     ILogger<AiSettingViewModel> logger,
+    IAiTemplateSettingHubSyncManager aiTemplateSettingSyncManager,
     IAiTemplateSettingSyncService aiTemplateSettingSyncService,
     IStoreChatRecordService storeChatRecordService) : ViewModelBase
 {
@@ -42,21 +43,31 @@ public partial class AiSettingViewModel(
             var models = await hasModels.GetModelsAsync();
             hasModels.Models.Reset(models);
 
-            hasModels.SelectedModel = models.FirstOrDefault()??string.Empty;
-            if (string.IsNullOrEmpty(hasModels.SelectedModel))
-            {
-                logger.LogWarning("没有任何模型名称被选中。");
-            }
-
+            hasModels.SelectedModel = models.FirstOrDefault() ?? string.Empty;
+            if (string.IsNullOrEmpty(hasModels.SelectedModel)) logger.LogWarning("没有任何模型名称被选中。");
         }
     }
 
     protected override async Task OnLoaded()
     {
+        aiTemplateSettingSyncManager.UpdatedCallBack += SyncUpdateAsync;
+
         StoreChatRecord = storeChatRecordService.Get();
 
         await InitAiModelProvidersAsync();
         AiTemplate = await AiTemplateFactory.GetTemplateAsync(AiModelType.OpenAiApi);
+    }
+
+    private async Task SyncUpdateAsync(IEnumerable<AiTemplateSettingEntity> models)
+    {
+        await InitAiModelProvidersAsync();
+        AiTemplate = await AiTemplateFactory.GetTemplateAsync(AiModelType.OpenAiApi);
+    }
+
+    protected override Task OnUnLoaded()
+    {
+        aiTemplateSettingSyncManager.UpdatedCallBack -= SyncUpdateAsync;
+        return Task.CompletedTask;
     }
 
     partial void OnStoreChatRecordChanged(bool value)
@@ -66,6 +77,9 @@ public partial class AiSettingViewModel(
 
     partial void OnSelectAiModelTypeChanged(string? oldValue, string newValue)
     {
+        if (string.IsNullOrEmpty(newValue))
+            return;
+
         if (newValue == "Custom")
         {
             Task.Run(async () => { AiTemplate = await AiTemplateFactory.GetTemplateAsync(AiModelType.Custom); });
@@ -96,6 +110,7 @@ public partial class AiSettingViewModel(
             tabbycatModel.ApiDomain = temp.ApiDomain;
             tabbycatModel.ApiPath = temp.ApiPath;
         }
+
         var json = JsonConvert.SerializeObject(AiTemplate);
 
         var saveModel = new AiTemplateSettingEntity
@@ -107,7 +122,6 @@ public partial class AiSettingViewModel(
         };
 
 
-
         if (AiTemplate.Provider == AiModelType.Custom)
         {
             var customModelName = ((IAlias)AiTemplate).Alias;
@@ -115,30 +129,32 @@ public partial class AiSettingViewModel(
             if (string.IsNullOrEmpty(customModelName))
             {
                 // ToastService.ShowWarning("自定义模型必须要有名称");
-                await DialogServer.ShowMessageDialogAsync(AppResources.CustomModelMustHaveName,AppResources.Message,AppResources.Ok);
+                await DialogServer.ShowMessageDialogAsync(AppResources.CustomModelMustHaveName, AppResources.Message,
+                    AppResources.Ok);
                 return;
             }
 
             var finds = await aiTemplateSettingService.QueryAsync(x =>
-                x.Provider == AiModelType.Custom && x.ModelName == customModelName && x.Email==CurrentUser.Email);
+                x.Provider == AiModelType.Custom && x.ModelName == customModelName && x.Email == CurrentUser.Email);
             if (finds.Any()) await aiTemplateSettingService.DeleteRangeAsync(finds);
             saveModel.ModelName = customModelName;
             backSelectAiModelType = customModelName;
         }
         else
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.Provider == AiTemplate.Provider&& x.Email==CurrentUser.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x =>
+                x.Provider == AiTemplate.Provider && x.Email == CurrentUser.Email);
             if (finds.Any()) await aiTemplateSettingService.DeleteRangeAsync(finds);
         }
 
         if (!saveModel.IsDefault)
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==CurrentUser.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault && x.Email == CurrentUser.Email);
             if (!finds.Any()) saveModel.IsDefault = true;
         }
         else
         {
-            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault&& x.Email==CurrentUser.Email);
+            var finds = await aiTemplateSettingService.QueryAsync(x => x.IsDefault && x.Email == CurrentUser.Email);
             if (finds.Any())
                 foreach (var item in finds)
                 {
@@ -151,54 +167,56 @@ public partial class AiSettingViewModel(
         {
             await SyncAiTemplateSettingsAsync();
             // ToastService.ShowSuccess("保存成功");
-            await DialogServer.ShowMessageDialogAsync(AppResources.SavedSuccessfully,AppResources.Message,AppResources.Ok);
+            await DialogServer.ShowMessageDialogAsync(AppResources.SavedSuccessfully, AppResources.Message,
+                AppResources.Ok);
             await InitAiModelProvidersAsync();
         }
         else
         {
-            await DialogServer.ShowMessageDialogAsync(AppResources.SaveFailed,AppResources.Warning,AppResources.Ok);
+            await DialogServer.ShowMessageDialogAsync(AppResources.SaveFailed, AppResources.Warning, AppResources.Ok);
             // ToastService.ShowError("保存失败");
         }
-
     }
 
     private async Task SyncAiTemplateSettingsAsync()
     {
         if (!CurrentUser.LoginSuccess())
             return;
-        
-        var remoteVersionResult = await aiTemplateSettingSyncService.QueryLatestVersionAsync(CurrentUser.Email);
+
+        var remoteVersionResult = await aiTemplateSettingSyncService.QueryLatestVersionAsync();
         if (!remoteVersionResult.Ok)
         {
-            this.MessageBarService.ShowError(string.Format(AppResources.AnErrorOccurred,remoteVersionResult.ErrorMsg),AppResources.Warning,true);
+            MessageBarService.ShowError(string.Format(AppResources.AnErrorOccurred, remoteVersionResult.ErrorMsg),
+                AppResources.Warning, true);
             return;
         }
 
-        var uploadVersion = remoteVersionResult.Data+1;
+        var uploadVersion = remoteVersionResult.Data + 1;
         var settings = await aiTemplateSettingService.QueryAsync(x => x.Email == CurrentUser.Email);
-        
+
         if (!settings.Any())
             return;
-        
+
         foreach (var item in settings)
         {
-                item.Version = uploadVersion;
-                item.LastUpdateTime = DateTime.Now;
+            item.Version = uploadVersion;
+            item.LastUpdateTime = DateTime.Now;
         }
-        await aiTemplateSettingService.DeleteRangeAsync(x=>x.Email==CurrentUser.Email);
+
+        await aiTemplateSettingService.DeleteRangeAsync(x => x.Email == CurrentUser.Email);
         await aiTemplateSettingService.AddRangeAsync(settings);
-        await aiTemplateSettingSyncService.UploadNewVersionAsync(CurrentUser.Email,settings);
+        await aiTemplateSettingSyncService.UploadRemoteAsync(settings);
     }
-    
+
     private async Task InitAiModelProvidersAsync()
     {
         var result = new List<string>();
-        if(CurrentUser.LoginSuccess())
+        if (CurrentUser.LoginSuccess())
             result.AddRange(from object? item in Enum.GetValues(typeof(AiModelType)) select item.ToString()!);
         else
-        {
-            result.AddRange(from object? item in Enum.GetValues(typeof(AiModelType)) where item is not AiModelType.TabbyCatAi select item.ToString()!);
-        }
+            result.AddRange(from object? item in Enum.GetValues(typeof(AiModelType))
+                where item is not AiModelType.TabbyCatAi
+                select item.ToString()!);
 
         var aiTemplates = await aiTemplateSettingService.QueryAsync(x => x.Email == CurrentUser.Email);
         var customEntities = aiTemplates.Where(x => x.Provider == AiModelType.Custom);
@@ -208,10 +226,6 @@ public partial class AiSettingViewModel(
         if (aiTemplates.FirstOrDefault(x => x.IsDefault) is { } defaultEntity)
             SelectAiModelType = defaultEntity.Provider.ToString();
         else
-        {
             SelectAiModelType = AiModelProviders.First();
-        }
     }
-
-
 }

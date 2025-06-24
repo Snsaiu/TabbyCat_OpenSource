@@ -22,37 +22,64 @@ namespace TabbyCat.ViewModels;
 
 public sealed partial class MainWindowViewModel : ViewModelBase
 {
-
     private IDialogServer dialogService = TuDogApplication.ServiceProvider.GetRequiredService<IDialogServer>();
 
     private ILoginUserService userService = TuDogApplication.ServiceProvider.GetRequiredService<ILoginUserService>();
 
     private OidcClient oidcClient = TuDogApplication.ServiceProvider.GetRequiredService<OidcClient>();
 
-    private ILogger<MainWindowViewModel> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<MainWindowViewModel>>();
+    private ILogger<MainWindowViewModel> logger =
+        TuDogApplication.ServiceProvider.GetRequiredService<ILogger<MainWindowViewModel>>();
 
     private IAiTemplateSettingService _aiTemplateSettingService =
         TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingService>();
-    
-    private IAiTemplateSettingSyncManager aiTemplateSettingSyncManager=TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingSyncManager>();
 
-    private IRegionManager _regionManager { get; }=TuDogApplication.ServiceProvider.GetRequiredService<IRegionManager>();
+    private IAiTemplateSettingHubSyncManager aiTemplateSettingSyncManager =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingHubSyncManager>();
+
+    private IRegionManager _regionManager { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IRegionManager>();
 
     [ObservableProperty] private IBackgroundImageConfig _backgroundImageConfig =
         TuDogApplication.ServiceProvider.GetRequiredService<IBackgroundImageConfig>();
 
-    [ObservableProperty]
-    private bool isLogined;
+    [ObservableProperty] private bool isLogined;
 
-    [ObservableProperty]
-    private IUser currentUser = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
+    [ObservableProperty] private IUser currentUser = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
 
-    protected async override Task OnLoaded()
+
+    protected IAiTemplateSettingHubSyncManager AiTemplateSettingAsyncManager { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingHubSyncManager>();
+
+    protected IAiTemplateSettingSyncService AiTemplateSettingSyncService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiTemplateSettingSyncService>();
+
+    protected ICustomOccupationHubSyncManager CustomOccupationManager { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<ICustomOccupationHubSyncManager>();
+
+    protected ICustomOccupationSyncService CustomOccupationSyncService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<ICustomOccupationSyncService>();
+
+
+    protected IChatSessionHubSyncManager ChatSessionSyncManager { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IChatSessionHubSyncManager>();
+
+    protected IChatSessionSyncService ChatSessionSyncService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<IChatSessionSyncService>();
+
+    protected IAiChatRecordHubSyncManager ChatRecordSyncManager =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiChatRecordHubSyncManager>();
+
+    protected IAiChatRecordSyncService ChatRecordSyncService =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiChatRecordSyncService>();
+
+
+    protected override async Task OnLoaded()
     {
-
         if (!CurrentUser.LoginSuccess())
         {
             IsLogined = false;
+            _regionManager.AddToRegion<MainViewModel>("mainContainer");
             if (CurrentUser.AccessTokenExpiration < DateTimeOffset.Now)
             {
                 logger.LogInformation("登录时间已经过期,过期时间{0}。", CurrentUser.AccessTokenExpiration);
@@ -77,11 +104,31 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         }
         else
         {
+            using var progress =
+                DialogServer.ShowProgressDialog(AppResources.DataSynchronization, AppResources.Preparing);
+
+            var hubService = TuDogApplication.ServiceProvider.GetRequiredService<IHubService>();
+            await hubService.StartAsync();
+
+            progress.Progress(AppResources.DataSynchronization, AppResources.SynchronizeAIConfigurationInformation);
+            await AiTemplateSettingAsyncManager.InitializeAsync();
+            await AiTemplateSettingSyncService.SyncAsync();
+
+            progress.Progress(AppResources.DataSynchronization, AppResources.SyncContacts);
+            await CustomOccupationManager.InitializeAsync();
+            await CustomOccupationSyncService.SyncAsync();
+
+            progress.Progress(AppResources.DataSynchronization, AppResources.SynchronousChatSession);
+            await ChatSessionSyncManager.InitializeAsync();
+            await ChatSessionSyncService.SyncAsync();
+
+            progress.Progress(AppResources.DataSynchronization, AppResources.SynchronizeChatHistory);
+            await ChatRecordSyncManager.InitializeAsync();
+            await ChatRecordSyncService.SyncAsync();
+
+            _regionManager.AddToRegion<MainViewModel>("mainContainer");
             IsLogined = true;
         }
-
-
-        _regionManager.AddToRegion<MainViewModel>("mainContainer");
     }
 
     [RelayCommand]
@@ -90,33 +137,36 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         var result = await OidcLogin();
         if (result is null)
         {
-            await this.dialogService.ShowMessageDialogAsync(AppResources.LoginErrorTryAgain, AppResources.Warning, AppResources.Ok);
+            await dialogService.ShowConfirmDialogAsync(AppResources.LoginErrorTryAgain, AppResources.Warning,
+                AppResources.Ok, string.Empty);
             IsLogined = false;
             return;
         }
+
         // 写入User中
         var email = WriteUserInfo(result);
         if (email is null)
         {
-            await this.dialogService.ShowMessageDialogAsync(AppResources.LoginErrorEmailNullTryAagin, AppResources.Warning, AppResources.Ok);
+            await dialogService.ShowMessageDialogAsync(AppResources.LoginErrorEmailNullTryAagin, AppResources.Warning,
+                AppResources.Ok);
             IsLogined = false;
             return;
         }
 
-        // 查看是否有默认的ai模型
-        await SetDefaultAiModel();
-        IsLogined = true;
+        if (await dialogService.ShowConfirmDialogAsync(AppResources.RebootToCompleteLogin, AppResources.Warning,
+                AppResources.Ok, string.Empty)) Environment.Exit(0);
+
+        // // 查看是否有默认的ai模型
+        // await SetDefaultAiModel();
+        // IsLogined = true;
     }
 
     private async Task SetDefaultAiModel()
     {
-
-       await aiTemplateSettingSyncManager.SyncSetting();
-        
         if (!(await _aiTemplateSettingService.QueryAsync(x => x.IsDefault)).Any())
         {
             var aiModel = new TabbyCatAiModel();
-            await _aiTemplateSettingService.AddAsync(new()
+            await _aiTemplateSettingService.AddAsync(new AiTemplateSettingEntity
             {
                 IsDefault = true, Template = JsonConvert.SerializeObject(aiModel), Email = CurrentUser.Email,
                 Key = Guid.NewGuid(), Provider = AiModelType.TabbyCatAi, CreateTime = DateTime.Now,
@@ -129,11 +179,11 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     private async Task Logout()
     {
         var result =
-            await dialogService.ShowDialogAsync<LogoutViewModel,bool, LogoutOptionModel>(AppResources.Logout,
-                AppResources.Logout,AppResources.Cancel);
+            await dialogService.ShowDialogAsync<LogoutViewModel, bool, LogoutOptionModel>(AppResources.Logout,
+                AppResources.Logout, AppResources.Cancel);
         if (result is { Ok: true })
         {
-            this.IsLogined = false;
+            IsLogined = false;
             // var logoutResult = await oidcClient.LogoutAsync();
             //
             // if (logoutResult.IsError)
@@ -151,11 +201,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     private string? WriteUserInfo(LoginResult? result)
     {
-        if (result is null)
-        {
-
-            return null;
-        }
+        if (result is null) return null;
 
         var claims = result.User.Claims;
         var email = claims.FirstOrDefault(x => x.Type == "email")?.Value;
@@ -166,7 +212,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
         if (string.IsNullOrEmpty(email))
         {
-            this.logger.LogError("邮箱不能为空，但实际为空！");
+            logger.LogError("邮箱不能为空，但实际为空！");
             return null;
         }
 
@@ -183,21 +229,20 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     {
         try
         {
-            var result = await oidcClient.LoginAsync(new() { BrowserTimeout = 30 });
+            var result = await oidcClient.LoginAsync(new LoginRequest { BrowserTimeout = 30 });
             if (result.IsError)
             {
                 await dialogService.ShowMessageDialogAsync($"{AppResources.LoginFailed}: {result.Error}",
                     AppResources.Message, AppResources.Ok);
                 return result;
             }
+
             return result;
         }
         catch (Exception e)
         {
-            this.logger.LogError(e, "登录错误");
+            logger.LogError(e, "登录错误");
             return null;
         }
     }
-
-
 }

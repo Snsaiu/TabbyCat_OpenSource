@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TabbyCat.Repository.Entities.AiEntities;
 
-public sealed class CustomAssistantOccupationEntity:UserBaseEntity
+public sealed class CustomAssistantOccupationEntity:RemoteSyncEntityBase
 {
     [Required]
     public string Name { get; set; } = string.Empty;

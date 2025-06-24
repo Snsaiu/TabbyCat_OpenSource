@@ -27,7 +27,6 @@ public partial class App : TuDogApplication
 {
     private Window? window;
 
-
     public override void Initialize()
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -36,7 +35,9 @@ public partial class App : TuDogApplication
         base.Initialize();
         InitLanguage();
         ValidateUserLoginState();
-        SyncAiTemplateSettings();
+
+        InitHub();
+
         InitBackgroundImage();
         if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
         {
@@ -69,12 +70,6 @@ public partial class App : TuDogApplication
         var userService = ServiceProvider.GetRequiredService<ILoginUserService>();
         var u = userService.GetOrDefault();
         if (u is not null) user.ResetData(u);
-    }
-
-    private void SyncAiTemplateSettings()
-    {
-        var aiTemplateSettingAsyncManager = ServiceProvider.GetRequiredService<IAiTemplateSettingSyncManager>();
-        aiTemplateSettingAsyncManager.StartLoopAsync();
     }
 
     private void HotKeyImplement(IEnumerable<KeyCode> code)
@@ -156,6 +151,10 @@ public partial class App : TuDogApplication
         w.Activate();
     }
 
+    private void InitHub()
+    {
+    }
+
     protected override void Register(IServiceCollection collection)
     {
         collection.AddSingleton(typeof(OidcClient), _ => new OidcClient(OidcOptions.GetOptions()));
@@ -163,8 +162,8 @@ public partial class App : TuDogApplication
         collection.AddHttpClient(ConstParameter.Auth,
                 client => { client.BaseAddress = new Uri("https://api.yyan.cc/api"); })
             .AddHttpMessageHandler<TokenHandler>();
-        
-        var logPath = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments),"TabbyCat","Log");
+
+        var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TabbyCat", "Log");
 
         collection.AddLoggerBuilder("http://24.233.2.12:3100", LogLabelProvider.GetLabels(), logPath);
     }

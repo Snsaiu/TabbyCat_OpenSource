@@ -15,14 +15,12 @@ namespace TabbyCat.ViewModels;
 
 public partial class LoginViewModelBase : ViewModelBase
 {
+    [ObservableProperty] private bool isLogined;
 
-    [ObservableProperty]
-    private bool isLogined;
+    [ObservableProperty] private IUser currentUser = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
 
-    [ObservableProperty]
-    private IUser currentUser = TuDogApplication.ServiceProvider.GetRequiredService<IUser>();
-
-    private ILogger<LoginViewModelBase> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<LoginViewModelBase>>();
+    private ILogger<LoginViewModelBase> logger =
+        TuDogApplication.ServiceProvider.GetRequiredService<ILogger<LoginViewModelBase>>();
 
     protected IDialogServer dialogService = TuDogApplication.ServiceProvider.GetRequiredService<IDialogServer>();
 
@@ -36,15 +34,18 @@ public partial class LoginViewModelBase : ViewModelBase
         var result = await OidcLogin();
         if (result is null)
         {
-            await this.dialogService.ShowMessageDialogAsync(AppResources.LoginErrorTryAgain, AppResources.Warning, AppResources.Ok);
+            await dialogService.ShowMessageDialogAsync(AppResources.LoginErrorTryAgain, AppResources.Warning,
+                AppResources.Ok);
             IsLogined = false;
             return;
         }
+
         // 写入User中
         var email = WriteUserInfo(result);
         if (email is null)
         {
-            await this.dialogService.ShowMessageDialogAsync(AppResources.LoginErrorEmailNullTryAagin, AppResources.Warning, AppResources.Ok);
+            await dialogService.ShowMessageDialogAsync(AppResources.LoginErrorEmailNullTryAagin, AppResources.Warning,
+                AppResources.Ok);
             IsLogined = false;
             return;
         }
@@ -56,18 +57,19 @@ public partial class LoginViewModelBase : ViewModelBase
     {
         try
         {
-            var result = await oidcClient.LoginAsync(new() { BrowserTimeout = 30 });
+            var result = await oidcClient.LoginAsync(new LoginRequest { BrowserTimeout = 30 });
             if (result.IsError)
             {
                 await dialogService.ShowMessageDialogAsync($"{AppResources.LoginFailed}: {result.Error}",
                     AppResources.Message, AppResources.Ok);
                 return result;
             }
+
             return result;
         }
         catch (Exception e)
         {
-            this.logger.LogError(e, "登录错误");
+            logger.LogError(e, "登录错误");
             return null;
         }
     }
@@ -83,7 +85,7 @@ public partial class LoginViewModelBase : ViewModelBase
 
         if (string.IsNullOrEmpty(email))
         {
-            this.logger.LogError("邮箱不能为空，但实际为空！");
+            logger.LogError("邮箱不能为空，但实际为空！");
             return null;
         }
 

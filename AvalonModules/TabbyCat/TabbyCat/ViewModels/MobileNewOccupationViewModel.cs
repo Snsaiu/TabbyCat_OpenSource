@@ -39,7 +39,7 @@ public partial class MobileNewOccupationViewModel(INavigationService navigationS
             return;
         }
 
-        if ((await customAssistantOccupationService.QueryAsync(x =>
+        if ((await CustomAssistantOccupationService.QueryAsync(x =>
                 x.Name == OccupationName && x.Email == CurrentUser.Email)).Any())
         {
             await DialogServer.ShowMessageDialogAsync(AppResources.CharacterNameAlreadyExists, AppResources.Warning,
@@ -47,14 +47,14 @@ public partial class MobileNewOccupationViewModel(INavigationService navigationS
             return;
         }
 
-        var entity = new CustomAssistantOccupationEntity()
+        var entity = new CustomAssistantOccupationEntity
         {
             Name = OccupationName,
             Description = Description,
             Email = CurrentUser.Email
         };
 
-        if (await customAssistantOccupationService.AddAsync(entity))
+        if (await CustomAssistantOccupationService.AddAsync(entity))
         {
             await DialogServer.ShowMessageDialogAsync(AppResources.AddedSuccessfully, AppResources.Message,
                 AppResources.Ok);

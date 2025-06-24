@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using TabbyCat.IServices;
 using TabbyCat.Models;
+using TabbyCat.Repository.Entities.AiEntities;
 using TabbyCat.Shared.Enums;
 using TabbyCat.Shared.Languages;
 using TuDog.Bootstrap;
@@ -20,6 +21,12 @@ public abstract partial class ContactViewModelBase : AiViewModelBase
     protected INavigationService NavigationService { get; } =
         TuDogApplication.ServiceProvider.GetRequiredService<INavigationService>();
 
+    protected ICustomOccupationSyncService CustomOccupationSyncService { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<ICustomOccupationSyncService>();
+
+    protected ICustomOccupationHubSyncManager CustomOccupationSyncManager { get; } =
+        TuDogApplication.ServiceProvider.GetRequiredService<ICustomOccupationHubSyncManager>();
+
     protected IOccupationService OccupationService { get; } =
         TuDogApplication.ServiceProvider.GetRequiredService<IOccupationService>();
 
@@ -27,9 +34,33 @@ public abstract partial class ContactViewModelBase : AiViewModelBase
 
     [ObservableProperty] private OccupationType? selectedOccupation = null;
 
-    protected override async Task OnLoaded()
+    [ObservableProperty] private ObservableCollection<OccupationType> _source = [];
+
+    protected override Task OnLoaded()
+    {
+        CustomOccupationSyncManager.UpdatedCallBack += OnUpdatedLocalDbCallback;
+        return ResetOccupationsAsync();
+    }
+
+    protected override Task OnUnLoaded()
+    {
+        CustomOccupationSyncManager.UpdatedCallBack -= OnUpdatedLocalDbCallback;
+        return base.OnUnLoaded();
+    }
+
+    private Task OnUpdatedLocalDbCallback(IEnumerable<CustomAssistantOccupationEntity> models)
+    {
+        return ResetOccupationsAsync();
+    }
+
+    /// <summary>
+    /// 重新读取所有的角色
+    /// </summary>
+    protected async Task ResetOccupationsAsync()
     {
         Occupations.Reset(await OccupationService.GetAllOccupationsAsync());
+        Source.Reset(Occupations);
+        SelectedOccupation = Source.FirstOrDefault();
     }
 
     partial void OnSelectedOccupationChanged(OccupationType? value)
@@ -55,25 +86,65 @@ public abstract partial class ContactViewModelBase : AiViewModelBase
         if (SelectedOccupation == null)
             return;
 
-        var sessions = await this.chatSessionService.QueryAsync(x =>
+        var sessions = await ChatSessionService.QueryAsync(x =>
             x.Occupation == AssistantOccupation.Custom && x.CustomOccupationName == SelectedOccupation.OccupationName &&
             x.Email == CurrentUser.Email);
 
         if (sessions.Any())
         {
-          await  DialogServer.ShowMessageDialogAsync(AppResources.HasChatHistoryCannotDeleteContact, AppResources.Warning,
+            await DialogServer.ShowMessageDialogAsync(AppResources.HasChatHistoryCannotDeleteContact,
+                AppResources.Warning,
                 AppResources.Ok);
-          return;
+            return;
         }
-        
 
-        if (!(await this.DialogServer.ShowConfirmDialogAsync(
+        if (!await DialogServer.ShowConfirmDialogAsync(
                 string.Format(AppResources.ConfirmDelete, SelectedOccupation.OccupationName), AppResources.Warning,
-                AppResources.Ok, AppResources.Cancel)))
+                AppResources.Ok, AppResources.Cancel))
             return;
 
-        await customAssistantOccupationService.DeleteAsync(x =>
-            x.Name == SelectedOccupation.OccupationName && x.Email == CurrentUser.Email);
+        var finds = (await CustomAssistantOccupationService.QueryAsync(x =>
+            x.Name == SelectedOccupation.OccupationName && x.Email == CurrentUser.Email && !x.IsDeleted)).ToArray();
+
+        if (!finds.Any())
+        {
+            await DialogServer.ShowMessageDialogAsync(AppResources.AnErrorOccurred, AppResources.Warning,
+                AppResources.Ok);
+            return;
+        }
+
+        var selected = finds.First();
+        selected.IsDeleted = true;
+        await CustomAssistantOccupationService.UpdateAsync(selected);
+
+        // 同步
+        if (CurrentUser.LoginSuccess())
+        {
+            //查询最新的版本
+            var lastestVersionResult = await CustomOccupationSyncService.QueryLatestVersionAsync();
+            if (lastestVersionResult is not { Ok: true, Data: var version })
+            {
+                await DialogServer.ShowMessageDialogAsync(lastestVersionResult.ErrorMsg, AppResources.Warning,
+                    AppResources.Ok);
+                goto LocalDelete;
+            }
+
+            var latestVersion = version + 1;
+            var updateTime = DateTime.Now;
+            var occupations = (await CustomAssistantOccupationService.QueryAsync(x => x.Email == CurrentUser.Email))
+                .ToArray();
+
+            foreach (var item in occupations)
+            {
+                item.LastUpdateTime = updateTime;
+                item.Version = latestVersion;
+            }
+
+            await CustomOccupationSyncService.UploadRemoteAsync(occupations);
+            await CustomAssistantOccupationService.UpdateRangeAsync(occupations);
+        }
+
+        LocalDelete:
         Occupations.Reset(await OccupationService.GetAllOccupationsAsync());
         SelectedOccupation = Occupations.FirstOrDefault();
         await OnDeletedContactAsync();

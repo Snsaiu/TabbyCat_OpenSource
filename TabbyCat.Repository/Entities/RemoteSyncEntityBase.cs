@@ -8,13 +8,13 @@ public abstract class RemoteSyncEntityBase : UserBaseEntity
     /// <summary>
     /// 版本号
     /// </summary>
-    public int Version { get; set; }
-    
+    public int Version { get; set; } = 0;
+
     /// <summary>
     /// 最后一次更新时间
     /// </summary>
     public DateTime LastUpdateTime { get; set; }
-    
+
     /// <summary>
     /// 是否已经删除
     /// </summary>

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TabbyCat.Components.ViewModels;
+using TabbyCat.IServices;
 using TabbyCat.Models;
 using TabbyCat.Repository.Entities.AiEntities;
 using TabbyCat.Shared;
@@ -15,27 +16,28 @@ using TuDog.IocAttribute;
 namespace TabbyCat.ViewModels;
 
 [Register]
-public partial class ContactViewModel(IMessageBarService messageBarService) : ContactViewModelBase
+public partial class ContactViewModel(
+    IMessageBarService messageBarService,
+    ICreateNewAIChatSessionSyncService createNewAiChatSessionSyncService) : ContactViewModelBase
 {
     private OccupationType? _selectedOccupation;
 
     protected override async void OnOccupationSelectedChanged(OccupationType? value)
     {
         SelectedOccupation = value;
-        if(value is null)
+        if (value is null)
             return;
         if (value.Occupation == AssistantOccupation.Custom)
         {
-            var finds = await customAssistantOccupationService.QueryAsync(x =>
-                x.Name == value.OccupationName && x.Email == CurrentUser.Email);
+            var finds = await CustomAssistantOccupationService.QueryAsync(x =>
+                x.Name == value.OccupationName && x.Email == CurrentUser.Email && !x.IsDeleted);
             if (finds.Any())
                 OccupationDescription = finds.FirstOrDefault()?.Description;
         }
         else
         {
-           OccupationDescription  =   LocalizationResourceManager.Instance[$"{value.Occupation.ToString()}Prompt"];
+            OccupationDescription = LocalizationResourceManager.Instance[$"{value.Occupation.ToString()}Prompt"];
         }
-
     }
 
     protected override async Task OnLoaded()
@@ -45,12 +47,11 @@ public partial class ContactViewModel(IMessageBarService messageBarService) : Co
         SelectedOccupation = Occupations.FirstOrDefault();
     }
 
-    [ObservableProperty] private ObservableCollection<OccupationType> _source = [];
+ 
 
     [ObservableProperty] private string _searchText;
 
-    [ObservableProperty]
-    private string _occupationDescription = string.Empty;
+    [ObservableProperty] private string _occupationDescription = string.Empty;
 
     partial void OnSearchTextChanged(string value)
     {
@@ -91,28 +92,28 @@ public partial class ContactViewModel(IMessageBarService messageBarService) : Co
     {
         if (SelectedOccupation is null)
             return;
-        
+
         // 添加新的会话
-        var sessions = await this.chatSessionService.QueryAsync(x => x.IsDefault && x.Email == CurrentUser.Email);
+        var sessions = await ChatSessionService.QueryAsync(x => x.IsDefault && x.Email == CurrentUser.Email);
         if (sessions.Any())
         {
-            foreach (var item in sessions)
-            {
-                item.IsDefault = false;
-            }
+            foreach (var item in sessions) item.IsDefault = false;
 
-            await this.chatSessionService.UpdateRangeAsync(sessions);
+            await ChatSessionService.UpdateRangeAsync(sessions);
         }
-        
-        var newSession = SelectedOccupation.Occupation == AssistantOccupation.Custom ? AiChatSessionEntity.CreateCustom(SelectedOccupation.OccupationName) : AiChatSessionEntity.CreateDefault(SelectedOccupation.Occupation);
 
-        newSession.Email= CurrentUser.Email;
-            
-        await chatSessionService.AddAsync(newSession);
-        
+        var newSession = SelectedOccupation.Occupation == AssistantOccupation.Custom
+            ? AiChatSessionEntity.CreateCustom(SelectedOccupation.OccupationName)
+            : AiChatSessionEntity.CreateDefault(SelectedOccupation.Occupation);
+
+        newSession.Email = CurrentUser.Email;
+
+        await ChatSessionService.AddAsync(newSession);
+
+        //同步
+        await createNewAiChatSessionSyncService.UpdateAsync();
+
         NavigationMenuItemService.SelectMenuItem =
             NavigationMenuItemService.MenuItems.FirstOrDefault(x => x.Content == typeof(ChatViewModel));
-       
     }
-
 }

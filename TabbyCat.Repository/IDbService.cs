@@ -19,8 +19,7 @@ public interface IDbService<T, TPrimaryKey>
     Task<bool> AddRangeAsync(IEnumerable<T> entities);
 
     Task<T?> DeleteAsync(Expression<Func<T, bool>> where);
-
-
+    
     Task<bool> UpdateAsync(T entity);
 
     Task<bool> UpdateRangeAsync(IEnumerable<T> entities);
