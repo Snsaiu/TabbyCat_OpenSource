@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:languages="clr-namespace:TabbyCat.Shared.Languages;assembly=TabbyCat.Shared"
+             xmlns:viewModels="clr-namespace:TabbyCat.ViewModels"
+             xmlns:controls="clr-namespace:TabbyCat.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Classes="AiMediaStyle"
+             x:DataType="viewModels:ImageToVideoViewModel"
+             x:Class="TabbyCat.Views.ImageToVideoView">
+    <StackPanel Orientation="Vertical" Margin="{StaticResource LeftRight10}" VerticalAlignment="Center">
+        <controls:ImageControl HorizontalAlignment="Left" ShowHeader="True"
+                               Header="{x:Static languages:AppResources.ChooseImage}"
+                               Command="{Binding OpenPickImageDialogCommand}"
+                               ImageSource="{Binding ImageUrl}" />
+
+        <TextBox Height="200" Margin="0,10,0,0"
+                 Watermark="{x:Static languages:AppResources.TextToVideoPromptDescription}"
+                 Text="{Binding Prompt}" TextWrapping="Wrap" />
+
+        <StackPanel Orientation="Vertical" Margin="{StaticResource Top2}">
+            <TextBlock Text="{x:Static languages:AppResources.VideoSize}" />
+            <ComboBox ItemsSource="{Binding Size}" SelectedItem="{Binding SelectedSize}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

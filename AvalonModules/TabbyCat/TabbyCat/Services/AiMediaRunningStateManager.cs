@@ -83,8 +83,9 @@ public sealed class AiMediaRunningStateManager(
                 {
                     AiMediaWorkType.TextToImage => JsonConvert.DeserializeObject<AiMediaImageResponseModel>(
                         responseBody),
-                    AiMediaWorkType.TextToVideo => JsonConvert.DeserializeObject<AiMediaVideoResponseModel>(
-                        responseBody),
+                    AiMediaWorkType.TextToVideo or AiMediaWorkType.ImageToVideo => JsonConvert
+                        .DeserializeObject<AiMediaVideoResponseModel>(
+                            responseBody),
                     AiMediaWorkType.CommandEditImage or AiMediaWorkType.PartialRepaintImage
                         or AiMediaWorkType.ExpandImage or
                         AiMediaWorkType.RemoveWatermark or
@@ -93,7 +94,7 @@ public sealed class AiMediaRunningStateManager(
                         AiMediaWorkType.AvatarStylization or
                         AiMediaWorkType.ImageSuperResolution =>
                         JsonConvert.DeserializeObject<GenerateImageEditResponseModel>(
-                        responseBody),
+                            responseBody),
                     AiMediaWorkType.GraffitiPainting => JsonConvert.DeserializeObject<AiMediaImageResponseModel>(
                         responseBody),
                     AiMediaWorkType.ImageEraseCompletion => JsonConvert
@@ -103,7 +104,6 @@ public sealed class AiMediaRunningStateManager(
 
                 if (responseModel.TaskStatus == AiMediaRunningStatus.Success)
                 {
-
                     currentTask.TaskStatus = TaskState.Success;
                     currentTask.UpdateTime = DateTime.Now;
                     await runningHubStateService.UpdateAsync(currentTask);
@@ -111,7 +111,8 @@ public sealed class AiMediaRunningStateManager(
                     if (await SaveToDbAsync(currentTask, responseModel.DownloadUrls) || OnSuccess is not null)
                         await OnSuccess.Invoke(currentTask.TaskId, currentTask.WorkType);
                 }
-                else if (responseModel.TaskStatus == AiMediaRunningStatus.Failed || responseModel.TaskStatus == AiMediaRunningStatus.Unknown)
+                else if (responseModel.TaskStatus == AiMediaRunningStatus.Failed ||
+                         responseModel.TaskStatus == AiMediaRunningStatus.Unknown)
                 {
                     currentTask.TaskStatus = TaskState.Failed;
                     currentTask.UpdateTime = DateTime.Now;
@@ -147,7 +148,7 @@ public sealed class AiMediaRunningStateManager(
         async Task<AiMediaResultEntity> SaveMediaMetaToDBAsync(string fileName, string taskId, string fileExtension,
             AiMediaWorkType workType)
         {
-            var entity = new AiMediaResultEntity()
+            var entity = new AiMediaResultEntity
             {
                 FileType = fileExtension, SavePath = fileName, TaskId = taskId,
                 CreateTime = DateTime.Now, UpdateTime = DateTime.Now, Email = user.Email, WorkType = workType
@@ -158,7 +159,7 @@ public sealed class AiMediaRunningStateManager(
                 var pngPath = fileName.Replace(".mp4", ".png");
                 var pngResult = await Util.GenerateThumbnail(fileName, TimeSpan.FromSeconds(1), pngPath);
                 if (!pngResult)
-                    throw new("Failed to save thumbnail");
+                    throw new Exception("Failed to save thumbnail");
                 entity.ThumbnailPath = pngPath;
             }
 
@@ -170,7 +171,7 @@ public sealed class AiMediaRunningStateManager(
     {
         if (entity is null)
             throw new ArgumentNullException(nameof(entity));
-        if (!await runningHubStateService.AddAsync(entity)) throw new("插入任务到数据库失败");
+        if (!await runningHubStateService.AddAsync(entity)) throw new Exception("插入任务到数据库失败");
         DoingTasks.TryAdd(entity.TaskId, entity);
         return true;
     }
@@ -183,14 +184,12 @@ public sealed class AiMediaRunningStateManager(
     public async Task StartWatchAsync()
     {
         var tasks = await runningHubStateService.QueryAsync(x =>
-            x.TaskStatus == TaskState.Running || x.TaskStatus == TaskState.Queued && x.Email == user.Email);
+            x.TaskStatus == TaskState.Running || (x.TaskStatus == TaskState.Queued && x.Email == user.Email));
         foreach (var runningHubStateEntity in tasks)
-        {
             DoingTasks.TryAdd(runningHubStateEntity.TaskId, runningHubStateEntity);
-        }
 
-        cancellationTokenSource = new();
-        backgroundThread = new(() => RunBackgroundThread(cancellationTokenSource.Token));
+        cancellationTokenSource = new CancellationTokenSource();
+        backgroundThread = new Thread(() => RunBackgroundThread(cancellationTokenSource.Token));
         backgroundThread.IsBackground = true;
         backgroundThread.Start();
     }
