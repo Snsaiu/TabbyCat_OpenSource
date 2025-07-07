@@ -22,7 +22,7 @@ public partial class AiChatSessionEntity : RemoteSyncEntityBase
 
     [Ignore]
     public string Header => string.IsNullOrEmpty(CustomTheme)
-        ? Theme.Replace("\n", "").Replace("\r", "")
+        ? Theme.Replace("\n", "").Replace("\r", "").Substring(0, Math.Min(10, Theme.Length))
         : CustomTheme.Replace("\n", "").Replace("\r", "");
 
 

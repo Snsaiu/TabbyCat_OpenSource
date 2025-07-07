@@ -451,12 +451,12 @@ public partial class ChatViewModel(
             await ChatSessionService.QueryAsync(x => x.Key == chatSession.Key && x.Email == CurrentUser.Email);
         if (!session.Any())
         {
-            chatSession.Theme = content;
+            chatSession.Theme = content.Substring(0, Math.Min(0, content.Length));
             await ChatSessionService.AddAsync(chatSession);
         }
         else
         {
-            chatSession.Theme = content;
+            chatSession.Theme = content.Substring(0, Math.Min(0, content.Length));
             await ChatSessionService.UpdateAsync(chatSession);
         }
 
@@ -553,7 +553,7 @@ public partial class ChatViewModel(
             : AiChatSession.CustomTheme;
 
         var result = await DialogServer.ShowInputDialogAsync(name, AppResources.Rename, AppResources.PleaseInputPrompt,
-            AppResources.Ok, AppResources.Cancel);
+            AppResources.Ok, AppResources.Cancel, maxLength: 10);
         if (result.Ok)
         {
             if (string.IsNullOrEmpty(result.Data))

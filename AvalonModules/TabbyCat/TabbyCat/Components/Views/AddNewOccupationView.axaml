@@ -14,7 +14,7 @@
         <TextBlock Text="{x:Static languages:AppResources.Contact}" Margin="0,0,0,5" />
         <TextBox Text="{Binding Name}" Grid.Column="1" Margin="0,0,0,5" />
         <TextBlock Text="{x:Static languages:AppResources.Description}" Grid.Row="1" Grid.Column="0" />
-        <TextBox Text="{Binding Description}" Grid.Row="1" Grid.Column="1" Height="100" />
+        <TextBox Text="{Binding Description}" MaxLength="1000" Grid.Row="1" Grid.Column="1" Height="100" />
     </Grid>
 
 </UserControl>
