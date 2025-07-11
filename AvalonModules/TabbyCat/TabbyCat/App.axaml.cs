@@ -79,7 +79,7 @@ public partial class App : TuDogApplication
 
     private void ShowInputDialog(IEnumerable<KeyCode> code)
     {
-        if (code.Count() == 2 && code.First() == KeyCode.VcLeftMeta && code.Last() == KeyCode.VcSpace)
+        if (code.Count() == 2 && code.First() == KeyCode.VcLeftControl && code.Last() == KeyCode.VcSpace)
             Dispatcher.UIThread.Invoke(() =>
             {
                 Debug.Assert(window is not null, "windows 不应该为空");
