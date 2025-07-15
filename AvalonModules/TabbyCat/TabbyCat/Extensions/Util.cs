@@ -1,12 +1,11 @@
-﻿using System.IO;
-using System.Runtime.InteropServices;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using SkiaSharp;
+using System.IO;
+using System.Runtime.InteropServices;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Downloader;
-using PixelFormat = Xabe.FFmpeg.PixelFormat;
 
 namespace TabbyCat.Extensions;
 
@@ -51,7 +50,21 @@ public static class Util
     public static async Task<bool> GenerateThumbnail(string videoPath,
         TimeSpan snapshotTime, string outputImagePath)
     {
-        await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
+        if (OperatingSystem.IsWindows())
+        {
+            string ffmpegPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "TabbyCat",
+                "ffmpeg"
+            );
+            Directory.CreateDirectory(ffmpegPath);
+            await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official, ffmpegPath);
+            FFmpeg.SetExecutablesPath(ffmpegPath);
+        }
+        else
+        {
+            await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
+        }
         var conversion = await FFmpeg.Conversions.FromSnippet.Snapshot(videoPath, outputImagePath, snapshotTime);
         await conversion.Start();
         return File.Exists(outputImagePath);
