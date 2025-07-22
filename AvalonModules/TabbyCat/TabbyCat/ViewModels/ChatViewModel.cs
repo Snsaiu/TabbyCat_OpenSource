@@ -53,6 +53,8 @@ public partial class ChatViewModel(
 
     [ObservableProperty] private bool canSend = true;
 
+    public bool ScrollToEnd { get; set; }
+
     [ObservableProperty] private string inputTextContent = string.Empty;
 
     [ObservableProperty] private ObservableCollection<AppendixModel> _appendixModels = [];
@@ -254,6 +256,7 @@ public partial class ChatViewModel(
             return;
         }
 
+        ScrollToEnd = true;
         await SseSendAsync(InputTextContent);
     }
 
