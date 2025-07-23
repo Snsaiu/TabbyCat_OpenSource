@@ -40,10 +40,11 @@ public partial class TextToImageViewModel : AiMediaViewModelBase<TextToImageRequ
 
     protected override Task<TextToImageRequestModel> CreatePublishModelAsync()
     {
-        return Task.FromResult(new TextToImageRequestModel()
+        return Task.FromResult(new TextToImageRequestModel
         {
-            Input = new() { Prompt = ImageDescription }, Model = "wanx2.1-t2i-turbo", Parameters =
-                new() { Count = SelectCount, Size = SelectImageSize }
+            Input = new TextToImageRequestModel.TextToImagePrompt { Prompt = ImageDescription },
+            Model = "wanx2.1-t2i-plus", Parameters =
+                new TextToImageRequestModel.TextToImageParameter { Count = SelectCount, Size = SelectImageSize }
         });
     }
 }
