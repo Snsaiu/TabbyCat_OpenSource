@@ -28,24 +28,26 @@ public abstract partial class AiViewModelBase : ViewModelBase
     protected IRemoteServerService RemoteServerService { get; } =
         TuDogApplication.ServiceProvider.GetRequiredService<IRemoteServerService>();
 
-    protected IAiChatSessionService chatSessionService =
+    protected IAiChatSessionService ChatSessionService =
         TuDogApplication.ServiceProvider.GetRequiredService<IAiChatSessionService>();
 
-    protected IAiChatMessageRecordService aiChatMessageRecordService=TuDogApplication.ServiceProvider.GetRequiredService<IAiChatMessageRecordService>();
+    protected IAiChatMessageRecordService AiChatMessageRecordService =
+        TuDogApplication.ServiceProvider.GetRequiredService<IAiChatMessageRecordService>();
 
-    protected ICustomAssistantOccupationService customAssistantOccupationService=TuDogApplication.ServiceProvider.GetRequiredService<ICustomAssistantOccupationService>();
+    protected ICustomAssistantOccupationService CustomAssistantOccupationService =
+        TuDogApplication.ServiceProvider.GetRequiredService<ICustomAssistantOccupationService>();
 
 
-    protected IUseMarkdownService useMarkdownService=TuDogApplication.ServiceProvider.GetRequiredService<IUseMarkdownService>();
+    protected IUseMarkdownService UseMarkdownService =
+        TuDogApplication.ServiceProvider.GetRequiredService<IUseMarkdownService>();
 
-    [ObservableProperty]
-    private ObservableCollection<MessagesItem> chatModels = new();
+    [ObservableProperty] private ObservableCollection<MessagesItem> chatModels = new();
 
     [ObservableProperty] private AiChatSessionEntity? aiChatSession;
 
 
-
-    private ILogger<AiViewModelBase> logger = TuDogApplication.ServiceProvider.GetRequiredService<ILogger<AiViewModelBase>>();
+    private ILogger<AiViewModelBase> logger =
+        TuDogApplication.ServiceProvider.GetRequiredService<ILogger<AiViewModelBase>>();
 
 
     protected AiApiModelBase? aiApiModelBase;
@@ -60,7 +62,7 @@ public abstract partial class AiViewModelBase : ViewModelBase
 
         if (AiChatSession is not { } chatSession)
         {
-            logger.LogError("初始化聊天模型时,{0}不能为空。",nameof(AiChatSession));
+            logger.LogError("初始化聊天模型时,{0}不能为空。", nameof(AiChatSession));
             return;
         }
 
@@ -69,23 +71,24 @@ public abstract partial class AiViewModelBase : ViewModelBase
             if (chatSession.Occupation == AssistantOccupation.Custom)
             {
                 var occupation =
-                    await customAssistantOccupationService.QueryAsync(x =>
+                    await CustomAssistantOccupationService.QueryAsync(x =>
                         x.Name == chatSession.CustomOccupationName);
                 messageSession?.Messages.Add(new MessagesItem
                 {
                     Content = occupation.FirstOrDefault()?.Description ?? string.Empty, Role = Role.System,
-                    ShowMarkdownMode = useMarkdownService.Get()
+                    ShowMarkdownMode = UseMarkdownService.Get()
                 });
             }
             else if (chatSession.Occupation == AssistantOccupation.Agent)
             {
-                messageSession?.Messages.Add(new() { Content = AiFunctionFactory.Description(), Role = Role.System });
+                messageSession?.Messages.Add(new MessagesItem
+                    { Content = AiFunctionFactory.Description(), Role = Role.System });
             }
             else
             {
                 var discritpion = LocalizationResourceManager.Instance[$"{chatSession.Occupation.ToString()}Prompt"];
-                messageSession?.Messages.Add(new()
-                    { Content = discritpion, Role = Role.System, ShowMarkdownMode = useMarkdownService.Get() });
+                messageSession?.Messages.Add(new MessagesItem
+                    { Content = discritpion, Role = Role.System, ShowMarkdownMode = UseMarkdownService.Get() });
             }
         }
     }
@@ -94,15 +97,13 @@ public abstract partial class AiViewModelBase : ViewModelBase
     {
         if (aiApiModelBase is null)
         {
-            logger.LogError("初始化{0}时，{1}不能为null，但是实际{2}为空",nameof(MessageSessionBase),nameof(AiApiModelBase),nameof(AiApiModelBase));
+            logger.LogError("初始化{0}时，{1}不能为null，但是实际{2}为空", nameof(MessageSessionBase), nameof(AiApiModelBase),
+                nameof(AiApiModelBase));
             return;
         }
-        messageSession = AiRequestFactory.CreateMessageSession(aiApiModelBase);
-        if (messageSession is null)
-        {
-            logger.LogError("创建消息会话失败！");
-        }
 
+        messageSession = AiRequestFactory.CreateMessageSession(aiApiModelBase);
+        if (messageSession is null) logger.LogError("创建消息会话失败！");
     }
 
 
@@ -113,34 +114,37 @@ public abstract partial class AiViewModelBase : ViewModelBase
         if (!defaultModels.Any())
         {
             logger.LogWarning("查询默认的Ai聊天模板，数量是0");
-            await this.DialogServer.ShowMessageDialogAsync(AppResources.PleaseSelectAIModelFirst, AppResources.Warning,AppResources.Ok);
+            await DialogServer.ShowMessageDialogAsync(AppResources.PleaseSelectAIModelFirst, AppResources.Warning,
+                AppResources.Ok);
             return;
         }
 
         aiApiModelBase = defaultModels.First().Provider == AiModelType.Custom
             ? await AiTemplateFactory.GetTemplateAsync(defaultModels.First().ModelName, defaultModels)
             : await AiTemplateFactory.GetTemplateAsync(defaultModels.First().Provider, defaultModels);
-      
-        logger.LogInformation("获得默认的Ai聊天模板，提供方为:{0}",aiApiModelBase.Provider.ToString());
+
+        logger.LogInformation("获得默认的Ai聊天模板，提供方为:{0}", aiApiModelBase.Provider.ToString());
     }
 
     protected async Task UpdateFavouriteStateAsync(MessagesItem item)
     {
-        var finds = await aiChatMessageRecordService.QueryAsync(x => x.Key == item.Key);
+        var finds = await AiChatMessageRecordService.QueryAsync(x => x.Key == item.Key);
         if (!finds.Any())
         {
-            logger.LogError("根据{0}未发现聊天历史内容",item.Key);
+            logger.LogError("根据{0}未发现聊天历史内容", item.Key);
             return;
         }
+
         var first = finds.First();
         first.IsFavourite = item.IsFavourite;
         first.UpdateTime = DateTime.Now;
-        if (!await aiChatMessageRecordService.UpdateAsync(first))
+        if (!await AiChatMessageRecordService.UpdateAsync(first))
         {
-            logger.LogError("{0}保存Favourite状态失败。",item.Key);
+            logger.LogError("{0}保存Favourite状态失败。", item.Key);
             return;
         }
-        logger.LogInformation("{0}保存Favourite状态成功。",item.Key);
+
+        logger.LogInformation("{0}保存Favourite状态成功。", item.Key);
     }
 
     protected async Task SaveAiModelAsync(AiApiModelBase model)
@@ -150,7 +154,7 @@ public abstract partial class AiViewModelBase : ViewModelBase
         {
             Provider = model.Provider,
             IsDefault = model.IsDefault,
-            Template = json,
+            Template = json
         };
         if (model.Provider == AiModelType.Custom)
         {
@@ -159,7 +163,7 @@ public abstract partial class AiViewModelBase : ViewModelBase
             if (string.IsNullOrEmpty(customModelName))
             {
                 await DialogServer.ShowMessageDialogAsync(AppResources.CustomModelMustHaveName);
-                return ;
+                return;
             }
 
             var finds = await aiTemplateSettingService.QueryAsync(x =>

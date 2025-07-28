@@ -23,7 +23,6 @@ public partial class App : TuDogApplication
 {
     private Window? window;
 
-
     public override void Initialize()
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -31,6 +30,7 @@ public partial class App : TuDogApplication
         AvaloniaXamlLoader.Load(this);
         base.Initialize();
         InitLanguage();
+        InitHub();
         InitBackgroundImage();
         if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
         {
@@ -45,6 +45,13 @@ public partial class App : TuDogApplication
                 hotkeyService.Action += HotKeyImplement;
             }
         }
+
+        var showFloatingFrameService = ServiceProvider.GetRequiredService<IShowFloatingFrameService>();
+        var floatingFrameWindow = ServiceProvider.GetRequiredService<FloatingFrameWindow>();
+        if (showFloatingFrameService.Get())
+            floatingFrameWindow.Show();
+        else
+            floatingFrameWindow.Hide();
     }
 
     private void InitBackgroundImage()
@@ -64,19 +71,21 @@ public partial class App : TuDogApplication
 
     private void ShowInputDialog(IEnumerable<KeyCode> code)
     {
-        if (code.Count() == 2 && code.First() == KeyCode.VcLeftMeta && code.Last() == KeyCode.VcSpace)
+        if (code.Count() == 2 && code.First() == KeyCode.VcLeftControl && code.Last() == KeyCode.VcSpace)
             Dispatcher.UIThread.Invoke(() =>
             {
                 Debug.Assert(window is not null, "windows 不应该为空");
 
                 if (window.IsActive)
                 {
-                    window.Hide();
+                    window.WindowState = WindowState.Minimized;
+                    // window.Hide();
                     Log.Debug("隐藏窗口");
                 }
                 else
                 {
-                    window.Show();
+                    // window.Show();
+                    window.WindowState = WindowState.Normal;
                     window.Activate();
                     Log.Debug("显示窗口");
                 }
@@ -92,7 +101,7 @@ public partial class App : TuDogApplication
             window = new MainWindow();
             window.ShowInTaskbar = false;
 #if !DEBUG
-                window.Topmost = TuDogApplication.ServiceProvider.GetRequiredService<ITopMostService>().Get();
+            window.Topmost = ServiceProvider.GetRequiredService<ITopMostService>().Get();
 #endif
             return window;
         }
@@ -136,6 +145,9 @@ public partial class App : TuDogApplication
         w.Activate();
     }
 
+    private void InitHub()
+    {
+    }
 
     protected override void Register(IServiceCollection collection)
     {
@@ -147,5 +159,6 @@ public partial class App : TuDogApplication
         var folder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), exeName);
 
         collection.AddLoggerBuilder(string.Empty, null, folder);
+        collection.AddSingleton(typeof(FloatingFrameWindow), _ => new FloatingFrameWindow());
     }
 }

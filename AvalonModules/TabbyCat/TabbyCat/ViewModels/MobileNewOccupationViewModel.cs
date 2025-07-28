@@ -39,21 +39,21 @@ public partial class MobileNewOccupationViewModel(INavigationService navigationS
             return;
         }
 
-        if ((await customAssistantOccupationService.QueryAsync(x =>
-                x.Name == OccupationName )).Any())
+        if ((await CustomAssistantOccupationService.QueryAsync(x =>
+                x.Name == OccupationName)).Any())
         {
             await DialogServer.ShowMessageDialogAsync(AppResources.CharacterNameAlreadyExists, AppResources.Warning,
                 AppResources.Ok);
             return;
         }
 
-        var entity = new CustomAssistantOccupationEntity()
+        var entity = new CustomAssistantOccupationEntity
         {
             Name = OccupationName,
-            Description = Description,
+            Description = Description
         };
 
-        if (await customAssistantOccupationService.AddAsync(entity))
+        if (await CustomAssistantOccupationService.AddAsync(entity))
         {
             await DialogServer.ShowMessageDialogAsync(AppResources.AddedSuccessfully, AppResources.Message,
                 AppResources.Ok);

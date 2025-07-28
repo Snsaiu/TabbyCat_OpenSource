@@ -7,6 +7,7 @@ namespace TabbyCat.Repository.Entities.AiEntities;
 
 public partial class AiChatSessionEntity : UserBaseEntity
 {
+    public Guid SessionID { get; set; }
 
     /// <summary>
     /// 多轮对话的主题内容，默认可能是会话1 会话2 会话3......
@@ -37,16 +38,19 @@ public partial class AiChatSessionEntity : UserBaseEntity
     /// <summary>
     /// 是否是默认的会话
     /// </summary>
-    public bool  IsDefault { get; set; }
+    public bool IsDefault { get; set; }
 
-    public static AiChatSessionEntity CreateDefault(AssistantOccupation occupation=AssistantOccupation.Common)
+    public static AiChatSessionEntity CreateDefault(AssistantOccupation occupation = AssistantOccupation.Common)
     {
-        return new AiChatSessionEntity { Theme = "默认会话", Occupation = occupation, IsDefault = true};
+        return new AiChatSessionEntity { Theme = "默认会话", Occupation = occupation, IsDefault = true };
     }
 
     public static AiChatSessionEntity CreateCustom(string occupationName)
     {
-        return new AiChatSessionEntity(){Theme = "默认会话",Occupation = AssistantOccupation.Custom,IsDefault = true,CustomOccupationName = occupationName};
+        return new AiChatSessionEntity
+        {
+            Theme = "默认会话", Occupation = AssistantOccupation.Custom, IsDefault = true,
+            CustomOccupationName = occupationName
+        };
     }
-
 }

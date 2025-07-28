@@ -12,6 +12,7 @@
     xmlns:tabbyCat="clr-namespace:TabbyCat"
     xmlns:mdsyntax="https://github.com/whistyun/Markdown.Avalonia.SyntaxHigh"
     xmlns:models="clr-namespace:TabbyCat.Models"
+    xmlns:ctxt="clr-namespace:ColorTextBlock.Avalonia;assembly=ColorTextBlock.Avalonia"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -75,21 +76,42 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <mdxaml:MarkdownScrollViewer SelectionEnabled="True"
-
-                                                 SaveScrollValueWhenContentUpdated="True"
                                                  MarkdownStyleName="MarkdownStyle.GithubLike"
                                                  IsVisible="{Binding $parent[controls:ChatItem].Message.ShowMarkdownMode}"
                                                  Markdown="{Binding $parent[controls:ChatItem].Message.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                       <mdxaml:MarkdownScrollViewer.Styles>
-                           <Styles>
-                               <Style Selector=".CodeBlock Button.CopyButton TextBlock">
-                                   <Setter Property="Text" Value="{x:Static tabbyCat:IconFontProvider.copy}" />
-                                   <Setter Property="Margin" Value="5" />
-                                   <Setter Property="FontFamily" Value="{StaticResource iconFont}" />
-                               </Style>
-                           </Styles>
+                        <mdxaml:MarkdownScrollViewer.Styles>
+                            <Styles>
+                                <Style Selector=".CodeBlock Button.CopyButton TextBlock">
+                                    <Setter Property="Text" Value="{x:Static tabbyCat:IconFontProvider.copy}" />
+                                    <Setter Property="Margin" Value="5" />
+                                    <Setter Property="FontFamily" Value="{StaticResource iconFont}" />
+                                </Style>
+                                <Style Selector="Border.TableHeader ctxt|CTextBlock">
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                                <Style Selector="ctxt|CTextBlock.Heading1">
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                                <Style Selector="ctxt|CTextBlock.Heading2">
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                                <Style Selector="ctxt|CTextBlock.Heading3">
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                                <Style Selector="ctxt|CTextBlock.Heading4">
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                                <Style Selector="ctxt|CTextBlock.Heading5">
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
+                                <Style Selector="ctxt|CTextBlock.Heading6">
+                                    <Setter Property="FontSize" Value="14" />
+                                </Style>
 
-                       </mdxaml:MarkdownScrollViewer.Styles>
+
+                            </Styles>
+
+                        </mdxaml:MarkdownScrollViewer.Styles>
 
                         <mdxaml:MarkdownScrollViewer.Plugins>
                             <mdxaml:MdAvPlugins>
@@ -111,7 +133,9 @@
                         TextWrapping="Wrap" />
 
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <StackPanel IsVisible="{Binding $parent[controls:ChatItem].Message.StreamEnd, UpdateSourceTrigger=PropertyChanged}" Orientation="Horizontal">
+                        <StackPanel
+                            IsVisible="{Binding $parent[controls:ChatItem].Message.StreamEnd, UpdateSourceTrigger=PropertyChanged}"
+                            Orientation="Horizontal">
                             <ToggleButton
                                 extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Markdown}"
                                 Classes="icon"

@@ -3,24 +3,31 @@ using CommunityToolkit.Mvvm.Input;
 using TabbyCat.Enums;
 using TabbyCat.IServices.LocalConfigs;
 using TabbyCat.ViewModels;
+using TabbyCat.Views;
 using TuDog.IocAttribute;
 using ViewModelBase = TabbyCat.ViewModels.Bases.ViewModelBase;
 
 namespace TabbyCat.Components.ViewModels;
 
 [Register]
-public sealed partial class GeneralSettingViewModel(ICloseWindowStateService closeWindowStateService,ITopMostService topMostService):ViewModelBase
+public sealed partial class GeneralSettingViewModel(
+    ICloseWindowStateService closeWindowStateService,
+    ITopMostService topMostService,
+    FloatingFrameWindow floatingFrameWindow,
+    IShowFloatingFrameService showFloatingFrameService) : ViewModelBase
 {
-    [ObservableProperty]
-    private WindowCloseState closeState;
+    [ObservableProperty] private WindowCloseState closeState;
 
-    [ObservableProperty]
-    private bool topMost;
+    [ObservableProperty] private bool topMost;
+
+    [ObservableProperty] private bool showFloatingFrame;
+
 
     protected override Task OnLoaded()
     {
         CloseState = closeWindowStateService.Get();
-        this.TopMost = topMostService.Get();
+        TopMost = topMostService.Get();
+        ShowFloatingFrame = showFloatingFrameService.Get();
         return base.OnLoaded();
     }
 
@@ -32,5 +39,14 @@ public sealed partial class GeneralSettingViewModel(ICloseWindowStateService clo
     partial void OnTopMostChanged(bool value)
     {
         topMostService.Set(value);
+    }
+
+    partial void OnShowFloatingFrameChanged(bool value)
+    {
+        showFloatingFrameService.Set(value);
+        if (value)
+            floatingFrameWindow.Show();
+        else
+            floatingFrameWindow.Hide();
     }
 }

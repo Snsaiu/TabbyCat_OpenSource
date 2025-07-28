@@ -55,23 +55,24 @@ public abstract partial class ContactViewModelBase : AiViewModelBase
         if (SelectedOccupation == null)
             return;
 
-        var sessions = await this.chatSessionService.QueryAsync(x =>
+        var sessions = await ChatSessionService.QueryAsync(x =>
             x.Occupation == AssistantOccupation.Custom && x.CustomOccupationName == SelectedOccupation.OccupationName);
 
         if (sessions.Any())
         {
-          await  DialogServer.ShowMessageDialogAsync(AppResources.HasChatHistoryCannotDeleteContact, AppResources.Warning,
+            await DialogServer.ShowMessageDialogAsync(AppResources.HasChatHistoryCannotDeleteContact,
+                AppResources.Warning,
                 AppResources.Ok);
-          return;
+            return;
         }
-        
 
-        if (!(await this.DialogServer.ShowConfirmDialogAsync(
+
+        if (!await DialogServer.ShowConfirmDialogAsync(
                 string.Format(AppResources.ConfirmDelete, SelectedOccupation.OccupationName), AppResources.Warning,
-                AppResources.Ok, AppResources.Cancel)))
+                AppResources.Ok, AppResources.Cancel))
             return;
 
-        await customAssistantOccupationService.DeleteAsync(x =>
+        await CustomAssistantOccupationService.DeleteAsync(x =>
             x.Name == SelectedOccupation.OccupationName);
         Occupations.Reset(await OccupationService.GetAllOccupationsAsync());
         SelectedOccupation = Occupations.FirstOrDefault();

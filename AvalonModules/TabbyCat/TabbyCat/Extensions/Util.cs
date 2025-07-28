@@ -4,6 +4,7 @@ using Avalonia.Platform;
 using SkiaSharp;
 using System.IO;
 using System.Runtime.InteropServices;
+using Avalonia.Controls;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Downloader;
 
@@ -52,7 +53,7 @@ public static class Util
     {
         if (OperatingSystem.IsWindows())
         {
-            string ffmpegPath = Path.Combine(
+            var ffmpegPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "TabbyCat",
                 "ffmpeg"
@@ -65,6 +66,7 @@ public static class Util
         {
             await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
         }
+
         var conversion = await FFmpeg.Conversions.FromSnippet.Snapshot(videoPath, outputImagePath, snapshotTime);
         await conversion.Start();
         return File.Exists(outputImagePath);
@@ -144,5 +146,32 @@ public static class Util
         // 保存新图像
         using var fs = File.Create(outputPath);
         wb.Save(fs);
+    }
+}
+
+public static class Win32Utils
+{
+    private const int GWL_EXSTYLE = -20;
+    private const int WS_EX_TOOLWINDOW = 0x00000080;
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+    public static void HideFromAltTab(Window window)
+    {
+        var handle = window.TryGetPlatformHandle()?.Handle ?? IntPtr.Zero;
+
+        if (handle == IntPtr.Zero)
+            return;
+
+        const int GWL_EXSTYLE = -20;
+        const int WS_EX_TOOLWINDOW = 0x00000080;
+
+        var exStyle = GetWindowLongPtr(handle, GWL_EXSTYLE);
+        var newStyle = new IntPtr(exStyle.ToInt64() | WS_EX_TOOLWINDOW);
+        SetWindowLongPtr(handle, GWL_EXSTYLE, newStyle);
     }
 }

@@ -22,20 +22,19 @@ public partial class ContactViewModel(IMessageBarService messageBarService) : Co
     protected override async void OnOccupationSelectedChanged(OccupationType? value)
     {
         SelectedOccupation = value;
-        if(value is null)
+        if (value is null)
             return;
         if (value.Occupation == AssistantOccupation.Custom)
         {
-            var finds = await customAssistantOccupationService.QueryAsync(x =>
-                x.Name == value.OccupationName );
+            var finds = await CustomAssistantOccupationService.QueryAsync(x =>
+                x.Name == value.OccupationName);
             if (finds.Any())
                 OccupationDescription = finds.FirstOrDefault()?.Description;
         }
         else
         {
-           OccupationDescription  =   LocalizationResourceManager.Instance[$"{value.Occupation.ToString()}Prompt"];
+            OccupationDescription = LocalizationResourceManager.Instance[$"{value.Occupation.ToString()}Prompt"];
         }
-
     }
 
     protected override async Task OnLoaded()
@@ -49,8 +48,7 @@ public partial class ContactViewModel(IMessageBarService messageBarService) : Co
 
     [ObservableProperty] private string _searchText;
 
-    [ObservableProperty]
-    private string _occupationDescription = string.Empty;
+    [ObservableProperty] private string _occupationDescription = string.Empty;
 
     partial void OnSearchTextChanged(string value)
     {
@@ -91,26 +89,23 @@ public partial class ContactViewModel(IMessageBarService messageBarService) : Co
     {
         if (SelectedOccupation is null)
             return;
-        
+
         // 添加新的会话
-        var sessions = await this.chatSessionService.QueryAsync(x => x.IsDefault);
+        var sessions = await ChatSessionService.QueryAsync(x => x.IsDefault);
         if (sessions.Any())
         {
-            foreach (var item in sessions)
-            {
-                item.IsDefault = false;
-            }
+            foreach (var item in sessions) item.IsDefault = false;
 
-            await this.chatSessionService.UpdateRangeAsync(sessions);
+            await ChatSessionService.UpdateRangeAsync(sessions);
         }
-        
-        var newSession = SelectedOccupation.Occupation == AssistantOccupation.Custom ? AiChatSessionEntity.CreateCustom(SelectedOccupation.OccupationName) : AiChatSessionEntity.CreateDefault(SelectedOccupation.Occupation);
-            
-        await chatSessionService.AddAsync(newSession);
-        
+
+        var newSession = SelectedOccupation.Occupation == AssistantOccupation.Custom
+            ? AiChatSessionEntity.CreateCustom(SelectedOccupation.OccupationName)
+            : AiChatSessionEntity.CreateDefault(SelectedOccupation.Occupation);
+
+        await ChatSessionService.AddAsync(newSession);
+
         NavigationMenuItemService.SelectMenuItem =
             NavigationMenuItemService.MenuItems.FirstOrDefault(x => x.Content == typeof(ChatViewModel));
-       
     }
-
 }

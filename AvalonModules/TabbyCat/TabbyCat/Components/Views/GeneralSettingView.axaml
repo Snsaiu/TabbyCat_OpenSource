@@ -36,5 +36,8 @@
             Margin="{StaticResource Top2}"
             Content="{x:Static languages:AppResources.TopMost}"
             IsChecked="{Binding TopMost}" />
+        <ToggleSwitch Margin="{StaticResource Top2}"
+                      IsChecked="{Binding ShowFloatingFrame}"
+                      Content="{x:Static languages:AppResources.ShowFloatingFrame}" />
     </StackPanel>
 </UserControl>
