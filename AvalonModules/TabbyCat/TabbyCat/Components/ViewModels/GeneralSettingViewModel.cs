@@ -12,22 +12,16 @@ namespace TabbyCat.Components.ViewModels;
 [Register]
 public sealed partial class GeneralSettingViewModel(
     ICloseWindowStateService closeWindowStateService,
-    ITopMostService topMostService,
-    FloatingFrameWindow floatingFrameWindow,
-    IShowFloatingFrameService showFloatingFrameService) : ViewModelBase
+    ITopMostService topMostService) : ViewModelBase
 {
     [ObservableProperty] private WindowCloseState closeState;
 
     [ObservableProperty] private bool topMost;
 
-    [ObservableProperty] private bool showFloatingFrame;
-
-
     protected override Task OnLoaded()
     {
         CloseState = closeWindowStateService.Get();
         TopMost = topMostService.Get();
-        ShowFloatingFrame = showFloatingFrameService.Get();
         return base.OnLoaded();
     }
 
@@ -39,14 +33,5 @@ public sealed partial class GeneralSettingViewModel(
     partial void OnTopMostChanged(bool value)
     {
         topMostService.Set(value);
-    }
-
-    partial void OnShowFloatingFrameChanged(bool value)
-    {
-        showFloatingFrameService.Set(value);
-        if (value)
-            floatingFrameWindow.Show();
-        else
-            floatingFrameWindow.Hide();
     }
 }

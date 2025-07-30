@@ -8,22 +8,18 @@ using ViewModelBase = TabbyCat.ViewModels.Bases.ViewModelBase;
 namespace TabbyCat.Components.ViewModels;
 
 [Register]
-public sealed partial class ExperimentalFeaturesSettingViewModel(IUseMarkdownService useMarkdownService,
-    IHotKeyStartProgramService hotKeyStartProgramService,
+public sealed partial class ExperimentalFeaturesSettingViewModel(
+    IUseMarkdownService useMarkdownService,
     IShowQuickMenuService showQuickMenuService) : ViewModelBase
 {
     [ObservableProperty] private bool useMarkdown;
-    [ObservableProperty] private bool useHotkey;
     [ObservableProperty] private bool useCpShowQuickMenu;
+
     partial void OnUseMarkdownChanged(bool value)
     {
         useMarkdownService.Set(value);
     }
 
-    partial void OnUseHotkeyChanged(bool value)
-    {
-        hotKeyStartProgramService.Set(value);
-    }
 
     partial void OnUseCpShowQuickMenuChanged(bool value)
     {
@@ -33,10 +29,7 @@ public sealed partial class ExperimentalFeaturesSettingViewModel(IUseMarkdownSer
     protected override Task OnLoaded()
     {
         UseMarkdown = useMarkdownService.Get();
-        UseHotkey= hotKeyStartProgramService.Get();
-      
         UseCpShowQuickMenu = showQuickMenuService.Get();
-            
         return base.OnLoaded();
     }
 }

@@ -12,7 +12,7 @@ namespace TabbyCat.Views;
 
 public partial class FloatingFrameView : UserControl
 {
-    private StackPanel stackPanel;
+    private Grid gridPanel;
     private ScrollViewer scrollViewer;
 
     private FloatingFrameViewModel vm;
@@ -22,9 +22,9 @@ public partial class FloatingFrameView : UserControl
         InitializeComponent();
 
         var togglebutton = this.GetControl<Button>("toggle");
-        stackPanel = this.GetControl<StackPanel>("contentPanel");
+        gridPanel = this.GetControl<Grid>("contentPanel");
         scrollViewer = this.GetControl<ScrollViewer>("sv");
-        stackPanel.IsVisible = false;
+        gridPanel.IsVisible = false;
 
         togglebutton.AddHandler(PointerPressedEvent, Toggle_PointerPressed, RoutingStrategies.Tunnel);
         togglebutton.AddHandler(PointerReleasedEvent, Toggle_PointerReleased, RoutingStrategies.Tunnel);

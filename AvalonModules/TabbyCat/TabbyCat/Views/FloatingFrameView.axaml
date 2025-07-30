@@ -11,7 +11,7 @@
              Loaded="Control_OnLoaded"
              x:Class="TabbyCat.Views.FloatingFrameView">
 
-    <StackPanel>
+    <StackPanel Width="{OnPlatform Windows=450, macOS=400}">
         <StackPanel Orientation="Horizontal">
             <Button HorizontalAlignment="Left" Name="toggle"
                     IsHitTestVisible="True">
@@ -40,13 +40,16 @@
             <Button IsVisible="{OnPlatform Windows=true,Default=false}"
                     Classes="icon"
                     Command="{Binding ShowOutPutPanelCommand}"
-                    extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.Eye}" />
+                    extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.CircleArrowDown}" />
+            <Button Classes="icon" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.ShowMainWindow}"
+                    Command="{Binding ToggleWindowTypeCommand}" Margin="0,0,10,0" />
         </StackPanel>
-        <StackPanel IsVisible="{Binding ShowOutputPanel}" Background="{StaticResource SolidBackgroundFillColorBase}"
-                    Name="contentPanel" Width="400">
-            <ScrollViewer Name="sv" MaxHeight="300">
-                <controls:ChatItem Message="{Binding AiResponseMessageItem}" />
+        <Grid IsVisible="{Binding ShowOutputPanel}" Background="{StaticResource SolidBackgroundFillColorBase}"
+              Name="contentPanel">
+            <ScrollViewer Name="sv" MaxHeight="400" HorizontalAlignment="Stretch">
+                <controls:ChatItem Margin="{OnPlatform Windows=-5 0 5 0,macOS=0}"
+                                   Message="{Binding AiResponseMessageItem}" />
             </ScrollViewer>
-        </StackPanel>
+        </Grid>
     </StackPanel>
 </UserControl>

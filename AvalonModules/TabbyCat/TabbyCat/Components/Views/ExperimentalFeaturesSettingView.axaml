@@ -9,8 +9,7 @@
              x:DataType="viewModels:ExperimentalFeaturesSettingViewModel">
     <StackPanel HorizontalAlignment="Stretch">
         <ToggleSwitch Content="{x:Static languages:AppResources.DefaultMarkdown}" IsChecked="{Binding UseMarkdown}" />
-        <ToggleSwitch Content="{x:Static languages:AppResources.HotkeyToStartProgram}" IsChecked="{Binding UseHotkey}"
-                      IsVisible="{OnPlatform Default=true,Android=false,iOS=false}" />
+     
         <ToggleSwitch Content="{x:Static languages:AppResources.UseCpShowQuickMenu}"
                       IsChecked="{Binding UseCpShowQuickMenu,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       IsVisible="{OnPlatform Default=true,Android=false,iOS=false}">

@@ -41,4 +41,15 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     }
     
 
+    /// <summary>
+    /// 设置显示方式是主界面还是悬浮框
+    /// </summary>
+    [RelayCommand]
+    private void ToggleWindowType()
+    {
+        ShowWindowTypeConfig.WindowsShowType = WindowsShowType.FloatingFrame;
+        _regionManager.AddToRegion<FloatingFrameViewModel>("mainContainer");
+    }
+
+    
 }

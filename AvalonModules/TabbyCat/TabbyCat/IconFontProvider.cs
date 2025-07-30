@@ -3,9 +3,24 @@
 namespace TabbyCat;
 
 [IconBuild(
-    @"https://at.alicdn.com/t/c/font_4833862_ay178o15mt5.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81ZRDVTh&file=font_4833862_ay178o15mt5.json")]
+    @"https://at.alicdn.com/t/c/font_4833862_835xd91f8f8.json?spm=a313x.manage_type_myprojects.i1.6.1dbb3a81H6rWm1&file=font_4833862_835xd91f8f8.json")]
 public static partial class IconFontProvider
 {
+    ///<summary>
+    ///圆向下箭头
+    ///</summary>
+    public const string CircleArrowDown = "\ue614";
+
+    ///<summary>
+    ///显示主窗口
+    ///</summary>
+    public const string ShowMainWindow = "\ue750";
+
+    ///<summary>
+    ///显示悬浮框
+    ///</summary>
+    public const string ShowFloatingFrame = "\ue638";
+
     ///<summary>
     ///眼睛
     ///</summary>
@@ -15,7 +30,7 @@ public static partial class IconFontProvider
     ///右箭头
     ///</summary>
     public const string RightArrow = "\ue747";
-    
+
     ///<summary>
     ///复制
     ///</summary>
@@ -40,7 +55,7 @@ public static partial class IconFontProvider
     ///AI搜索
     ///</summary>
     public const string AISearch = "\ue613";
-    
+
     ///<summary>
     ///人像
     ///</summary>

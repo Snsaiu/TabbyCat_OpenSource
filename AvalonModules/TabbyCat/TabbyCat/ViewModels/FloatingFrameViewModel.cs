@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TabbyCat.Enums;
+using TabbyCat.Views;
 using TuDog.IocAttribute;
 
 namespace TabbyCat.ViewModels;
@@ -30,6 +32,13 @@ public partial class FloatingFrameViewModel : ChatViewModel
     private void ClearInput()
     {
         InputTextContent = "";
+    }
+
+    [RelayCommand]
+    private void ToggleWindowType()
+    {
+        ShowWindowTypeConfig.WindowsShowType = WindowsShowType.MainWindow;
+        RegionManager.AddToRegion<MainViewModel>("mainContainer");
     }
 
 

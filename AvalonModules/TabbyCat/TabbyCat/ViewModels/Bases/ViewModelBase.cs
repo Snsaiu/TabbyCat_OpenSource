@@ -14,6 +14,10 @@ namespace TabbyCat.ViewModels.Bases
         protected IDialogServer DialogServer { get; } =
             TuDogApplication.ServiceProvider.GetRequiredService<IDialogServer>();
         
+        public IShowWindowTypeConfig ShowWindowTypeConfig { get; } =
+            TuDogApplication.ServiceProvider.GetRequiredService<IShowWindowTypeConfig>();
+
+        
         protected LocalizationResourceManager ResourceManager { get; } = LocalizationResourceManager.Instance;
 
         protected IRegionManager RegionManager { get; } =

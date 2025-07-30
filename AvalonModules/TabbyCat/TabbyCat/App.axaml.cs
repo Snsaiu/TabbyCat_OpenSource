@@ -5,9 +5,8 @@ using System.Net;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Duende.IdentityModel.OidcClient;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
-using SharpHook.Native;
 using TabbyCat.Extensions;
 using TabbyCat.IServices;
 using TabbyCat.IServices.LocalConfigs;
@@ -34,24 +33,14 @@ public partial class App : TuDogApplication
         InitBackgroundImage();
         if (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
         {
-            var hotkeyStartProgramService = ServiceProvider.GetRequiredService<IHotKeyStartProgramService>();
             var showQuickMenuService = ServiceProvider.GetRequiredService<IShowQuickMenuService>();
-            var useHotkey = hotkeyStartProgramService.Get();
             var useCpShowQuickMenu = showQuickMenuService.Get();
-            if (useHotkey || useCpShowQuickMenu)
+            if (useCpShowQuickMenu)
             {
                 var hotkeyService = ServiceProvider.GetRequiredService<IHotKeyHookService>();
                 hotkeyService.InitService();
-                hotkeyService.Action += HotKeyImplement;
             }
         }
-
-        var showFloatingFrameService = ServiceProvider.GetRequiredService<IShowFloatingFrameService>();
-        var floatingFrameWindow = ServiceProvider.GetRequiredService<FloatingFrameWindow>();
-        if (showFloatingFrameService.Get())
-            floatingFrameWindow.Show();
-        else
-            floatingFrameWindow.Hide();
     }
 
     private void InitBackgroundImage()
@@ -64,33 +53,7 @@ public partial class App : TuDogApplication
         backgroundImageConfig.Opacity = temp.Opacity;
     }
 
-    private void HotKeyImplement(IEnumerable<KeyCode> code)
-    {
-        ShowInputDialog(code);
-    }
-
-    private void ShowInputDialog(IEnumerable<KeyCode> code)
-    {
-        if (code.Count() == 2 && code.First() == KeyCode.VcLeftControl && code.Last() == KeyCode.VcSpace)
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                Debug.Assert(window is not null, "windows 不应该为空");
-
-                if (window.IsActive)
-                {
-                    window.WindowState = WindowState.Minimized;
-                    // window.Hide();
-                    Log.Debug("隐藏窗口");
-                }
-                else
-                {
-                    // window.Show();
-                    window.WindowState = WindowState.Normal;
-                    window.Activate();
-                    Log.Debug("显示窗口");
-                }
-            });
-    }
+  
 
     public override object CreateShell()
     {
@@ -159,6 +122,5 @@ public partial class App : TuDogApplication
         var folder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), exeName);
 
         collection.AddLoggerBuilder(string.Empty, null, folder);
-        collection.AddSingleton(typeof(FloatingFrameWindow), _ => new FloatingFrameWindow());
     }
 }

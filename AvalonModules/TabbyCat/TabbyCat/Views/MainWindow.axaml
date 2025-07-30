@@ -18,14 +18,17 @@
                      xmlns:converters="clr-namespace:TabbyCat.Converters"
                      xmlns:enums="clr-namespace:TabbyCat.Enums"
                      xmlns:uIs="clr-namespace:TuDog.UIs;assembly=TuDog"
+                     CanResize="{Binding ShowWindowTypeConfig.WindowsShowType,Converter={converters:Enum2BoolConverter}, ConverterParameter={x:Static enums:WindowsShowType.MainWindow}}"
+                     ShowInTaskbar="{Binding ShowWindowTypeConfig.WindowsShowType,Converter={converters:Enum2BoolConverter}, ConverterParameter={x:Static enums:WindowsShowType.MainWindow}}"
                      ExtendClientAreaChromeHints="NoChrome"
                      ExtendClientAreaToDecorationsHint="True"
                      x:DataType="viewModels:MainWindowViewModel">
     <Window.DataContext>
-        <vm:MainWindowViewModel></vm:MainWindowViewModel>
+        <vm:MainWindowViewModel />
     </Window.DataContext>
     <Grid RowDefinitions="Auto,Auto,*">
-        <Border Grid.Row="0" Padding="0,5">
+        <Border Grid.Row="0" Padding="0,5"
+                IsVisible="{Binding ShowWindowTypeConfig.WindowsShowType,Converter={converters:Enum2BoolConverter}, ConverterParameter={x:Static enums:WindowsShowType.MainWindow}}">
             <Grid>
                 <StackPanel Orientation="Horizontal">
                     <!-- 左上角的按钮组 -->
@@ -45,6 +48,12 @@
                                 Background="#FFBD44" Foreground="#FFBD44" Margin="6,0,0,0" />
                         <!-- <Button Classes="MacosTitleBarButton" extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.MacosMaximize}" Background="#00CA4E" Foreground="#00CA4E" Margin="6,0,0,0" /> -->
                     </StackPanel>
+                    <Grid HorizontalAlignment="Left" Margin="10,0,0,0">
+                        
+                    </Grid>
+                    <Button Command="{Binding ToggleWindowTypeCommand}" Classes="icon"
+                            extensions:IconAttach.Icon="{x:Static tabbyCat:IconFontProvider.ShowFloatingFrame}" />
+
                 </StackPanel>
                 <!-- 标题文本 -->
                 <TextBlock Text="{x:Static languages:AppResources.TabbyCat}"
@@ -58,17 +67,14 @@
             <Image Source="{Binding BackgroundImageConfig.CustomImage,Converter={extensions1:ImageConverter}}"
                    Stretch="UniformToFill"
                    IsVisible="{Binding BackgroundImageConfig.Status,Converter={converters:Enum2BoolConverter} ,ConverterParameter={x:Static enums:BackgroundImageStatus.Custom}}"
-                   Opacity="{Binding BackgroundImageConfig.Opacity,UpdateSourceTrigger=PropertyChanged}">
-            </Image>
-            <ContentControl attachs:RegionBehavior.Region="mainContainer">
-            </ContentControl>
-
+                   Opacity="{Binding BackgroundImageConfig.Opacity,UpdateSourceTrigger=PropertyChanged}" />
+            <ContentControl DockPanel.Dock="Left" attachs:RegionBehavior.Region="mainContainer" />
         </Grid>
-        <uIs:InfoBox Grid.RowSpan="3" HorizontalAlignment="Right" Margin="0,20,5,0" VerticalAlignment="Top"/>
+        <uIs:InfoBox Grid.RowSpan="3" HorizontalAlignment="Right" Margin="0,20,5,0" VerticalAlignment="Top" />
     </Grid>
     <i:Interaction.Behaviors>
         <ia:EventTriggerBehavior EventName="Loaded">
-            <ia:InvokeCommandAction Command="{Binding LoadedCommand}"></ia:InvokeCommandAction>
+            <ia:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </ia:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 </windowing:AppWindow>
